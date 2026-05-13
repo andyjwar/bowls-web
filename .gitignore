@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.env
+server/uploads/
+
+# Tesseract downloads lang data into cwd during OCR
+*.traineddata

@@ -1,0 +1,80 @@
+{
+  "id": "samford-2026",
+  "name": "Samford League 2026",
+  "sections": [
+    {
+      "id": "monday-evening",
+      "label": "Monday Evening",
+      "scheduleTemplate": [
+        { "week": 1, "date": "2026-05-11", "pairings": [{ "home": 3, "away": 6 }, { "home": 4, "away": 5 }, { "home": 2, "away": 7 }, { "home": 1, "away": 8 }] },
+        { "week": 2, "date": "2026-05-18", "pairings": [{ "home": 1, "away": 5 }, { "home": 2, "away": 4 }, { "home": 7, "away": 6 }, { "home": 8, "away": 3 }] },
+        { "week": 3, "date": "2026-05-25", "pairings": [{ "home": 7, "away": 8 }, { "home": 6, "away": 1 }, { "home": 5, "away": 2 }, { "home": 4, "away": 3 }] },
+        { "week": 4, "date": "2026-06-01", "pairings": [{ "home": 4, "away": 8 }, { "home": 2, "away": 6 }, { "home": 3, "away": 5 }, { "home": 1, "away": 7 }] },
+        { "week": 5, "date": "2026-06-08", "pairings": [{ "home": 4, "away": 1 }, { "home": 3, "away": 2 }, { "home": 5, "away": 7 }, { "home": 6, "away": 8 }] },
+        { "week": 6, "date": "2026-06-15", "pairings": [{ "home": 1, "away": 3 }, { "home": 7, "away": 4 }, { "home": 6, "away": 5 }, { "home": 8, "away": 2 }] },
+        { "week": 7, "date": "2026-06-22", "pairings": [{ "home": 2, "away": 1 }, { "home": 4, "away": 6 }, { "home": 3, "away": 7 }, { "home": 5, "away": 8 }] },
+        { "week": 8, "date": "2026-06-29", "pairings": [{ "home": 8, "away": 1 }, { "home": 6, "away": 3 }, { "home": 5, "away": 4 }, { "home": 7, "away": 2 }] },
+        { "week": 9, "date": "2026-07-06", "pairings": [{ "home": 6, "away": 2 }, { "home": 5, "away": 3 }, { "home": 7, "away": 1 }, { "home": 8, "away": 4 }] },
+        { "week": 10, "date": "2026-07-13", "pairings": [{ "home": 1, "away": 6 }, { "home": 2, "away": 5 }, { "home": 3, "away": 4 }, { "home": 8, "away": 7 }] },
+        { "week": 11, "date": "2026-07-20", "pairings": [{ "home": 5, "away": 1 }, { "home": 4, "away": 2 }, { "home": 6, "away": 7 }, { "home": 3, "away": 8 }] },
+        { "week": 12, "date": "2026-07-27", "pairings": [{ "home": 3, "away": 1 }, { "home": 4, "away": 7 }, { "home": 5, "away": 6 }, { "home": 2, "away": 8 }] },
+        { "week": 13, "date": "2026-08-03", "pairings": [{ "home": 8, "away": 6 }, { "home": 1, "away": 4 }, { "home": 2, "away": 3 }, { "home": 7, "away": 5 }] },
+        { "week": 14, "date": "2026-08-10", "pairings": [{ "home": 1, "away": 2 }, { "home": 6, "away": 4 }, { "home": 7, "away": 3 }, { "home": 8, "away": 5 }] }
+      ],
+      "divisions": [
+        {
+          "id": "a",
+          "label": "Division A",
+          "teams": ["Stone Lodge Blues", "Waldringfield Swans", "Kirton A", "Westerfield Yellows", "E-of-E Co-op Reds", "Marlborough", "Holbrook", "Bye"]
+        },
+        {
+          "id": "b",
+          "label": "Division B",
+          "teams": ["Capel Kites", "Sproughton Reds", "Kesgrave Blues", "California", "Stone Lodge Reds", "Bealings", "Bentley", "Westerfield Blues"]
+        },
+        {
+          "id": "c",
+          "label": "Division C",
+          "teams": ["Gipping EE Wolves", "Bredfield", "Margaret Catchpole Blues", "Shotley Rose", "Brantham", "Waldringfield Ducks", "Kesgrave Greens", "Bye"]
+        },
+        {
+          "id": "d",
+          "label": "Division D",
+          "teams": ["Roundwood", "Newton Road", "East Bergholt", "Copdock & Washbrook", "Gipping EE Wrens", "Sproughton Blues", "Margaret Catchpole Reds", "Martlesham"]
+        },
+        {
+          "id": "e",
+          "label": "Division E",
+          "teams": ["E-of-E Co-op Blues", "St John's URC", "Hospitals Ribbans Park", "Ipswich & District", "Capel Kestrels", "Felixstowe BC", "Kirton B", "Norbridge"]
+        }
+      ]
+    },
+    {
+      "id": "wednesday-afternoon",
+      "label": "Wednesday Afternoon",
+      "scheduleTemplate": [
+        { "week": 1, "date": "2026-05-13", "pairings": [{ "home": 8, "away": 1 }, { "home": 6, "away": 3 }, { "home": 5, "away": 4 }, { "home": 7, "away": 2 }] },
+        { "week": 2, "date": "2026-05-20", "pairings": [{ "home": 4, "away": 8 }, { "home": 2, "away": 6 }, { "home": 3, "away": 5 }, { "home": 1, "away": 7 }] },
+        { "week": 3, "date": "2026-05-27", "pairings": [{ "home": 7, "away": 8 }, { "home": 6, "away": 1 }, { "home": 5, "away": 2 }, { "home": 4, "away": 3 }] },
+        { "week": 4, "date": "2026-06-03", "pairings": [{ "home": 8, "away": 3 }, { "home": 1, "away": 5 }, { "home": 2, "away": 4 }, { "home": 7, "away": 6 }] },
+        { "week": 5, "date": "2026-06-10", "pairings": [{ "home": 8, "away": 2 }, { "home": 1, "away": 3 }, { "home": 7, "away": 4 }, { "home": 6, "away": 5 }] },
+        { "week": 6, "date": "2026-06-17", "pairings": [{ "home": 5, "away": 8 }, { "home": 2, "away": 1 }, { "home": 4, "away": 6 }, { "home": 3, "away": 7 }] },
+        { "week": 7, "date": "2026-06-24", "pairings": [{ "home": 1, "away": 8 }, { "home": 3, "away": 6 }, { "home": 4, "away": 5 }, { "home": 2, "away": 7 }] },
+        { "week": 8, "date": "2026-07-01", "pairings": [{ "home": 8, "away": 4 }, { "home": 6, "away": 2 }, { "home": 5, "away": 3 }, { "home": 7, "away": 1 }] },
+        { "week": 9, "date": "2026-07-08", "pairings": [{ "home": 8, "away": 7 }, { "home": 1, "away": 6 }, { "home": 2, "away": 5 }, { "home": 3, "away": 4 }] },
+        { "week": 10, "date": "2026-07-15", "pairings": [{ "home": 3, "away": 8 }, { "home": 5, "away": 1 }, { "home": 4, "away": 2 }, { "home": 6, "away": 7 }] },
+        { "week": 11, "date": "2026-07-22", "pairings": [{ "home": 8, "away": 6 }, { "home": 1, "away": 4 }, { "home": 2, "away": 3 }, { "home": 7, "away": 5 }] },
+        { "week": 12, "date": "2026-07-29", "pairings": [{ "home": 2, "away": 8 }, { "home": 3, "away": 1 }, { "home": 5, "away": 6 }, { "home": 4, "away": 7 }] },
+        { "week": 13, "date": "2026-08-05", "pairings": [{ "home": 8, "away": 5 }, { "home": 1, "away": 2 }, { "home": 7, "away": 3 }, { "home": 6, "away": 4 }] },
+        { "week": 14, "date": "2026-08-12", "pairings": [{ "home": 6, "away": 8 }, { "home": 4, "away": 1 }, { "home": 3, "away": 2 }, { "home": 5, "away": 7 }] }
+      ],
+      "divisions": [
+        {
+          "id": "1",
+          "label": "Division 1",
+          "teams": ["Melton Purples", "Holbrook", "Woodbridge", "Felixstowe BC", "Kesgrave", "Kirton & Falkenham", "Stone Lodge", "Westerfield"]
+        }
+      ]
+    }
+  ]
+}

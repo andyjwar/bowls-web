@@ -1,0 +1,64 @@
+{
+  "id": "two-wood-2026",
+  "name": "Two Wood League 2026",
+  "scheduleTemplate": [
+    { "week": 1, "tuesdayDate": "2026-04-28", "thursdayDate": "2026-04-30", "pairings": [{ "home": 8, "away": 1 }, { "home": 7, "away": 2 }, { "home": 6, "away": 3 }, { "home": 5, "away": 4 }] },
+    { "week": 2, "tuesdayDate": "2026-05-05", "thursdayDate": "2026-05-07", "pairings": [{ "home": 1, "away": 7 }, { "home": 2, "away": 6 }, { "home": 3, "away": 5 }, { "home": 4, "away": 8 }] },
+    { "week": 3, "tuesdayDate": "2026-05-12", "thursdayDate": "2026-05-14", "pairings": [{ "home": 6, "away": 1 }, { "home": 5, "away": 2 }, { "home": 4, "away": 3 }, { "home": 7, "away": 8 }] },
+    { "week": 4, "tuesdayDate": "2026-05-19", "thursdayDate": "2026-05-21", "pairings": [{ "home": 1, "away": 5 }, { "home": 2, "away": 4 }, { "home": 8, "away": 3 }, { "home": 7, "away": 6 }] },
+    { "week": 5, "tuesdayDate": "2026-05-26", "thursdayDate": "2026-05-28", "pairings": [{ "home": 4, "away": 1 }, { "home": 3, "away": 2 }, { "home": 5, "away": 7 }, { "home": 6, "away": 8 }] },
+    { "week": 6, "tuesdayDate": "2026-06-02", "thursdayDate": "2026-06-04", "pairings": [{ "home": 1, "away": 3 }, { "home": 8, "away": 2 }, { "home": 7, "away": 4 }, { "home": 6, "away": 5 }] },
+    { "week": 7, "tuesdayDate": "2026-06-09", "thursdayDate": "2026-06-11", "pairings": [{ "home": 2, "away": 1 }, { "home": 3, "away": 7 }, { "home": 4, "away": 6 }, { "home": 5, "away": 8 }] },
+    { "week": 8, "tuesdayDate": "2026-06-16", "thursdayDate": "2026-06-18", "pairings": [{ "home": 1, "away": 8 }, { "home": 2, "away": 7 }, { "home": 3, "away": 6 }, { "home": 4, "away": 5 }] },
+    { "week": 9, "tuesdayDate": "2026-06-23", "thursdayDate": "2026-06-25", "pairings": [{ "home": 7, "away": 1 }, { "home": 6, "away": 2 }, { "home": 5, "away": 3 }, { "home": 8, "away": 4 }] },
+    { "week": 10, "tuesdayDate": "2026-06-30", "thursdayDate": "2026-07-02", "pairings": [{ "home": 1, "away": 6 }, { "home": 2, "away": 5 }, { "home": 3, "away": 4 }, { "home": 8, "away": 7 }] },
+    { "week": 11, "tuesdayDate": "2026-07-07", "thursdayDate": "2026-07-09", "pairings": [{ "home": 5, "away": 1 }, { "home": 4, "away": 2 }, { "home": 3, "away": 8 }, { "home": 6, "away": 7 }] },
+    { "week": 12, "tuesdayDate": "2026-07-14", "thursdayDate": "2026-07-16", "pairings": [{ "home": 1, "away": 4 }, { "home": 2, "away": 3 }, { "home": 7, "away": 5 }, { "home": 8, "away": 6 }] },
+    { "week": 13, "tuesdayDate": "2026-07-21", "thursdayDate": "2026-07-23", "pairings": [{ "home": 3, "away": 1 }, { "home": 2, "away": 8 }, { "home": 4, "away": 7 }, { "home": 5, "away": 6 }] },
+    { "week": 14, "tuesdayDate": "2026-07-28", "thursdayDate": "2026-07-30", "pairings": [{ "home": 1, "away": 2 }, { "home": 7, "away": 3 }, { "home": 6, "away": 4 }, { "home": 8, "away": 5 }] }
+  ],
+  "divisions": [
+    {
+      "id": "a",
+      "label": "Division A",
+      "playDay": "tuesday",
+      "teams": ["Bramford A", "California A", "Norbridge A", "Stone Lodge A", "Marlborough Greens", "Thorndon", "Kirton & Falkenham A", "Felixstowe & Suffolk"]
+    },
+    {
+      "id": "b",
+      "label": "Division B",
+      "playDay": "tuesday",
+      "teams": ["Kesgrave Blues", "Combs Ford", "Westerfield Blues", "Capel Kites", "Ipswich & District A", "Margaret Catchpole A", "Norbridge B", "IBC Graham Road A"]
+    },
+    {
+      "id": "c",
+      "label": "Division C",
+      "playDay": "tuesday",
+      "teams": ["Holbrook A", "Sproughton A", "Gipping EE Black Birds", "East-of-England Co-op Reds", "Bramford B", "California B", "East Bergholt Herons", "Stone Lodge B"]
+    },
+    {
+      "id": "d",
+      "label": "Division D",
+      "playDay": "tuesday",
+      "teams": ["Hadleigh Shearers", "Bealings Blues", "Roundwood", "IBC Graham Road B", "Kesgrave Greens", "Sproughton B", "Bye", "Bye"]
+    },
+    {
+      "id": "e",
+      "label": "Division E",
+      "playDay": "thursday",
+      "teams": ["Capel Kingfishers", "East of Eng'd Coop Blues", "Bramford Greens", "Holywells", "Hospitals at Ribbans Park", "Copdock & Washbrook", "Bye", "Bye"]
+    },
+    {
+      "id": "f",
+      "label": "Division F",
+      "playDay": "thursday",
+      "teams": ["Ipswich & District B", "Westerfield Swans", "Kirton & Falkenham B", "Gipping EE Foxes", "Capel Kingfishers", "Holbrook B", "Bye", "Bye"]
+    },
+    {
+      "id": "g",
+      "label": "Division G",
+      "playDay": "thursday",
+      "teams": ["Hadleigh Carders", "St Johns URC", "Margaret Catchpole B", "Newton Road Whites", "Sproughton C", "Westerfield Whites", "Bye", "Bye"]
+    }
+  ]
+}

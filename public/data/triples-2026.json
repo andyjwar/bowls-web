@@ -1,0 +1,416 @@
+{
+  "id": "triples-2026",
+  "name": "Triples League 2026",
+  "scheduleTemplate": [
+    {
+      "week": 1,
+      "date": "2026-05-06",
+      "pairings": [
+        {
+          "home": 4,
+          "away": 8
+        },
+        {
+          "home": 2,
+          "away": 6
+        },
+        {
+          "home": 3,
+          "away": 5
+        },
+        {
+          "home": 1,
+          "away": 7
+        }
+      ]
+    },
+    {
+      "week": 2,
+      "date": "2026-05-13",
+      "pairings": [
+        {
+          "home": 7,
+          "away": 8
+        },
+        {
+          "home": 6,
+          "away": 1
+        },
+        {
+          "home": 5,
+          "away": 2
+        },
+        {
+          "home": 4,
+          "away": 3
+        }
+      ]
+    },
+    {
+      "week": 3,
+      "date": "2026-05-20",
+      "pairings": [
+        {
+          "home": 8,
+          "away": 3
+        },
+        {
+          "home": 1,
+          "away": 5
+        },
+        {
+          "home": 2,
+          "away": 4
+        },
+        {
+          "home": 7,
+          "away": 6
+        }
+      ]
+    },
+    {
+      "week": 4,
+      "date": "2026-05-27",
+      "pairings": [
+        {
+          "home": 6,
+          "away": 8
+        },
+        {
+          "home": 4,
+          "away": 1
+        },
+        {
+          "home": 3,
+          "away": 2
+        },
+        {
+          "home": 5,
+          "away": 7
+        }
+      ]
+    },
+    {
+      "week": 5,
+      "date": "2026-06-03",
+      "pairings": [
+        {
+          "home": 8,
+          "away": 2
+        },
+        {
+          "home": 3,
+          "away": 1
+        },
+        {
+          "home": 7,
+          "away": 4
+        },
+        {
+          "home": 6,
+          "away": 5
+        }
+      ]
+    },
+    {
+      "week": 6,
+      "date": "2026-06-10",
+      "pairings": [
+        {
+          "home": 5,
+          "away": 8
+        },
+        {
+          "home": 2,
+          "away": 1
+        },
+        {
+          "home": 4,
+          "away": 6
+        },
+        {
+          "home": 3,
+          "away": 7
+        }
+      ]
+    },
+    {
+      "week": 7,
+      "date": "2026-06-17",
+      "pairings": [
+        {
+          "home": 1,
+          "away": 8
+        },
+        {
+          "home": 3,
+          "away": 6
+        },
+        {
+          "home": 4,
+          "away": 5
+        },
+        {
+          "home": 2,
+          "away": 7
+        }
+      ]
+    },
+    {
+      "week": 8,
+      "date": "2026-06-24",
+      "pairings": [
+        {
+          "home": 8,
+          "away": 4
+        },
+        {
+          "home": 6,
+          "away": 2
+        },
+        {
+          "home": 5,
+          "away": 3
+        },
+        {
+          "home": 7,
+          "away": 1
+        }
+      ]
+    },
+    {
+      "week": 9,
+      "date": "2026-07-01",
+      "pairings": [
+        {
+          "home": 8,
+          "away": 7
+        },
+        {
+          "home": 1,
+          "away": 6
+        },
+        {
+          "home": 2,
+          "away": 5
+        },
+        {
+          "home": 3,
+          "away": 4
+        }
+      ]
+    },
+    {
+      "week": 10,
+      "date": "2026-07-08",
+      "pairings": [
+        {
+          "home": 3,
+          "away": 8
+        },
+        {
+          "home": 5,
+          "away": 1
+        },
+        {
+          "home": 4,
+          "away": 2
+        },
+        {
+          "home": 6,
+          "away": 7
+        }
+      ]
+    },
+    {
+      "week": 11,
+      "date": "2026-07-15",
+      "pairings": [
+        {
+          "home": 8,
+          "away": 6
+        },
+        {
+          "home": 1,
+          "away": 4
+        },
+        {
+          "home": 2,
+          "away": 3
+        },
+        {
+          "home": 7,
+          "away": 5
+        }
+      ]
+    },
+    {
+      "week": 12,
+      "date": "2026-07-22",
+      "pairings": [
+        {
+          "home": 2,
+          "away": 8
+        },
+        {
+          "home": 3,
+          "away": 1
+        },
+        {
+          "home": 5,
+          "away": 6
+        },
+        {
+          "home": 4,
+          "away": 7
+        }
+      ]
+    },
+    {
+      "week": 13,
+      "date": "2026-07-29",
+      "pairings": [
+        {
+          "home": 8,
+          "away": 5
+        },
+        {
+          "home": 1,
+          "away": 2
+        },
+        {
+          "home": 7,
+          "away": 3
+        },
+        {
+          "home": 6,
+          "away": 4
+        }
+      ]
+    },
+    {
+      "week": 14,
+      "date": "2026-08-05",
+      "pairings": [
+        {
+          "home": 8,
+          "away": 1
+        },
+        {
+          "home": 6,
+          "away": 3
+        },
+        {
+          "home": 5,
+          "away": 4
+        },
+        {
+          "home": 7,
+          "away": 2
+        }
+      ]
+    }
+  ],
+  "divisions": [
+    {
+      "id": "a",
+      "label": "Division A",
+      "teams": [
+        "Capel St Mary Kites",
+        "Norbridge",
+        "E-of-E Co-op A",
+        "Bealings",
+        "Kirton & Falkenham",
+        "Westerfield Greens",
+        "Waldringfield",
+        "Stone Lodge"
+      ],
+      "results": {
+        "weeks": {
+          "1": [
+            {
+              "home": "Bealings",
+              "away": "Stone Lodge",
+              "homeShots": 45,
+              "awayShots": 38
+            },
+            {
+              "home": "Norbridge",
+              "away": "Westerfield Greens",
+              "homeShots": 42,
+              "awayShots": 40
+            },
+            {
+              "home": "E-of-E Co-op A",
+              "away": "Kirton & Falkenham",
+              "homeShots": 35,
+              "awayShots": 35
+            },
+            {
+              "home": "Capel St Mary Kites",
+              "away": "Waldringfield",
+              "homeShots": 50,
+              "awayShots": 28
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "b",
+      "label": "Division B",
+      "teams": [
+        "Bentley",
+        "Bredfield",
+        "Kesgrave Blues",
+        "Copdock & Washbrook",
+        "Bramford",
+        "California",
+        "Kesgrave Greens",
+        "Bye"
+      ]
+    },
+    {
+      "id": "c",
+      "label": "Division C",
+      "teams": [
+        "IBC Graham Road",
+        "Westerfield Oranges",
+        "Holbrook",
+        "Newton Road A",
+        "Sproughton",
+        "Bye",
+        "Ipswich & District",
+        "Roundwood"
+      ]
+    },
+    {
+      "id": "d",
+      "label": "Division D",
+      "teams": [
+        "Hadleigh",
+        "Hospitals Ribbans Park",
+        "Shotley Rose",
+        "Wickham Market",
+        "Capel Kestrels",
+        "Margaret Catchpole",
+        "Woodbridge",
+        "Bye"
+      ]
+    },
+    {
+      "id": "e",
+      "label": "Division E",
+      "teams": [
+        "Martlesham",
+        "Hollesley",
+        "Melton",
+        "Stone Lodge B",
+        "Felixstowe BC",
+        "Needham Market",
+        "E-of-E Co-op B",
+        "Newton Road B"
+      ]
+    }
+  ]
+}
