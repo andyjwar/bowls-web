@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, existsSync } from 'fs'
+import { readFileSync, writeFileSync, existsSync, unlinkSync } from 'fs'
 import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 import { getActiveSeason } from './siteConfigStore.js'
@@ -148,6 +148,20 @@ export function replaceCompetitionDraw(compId, rounds) {
   else delete comp.sub
   writeCompetitions(doc)
   return comp
+}
+
+/** True when any cup in a season's file has a saved result. */
+export function seasonCupsHaveResults(season) {
+  return (loadCompetitions(season).competitions ?? []).some(competitionHasResults)
+}
+
+/**
+ * Delete a season's cups file outright (used when removing a season started by
+ * mistake) — a later "start season" then recreates it fresh.
+ */
+export function deleteSeasonCompetitionsFile(season) {
+  const path = competitionsPath(season)
+  if (existsSync(path)) unlinkSync(path)
 }
 
 /** Remove a cup from the season file. Refused once results exist. */

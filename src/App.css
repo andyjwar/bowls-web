@@ -5580,6 +5580,16 @@ a.form-card:hover {
   max-width: 60ch;
 }
 
+.season-panel__removerow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+}
+
 /* ── Cup draw builder (AdminCupEntry / CupDrawBuilder) ── */
 
 .cup-draw {

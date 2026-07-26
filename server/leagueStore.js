@@ -3,7 +3,7 @@ import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 import { buildDivisionFixtures } from '../src/lib/fixtures.js'
 import { applyResultsToFixtures, computeStandingsFromResults } from '../src/lib/results.js'
-import { getActiveSeason } from './siteConfigStore.js'
+import { getActiveSeason, setActiveSeason } from './siteConfigStore.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const DATA_DIR = join(__dirname, '../public/data')
@@ -468,6 +468,59 @@ export function deleteLeague(leagueId) {
   persistLeagueRegistry()
   persistLeaguesNav()
   return { ok: true, leagueId: id }
+}
+
+/** True when any division in the league has saved week results. */
+export function leagueHasAnyResults(doc) {
+  const divisionLists = doc?.sections?.length
+    ? doc.sections.map((s) => s.divisions ?? [])
+    : [doc?.divisions ?? []]
+  for (const divisions of divisionLists) {
+    for (const d of divisions) {
+      const weeks = d?.results?.weeks
+      if (weeks && Object.values(weeks).some((arr) => Array.isArray(arr) && arr.length)) {
+        return true
+      }
+    }
+  }
+  return false
+}
+
+/**
+ * Remove a whole season (e.g. one started by mistake): unregister every league
+ * belonging to it — their data files stay on disk, so re-starting the season
+ * later works cleanly. Refused when any of its leagues already has results, or
+ * when it is the only season. If the removed season was the active one, the
+ * newest remaining season becomes active.
+ */
+export function removeSeason(yearRaw) {
+  const year = Number(yearRaw)
+  const seasons = listKnownSeasons()
+  if (!seasons.includes(year)) throw new Error('No leagues exist for that season')
+  if (seasons.length < 2) throw new Error('The only season cannot be removed')
+
+  const ids = Object.keys(LEAGUE_FILES).filter(
+    (id) => leagueSeason(id, safeLoadLeague(id)) === year,
+  )
+  for (const id of ids) {
+    const doc = safeLoadLeague(id)
+    if (doc && leagueHasAnyResults(doc)) {
+      throw new Error(
+        `${doc.name ?? id} already has results entered — the ${year} season can't be removed`,
+      )
+    }
+  }
+
+  for (const id of ids) delete LEAGUE_FILES[id]
+  persistLeagueRegistry()
+
+  let activeSeason = getActiveSeason()
+  if (activeSeason === year) {
+    activeSeason = listKnownSeasons()[0]
+    setActiveSeason(activeSeason)
+  }
+  persistLeaguesNav()
+  return { removedLeagues: ids, activeSeason }
 }
 
 const SEASON_DATE_KEYS = ['date', 'thursdayDate', 'tuesdayDate']

@@ -17,6 +17,7 @@ import {
   loadLeague,
   mergeWeekResults,
   persistLeaguesNav,
+  removeSeason,
   saveLeague,
   startNewSeason,
   updateDivisionTeamNames,
@@ -40,8 +41,10 @@ import {
   createCompetition,
   createSeasonCompetitionsFile,
   deleteCompetition,
+  deleteSeasonCompetitionsFile,
   loadCompetitions,
   replaceCompetitionDraw,
+  seasonCupsHaveResults,
   updateCompetitionRounds,
 } from './competitionsStore.js'
 import { getActiveSeason, setActiveSeason } from './siteConfigStore.js'
@@ -250,6 +253,24 @@ app.post('/api/admin/season', requireAuth, (req, res) => {
     res.json({ ok: true, ...out, cups, activeSeason: year })
   } catch (e) {
     res.status(400).json({ error: e.message || 'Could not start the season' })
+  }
+})
+
+/** Remove a season started by mistake — refused once anything has results. */
+app.delete('/api/admin/season/:year', requireAuth, (req, res) => {
+  try {
+    const year = Number(req.params.year)
+    if (seasonCupsHaveResults(year)) {
+      res.status(400).json({
+        error: `The ${year} cups already have results entered — the season can't be removed`,
+      })
+      return
+    }
+    const out = removeSeason(year)
+    deleteSeasonCompetitionsFile(year)
+    res.json({ ok: true, ...out })
+  } catch (e) {
+    res.status(400).json({ error: e.message || 'Could not remove the season' })
   }
 })
 

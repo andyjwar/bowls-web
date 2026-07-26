@@ -95,6 +95,11 @@ export async function setAdminActiveSeason(year) {
   return api('/active-season', { method: 'PUT', body: JSON.stringify({ year }) })
 }
 
+/** Remove a season started by mistake (refused once anything has results). */
+export async function deleteAdminSeason(year) {
+  return api(`/season/${encodeURIComponent(year)}`, { method: 'DELETE' })
+}
+
 /** Full registered-player map for all leagues */
 export async function fetchAdminRegisteredPlayers() {
   return api('/registered-players')

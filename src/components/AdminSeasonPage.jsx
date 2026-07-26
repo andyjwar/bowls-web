@@ -65,15 +65,22 @@ function divisionKey(sectionId, divisionId) {
  * next season. Starting hands off to the guided setup (league-by-league
  * teams + dates walkthrough) via `onSeasonStarted`.
  */
-function SeasonPanel({ admin, onSeasonStarted }) {
+function SeasonPanel({ admin, onSeasonStarted, onSeasonRemoved }) {
   const seasons = admin.seasons ?? []
   const active = admin.activeSeason
   const [newYear, setNewYear] = useState('')
   const [confirming, setConfirming] = useState(false)
   const [msg, setMsg] = useState(null)
+  const [removeYear, setRemoveYear] = useState('')
+  const [removeConfirming, setRemoveConfirming] = useState(false)
 
   const suggestedYear = active != null ? active + 1 : new Date().getFullYear() + 1
   const startYear = Number(newYear || suggestedYear)
+
+  /* Default removal target: the newest season that isn't the active one. */
+  const removeTarget = seasons.includes(Number(removeYear))
+    ? Number(removeYear)
+    : (seasons.find((s) => s !== active) ?? seasons[0])
 
   async function handleStart() {
     if (!confirming) {
@@ -99,6 +106,27 @@ function SeasonPanel({ admin, onSeasonStarted }) {
       setMsg({ kind: 'success', text: `Public site now shows the ${year} season.` })
     } catch (err) {
       setMsg({ kind: 'error', text: err.message || 'Could not switch season' })
+    }
+  }
+
+  async function handleRemove() {
+    if (!removeConfirming) {
+      setRemoveConfirming(true)
+      setMsg(null)
+      return
+    }
+    setRemoveConfirming(false)
+    setMsg(null)
+    try {
+      const out = await admin.removeSeason(removeTarget)
+      setRemoveYear('')
+      setMsg({
+        kind: 'success',
+        text: `The ${removeTarget} season was removed — its league files stay on disk. The public site shows ${out.activeSeason}.`,
+      })
+      onSeasonRemoved?.()
+    } catch (err) {
+      setMsg({ kind: 'error', text: err.message || 'Could not remove the season' })
     }
   }
 
@@ -166,6 +194,50 @@ function SeasonPanel({ admin, onSeasonStarted }) {
           check team names and fixture dates. The old season is kept and stays viewable
           under past seasons.
         </p>
+
+        {seasons.length > 1 ? (
+          <div className="season-panel__removerow">
+            <select
+              className="admin-input season-panel__select"
+              value={String(removeTarget)}
+              disabled={admin.busy}
+              aria-label="Season to remove"
+              onChange={(ev) => {
+                setRemoveYear(ev.target.value)
+                setRemoveConfirming(false)
+              }}
+            >
+              {seasons.map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                  {s === active ? ' (active)' : ''}
+                </option>
+              ))}
+            </select>
+            <button
+              type="button"
+              className={`remove-league__btn${removeConfirming ? ' remove-league__btn--armed' : ''}`}
+              disabled={admin.busy}
+              onClick={handleRemove}
+            >
+              {removeConfirming
+                ? `Confirm — remove the ${removeTarget} season?`
+                : `Remove the ${removeTarget} season…`}
+            </button>
+            {removeConfirming ? (
+              <button
+                type="button"
+                className="entry-rowact entry-rowact--cancel"
+                onClick={() => setRemoveConfirming(false)}
+              >
+                Cancel
+              </button>
+            ) : null}
+            <span className="team-slots__hint">
+              For a season started by mistake — refused once any results are entered.
+            </span>
+          </div>
+        ) : null}
 
         {msg ? (
           <p className={msg.kind === 'error' ? 'admin-error' : 'admin-success'}>
@@ -901,6 +973,7 @@ export function AdminSeasonPage({ admin }) {
             onSeasonStarted={(year) =>
               setSearchParams({ setup: String(year), step: '0' }, { replace: true })
             }
+            onSeasonRemoved={() => setSearchParams({}, { replace: true })}
           />
 
           <div className="home-section add-day-row">

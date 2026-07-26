@@ -28,6 +28,7 @@ import {
   deleteAdminCompetition,
   startAdminSeason,
   setAdminActiveSeason,
+  deleteAdminSeason,
 } from '../lib/adminApi'
 
 export function useAdmin() {
@@ -86,6 +87,24 @@ export function useAdmin() {
       setError(null)
       try {
         const out = await startAdminSeason(year)
+        await loadLeagues()
+        return out
+      } catch (e) {
+        setError(e.message)
+        throw e
+      } finally {
+        setBusy(false)
+      }
+    },
+    [loadLeagues],
+  )
+
+  const removeSeason = useCallback(
+    async (year) => {
+      setBusy(true)
+      setError(null)
+      try {
+        const out = await deleteAdminSeason(year)
         await loadLeagues()
         return out
       } catch (e) {
@@ -417,6 +436,7 @@ export function useAdmin() {
       login,
       logout,
       startSeason,
+      removeSeason,
       switchActiveSeason,
       importFile,
       importCsvFile,
@@ -454,6 +474,7 @@ export function useAdmin() {
       login,
       logout,
       startSeason,
+      removeSeason,
       switchActiveSeason,
       importFile,
       importCsvFile,
