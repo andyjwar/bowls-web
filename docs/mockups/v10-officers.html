@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- v10 — League Officers page, two treatments in the deep crest palette. -->
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Officers — two treatments</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --paper: #f6f7f8; --card: #fff; --line: #eceef0; --line-2: #dde0e3;
+      --ink: #0b1418; --ink-2: #4b5563; --ink-3: #9aa1a9;
+      --forest: #256e3d; --navy: #1d3a6e; --oxblood: #7e3040;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; padding-bottom: 120px; }
+    a { color: inherit; text-decoration: none; }
+    .wrap { max-width: 940px; margin: 0 auto; padding: 0 28px; }
+    .intro { padding: 48px 0 4px; }
+    .intro h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.03em; }
+    .intro p { color: var(--ink-2); margin-top: 6px; }
+    .spec { margin: 48px 0 16px; display: flex; align-items: baseline; gap: 14px; }
+    .spec__num { font-size: 13px; font-weight: 800; background: var(--ink); color: #fff; padding: 3px 10px; }
+    .spec__name { font-size: 15px; font-weight: 700; }
+    .spec__note { font-size: 13px; color: var(--ink-3); }
+
+    .sect { margin: 26px 0 10px; font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--ink-3); }
+
+    /* ============ Option 1: cards ============ */
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 12px; }
+    .card {
+      background: var(--card); border: 1px solid var(--line);
+      padding: 18px 20px 16px; display: flex; flex-direction: column; gap: 2px;
+      border-top: 3px solid var(--accent, var(--line-2));
+    }
+    .card__role { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-text, var(--ink-3)); }
+    .card__name { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.015em; margin-top: 2px; }
+    .card__addr { font-size: 0.82rem; color: var(--ink-3); margin-top: 2px; line-height: 1.45; }
+    .card__contacts { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+    .card__contact { display: flex; align-items: center; gap: 9px; font-size: 0.92rem; font-weight: 600; color: var(--ink-2); width: fit-content; }
+    .card__contact:hover { color: var(--ink); }
+    .card__contact svg { flex-shrink: 0; color: var(--accent, var(--ink-3)); }
+    .card--vacant { border-top-color: var(--line-2); background: transparent; border-style: dashed; }
+    .card--vacant .card__name { color: var(--ink-3); font-weight: 600; }
+    .chip { display: inline-flex; width: fit-content; margin-bottom: 6px; padding: 3px 10px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #fff; background: var(--accent); }
+
+    /* ============ Option 2: directory rows ============ */
+    .dir { background: var(--card); border: 1px solid var(--line); }
+    .dir__row { display: grid; grid-template-columns: 200px 1fr auto; gap: 8px 20px; align-items: center; padding: 15px 20px; border-bottom: 1px solid var(--line); }
+    .dir__row:last-child { border-bottom: none; }
+    .dir__role { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink-3); display: flex; align-items: center; gap: 8px; }
+    .dir__role i { width: 8px; height: 8px; background: var(--accent, transparent); flex-shrink: 0; display: inline-block; }
+    .dir__who { min-width: 0; }
+    .dir__name { font-size: 1rem; font-weight: 700; }
+    .dir__addr { font-size: 0.8rem; color: var(--ink-3); }
+    .dir__links { display: flex; gap: 8px; flex-shrink: 0; }
+    .dir__btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      border: 1px solid var(--line-2); padding: 8px 13px;
+      font-size: 0.85rem; font-weight: 600; color: var(--ink-2);
+      transition: border-color .12s, color .12s;
+    }
+    .dir__btn:hover { border-color: var(--ink); color: var(--ink); }
+    .dir__btn svg { color: var(--accent, var(--ink-3)); }
+    .dir__vacant { color: var(--ink-3); font-style: italic; font-size: 0.95rem; }
+    @media (max-width: 720px) {
+      .dir__row { grid-template-columns: 1fr; gap: 6px; }
+      .dir__links { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="intro">
+      <h1>League Officers</h1>
+      <p>Two treatments, same crest palette as the front page. League secretaries carry their league's colour.</p>
+    </div>
+
+    <!-- ============ OPTION 1 ============ -->
+    <div class="spec"><span class="spec__num">1</span><span class="spec__name">Contact cards</span><span class="spec__note">grid of squares, colour-coded, tap-friendly</span></div>
+
+    <div class="sect">League officers</div>
+    <div class="cards">
+      <div class="card" style="--accent:#0b1418">
+        <span class="card__role">Chairman</span>
+        <span class="card__name">Barrie Cracknell</span>
+        <span class="card__contacts">
+          <a class="card__contact" href="tel:07811933087"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>07811 933087</a>
+          <a class="card__contact" href="mailto:cracknell9286@gmail.com"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>cracknell9286@gmail.com</a>
+        </span>
+      </div>
+      <div class="card card--vacant">
+        <span class="card__role">Vice Chairman</span>
+        <span class="card__name">Position vacant</span>
+      </div>
+      <div class="card" style="--accent:#0b1418">
+        <span class="card__role">Treasurer</span>
+        <span class="card__name">George Wiseman</span>
+        <span class="card__addr">16 Winding Piece, Capel St Mary, IP9 2UZ</span>
+        <span class="card__contacts">
+          <a class="card__contact" href="tel:01473310498"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>01473 310498</a>
+          <a class="card__contact" href="mailto:casarina05@gmail.com"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>casarina05@gmail.com</a>
+        </span>
+      </div>
+      <div class="card" style="--accent:#0b1418">
+        <span class="card__role">Secretary</span>
+        <span class="card__name">Helen Swift</span>
+        <span class="card__addr">86 Benton Street, Hadleigh, Suffolk IP7 5AT</span>
+        <span class="card__contacts">
+          <a class="card__contact" href="tel:01473822109"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>01473 822109</a>
+          <a class="card__contact" href="mailto:terryswift@btinternet.com"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>terryswift@btinternet.com</a>
+        </span>
+      </div>
+    </div>
+
+    <div class="sect">Fixtures &amp; results secretaries</div>
+    <div class="cards">
+      <div class="card" style="--accent:var(--forest); --accent-text:var(--forest)">
+        <span class="chip" style="--accent:var(--forest)">Samford</span>
+        <span class="card__name">Christopher Rozier</span>
+        <span class="card__addr">46 Valley View Drive, Rushmere St Andrew, Ipswich, IP4 5UW</span>
+        <span class="card__contacts">
+          <a class="card__contact" href="tel:07525162315"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>07525 162315</a>
+          <a class="card__contact" href="mailto:chris.d.rozier@sky.com"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>chris.d.rozier@sky.com</a>
+        </span>
+      </div>
+      <div class="card" style="--accent:var(--navy); --accent-text:var(--navy)">
+        <span class="chip" style="--accent:var(--navy)">Two Wood</span>
+        <span class="card__name">Ed Dale</span>
+        <span class="card__addr">7 Glebe End, Capel St Mary, IP9 2XR</span>
+        <span class="card__contacts">
+          <a class="card__contact" href="tel:01473311650"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>01473 311650</a>
+          <a class="card__contact" href="tel:07716494678"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>07716 494678</a>
+          <a class="card__contact" href="mailto:edward.dale@outlook.com"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>edward.dale@outlook.com</a>
+        </span>
+      </div>
+      <div class="card" style="--accent:var(--oxblood); --accent-text:var(--oxblood)">
+        <span class="chip" style="--accent:var(--oxblood)">Triples</span>
+        <span class="card__name">Linda Bestow</span>
+        <span class="card__addr">"Heatherstone", Gaston Street, East Bergholt, Colchester, CO7 6SF</span>
+        <span class="card__contacts">
+          <a class="card__contact" href="tel:01206298302"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>01206 298302</a>
+          <a class="card__contact" href="tel:07530467769"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>07530 467769</a>
+          <a class="card__contact" href="mailto:linda.bestow@gmail.com"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>linda.bestow@gmail.com</a>
+        </span>
+      </div>
+    </div>
+
+    <div class="sect">Competitions</div>
+    <div class="cards">
+      <div class="card" style="--accent:#0b1418">
+        <span class="card__role">Competitions Secretary</span>
+        <span class="card__name">David Sarjeant</span>
+        <span class="card__addr">11 The Street, Rushmere St Andrew, Ipswich, IP5 1DE</span>
+        <span class="card__contacts">
+          <a class="card__contact" href="tel:01473879402"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>01473 879402</a>
+          <a class="card__contact" href="tel:07538024001"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>07538 024001</a>
+          <a class="card__contact" href="mailto:david.sarjeant1251@gmail.com"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>david.sarjeant1251@gmail.com</a>
+        </span>
+      </div>
+      <div class="card" style="--accent:#0b1418">
+        <span class="card__role">Team Comps</span>
+        <span class="card__name">Barrie Cracknell</span>
+        <span class="card__contacts">
+          <a class="card__contact" href="tel:07811933087"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>07811 933087</a>
+          <a class="card__contact" href="mailto:barrie.cracknell@sky.com"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>barrie.cracknell@sky.com</a>
+        </span>
+      </div>
+      <div class="card" style="--accent:#0b1418">
+        <span class="card__role">Committee</span>
+        <span class="card__name">Joyce Fisher</span>
+        <span class="card__contacts">
+          <a class="card__contact" href="tel:01473626075"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>01473 626075</a>
+          <a class="card__contact" href="tel:07786165352"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>07786 165352</a>
+          <a class="card__contact" href="mailto:joyce.fisher@talktalk.net"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>joyce.fisher@talktalk.net</a>
+        </span>
+      </div>
+    </div>
+
+    <!-- ============ OPTION 2 ============ -->
+    <div class="spec"><span class="spec__num">2</span><span class="spec__name">Directory rows</span><span class="spec__note">compact single column, phone/email as buttons</span></div>
+
+    <div class="dir">
+      <div class="dir__row">
+        <span class="dir__role">Chairman</span>
+        <span class="dir__who"><span class="dir__name">Barrie Cracknell</span></span>
+        <span class="dir__links">
+          <a class="dir__btn" href="tel:07811933087"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>07811 933087</a>
+          <a class="dir__btn" href="mailto:cracknell9286@gmail.com"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+        </span>
+      </div>
+      <div class="dir__row">
+        <span class="dir__role">Vice Chairman</span>
+        <span class="dir__who"><span class="dir__vacant">Position vacant</span></span>
+        <span></span>
+      </div>
+      <div class="dir__row">
+        <span class="dir__role">Treasurer</span>
+        <span class="dir__who"><span class="dir__name">George Wiseman</span><br/><span class="dir__addr">16 Winding Piece, Capel St Mary, IP9 2UZ</span></span>
+        <span class="dir__links">
+          <a class="dir__btn" href="tel:01473310498"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>01473 310498</a>
+          <a class="dir__btn" href="mailto:casarina05@gmail.com"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+        </span>
+      </div>
+      <div class="dir__row">
+        <span class="dir__role">Secretary</span>
+        <span class="dir__who"><span class="dir__name">Helen Swift</span><br/><span class="dir__addr">86 Benton Street, Hadleigh, Suffolk IP7 5AT</span></span>
+        <span class="dir__links">
+          <a class="dir__btn" href="tel:01473822109"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>01473 822109</a>
+          <a class="dir__btn" href="mailto:terryswift@btinternet.com"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+        </span>
+      </div>
+      <div class="dir__row">
+        <span class="dir__role"><i style="--accent:var(--forest)"></i>Samford</span>
+        <span class="dir__who"><span class="dir__name">Christopher Rozier</span><br/><span class="dir__addr">46 Valley View Drive, Rushmere St Andrew, Ipswich, IP4 5UW</span></span>
+        <span class="dir__links" style="--accent:var(--forest)">
+          <a class="dir__btn" href="tel:07525162315"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>07525 162315</a>
+          <a class="dir__btn" href="mailto:chris.d.rozier@sky.com"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+        </span>
+      </div>
+      <div class="dir__row">
+        <span class="dir__role"><i style="--accent:var(--navy)"></i>Two Wood</span>
+        <span class="dir__who"><span class="dir__name">Ed Dale</span><br/><span class="dir__addr">7 Glebe End, Capel St Mary, IP9 2XR</span></span>
+        <span class="dir__links" style="--accent:var(--navy)">
+          <a class="dir__btn" href="tel:01473311650"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>01473 311650</a>
+          <a class="dir__btn" href="mailto:edward.dale@outlook.com"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+        </span>
+      </div>
+      <div class="dir__row">
+        <span class="dir__role"><i style="--accent:var(--oxblood)"></i>Triples</span>
+        <span class="dir__who"><span class="dir__name">Linda Bestow</span><br/><span class="dir__addr">"Heatherstone", Gaston Street, East Bergholt, Colchester, CO7 6SF</span></span>
+        <span class="dir__links" style="--accent:var(--oxblood)">
+          <a class="dir__btn" href="tel:01206298302"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>01206 298302</a>
+          <a class="dir__btn" href="mailto:linda.bestow@gmail.com"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+        </span>
+      </div>
+      <div class="dir__row">
+        <span class="dir__role">Competitions</span>
+        <span class="dir__who"><span class="dir__name">David Sarjeant</span><br/><span class="dir__addr">11 The Street, Rushmere St Andrew, Ipswich, IP5 1DE</span></span>
+        <span class="dir__links">
+          <a class="dir__btn" href="tel:01473879402"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>01473 879402</a>
+          <a class="dir__btn" href="mailto:david.sarjeant1251@gmail.com"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+        </span>
+      </div>
+      <div class="dir__row">
+        <span class="dir__role">Team Comps</span>
+        <span class="dir__who"><span class="dir__name">Barrie Cracknell</span></span>
+        <span class="dir__links">
+          <a class="dir__btn" href="tel:07811933087"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>07811 933087</a>
+          <a class="dir__btn" href="mailto:barrie.cracknell@sky.com"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+        </span>
+      </div>
+      <div class="dir__row">
+        <span class="dir__role">Committee</span>
+        <span class="dir__who"><span class="dir__name">Joyce Fisher</span></span>
+        <span class="dir__links">
+          <a class="dir__btn" href="tel:01473626075"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>01473 626075</a>
+          <a class="dir__btn" href="mailto:joyce.fisher@talktalk.net"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+        </span>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

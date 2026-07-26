@@ -1,0 +1,97 @@
+{
+  "competitions": [
+    {
+      "id": "samford-knockout-cup",
+      "name": "Samford Knockout Cup",
+      "days": "Fridays",
+      "sub": "Final Sat 12 Sept",
+      "rounds": [
+        {
+          "name": "1st Round",
+          "date": "2026-07-03",
+          "matches": [
+            { "tie": "A", "home": { "name": "Ipswich & District" }, "away": { "name": "Stone Lodge" }, "homeScore": 74, "awayScore": 78 },
+            { "tie": "B", "home": { "name": "Sproughton" }, "away": { "name": "Newton Road B.C." }, "walkover": "home" },
+            { "tie": "C", "home": { "name": "Hadleigh" }, "away": { "name": "Felixstowe B.C." }, "homeScore": 56, "awayScore": 75 },
+            { "tie": "D", "home": { "name": "Kesgrave" }, "away": { "name": "Bealings" }, "homeScore": 75, "awayScore": 68 },
+            { "tie": "E", "home": { "name": "Westerfield" }, "away": { "name": "Hospitals Ribbans Park" }, "homeScore": 96, "awayScore": 58 },
+            { "tie": "F", "home": { "name": "E-of-E Co-op" }, "away": { "name": "Kirton & Falkenham" }, "homeScore": 81, "awayScore": 77 },
+            { "tie": "G", "home": { "name": "Margaret Catchpole" }, "away": { "name": "California" }, "homeScore": 82, "awayScore": 63 },
+            { "tie": "H", "home": { "name": "Shotley Rose" }, "away": { "name": "Holbrook" }, "note": "Score sheet awaited" }
+          ]
+        },
+        {
+          "name": "2nd Round",
+          "date": "2026-07-17",
+          "matches": [
+            { "tie": "1", "home": { "name": "E-of-E Co-op" }, "away": { "name": "Sproughton" } },
+            { "tie": "2", "home": { "name": "Holbrook" }, "away": { "name": "Margaret Catchpole" } },
+            { "tie": "3", "home": { "name": "Felixstowe B.C." }, "away": { "name": "Stone Lodge" } },
+            { "tie": "4", "home": { "name": "Kesgrave" }, "away": { "name": "Westerfield" } }
+          ]
+        },
+        {
+          "name": "Semi-finals",
+          "date": "2026-08-07",
+          "matches": [
+            { "tie": "A", "home": { "label": "Winner of Tie 1" }, "away": { "label": "Winner of Tie 2" } },
+            { "tie": "B", "home": { "label": "Winner of Tie 4" }, "away": { "label": "Winner of Tie 3" } }
+          ]
+        },
+        {
+          "name": "Final",
+          "date": "2026-09-12",
+          "venue": "Margaret Catchpole BC",
+          "matches": [
+            { "home": { "label": "Winner of Semi-final A" }, "away": { "label": "Winner of Semi-final B" } }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "millennium-cup",
+      "name": "Millennium Cup",
+      "days": "Fridays",
+      "sub": "Final Sun 13 Sept",
+      "rounds": [
+        {
+          "name": "Preliminary Round",
+          "date": "2026-06-26",
+          "matches": [
+            { "tie": "A", "home": { "name": "Waldringfield" }, "away": { "name": "Newton Road" } },
+            { "tie": "B", "home": { "name": "Hadleigh" }, "away": { "name": "California" } },
+            { "tie": "C", "home": { "name": "Shotley Rose" }, "away": { "name": "Stone Lodge Reds" } },
+            { "tie": "D", "home": { "name": "Kesgrave" }, "away": { "name": "Stone Lodge Blues" } },
+            { "tie": "E", "home": { "name": "Felixstowe" }, "away": { "name": "Wickham Market" } }
+          ]
+        },
+        {
+          "name": "1st Round",
+          "date": "2026-07-10",
+          "matches": [
+            { "tie": "1", "home": { "label": "Winner of Tie E" }, "away": { "label": "Winner of Tie C" } },
+            { "tie": "2", "home": { "name": "Ipswich & District" }, "away": { "label": "Winner of Tie A" } },
+            { "tie": "3", "home": { "name": "Kirton & Falkenham" }, "away": { "label": "Winner of Tie D" } },
+            { "tie": "4", "home": { "name": "Margaret Catchpole" }, "away": { "label": "Winner of Tie B" } }
+          ]
+        },
+        {
+          "name": "Semi-finals",
+          "date": "2026-08-14",
+          "matches": [
+            { "tie": "A", "home": { "label": "Winner of Tie 2" }, "away": { "label": "Winner of Tie 4" } },
+            { "tie": "B", "home": { "label": "Winner of Tie 1" }, "away": { "label": "Winner of Tie 3" } }
+          ]
+        },
+        {
+          "name": "Final",
+          "date": "2026-09-13",
+          "venue": "Margaret Catchpole BC",
+          "matches": [
+            { "home": { "label": "Winner of Semi-final B" }, "away": { "label": "Winner of Semi-final A" } }
+          ]
+        }
+      ]
+    }
+  ]
+}

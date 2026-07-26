@@ -12,4 +12,13 @@ export default defineConfig({
       },
     },
   },
+  // Same as dev — without this, `vite preview` sends `/api/*` to the static server → 404 Not Found.
+  preview: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
+    },
+  },
 })

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- v11 — Officers, round 2: more colour, clearer names. Three treatments. -->
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Officers v2 — three treatments</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --paper: #f6f7f8; --card: #fff; --line: #eceef0; --line-2: #dde0e3;
+      --ink: #0b1418; --ink-2: #4b5563; --ink-3: #9aa1a9;
+      --forest: #256e3d; --navy: #1d3a6e; --oxblood: #7e3040; --violet: #4c3585;
+      --forest-soft: rgba(37,110,61,.1); --navy-soft: rgba(29,58,110,.1);
+      --oxblood-soft: rgba(126,48,64,.1); --violet-soft: rgba(76,53,133,.1);
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; padding-bottom: 120px; }
+    a { color: inherit; text-decoration: none; }
+    .wrap { max-width: 940px; margin: 0 auto; padding: 0 28px; }
+    .intro { padding: 48px 0 4px; }
+    .intro h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.03em; }
+    .intro p { color: var(--ink-2); margin-top: 6px; }
+    .spec { margin: 52px 0 16px; display: flex; align-items: baseline; gap: 14px; }
+    .spec__num { font-size: 13px; font-weight: 800; background: var(--ink); color: #fff; padding: 3px 10px; }
+    .spec__name { font-size: 15px; font-weight: 700; }
+    .spec__note { font-size: 13px; color: var(--ink-3); }
+    .sect { margin: 22px 0 10px; font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--ink-3); }
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+
+    /* chips shared */
+    .chip {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: #f1f3f5; padding: 7px 12px;
+      font-size: 0.86rem; font-weight: 600; color: var(--ink-2);
+      transition: background .12s, color .12s;
+    }
+    .chip:hover { background: #e7eaee; color: var(--ink); }
+    .chip svg { flex-shrink: 0; color: var(--a, var(--ink-3)); }
+
+    /* ===== 1: Role pills + contact chips ===== */
+    .c1 { background: var(--card); border: 1px solid var(--line); padding: 18px 20px; display: flex; flex-direction: column; }
+    .c1__pill { display: inline-flex; width: fit-content; padding: 4px 12px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #fff; background: var(--a); }
+    .c1__name { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; margin-top: 10px; line-height: 1.15; }
+    .c1__addr { font-size: 0.8rem; color: var(--ink-3); margin-top: 3px; line-height: 1.45; }
+    .c1__chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+
+    /* ===== 2: Initials block ===== */
+    .c2 { background: var(--card); border: 1px solid var(--line); padding: 16px 18px; display: flex; gap: 14px; align-items: flex-start; }
+    .c2__init { width: 52px; height: 52px; flex-shrink: 0; display: grid; place-items: center; background: var(--a); color: #fff; font-size: 1.15rem; font-weight: 800; letter-spacing: -0.02em; }
+    .c2__body { min-width: 0; display: flex; flex-direction: column; }
+    .c2__role { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.11em; color: var(--a); }
+    .c2__name { font-size: 1.2rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin-top: 1px; }
+    .c2__chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+
+    /* ===== 3: Tinted cards ===== */
+    .c3 { background: var(--soft); border: 1px solid var(--line); border-left: 5px solid var(--a); padding: 18px 20px; display: flex; flex-direction: column; }
+    .c3__role { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.11em; color: var(--a); }
+    .c3__name { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.02em; margin-top: 4px; line-height: 1.15; }
+    .c3__chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+    .c3 .chip { background: #fff; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="intro">
+      <h1>Officers, round two</h1>
+      <p>More colour, bigger names, contacts as tappable chips. Addresses dropped to a whisper (or gone). Pick a number.</p>
+    </div>
+
+    <!-- ============ 1 ============ -->
+    <div class="spec"><span class="spec__num">1</span><span class="spec__name">Role pills</span><span class="spec__note">coloured pill per role group, contacts as chips</span></div>
+    <div class="sect">League officers</div>
+    <div class="cards">
+      <div class="c1" style="--a:var(--navy)">
+        <span class="c1__pill">Chairman</span>
+        <span class="c1__name">Barrie Cracknell</span>
+        <span class="c1__chips">
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>07811 933087</a>
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+        </span>
+      </div>
+      <div class="c1" style="--a:var(--navy)">
+        <span class="c1__pill">Secretary</span>
+        <span class="c1__name">Helen Swift</span>
+        <span class="c1__addr">86 Benton Street, Hadleigh, Suffolk IP7 5AT</span>
+        <span class="c1__chips">
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>01473 822109</a>
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+        </span>
+      </div>
+      <div class="c1" style="--a:var(--navy)">
+        <span class="c1__pill">Treasurer</span>
+        <span class="c1__name">George Wiseman</span>
+        <span class="c1__addr">16 Winding Piece, Capel St Mary, IP9 2UZ</span>
+        <span class="c1__chips">
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>01473 310498</a>
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+        </span>
+      </div>
+    </div>
+    <div class="sect">Fixtures &amp; results secretaries</div>
+    <div class="cards">
+      <div class="c1" style="--a:var(--forest)">
+        <span class="c1__pill">Samford</span>
+        <span class="c1__name">Christopher Rozier</span>
+        <span class="c1__chips">
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>07525 162315</a>
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+        </span>
+      </div>
+      <div class="c1" style="--a:var(--navy)">
+        <span class="c1__pill">Two Wood</span>
+        <span class="c1__name">Ed Dale</span>
+        <span class="c1__chips">
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>01473 311650</a>
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>07716 494678</a>
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+        </span>
+      </div>
+      <div class="c1" style="--a:var(--oxblood)">
+        <span class="c1__pill">Triples</span>
+        <span class="c1__name">Linda Bestow</span>
+        <span class="c1__chips">
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>01206 298302</a>
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+        </span>
+      </div>
+    </div>
+    <div class="sect">Competitions</div>
+    <div class="cards">
+      <div class="c1" style="--a:var(--violet)">
+        <span class="c1__pill">Competitions</span>
+        <span class="c1__name">David Sarjeant</span>
+        <span class="c1__chips">
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>01473 879402</a>
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+        </span>
+      </div>
+      <div class="c1" style="--a:var(--violet)">
+        <span class="c1__pill">Team Comps</span>
+        <span class="c1__name">Barrie Cracknell</span>
+        <span class="c1__chips">
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>07811 933087</a>
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+        </span>
+      </div>
+      <div class="c1" style="--a:var(--violet)">
+        <span class="c1__pill">Committee</span>
+        <span class="c1__name">Joyce Fisher</span>
+        <span class="c1__chips">
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>01473 626075</a>
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+        </span>
+      </div>
+    </div>
+
+    <!-- ============ 2 ============ -->
+    <div class="spec"><span class="spec__num">2</span><span class="spec__name">Initials block</span><span class="spec__note">coloured monogram square, role in colour, chips below</span></div>
+    <div class="cards">
+      <div class="c2" style="--a:var(--navy)">
+        <span class="c2__init">BC</span>
+        <span class="c2__body">
+          <span class="c2__role">Chairman</span>
+          <span class="c2__name">Barrie Cracknell</span>
+          <span class="c2__chips">
+            <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>07811 933087</a>
+            <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+          </span>
+        </span>
+      </div>
+      <div class="c2" style="--a:var(--forest)">
+        <span class="c2__init">CR</span>
+        <span class="c2__body">
+          <span class="c2__role">Samford fixtures</span>
+          <span class="c2__name">Christopher Rozier</span>
+          <span class="c2__chips">
+            <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>07525 162315</a>
+            <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+          </span>
+        </span>
+      </div>
+      <div class="c2" style="--a:var(--oxblood)">
+        <span class="c2__init">LB</span>
+        <span class="c2__body">
+          <span class="c2__role">Triples fixtures</span>
+          <span class="c2__name">Linda Bestow</span>
+          <span class="c2__chips">
+            <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>01206 298302</a>
+            <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <!-- ============ 3 ============ -->
+    <div class="spec"><span class="spec__num">3</span><span class="spec__name">Tinted cards</span><span class="spec__note">soft colour wash + colour spine, white chips</span></div>
+    <div class="cards">
+      <div class="c3" style="--a:var(--navy); --soft:var(--navy-soft)">
+        <span class="c3__role">Chairman</span>
+        <span class="c3__name">Barrie Cracknell</span>
+        <span class="c3__chips">
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>07811 933087</a>
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+        </span>
+      </div>
+      <div class="c3" style="--a:var(--forest); --soft:var(--forest-soft)">
+        <span class="c3__role">Samford fixtures</span>
+        <span class="c3__name">Christopher Rozier</span>
+        <span class="c3__chips">
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>07525 162315</a>
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+        </span>
+      </div>
+      <div class="c3" style="--a:var(--oxblood); --soft:var(--oxblood-soft)">
+        <span class="c3__role">Triples fixtures</span>
+        <span class="c3__name">Linda Bestow</span>
+        <span class="c3__chips">
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>01206 298302</a>
+          <a class="chip" href="#"><svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</a>
+        </span>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bowls redesign — pick a direction</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; }
+    body { background: #f6f6f4; color: #141518; font-family: 'Inter', system-ui, sans-serif; padding: 56px 28px 80px; -webkit-font-smoothing: antialiased; }
+    .wrap { max-width: 860px; margin: 0 auto; }
+    h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.03em; }
+    p.lead { color: #6a6e73; margin-top: 8px; }
+    h2 { margin: 40px 0 12px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: #a3a6aa; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    a.card {
+      display: flex; flex-direction: column; gap: 6px;
+      background: #fff; border: 1px solid #e5e5e2;
+      padding: 20px; text-decoration: none; color: inherit;
+      transition: border-color .12s, transform .14s, box-shadow .14s;
+    }
+    a.card:hover { border-color: #141518; transform: translateY(-3px); box-shadow: 0 12px 30px rgba(20,21,24,.08); }
+    .tag { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .name { font-size: 17px; font-weight: 700; letter-spacing: -0.015em; }
+    .desc { font-size: 13px; color: #6a6e73; line-height: 1.5; }
+    @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Pick a direction</h1>
+    <p class="lead">Six homepage concepts. The v4 set is leaner: less text, simpler graphics, three squares kept, week-at-a-glance solved with colour marks instead of match lists.</p>
+
+    <h2>New — v4 (lean set)</h2>
+    <div class="grid">
+      <a class="card" href="v4d-onefootball.html">
+        <span class="tag" style="color:#04af78">D — Matchlist</span>
+        <span class="name">OneFootball dark</span>
+        <span class="desc">Dark navy. Compact league squares, then the week as day rows with small league chips and a match count. Most informative of the three.</span>
+      </a>
+      <a class="card" href="v4e-lovable.html">
+        <span class="tag" style="color:#ff5c37">E — Soft signal</span>
+        <span class="name">Lovable light</span>
+        <span class="desc">Airy and warm. Gradient-washed squares where the play days ARE the graphic, giant type. Week is a seven-day dot calendar. Least text of all.</span>
+      </a>
+      <a class="card" href="v4f-scoreboard.html">
+        <span class="tag" style="color:#22c55e">F — Scoreboard</span>
+        <span class="name">Cursor mono</span>
+        <span class="desc">Light canvas, jet-black square tiles with one colour mark each. Stark and graphic. Week is a slim seven-cell bar with colour marks.</span>
+      </a>
+    </div>
+
+    <h2>Previous — v3 (for comparison)</h2>
+    <div class="grid">
+      <a class="card" href="v3a-dark.html">
+        <span class="tag" style="color:#04af78">A — Night game</span>
+        <span class="name">Dark, single accent</span>
+        <span class="desc">Full-width league panels with day chips and a week strip.</span>
+      </a>
+      <a class="card" href="v3b-light.html">
+        <span class="tag" style="color:#d97706">B — Match day</span>
+        <span class="name">Light, FotMob-leaning</span>
+        <span class="desc">Colour-blocked league cards in a grid, tonight ticker.</span>
+      </a>
+      <a class="card" href="v3c-split.html">
+        <span class="tag" style="color:#0b6b46">C — Club house</span>
+        <span class="name">Green masthead, light body</span>
+        <span class="desc">Deep green header over paper-white content, wide league rows.</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

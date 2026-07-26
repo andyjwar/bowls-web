@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  Lightweight layout sketch — FotMob-ish spacing and hierarchy only.
+  Not wired to React; delete or replace when implementing for real.
+-->
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Leagues UX mock — bowls-web sketch</title>
+  <style>
+    :root {
+      --bg: #f4f5f7;
+      --card: #fff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --accent: #0d9488;
+      --accent-soft: rgba(13, 148, 136, 0.12);
+      --radius: 14px;
+      --shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-size: 18px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+      padding: 24px clamp(16px, 4vw, 48px) 56px;
+    }
+    .mock-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+    .page-title {
+      font-size: 1.65rem;
+      font-weight: 700;
+      margin: 0 0 0.35rem;
+    }
+    .page-lead {
+      margin: 0 0 1.75rem;
+      color: var(--muted);
+      max-width: 36ch;
+    }
+    /* Hub rows */
+    .row-list { display: flex; flex-direction: column; gap: 10px; }
+    .hub-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      border: 1px solid rgba(15,23,42,0.06);
+      min-height: 56px;
+    }
+    .hub-row:hover { border-color: var(--accent); }
+    .hub-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      color: var(--accent);
+      flex-shrink: 0;
+      font-size: 0.9rem;
+    }
+    .hub-row__body { flex: 1; min-width: 0; }
+    .hub-row__title { font-weight: 700; font-size: 1.05rem; }
+    .hub-row__meta { font-size: 0.92rem; color: var(--muted); }
+    .hub-badge {
+      background: rgba(100,116,139,0.14);
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .chevron { color: var(--muted); font-size: 1.3rem; }
+    hr.mock-section {
+      border: none;
+      border-top: 1px dashed rgba(100,116,139,0.35);
+      margin: 48px 0 32px;
+    }
+    /* Sticky-ish bar mock */
+    .shell-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px 20px;
+      margin-bottom: 24px;
+    }
+    .back-link {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    select.league-dd {
+      font: inherit;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(15,23,42,0.12);
+      min-width: min(280px, 100%);
+      background: var(--card);
+    }
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      border-bottom: 2px solid rgba(100,116,139,0.2);
+      margin-bottom: 20px;
+    }
+    .tab {
+      appearance: none;
+      border: none;
+      background: none;
+      font: inherit;
+      padding: 12px 20px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+    }
+    .tab.tab--active {
+      color: var(--text);
+      border-bottom-color: var(--text);
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .controls select {
+      font: inherit;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(15,23,42,0.12);
+      background: var(--card);
+    }
+    /* Fixture card */
+    .fixture-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      margin-bottom: 10px;
+      border: 1px solid rgba(15,23,42,0.06);
+      display: grid;
+      gap: 6px;
+    }
+    .fixture-line {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .team { font-weight: 600; }
+    .versus { color: var(--muted); font-size: 0.92rem; }
+    .pill-wld {
+      display: inline-flex;
+      gap: 4px;
+    }
+    .pill-wld span {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .pill-wld .w { background: #16a34a; }
+    .pill-wld .l { background: #dc2626; }
+    .pill-wld .d { background: #94a3b8; }
+
+    section.mock-block { margin-top: 0; margin-bottom: 0; max-width: 720px; }
+  </style>
+</head>
+<body>
+  <p class="mock-label">docs/mockups — static sketch (not production)</p>
+
+  <section class="mock-block" aria-label="Hub mock">
+    <h1 class="page-title">Leagues</h1>
+    <p class="page-lead">
+      Tap a league to see competitions, fixtures and points tables — without hunting through pills.
+    </p>
+    <div class="row-list">
+      <article class="hub-row" tabindex="0">
+        <div class="hub-icon">SF</div>
+        <div class="hub-row__body">
+          <div class="hub-row__title">Samford League 2026</div>
+          <div class="hub-row__meta">Multiple sections • Bowls Auckland</div>
+        </div>
+        <span class="hub-badge">3 sections</span>
+        <span class="chevron" aria-hidden="true">›</span>
+      </article>
+      <article class="hub-row" tabindex="0">
+        <div class="hub-icon">2W</div>
+        <div class="hub-row__body">
+          <div class="hub-row__title">Two Wood League 2026</div>
+          <div class="hub-row__meta">Opens division list directly</div>
+        </div>
+        <span class="hub-badge">2 divisions</span>
+        <span class="chevron" aria-hidden="true">›</span>
+      </article>
+      <article class="hub-row" tabindex="0">
+        <div class="hub-icon">3s</div>
+        <div class="hub-row__body">
+          <div class="hub-row__title">Triples League 2026</div>
+          <div class="hub-row__meta">Single-table competition</div>
+        </div>
+        <span class="hub-badge">1 competition</span>
+        <span class="chevron" aria-hidden="true">›</span>
+      </article>
+    </div>
+  </section>
+
+  <hr class="mock-section" />
+
+  <section class="mock-block" aria-label="Division detail mock">
+    <div class="shell-bar">
+      <a href="#" class="back-link">← All leagues</a>
+      <select class="league-dd" aria-label="League">
+        <option>Samford League 2026</option>
+        <option>Two Wood League 2026</option>
+        <option>Triples League 2026</option>
+      </select>
+      <select class="league-dd" aria-label="Competition">
+        <option>Monday Evening › Division One</option>
+        <option>Monday Evening › Division Two</option>
+        <option>Tuesday Triples › Misfits Pool</option>
+      </select>
+    </div>
+
+    <h2 class="page-title" style="font-size:1.35rem">Division One</h2>
+
+    <div class="tabs" role="tablist">
+      <button type="button" class="tab tab--active" role="tab" aria-selected="true">Fixtures</button>
+      <button type="button" class="tab" role="tab" aria-selected="false">Table</button>
+      <button type="button" class="tab" role="tab" aria-selected="false">Overview</button>
+    </div>
+
+    <div class="controls">
+      <select aria-label="Week">
+        <option>◀ Prev</option>
+        <option selected>Round 8 — Sat 24 May</option>
+        <option>Next ▶</option>
+      </select>
+      <select aria-label="What to show">
+        <option>All rounds</option>
+        <option>Fixtures coming up</option>
+        <option>Results played</option>
+      </select>
+      <select aria-label="Team filter">
+        <option>All teams</option>
+        <option>Mystery Jets</option>
+        <option>Smash-n-Grab</option>
+      </select>
+    </div>
+
+    <article class="fixture-card">
+      <div class="fixture-line">
+        <span><span class="team">Mystery Jets</span> <span class="versus">vs</span> <span class="team">Smash-n-Grab</span></span>
+        <span style="font-weight:700;font-variant-numeric:tabular-nums;">18 — 21</span>
+      </div>
+      <span class="versus">Rink 3 • Full result • Sat 24 May</span>
+    </article>
+
+    <article class="fixture-card">
+      <div class="fixture-line">
+        <span><span class="team">Pukekohe Bowling Club</span> <span class="versus">vs</span> <span class="team">Dairy Flat</span></span>
+        <span class="versus">Not played</span>
+      </div>
+    </article>
+  </section>
+
+  <hr class="mock-section" />
+
+  <section class="mock-block" aria-label="Standings teaser">
+    <h2 class="page-title" style="font-size:1.2rem;margin-bottom:.75rem">Table tab — form strip (Phase 2)</h2>
+    <p class="page-lead" style="margin-bottom:1rem;font-size:.95rem">
+      Same card shell; rank accent bar optional; FotMob colours for last-five “form”.
+    </p>
+    <div class="fixture-card">
+      <div class="fixture-line">
+        <span><strong>1.</strong> &nbsp; Mystery Jets · 12 pts</span>
+        <span class="pill-wld"><span class="w">W</span><span class="w">W</span><span class="l">L</span><span class="d">D</span><span class="w">W</span></span>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // cosmetic tab toggle for mock only
+    document.querySelectorAll('.tab').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach((b) => {
+          b.classList.toggle('tab--active', b === btn)
+          b.setAttribute('aria-selected', b === btn ? 'true' : 'false')
+        })
+      })
+    })
+  </script>
+</body>
+</html>

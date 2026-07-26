@@ -15,9 +15,9 @@
         try {
           var s = localStorage.getItem('bowls-theme')
           document.documentElement.dataset.bowlsTheme =
-            s === 'light' || s === 'dark' ? s : 'dark'
+            s === 'light' || s === 'dark' ? s : 'light'
         } catch (e) {
-          document.documentElement.dataset.bowlsTheme = 'dark'
+          document.documentElement.dataset.bowlsTheme = 'light'
         }
       })()
     </script>

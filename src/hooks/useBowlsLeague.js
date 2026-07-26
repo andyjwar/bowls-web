@@ -2,10 +2,47 @@ import { useEffect, useState, useMemo } from 'react'
 import { buildDivisionFixtures } from '../lib/fixtures'
 import { applyResultsToFixtures, computeStandingsFromResults } from '../lib/results'
 
-const LEAGUE_FILES = {
-  'samford-2026': '/data/samford-2026.json',
-  'two-wood-2026': '/data/two-wood-2026.json',
-  'triples-2026': '/data/triples-2026.json',
+/** Fallback before `/data/leagues-nav.json` loads (and if fetch fails). */
+export const LEAGUES = [
+  { id: 'samford-2026', label: 'Samford League 2026' },
+  { id: 'two-wood-2026', label: 'Two Wood League 2026' },
+  { id: 'triples-2026', label: 'Triples League 2026' },
+]
+
+function leagueDocumentPath(leagueId) {
+  return `${import.meta.env.BASE_URL}data/${encodeURIComponent(leagueId)}.json`
+}
+
+/** Navigation pills / home cards — synced from admin saves via `public/data/leagues-nav.json`. */
+export function useLeaguesNav() {
+  const [items, setItems] = useState(LEAGUES)
+  const [ready, setReady] = useState(false)
+
+  useEffect(() => {
+    let cancelled = false
+    fetch(`${import.meta.env.BASE_URL}data/leagues-nav.json`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((json) => {
+        if (
+          cancelled ||
+          !Array.isArray(json) ||
+          json.length === 0 ||
+          !json.every((x) => x && typeof x.id === 'string' && typeof x.label === 'string')
+        ) {
+          return
+        }
+        setItems(json)
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (!cancelled) setReady(true)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  return { items, ready }
 }
 
 export function useBowlsLeague(leagueId) {
@@ -26,17 +63,11 @@ export function useBowlsLeague(leagueId) {
     setLoading(true)
     setError(null)
 
-    const path = LEAGUE_FILES[leagueId]
-    if (!path) {
-      setData(null)
-      setError('Unknown league')
-      setLoading(false)
-      return
-    }
+    const path = leagueDocumentPath(leagueId)
 
     fetch(path)
       .then((r) => {
-        if (!r.ok) throw new Error(`Failed to load ${path}`)
+        if (!r.ok) throw new Error(`Failed to load league data (${path})`)
         return r.json()
       })
       .then((json) => {
@@ -73,16 +104,18 @@ export function useDivisionView(leagueData, sectionId, divisionId) {
       const section = leagueData.sections.find((s) => s.id === sectionId)
       if (!section) return { division: null, fixtures: [], standings: [], playableTeams: [] }
 
-      const division = section.divisions.find((d) => d.id === divisionId)
+      const division = section.divisions?.find((d) => d.id === divisionId)
       if (!division) return { division: null, fixtures: [], standings: [], playableTeams: [] }
 
-      const fixtures = applyResultsToFixtures(
-        buildDivisionFixtures(section.scheduleTemplate, division.teams),
-        division.results,
+      const bareFixtureWeeks = buildDivisionFixtures(section.scheduleTemplate, division.teams)
+      const fixtures = applyResultsToFixtures(bareFixtureWeeks, division.results)
+      const scheduledWeekKeys = new Set(bareFixtureWeeks.map((w) => String(w.week)))
+      const standings = computeStandingsFromResults(
+        division.teams,
+        division.results?.weeks ?? {},
+        scheduledWeekKeys,
+        division.standingsSeed ?? null,
       )
-      const standings = division.results?.weeks
-        ? computeStandingsFromResults(division.teams, division.results.weeks)
-        : computeStandingsFromResults(division.teams, {})
       const playableTeams = division.teams.filter((t) => t !== 'Bye')
 
       return { division, section, fixtures, standings, playableTeams }
@@ -97,25 +130,21 @@ export function useDivisionView(leagueData, sectionId, divisionId) {
       return row.date
     }
 
-    const fixtures = applyResultsToFixtures(
-      buildDivisionFixtures(
-        leagueData.scheduleTemplate,
-        division.teams,
-        getDate,
-      ),
-      division.results,
+    const bareFixtureWeeks = buildDivisionFixtures(
+      leagueData.scheduleTemplate,
+      division.teams,
+      getDate,
     )
-    const standings = division.results?.weeks
-      ? computeStandingsFromResults(division.teams, division.results.weeks)
-      : computeStandingsFromResults(division.teams, {})
+    const fixtures = applyResultsToFixtures(bareFixtureWeeks, division.results)
+    const scheduledWeekKeys = new Set(bareFixtureWeeks.map((w) => String(w.week)))
+    const standings = computeStandingsFromResults(
+      division.teams,
+      division.results?.weeks ?? {},
+      scheduledWeekKeys,
+      division.standingsSeed ?? null,
+    )
     const playableTeams = division.teams.filter((t) => t !== 'Bye')
 
     return { division, fixtures, standings, playableTeams }
   }, [leagueData, sectionId, divisionId])
 }
-
-export const LEAGUES = [
-  { id: 'samford-2026', label: 'Samford League 2026' },
-  { id: 'two-wood-2026', label: 'Two Wood League 2026' },
-  { id: 'triples-2026', label: 'Triples League 2026' },
-]

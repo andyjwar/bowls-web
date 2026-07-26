@@ -101,4 +101,53 @@ export function getUpcomingFixtureWeek(fixtureWeeks) {
   return upcoming ?? fixtureWeeks[0]
 }
 
+/**
+ * Index used with {@link #getLastWeekFixture} / {@link #getNextWeekFixture}: first dated week ≥ today,
+ * otherwise 0 (same fallback as {@link #getUpcomingFixtureWeek}).
+ */
+export function getUpcomingFixtureWeekIndex(fixtureWeeks) {
+  if (!fixtureWeeks?.length) return -1
+
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  const idx = fixtureWeeks.findIndex((week) => {
+    if (!week.date) return false
+    const d = new Date(`${week.date}T12:00:00`)
+    return d >= today
+  })
+
+  if (idx >= 0) return idx
+  return 0
+}
+
+/** Completed / prior round on the schedule (week before upcoming), or null. */
+export function getLastWeekFixture(fixtureWeeks) {
+  const up = getUpcomingFixtureWeekIndex(fixtureWeeks)
+  if (up <= 0) return null
+  return fixtureWeeks[up - 1] ?? null
+}
+
+/** Round that is next on the diary (aligned with legacy “Upcoming fixtures”). */
+export function getNextWeekFixture(fixtureWeeks) {
+  const up = getUpcomingFixtureWeekIndex(fixtureWeeks)
+  if (up < 0) return null
+  return fixtureWeeks[up] ?? null
+}
+
+/**
+ * Split schedule into completed rounds (before upcoming) vs upcoming-and-later rounds,
+ * using {@link #getUpcomingFixtureWeekIndex} (same boundary as league snapshot panels).
+ * @returns {{ completed: typeof fixtureWeeks, upcoming: typeof fixtureWeeks }}
+ */
+export function splitFixtureWeeksCompletedAndUpcoming(fixtureWeeks) {
+  const full = fixtureWeeks ?? []
+  if (!full.length) return { completed: [], upcoming: [] }
+  const up = getUpcomingFixtureWeekIndex(full)
+  return {
+    completed: up > 0 ? full.slice(0, up) : [],
+    upcoming: full.slice(up),
+  }
+}
+
 export { BYE }

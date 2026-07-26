@@ -3,5 +3,8 @@ dist/
 .env
 server/uploads/
 
+# Form submissions contain personal contact details — never commit
+server/data/
+
 # Tesseract downloads lang data into cwd during OCR
 *.traineddata

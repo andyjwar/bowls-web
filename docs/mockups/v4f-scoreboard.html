@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Direction F — "Scoreboard": light canvas, black square tiles, one colour mark each. Cursor-minimal. -->
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Direction F — Scoreboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4f4f2;
+      --ink: #111214;
+      --ink-2: #63666a;
+      --ink-3: #a8aaad;
+      --line: #e3e3e0;
+      --tile: #131518;
+      --tile-2: #1b1e22;
+      --tile-line: #26292e;
+      --green: #22c55e;
+      --sky: #38bdf8;
+      --gold: #fbbf24;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    .wrap { max-width: 1000px; margin: 0 auto; padding: 0 28px; }
+
+    /* nav: quiet left brand, right links, active = black square tab */
+    header { background: var(--bg); }
+    .bar { display: flex; align-items: center; padding: 26px 0 0; }
+    .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; }
+    .logo i { width: 20px; height: 20px; background: var(--ink); }
+    nav { margin-left: auto; display: flex; gap: 2px; }
+    nav a { padding: 9px 16px; font-size: 13.5px; font-weight: 600; color: var(--ink-2); transition: all .1s; }
+    nav a:hover { color: var(--ink); }
+    nav a.on { background: var(--ink); color: #fff; }
+
+    .hero { padding: 60px 0 40px; }
+    .hero h1 { font-size: clamp(30px, 4.6vw, 46px); font-weight: 800; letter-spacing: -0.035em; line-height: 1.04; max-width: 14ch; }
+
+    /* black square tiles */
+    .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .tile {
+      aspect-ratio: 1 / 1;
+      background: var(--tile);
+      color: #f2f3f4;
+      display: flex; flex-direction: column;
+      padding: 24px;
+      position: relative;
+      transition: background .14s;
+    }
+    .tile:hover { background: var(--tile-2); }
+    .tile__mark { width: 12px; height: 12px; background: var(--c); }
+    .tile__days {
+      margin-top: 20px;
+      font-size: clamp(24px, 3.4vw, 34px);
+      font-weight: 800; letter-spacing: -0.03em; line-height: 1.05;
+    }
+    .tile__name { margin-top: auto; font-size: 15.5px; font-weight: 600; }
+    .tile__sub { font-size: 12.5px; color: #9ba1a7; margin-top: 2px; }
+    .tile__go {
+      position: absolute; right: 0; bottom: 0;
+      width: 44px; height: 44px;
+      display: grid; place-items: center;
+      background: var(--tile-2); color: #9ba1a7;
+      border-top: 1px solid var(--tile-line);
+      border-left: 1px solid var(--tile-line);
+      transition: all .12s;
+    }
+    .tile:hover .tile__go { background: var(--c); color: var(--tile); }
+
+    /* week bar: seven cells, colour marks only */
+    .cal { padding: 48px 0 80px; }
+    .cal__head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; }
+    .cal__head h2 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--ink-3); }
+    .cal__head div { display: flex; gap: 18px; font-size: 12px; font-weight: 600; color: var(--ink-2); }
+    .cal__head i { width: 8px; height: 8px; display: inline-block; margin-right: 6px; }
+    .calbar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+    .cb {
+      background: #fff; border: 1px solid var(--line);
+      padding: 12px 0 14px; text-align: center;
+      transition: border-color .12s;
+    }
+    .cb:hover { border-color: var(--ink-3); }
+    .cb__d { font-size: 12px; font-weight: 700; color: var(--ink-2); }
+    .cb__marks { margin-top: 9px; display: flex; justify-content: center; gap: 4px; min-height: 8px; }
+    .cb__marks i { width: 8px; height: 8px; display: block; }
+    .cb--today { border-color: var(--ink); border-width: 2px; padding: 11px 0 13px; }
+    .cb--today .cb__d { color: var(--ink); }
+
+    @media (max-width: 780px) {
+      .tiles { grid-template-columns: 1fr; }
+      .tile { aspect-ratio: auto; min-height: 160px; }
+      nav a { padding: 9px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+    <header>
+      <div class="bar">
+        <span class="logo"><i></i>Ipswich Bowls</span>
+        <nav>
+          <a class="on" href="#">Leagues</a>
+          <a href="#">Competitions</a>
+          <a href="#">Officers</a>
+          <a href="#">Rules</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero">
+      <h1>The 2026 season, live.</h1>
+    </section>
+
+    <div class="tiles">
+      <a class="tile" href="#" style="--c: var(--green)">
+        <span class="tile__mark"></span>
+        <span class="tile__days">Mon<br/>+ Wed</span>
+        <span class="tile__name">Samford League</span>
+        <span class="tile__sub">6 divisions</span>
+        <span class="tile__go">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3.5 8.5h10M9 4l4.5 4.5L9 13"/></svg>
+        </span>
+      </a>
+      <a class="tile" href="#" style="--c: var(--sky)">
+        <span class="tile__mark"></span>
+        <span class="tile__days">Tue<br/>+ Thu</span>
+        <span class="tile__name">Two Wood League</span>
+        <span class="tile__sub">7 divisions</span>
+        <span class="tile__go">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3.5 8.5h10M9 4l4.5 4.5L9 13"/></svg>
+        </span>
+      </a>
+      <a class="tile" href="#" style="--c: var(--gold)">
+        <span class="tile__mark"></span>
+        <span class="tile__days">Fri</span>
+        <span class="tile__name">Triples League</span>
+        <span class="tile__sub">5 divisions</span>
+        <span class="tile__go">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3.5 8.5h10M9 4l4.5 4.5L9 13"/></svg>
+        </span>
+      </a>
+    </div>
+
+    <section class="cal">
+      <div class="cal__head">
+        <h2>This week</h2>
+        <div>
+          <span><i style="background:var(--green)"></i>Samford</span>
+          <span><i style="background:var(--sky)"></i>Two Wood</span>
+          <span><i style="background:var(--gold)"></i>Triples</span>
+        </div>
+      </div>
+      <div class="calbar">
+        <a class="cb" href="#"><div class="cb__d">Mon</div><div class="cb__marks"><i style="background:var(--green)"></i></div></a>
+        <a class="cb" href="#"><div class="cb__d">Tue</div><div class="cb__marks"><i style="background:var(--sky)"></i></div></a>
+        <a class="cb" href="#"><div class="cb__d">Wed</div><div class="cb__marks"><i style="background:var(--green)"></i></div></a>
+        <a class="cb" href="#"><div class="cb__d">Thu</div><div class="cb__marks"><i style="background:var(--sky)"></i></div></a>
+        <a class="cb" href="#"><div class="cb__d">Fri</div><div class="cb__marks"><i style="background:var(--gold)"></i></div></a>
+        <a class="cb cb--today" href="#"><div class="cb__d">Sat</div><div class="cb__marks"></div></a>
+        <a class="cb" href="#"><div class="cb__d">Sun</div><div class="cb__marks"></div></a>
+      </div>
+    </section>
+  </div>
+
+</body>
+</html>

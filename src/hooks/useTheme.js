@@ -5,9 +5,9 @@ const STORAGE_KEY = 'bowls-theme'
 function getStoredTheme() {
   try {
     const s = localStorage.getItem(STORAGE_KEY)
-    return s === 'light' || s === 'dark' ? s : 'dark'
+    return s === 'light' || s === 'dark' ? s : 'light'
   } catch {
-    return 'dark'
+    return 'light'
   }
 }
 
@@ -21,7 +21,7 @@ function subscribe(onChange) {
 }
 
 export function useTheme() {
-  const theme = useSyncExternalStore(subscribe, getStoredTheme, () => 'dark')
+  const theme = useSyncExternalStore(subscribe, getStoredTheme, () => 'light')
 
   const setTheme = useCallback((next) => {
     try {

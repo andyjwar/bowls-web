@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- v5 — Style sampler. Same content, many treatments. Point at a number. -->
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Style sampler — point at what you like</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #131417;
+      --ink-2: #66696e;
+      --ink-3: #a9acb0;
+      --line: #e7e7e4;
+      --paper: #fafaf8;
+      --green: #00a86b;
+      --blue: #2f6bff;
+      --coral: #ff5c37;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; padding-bottom: 120px; }
+    a { color: inherit; text-decoration: none; }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 0 28px; }
+
+    .intro { padding: 56px 0 8px; }
+    .intro h1 { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; }
+    .intro p { color: var(--ink-2); margin-top: 8px; max-width: 56ch; }
+
+    .spec {
+      margin: 44px 0 16px;
+      display: flex; align-items: baseline; gap: 14px;
+    }
+    .spec__num {
+      font-size: 13px; font-weight: 800;
+      background: var(--ink); color: #fff;
+      padding: 3px 10px;
+    }
+    .spec__name { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+    .spec__note { font-size: 13px; color: var(--ink-3); }
+
+    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media (max-width: 760px) { .grid3 { grid-template-columns: 1fr; } }
+
+    /* ============ 1. Soft gradient (E) ============ */
+    .t1 {
+      aspect-ratio: 1.35; display: flex; flex-direction: column; padding: 22px;
+      background: linear-gradient(160deg, color-mix(in srgb, var(--c) 14%, #fff) 0%, #fff 60%);
+      border: 1px solid var(--line);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .t1:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(19,20,23,.09); }
+    .t1__days { font-size: 30px; font-weight: 800; letter-spacing: -0.035em; color: var(--c); line-height: 1.05; }
+    .t1__name { margin-top: auto; font-weight: 700; font-size: 16px; }
+    .t1__sub { font-size: 12.5px; color: var(--ink-2); }
+
+    /* ============ 2. Poster (flat colour) ============ */
+    .t2 {
+      aspect-ratio: 1.35; display: flex; flex-direction: column; padding: 22px;
+      background: var(--c); color: #fff;
+      transition: filter .12s, transform .15s;
+    }
+    .t2:hover { filter: brightness(1.07); transform: translateY(-3px); }
+    .t2__days { font-size: 30px; font-weight: 800; letter-spacing: -0.035em; line-height: 1.05; }
+    .t2__name { margin-top: auto; font-weight: 700; font-size: 16px; }
+    .t2__sub { font-size: 12.5px; opacity: .75; }
+
+    /* ============ 3. Hairline, colour on hover ============ */
+    .t3 {
+      aspect-ratio: 1.35; display: flex; flex-direction: column; padding: 22px;
+      background: #fff; border: 1px solid var(--line);
+      transition: border-color .12s;
+    }
+    .t3:hover { border-color: var(--c); }
+    .t3__days { font-size: 30px; font-weight: 800; letter-spacing: -0.035em; line-height: 1.05; color: var(--ink); }
+    .t3:hover .t3__days { color: var(--c); }
+    .t3__name { margin-top: auto; font-weight: 700; font-size: 16px; }
+    .t3__sub { font-size: 12.5px; color: var(--ink-2); }
+
+    /* ============ 4. Black tile (F) ============ */
+    .t4 {
+      aspect-ratio: 1.35; display: flex; flex-direction: column; padding: 22px;
+      background: #131518; color: #f2f3f4;
+      transition: background .13s;
+    }
+    .t4:hover { background: #1c1f24; }
+    .t4__mark { width: 11px; height: 11px; background: var(--c); margin-bottom: 16px; }
+    .t4__days { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; }
+    .t4__name { margin-top: auto; font-weight: 600; font-size: 15px; }
+    .t4__sub { font-size: 12.5px; color: #9ba1a7; }
+
+    /* ============ 5. Colour edge ============ */
+    .t5 {
+      aspect-ratio: 1.35; display: flex; flex-direction: column; padding: 22px 22px 22px 26px;
+      background: #fff; border: 1px solid var(--line); border-left: 6px solid var(--c);
+      transition: background .12s, transform .15s;
+    }
+    .t5:hover { background: color-mix(in srgb, var(--c) 5%, #fff); transform: translateY(-3px); }
+    .t5__days { font-size: 30px; font-weight: 800; letter-spacing: -0.035em; line-height: 1.05; }
+    .t5__name { margin-top: auto; font-weight: 700; font-size: 16px; }
+    .t5__sub { font-size: 12.5px; color: var(--ink-2); }
+
+    /* ============ 6. Typographic rows (no tiles) ============ */
+    .t6wrap { border-top: 1px solid var(--ink); }
+    .t6 {
+      display: flex; align-items: baseline; gap: 20px;
+      padding: 26px 4px; border-bottom: 1px solid var(--line);
+      transition: padding-left .15s, background .12s;
+    }
+    .t6:hover { background: #fff; padding-left: 16px; }
+    .t6__name { font-size: clamp(26px, 4vw, 40px); font-weight: 800; letter-spacing: -0.035em; }
+    .t6__days { font-size: 15px; font-weight: 700; color: var(--c); }
+    .t6__sub { margin-left: auto; font-size: 13px; color: var(--ink-3); }
+    .t6 svg { color: var(--ink-3); transition: color .12s, transform .15s; align-self: center; }
+    .t6:hover svg { color: var(--c); transform: translateX(4px); }
+
+    /* ================= calendars ================= */
+    .calspec { margin-top: 64px; }
+
+    /* A. dot grid */
+    .calA { display: grid; grid-template-columns: repeat(7, 1fr); border: 1px solid var(--line); background: #fff; }
+    .calA > div { border-right: 1px solid var(--line); padding: 13px 0 15px; text-align: center; }
+    .calA > div:last-child { border-right: none; }
+    .calA .d { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-3); }
+    .calA .m { margin-top: 9px; display: flex; justify-content: center; gap: 5px; min-height: 9px; }
+    .calA .m i { width: 9px; height: 9px; display: block; }
+    .calA .today { background: #f4fbf7; }
+    .calA .today .d { color: var(--green); }
+
+    /* B. segment bar */
+    .calB { display: flex; height: 54px; border: 1px solid var(--line); background: #fff; }
+    .calB a { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; border-right: 1px solid var(--line); position: relative; }
+    .calB a:last-child { border-right: none; }
+    .calB a:hover { background: var(--paper); }
+    .calB .d { font-size: 12px; font-weight: 700; color: var(--ink-2); }
+    .calB .seg { position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: var(--c, transparent); }
+    .calB .today .d { color: var(--ink); }
+    .calB .today::after { content: 'today'; position: absolute; top: 5px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--green); }
+
+    /* C. day rows with chips */
+    .calC { border: 1px solid var(--line); background: #fff; }
+    .calC .row { display: flex; align-items: center; gap: 16px; padding: 13px 18px; border-bottom: 1px solid var(--line); }
+    .calC .row:last-child { border-bottom: none; }
+    .calC .d { width: 44px; font-size: 13.5px; font-weight: 700; }
+    .calC .d small { display: block; font-size: 11px; font-weight: 500; color: var(--ink-3); }
+    .calC .chip { display: inline-flex; align-items: center; gap: 7px; background: var(--paper); border: 1px solid var(--line); padding: 5px 11px; font-size: 12.5px; font-weight: 600; }
+    .calC .chip i { width: 7px; height: 7px; background: var(--c); display: block; }
+    .calC .chip:hover { border-color: var(--c); }
+    .calC .n { margin-left: auto; font-size: 12px; color: var(--ink-3); }
+    .calC .off { color: var(--ink-3); font-size: 12.5px; }
+
+    .hr { height: 1px; background: var(--line); margin: 72px 0 0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="intro">
+      <h1>Style sampler</h1>
+      <p>Same content, different treatments. Scroll and tell me a tile number and a calendar letter, e.g. <strong>"tiles 2, calendar B"</strong>. Mixing is fine.</p>
+    </div>
+
+    <!-- 1 -->
+    <div class="spec"><span class="spec__num">1</span><span class="spec__name">Soft gradient</span><span class="spec__note">option E's tile, refined</span></div>
+    <div class="grid3">
+      <a class="t1" href="#" style="--c:var(--green)"><span class="t1__days">Mon · Wed</span><span class="t1__name">Samford</span><span class="t1__sub">6 divisions</span></a>
+      <a class="t1" href="#" style="--c:var(--blue)"><span class="t1__days">Tue · Thu</span><span class="t1__name">Two Wood</span><span class="t1__sub">7 divisions</span></a>
+      <a class="t1" href="#" style="--c:var(--coral)"><span class="t1__days">Fri</span><span class="t1__name">Triples</span><span class="t1__sub">5 divisions</span></a>
+    </div>
+
+    <!-- 2 -->
+    <div class="spec"><span class="spec__num">2</span><span class="spec__name">Poster</span><span class="spec__note">flat solid colour, boldest</span></div>
+    <div class="grid3">
+      <a class="t2" href="#" style="--c:var(--green)"><span class="t2__days">Mon · Wed</span><span class="t2__name">Samford</span><span class="t2__sub">6 divisions</span></a>
+      <a class="t2" href="#" style="--c:var(--blue)"><span class="t2__days">Tue · Thu</span><span class="t2__name">Two Wood</span><span class="t2__sub">7 divisions</span></a>
+      <a class="t2" href="#" style="--c:var(--coral)"><span class="t2__days">Fri</span><span class="t2__name">Triples</span><span class="t2__sub">5 divisions</span></a>
+    </div>
+
+    <!-- 3 -->
+    <div class="spec"><span class="spec__num">3</span><span class="spec__name">Hairline</span><span class="spec__note">quietest — colour only on hover</span></div>
+    <div class="grid3">
+      <a class="t3" href="#" style="--c:var(--green)"><span class="t3__days">Mon · Wed</span><span class="t3__name">Samford</span><span class="t3__sub">6 divisions</span></a>
+      <a class="t3" href="#" style="--c:var(--blue)"><span class="t3__days">Tue · Thu</span><span class="t3__name">Two Wood</span><span class="t3__sub">7 divisions</span></a>
+      <a class="t3" href="#" style="--c:var(--coral)"><span class="t3__days">Fri</span><span class="t3__name">Triples</span><span class="t3__sub">5 divisions</span></a>
+    </div>
+
+    <!-- 4 -->
+    <div class="spec"><span class="spec__num">4</span><span class="spec__name">Black tile</span><span class="spec__note">option F's tile</span></div>
+    <div class="grid3">
+      <a class="t4" href="#" style="--c:var(--green)"><span class="t4__mark"></span><span class="t4__days">Mon · Wed</span><span class="t4__name">Samford</span><span class="t4__sub">6 divisions</span></a>
+      <a class="t4" href="#" style="--c:var(--blue)"><span class="t4__mark"></span><span class="t4__days">Tue · Thu</span><span class="t4__name">Two Wood</span><span class="t4__sub">7 divisions</span></a>
+      <a class="t4" href="#" style="--c:var(--coral)"><span class="t4__mark"></span><span class="t4__days">Fri</span><span class="t4__name">Triples</span><span class="t4__sub">5 divisions</span></a>
+    </div>
+
+    <!-- 5 -->
+    <div class="spec"><span class="spec__num">5</span><span class="spec__name">Colour edge</span><span class="spec__note">white tile, thick colour spine</span></div>
+    <div class="grid3">
+      <a class="t5" href="#" style="--c:var(--green)"><span class="t5__days">Mon · Wed</span><span class="t5__name">Samford</span><span class="t5__sub">6 divisions</span></a>
+      <a class="t5" href="#" style="--c:var(--blue)"><span class="t5__days">Tue · Thu</span><span class="t5__name">Two Wood</span><span class="t5__sub">7 divisions</span></a>
+      <a class="t5" href="#" style="--c:var(--coral)"><span class="t5__days">Fri</span><span class="t5__name">Triples</span><span class="t5__sub">5 divisions</span></a>
+    </div>
+
+    <!-- 6 -->
+    <div class="spec"><span class="spec__num">6</span><span class="spec__name">Typographic</span><span class="spec__note">no tiles at all — big text rows</span></div>
+    <div class="t6wrap">
+      <a class="t6" href="#" style="--c:var(--green)">
+        <span class="t6__name">Samford</span><span class="t6__days">Mon · Wed</span><span class="t6__sub">6 divisions</span>
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11h13M12 5.5L17.5 11 12 16.5"/></svg>
+      </a>
+      <a class="t6" href="#" style="--c:var(--blue)">
+        <span class="t6__name">Two Wood</span><span class="t6__days">Tue · Thu</span><span class="t6__sub">7 divisions</span>
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11h13M12 5.5L17.5 11 12 16.5"/></svg>
+      </a>
+      <a class="t6" href="#" style="--c:var(--coral)">
+        <span class="t6__name">Triples</span><span class="t6__days">Fri</span><span class="t6__sub">5 divisions</span>
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11h13M12 5.5L17.5 11 12 16.5"/></svg>
+      </a>
+    </div>
+
+    <div class="hr"></div>
+
+    <!-- Calendar A -->
+    <div class="calspec">
+      <div class="spec"><span class="spec__num">A</span><span class="spec__name">Dot calendar</span><span class="spec__note">seven cells, dots per league</span></div>
+      <div class="calA">
+        <div><div class="d">Mon</div><div class="m"><i style="background:var(--green)"></i></div></div>
+        <div><div class="d">Tue</div><div class="m"><i style="background:var(--blue)"></i></div></div>
+        <div><div class="d">Wed</div><div class="m"><i style="background:var(--green)"></i></div></div>
+        <div><div class="d">Thu</div><div class="m"><i style="background:var(--blue)"></i></div></div>
+        <div><div class="d">Fri</div><div class="m"><i style="background:var(--coral)"></i></div></div>
+        <div class="today"><div class="d">Sat</div><div class="m"></div></div>
+        <div><div class="d">Sun</div><div class="m"></div></div>
+      </div>
+    </div>
+
+    <!-- Calendar B -->
+    <div class="calspec">
+      <div class="spec"><span class="spec__num">B</span><span class="spec__name">Segment bar</span><span class="spec__note">slimmest — colour underline per day</span></div>
+      <div class="calB">
+        <a href="#" style="--c:var(--green)"><span class="d">Mon</span><span class="seg"></span></a>
+        <a href="#" style="--c:var(--blue)"><span class="d">Tue</span><span class="seg"></span></a>
+        <a href="#" style="--c:var(--green)"><span class="d">Wed</span><span class="seg"></span></a>
+        <a href="#" style="--c:var(--blue)"><span class="d">Thu</span><span class="seg"></span></a>
+        <a href="#" style="--c:var(--coral)"><span class="d">Fri</span><span class="seg"></span></a>
+        <a href="#" class="today"><span class="d">Sat</span></a>
+        <a href="#"><span class="d">Sun</span></a>
+      </div>
+    </div>
+
+    <!-- Calendar C -->
+    <div class="calspec">
+      <div class="spec"><span class="spec__num">C</span><span class="spec__name">Day rows</span><span class="spec__note">most informative — chips + match counts</span></div>
+      <div class="calC">
+        <div class="row"><span class="d">Mon<small>20 Jul</small></span><a class="chip" href="#" style="--c:var(--green)"><i></i>Samford · R11</a><span class="n">4 matches</span></div>
+        <div class="row"><span class="d">Tue<small>21 Jul</small></span><a class="chip" href="#" style="--c:var(--blue)"><i></i>Two Wood</a><span class="n">16 matches</span></div>
+        <div class="row"><span class="d">Wed<small>22 Jul</small></span><a class="chip" href="#" style="--c:var(--green)"><i></i>Samford · Div 1</a><span class="n">3 matches</span></div>
+        <div class="row"><span class="d">Thu<small>23 Jul</small></span><a class="chip" href="#" style="--c:var(--blue)"><i></i>Two Wood</a><span class="n">12 matches</span></div>
+        <div class="row"><span class="d">Fri<small>24 Jul</small></span><a class="chip" href="#" style="--c:var(--coral)"><i></i>Triples · R8</a><span class="n">20 matches</span></div>
+        <div class="row"><span class="d">Sat<small>Today</small></span><span class="off">No matches</span></div>
+        <div class="row"><span class="d">Sun<small>26 Jul</small></span><span class="off">No matches</span></div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

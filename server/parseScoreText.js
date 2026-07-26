@@ -15,7 +15,30 @@ function nameScore(a, b) {
   const tb = new Set(nb.split(' '))
   let overlap = 0
   for (const w of ta) if (tb.has(w) && w.length > 2) overlap += 1
-  return overlap / Math.max(ta.size, tb.size, 1)
+  const tokenScore = overlap / Math.max(ta.size, tb.size, 1)
+  const ca = na.replace(/\s/g, '')
+  const cb = nb.replace(/\s/g, '')
+  const wholeDist = levDistance(ca, cb)
+  const wholeMax = Math.max(ca.length, cb.length, 1)
+  const wholeSimilarity = 1 - wholeDist / wholeMax
+  const wholeBoost = wholeSimilarity >= 0.82 ? Math.min(1, wholeSimilarity + 0.05) : wholeSimilarity * 0.8
+  return Math.max(tokenScore, wholeBoost)
+}
+
+/** Levenshtein distance (bounded string length for CSV team typos). */
+function levDistance(a, b) {
+  const m = a.length
+  const n = b.length
+  const dp = Array.from({ length: m + 1 }, () => new Array(n + 1))
+  for (let i = 0; i <= m; i += 1) dp[i][0] = i
+  for (let j = 0; j <= n; j += 1) dp[0][j] = j
+  for (let i = 1; i <= m; i += 1) {
+    for (let j = 1; j <= n; j += 1) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1
+      dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost)
+    }
+  }
+  return dp[m][n]
 }
 
 export function fuzzyMatchTeam(text, teams) {

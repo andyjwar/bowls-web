@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pick a direction</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #fff; color: #16191c; padding: 48px 24px; }
+    .wrap { max-width: 880px; margin: 0 auto; }
+    h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; }
+    p.lead { color: #5d666f; margin: 8px 0 32px; }
+    .opt { display: block; border: 1px solid #e6e8ea; padding: 24px 28px; margin-bottom: 14px; text-decoration: none; color: inherit; transition: border-color .12s; }
+    .opt:hover { border-color: #16191c; }
+    .opt h2 { font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+    .opt h2 i { width: 12px; height: 12px; display: inline-block; }
+    .opt p { color: #5d666f; font-size: 14.5px; margin-top: 6px; max-width: 68ch; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Three directions — pick one</h1>
+    <p class="lead">All sharp-cornered, all with the leagues + play-days front page. Very different moods. Open each full screen.</p>
+
+    <a class="opt" href="v3a-dark.html">
+      <h2><i style="background:#00c471"></i>A — Night game</h2>
+      <p>Dark like cursor.com. One bright green accent doing all the work: active nav, play-day chips, hover states. Sleek and quiet; scores and tables pop hard against the dark.</p>
+    </a>
+
+    <a class="opt" href="v3b-light.html">
+      <h2><i style="background:#1f5eff"></i>B — Match day</h2>
+      <p>Light, warm, FotMob-leaning. Each league is a colour-blocked card (band + play-day chips + solid CTA bar) in a three-up grid, plus a "Tonight" ticker. The most colourful of the three, still restrained.</p>
+    </a>
+
+    <a class="opt" href="v3c-split.html">
+      <h2><i style="background:#0d2b1e"></i>C — Club house</h2>
+      <p>Deep bowls-green masthead over calm paper-white content. Leagues as full-width rows led by a big "Mon + Wed" day block. Feels like a proper club institution with a modern cut.</p>
+    </a>
+  </div>
+</body>
+</html>

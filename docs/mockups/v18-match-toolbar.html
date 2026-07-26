@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>v18 — match toolbar spacing</title>
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --card: #ffffff;
+    --border: #e3e6ea;
+    --row-hi: #f2f4f6;
+    --text: #3a4048;
+    --text-strong: #14181d;
+    --muted: #8a919b;
+    --muted-2: #6b7280;
+    --green: #256e3d;
+    --green-soft: rgba(37, 110, 61, 0.12);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  h1 { font-size: 1.4rem; letter-spacing: -0.02em; color: var(--text-strong); margin: 0 0 0.3rem; }
+  .lead { margin: 0 0 1rem; color: var(--muted); font-size: 0.95rem; }
+  .opt { margin: 2.6rem 0 0; }
+  .opt__tag { display: inline-block; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; background: var(--text-strong); padding: 4px 10px; margin-bottom: 0.4rem; }
+  .opt__note { margin: 0 0 0.8rem; font-size: 0.88rem; color: var(--muted); max-width: 44rem; }
+
+  /* ---- shared context: division letters + view tabs toolbar ---- */
+  .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem 1rem; flex-wrap: wrap; margin-bottom: 1.1rem; }
+  .letters { display: flex; gap: 6px; }
+  .letters span { width: 38px; height: 38px; display: grid; place-items: center; background: var(--row-hi); font-size: 0.95rem; font-weight: 750; color: var(--text); }
+  .letters span.on { background: var(--green); color: #fff; }
+  .vtabs { display: flex; gap: 1.3rem; }
+  .vtabs a { position: relative; padding: 0.45rem 2px 0.55rem; font-size: 0.92rem; font-weight: 600; color: var(--muted-2); text-decoration: none; }
+  .vtabs a.on { color: var(--text-strong); font-weight: 750; }
+  .vtabs a.on::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--green); }
+
+  /* ---- shared: team select + export buttons ---- */
+  .select { appearance: none; -webkit-appearance: none; font: inherit; font-size: 0.9rem; font-weight: 600; color: var(--text-strong); background: var(--card); border: 1px solid var(--border); padding: 0.5rem 2rem 0.5rem 0.75rem; width: 220px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%236b7280' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 0.7rem center; }
+  .flabel { display: block; font-size: 0.72rem; font-weight: 600; color: var(--muted-2); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.35rem; }
+  .btn { appearance: none; font: inherit; cursor: pointer; background: var(--card); border: 1px solid var(--border); padding: 0.5rem 0.85rem; font-size: 0.8rem; font-weight: 600; color: var(--text); white-space: nowrap; }
+  .btn:hover { border-color: var(--green); }
+
+  /* quiet icon links (options B, D, E) */
+  .qlink { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; font-weight: 600; color: var(--muted-2); text-decoration: none; white-space: nowrap; }
+  .qlink svg { display: block; }
+  .qlink:hover { color: var(--green); }
+
+  /* ---- shared: week tile ---- */
+  .week { background: var(--card); border: 1px solid var(--border); }
+  .week__head { display: flex; justify-content: space-between; align-items: baseline; padding: 0.7rem 1rem; background: var(--row-hi); border-bottom: 1px solid var(--border); }
+  .week__title { margin: 0; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; color: var(--text-strong); }
+  .week__date { font-size: 0.8rem; font-weight: 600; color: var(--muted); }
+  .row { display: grid; grid-template-columns: 24px 1fr auto 1fr 24px; gap: 0.75rem; align-items: center; padding: 0.85rem 1rem; }
+  .row + .row { border-top: 1px solid var(--border); }
+  .home { text-align: right; font-size: 0.95rem; font-weight: 600; color: var(--text-strong); }
+  .away { text-align: left; font-size: 0.95rem; font-weight: 600; color: var(--text-strong); }
+  .win { font-weight: 800; }
+  .lose { color: var(--muted); font-weight: 600; }
+  .pill { min-width: 3.9rem; text-align: center; padding: 0.25rem 0.6rem; background: var(--green-soft); color: var(--green); font-weight: 800; font-size: 0.95rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .vs { min-width: 3.9rem; text-align: center; font-size: 0.85rem; font-weight: 700; color: var(--muted); }
+  .chip { display: inline-block; width: 20px; height: 20px; line-height: 20px; text-align: center; font-size: 0.68rem; font-weight: 800; }
+  .chip--w { background: var(--green); color: #fff; }
+  .chip--l { background: var(--row-hi); color: var(--muted); }
+
+  /* ---- current (for reference): stacked label + button row, uneven gaps ---- */
+  .cur-controls { margin-bottom: 2rem; }
+  .cur-controls .flabel { margin-bottom: 0.35rem; }
+  .cur-export { display: flex; gap: 0.5rem; margin-top: 1rem; }
+
+  /* ---- A: one toolbar row ---- */
+  .arow { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.1rem; }
+  .arow__actions { display: flex; gap: 0.5rem; }
+  .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* ---- B: actions in the list header strip ---- */
+  .b-filter { margin-bottom: 1.1rem; }
+  .week__head--actions { align-items: center; }
+  .head-actions { display: flex; align-items: center; gap: 1.1rem; }
+  .head-actions .qlink { font-size: 0.75rem; }
+
+  /* ---- C: attached control bar ---- */
+  .cbar { display: flex; align-items: stretch; justify-content: space-between; background: var(--card); border: 1px solid var(--border); border-bottom: none; }
+  .cbar .select { border: none; border-right: 1px solid var(--border); align-self: stretch; }
+  .cbar__actions { display: flex; }
+  .cbar__actions .btn { border: none; border-left: 1px solid var(--border); padding: 0.6rem 1rem; }
+
+  /* ---- D: quiet text links on the dropdown row ---- */
+  .drow { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.1rem; }
+  .drow__actions { display: flex; align-items: center; gap: 1.4rem; }
+
+  /* ---- E: attached bar + quiet links ---- */
+  .ebar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; background: var(--card); border: 1px solid var(--border); border-bottom: none; padding-right: 1rem; }
+  .ebar .select { border: none; border-right: 1px solid var(--border); }
+  .ebar__actions { display: flex; align-items: center; gap: 1.4rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Matches view — controls spacing</h1>
+  <p class="lead">Five ways to tidy the team filter + export actions above the match list. Everywhere the third action is renamed <strong>Download</strong>. Shown for Samford green, Division A, Matches view.</p>
+
+  <!-- ============ CURRENT ============ -->
+  <div class="opt">
+    <span class="opt__tag">Current (for reference)</span>
+    <p class="opt__note">Labelled dropdown, then a separate button row underneath, then the list — three stacked blocks with three different gaps, and the label adds a fourth vertical rhythm. This is the wonkiness.</p>
+    <div class="toolbar">
+      <div class="letters"><span class="on">A</span><span>B</span><span>C</span></div>
+      <nav class="vtabs"><a href="#">Table</a><a href="#" class="on">Matches</a></nav>
+    </div>
+    <div class="cur-controls">
+      <label class="flabel" for="cur-team">Team</label>
+      <select class="select" id="cur-team"><option>All teams</option></select>
+      <div class="cur-export">
+        <button class="btn" type="button">Add to calendar</button>
+        <button class="btn" type="button">Print</button>
+        <button class="btn" type="button">Spreadsheet (CSV)</button>
+      </div>
+    </div>
+    <div class="week">
+      <div class="week__head"><h3 class="week__title">Week 3</h3><span class="week__date">Mon, 25 May</span></div>
+      <div class="row"><span class="chip chip--w">W</span><span class="home win">Kirton A</span><span class="pill">5 – 1</span><span class="away lose">Marlborough</span><span class="chip chip--l">L</span></div>
+      <div class="row"><span class="chip chip--w">W</span><span class="home win">Samford</span><span class="pill">4 – 2</span><span class="away lose">Hollbrook</span><span class="chip chip--l">L</span></div>
+      <div class="row"><span></span><span class="home">Stone Lodge Blues</span><span class="vs">v</span><span class="away">Westerfield Yellows</span><span></span></div>
+    </div>
+  </div>
+
+  <!-- ============ OPTION A ============ -->
+  <div class="opt">
+    <span class="opt__tag">A — one toolbar row</span>
+    <p class="opt__note">Dropdown and buttons share a single row: filter left, actions right, everything vertically centred. The visible label goes (the select's first option reads "All teams", plus a visually-hidden label for screen readers), so there's exactly one gap above the list.</p>
+    <div class="toolbar">
+      <div class="letters"><span class="on">A</span><span>B</span><span>C</span></div>
+      <nav class="vtabs"><a href="#">Table</a><a href="#" class="on">Matches</a></nav>
+    </div>
+    <div class="arow">
+      <div>
+        <label class="vh" for="a-team">Filter by team</label>
+        <select class="select" id="a-team"><option>All teams</option></select>
+      </div>
+      <div class="arow__actions">
+        <button class="btn" type="button">Add to calendar</button>
+        <button class="btn" type="button">Print</button>
+        <button class="btn" type="button">Download</button>
+      </div>
+    </div>
+    <div class="week">
+      <div class="week__head"><h3 class="week__title">Week 3</h3><span class="week__date">Mon, 25 May</span></div>
+      <div class="row"><span class="chip chip--w">W</span><span class="home win">Kirton A</span><span class="pill">5 – 1</span><span class="away lose">Marlborough</span><span class="chip chip--l">L</span></div>
+      <div class="row"><span class="chip chip--w">W</span><span class="home win">Samford</span><span class="pill">4 – 2</span><span class="away lose">Hollbrook</span><span class="chip chip--l">L</span></div>
+      <div class="row"><span></span><span class="home">Stone Lodge Blues</span><span class="vs">v</span><span class="away">Westerfield Yellows</span><span></span></div>
+    </div>
+  </div>
+
+  <!-- ============ OPTION B ============ -->
+  <div class="opt">
+    <span class="opt__tag">B — actions in the list header</span>
+    <p class="opt__note">The dropdown keeps its spot (label dropped, one clean gap), and the three actions become compact text links inside the week-tile header strip, right where the date used to sit. No separate button row at all — but on an all-weeks list the actions would need to live on the first tile only, or on a single list-header strip.</p>
+    <div class="toolbar">
+      <div class="letters"><span class="on">A</span><span>B</span><span>C</span></div>
+      <nav class="vtabs"><a href="#">Table</a><a href="#" class="on">Matches</a></nav>
+    </div>
+    <div class="b-filter">
+      <label class="vh" for="b-team">Filter by team</label>
+      <select class="select" id="b-team"><option>All teams</option></select>
+    </div>
+    <div class="week">
+      <div class="week__head week__head--actions">
+        <h3 class="week__title">Week 3 <span style="font-weight:600; color:var(--muted); text-transform:none; letter-spacing:0;">· Mon, 25 May</span></h3>
+        <div class="head-actions">
+          <a class="qlink" href="#"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="2.5" width="12" height="10.5"/><path d="M1 6h12M4 1v3M10 1v3"/></svg>Calendar</a>
+          <a class="qlink" href="#"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3.5 5V1.5h7V5M3.5 10.5H1.5V5h11v5.5h-2"/><rect x="3.5" y="8.5" width="7" height="4.5"/></svg>Print</a>
+          <a class="qlink" href="#"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M7 1v8M3.5 5.5L7 9l3.5-3.5M1.5 11.5v1.5h11v-1.5"/></svg>Download</a>
+        </div>
+      </div>
+      <div class="row"><span class="chip chip--w">W</span><span class="home win">Kirton A</span><span class="pill">5 – 1</span><span class="away lose">Marlborough</span><span class="chip chip--l">L</span></div>
+      <div class="row"><span class="chip chip--w">W</span><span class="home win">Samford</span><span class="pill">4 – 2</span><span class="away lose">Hollbrook</span><span class="chip chip--l">L</span></div>
+      <div class="row"><span></span><span class="home">Stone Lodge Blues</span><span class="vs">v</span><span class="away">Westerfield Yellows</span><span></span></div>
+    </div>
+  </div>
+
+  <!-- ============ OPTION C ============ -->
+  <div class="opt">
+    <span class="opt__tag">C — attached control bar</span>
+    <p class="opt__note">Dropdown and buttons share one full-width card strip that sits flush on top of the list — its border merges with the tile below (like the team-record strip), zero gap. The controls read as part of the list they act on. Buttons lose their own borders and become cells of the strip.</p>
+    <div class="toolbar">
+      <div class="letters"><span class="on">A</span><span>B</span><span>C</span></div>
+      <nav class="vtabs"><a href="#">Table</a><a href="#" class="on">Matches</a></nav>
+    </div>
+    <div class="cbar">
+      <div style="display:flex;">
+        <label class="vh" for="c-team">Filter by team</label>
+        <select class="select" id="c-team"><option>All teams</option></select>
+      </div>
+      <div class="cbar__actions">
+        <button class="btn" type="button">Add to calendar</button>
+        <button class="btn" type="button">Print</button>
+        <button class="btn" type="button">Download</button>
+      </div>
+    </div>
+    <div class="week">
+      <div class="week__head"><h3 class="week__title">Week 3</h3><span class="week__date">Mon, 25 May</span></div>
+      <div class="row"><span class="chip chip--w">W</span><span class="home win">Kirton A</span><span class="pill">5 – 1</span><span class="away lose">Marlborough</span><span class="chip chip--l">L</span></div>
+      <div class="row"><span class="chip chip--w">W</span><span class="home win">Samford</span><span class="pill">4 – 2</span><span class="away lose">Hollbrook</span><span class="chip chip--l">L</span></div>
+      <div class="row"><span></span><span class="home">Stone Lodge Blues</span><span class="vs">v</span><span class="away">Westerfield Yellows</span><span></span></div>
+    </div>
+  </div>
+
+  <!-- ============ OPTION D ============ -->
+  <div class="opt">
+    <span class="opt__tag">D — quiet icon links</span>
+    <p class="opt__note">Same single row as A, but the actions shed their button chrome: small glyph + label text links in muted grey, green on hover. The dropdown is the only bordered control, so the filter (the primary control) clearly outranks the utilities.</p>
+    <div class="toolbar">
+      <div class="letters"><span class="on">A</span><span>B</span><span>C</span></div>
+      <nav class="vtabs"><a href="#">Table</a><a href="#" class="on">Matches</a></nav>
+    </div>
+    <div class="drow">
+      <div>
+        <label class="vh" for="d-team">Filter by team</label>
+        <select class="select" id="d-team"><option>All teams</option></select>
+      </div>
+      <div class="drow__actions">
+        <a class="qlink" href="#"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="2.5" width="12" height="10.5"/><path d="M1 6h12M4 1v3M10 1v3"/></svg>Add to calendar</a>
+        <a class="qlink" href="#"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3.5 5V1.5h7V5M3.5 10.5H1.5V5h11v5.5h-2"/><rect x="3.5" y="8.5" width="7" height="4.5"/></svg>Print</a>
+        <a class="qlink" href="#"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M7 1v8M3.5 5.5L7 9l3.5-3.5M1.5 11.5v1.5h11v-1.5"/></svg>Download</a>
+      </div>
+    </div>
+    <div class="week">
+      <div class="week__head"><h3 class="week__title">Week 3</h3><span class="week__date">Mon, 25 May</span></div>
+      <div class="row"><span class="chip chip--w">W</span><span class="home win">Kirton A</span><span class="pill">5 – 1</span><span class="away lose">Marlborough</span><span class="chip chip--l">L</span></div>
+      <div class="row"><span class="chip chip--w">W</span><span class="home win">Samford</span><span class="pill">4 – 2</span><span class="away lose">Hollbrook</span><span class="chip chip--l">L</span></div>
+      <div class="row"><span></span><span class="home">Stone Lodge Blues</span><span class="vs">v</span><span class="away">Westerfield Yellows</span><span></span></div>
+    </div>
+  </div>
+
+  <!-- ============ OPTION E ============ -->
+  <div class="opt">
+    <span class="opt__tag">E — attached bar, quiet links (C + D)</span>
+    <p class="opt__note">Bonus hybrid: the C strip sits flush on the list, but inside it the dropdown is a borderless cell (hairline divider only) and the actions are D's quiet icon links. One shape, zero gap, minimal chrome — the whole thing reads as the list's own header.</p>
+    <div class="toolbar">
+      <div class="letters"><span class="on">A</span><span>B</span><span>C</span></div>
+      <nav class="vtabs"><a href="#">Table</a><a href="#" class="on">Matches</a></nav>
+    </div>
+    <div class="ebar">
+      <div style="display:flex;">
+        <label class="vh" for="e-team">Filter by team</label>
+        <select class="select" id="e-team"><option>All teams</option></select>
+      </div>
+      <div class="ebar__actions">
+        <a class="qlink" href="#"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="2.5" width="12" height="10.5"/><path d="M1 6h12M4 1v3M10 1v3"/></svg>Add to calendar</a>
+        <a class="qlink" href="#"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3.5 5V1.5h7V5M3.5 10.5H1.5V5h11v5.5h-2"/><rect x="3.5" y="8.5" width="7" height="4.5"/></svg>Print</a>
+        <a class="qlink" href="#"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M7 1v8M3.5 5.5L7 9l3.5-3.5M1.5 11.5v1.5h11v-1.5"/></svg>Download</a>
+      </div>
+    </div>
+    <div class="week">
+      <div class="week__head"><h3 class="week__title">Week 3</h3><span class="week__date">Mon, 25 May</span></div>
+      <div class="row"><span class="chip chip--w">W</span><span class="home win">Kirton A</span><span class="pill">5 – 1</span><span class="away lose">Marlborough</span><span class="chip chip--l">L</span></div>
+      <div class="row"><span class="chip chip--w">W</span><span class="home win">Samford</span><span class="pill">4 – 2</span><span class="away lose">Hollbrook</span><span class="chip chip--l">L</span></div>
+      <div class="row"><span></span><span class="home">Stone Lodge Blues</span><span class="vs">v</span><span class="away">Westerfield Yellows</span><span></span></div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

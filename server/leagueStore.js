@@ -7,10 +7,163 @@ import { applyResultsToFixtures, computeStandingsFromResults } from '../src/lib/
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const DATA_DIR = join(__dirname, '../public/data')
 
-const LEAGUE_FILES = {
+const DEFAULT_LEAGUE_REGISTRY = {
   'samford-2026': 'samford-2026.json',
   'two-wood-2026': 'two-wood-2026.json',
   'triples-2026': 'triples-2026.json',
+}
+
+const REGISTRY_FILENAME = 'leagues-registry.json'
+
+/** @type {Record<string, string>} */
+let LEAGUE_FILES = loadLeagueRegistry()
+
+function loadLeagueRegistry() {
+  const registryPath = join(DATA_DIR, REGISTRY_FILENAME)
+  let merged = { ...DEFAULT_LEAGUE_REGISTRY }
+  if (existsSync(registryPath)) {
+    try {
+      const disk = JSON.parse(readFileSync(registryPath, 'utf8'))
+      if (disk && typeof disk === 'object') {
+        merged = { ...DEFAULT_LEAGUE_REGISTRY, ...disk }
+      }
+    } catch {
+      /* ignore invalid registry */
+    }
+  }
+  return merged
+}
+
+export function persistLeagueRegistry() {
+  writeFileSync(
+    join(DATA_DIR, REGISTRY_FILENAME),
+    `${JSON.stringify(LEAGUE_FILES, null, 2)}\n`,
+    'utf8',
+  )
+}
+
+/** Public navigation (`/data/leagues-nav.json`) — ids must match league JSON files under `/public/data`. */
+export function persistLeaguesNav() {
+  try {
+    const rows = listLeagues().map((l) => ({ id: l.id, label: l.name }))
+    writeFileSync(join(DATA_DIR, 'leagues-nav.json'), `${JSON.stringify(rows, null, 2)}\n`, 'utf8')
+  } catch (e) {
+    console.warn('Could not write leagues-nav.json:', e.message)
+  }
+}
+
+export function slugifyLeagueKey(raw) {
+  return String(raw ?? '')
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
+}
+
+function inferTeamSlotCountFromTemplate(tmpl) {
+  if (!Array.isArray(tmpl) || tmpl.length === 0) return 8
+  let max = 0
+  for (const week of tmpl) {
+    for (const p of week.pairings ?? []) {
+      const h = Number(p.home)
+      const a = Number(p.away)
+      if (Number.isFinite(h)) max = Math.max(max, h)
+      if (Number.isFinite(a)) max = Math.max(max, a)
+    }
+  }
+  return max > 0 ? max : 8
+}
+
+function inferTeamSlotCount(league, sectionIdOrNull) {
+  if (league.sections?.length && sectionIdOrNull) {
+    const sec = league.sections.find((s) => s.id === sectionIdOrNull)
+    return inferTeamSlotCountFromTemplate(sec?.scheduleTemplate)
+  }
+  return inferTeamSlotCountFromTemplate(league.scheduleTemplate)
+}
+
+function isPlaceholderFixtureName(name) {
+  const s = String(name ?? '').trim()
+  return /^Team \d+$/i.test(s)
+}
+
+/** Every club appearing in saved `division.results` rows. */
+function collectClubNamesFromDivisionResults(division) {
+  const out = new Set()
+  const weeks = division?.results?.weeks
+  if (!weeks || typeof weeks !== 'object') return out
+  for (const arr of Object.values(weeks)) {
+    if (!Array.isArray(arr)) continue
+    for (const m of arr) {
+      if (!m || typeof m !== 'object') continue
+      const h = String(m.home ?? '').trim()
+      const a = String(m.away ?? '').trim()
+      if (h && h !== 'Bye') out.add(h)
+      if (a && a !== 'Bye') out.add(a)
+    }
+  }
+  return out
+}
+
+/** Resolved fixture match rows — needs at least positional `division.teams` for index→name mapping. */
+function collectClubNamesFromResolvedFixtures(league, sectionId, divisionId) {
+  const out = new Set()
+  try {
+    const weeks = getDivisionFixtures(league, { sectionId, divisionId })
+    for (const w of weeks) {
+      for (const m of w.matches ?? []) {
+        const h = m.home != null ? String(m.home).trim() : ''
+        const a = m.away != null ? String(m.away).trim() : ''
+        if (h && h !== 'Bye' && !isPlaceholderFixtureName(h)) out.add(h)
+        if (a && a !== 'Bye' && !isPlaceholderFixtureName(a)) out.add(a)
+      }
+    }
+  } catch {
+    /* schedule or division missing */
+  }
+  return out
+}
+
+/**
+ * Team names for the registered-players picker: master list follows the league **fixture sheet**
+ * (`division.teams` rows, skipping blanks and `Bye`) so clubs show up **before any scores**. Any
+ * extra club seen only in saved results / resolved fixtures is appended alphabetically.
+ */
+function divisionTeamsResolvedForListing(league, sectionIdOrNull, division, rawSheetTeams) {
+  const raw =
+    rawSheetTeams ??
+    (Array.isArray(division.teams) ? division.teams.map((t) => String(t ?? '').trim()) : [])
+  const fromResults = collectClubNamesFromDivisionResults(division)
+  const fromFixtures = collectClubNamesFromResolvedFixtures(league, sectionIdOrNull, division.id)
+
+  const orderedCore = raw.filter((t) => t && t !== 'Bye')
+
+  const known = new Set(orderedCore)
+  const extras = []
+  for (const n of [...fromResults, ...fromFixtures]) {
+    const t = String(n ?? '').trim()
+    if (!t || t === 'Bye' || known.has(t)) continue
+    known.add(t)
+    extras.push(t)
+  }
+  extras.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }))
+
+  const merged = [...orderedCore, ...extras]
+  return merged.length > 0 ? merged : raw
+}
+
+function divisionListMeta(league, sectionIdOrNull, d) {
+  const fixtureSheetTeams = Array.isArray(d.teams)
+    ? d.teams.map((t) => String(t ?? '').trim())
+    : []
+  const sheetLen = fixtureSheetTeams.length
+  return {
+    id: d.id,
+    label: d.label,
+    ...(d.playDay != null && d.playDay !== '' ? { playDay: d.playDay } : {}),
+    ...(sheetLen > 0 ? { fixtureSlotCount: sheetLen, fixtureSheetTeams } : {}),
+    teams: divisionTeamsResolvedForListing(league, sectionIdOrNull, d, fixtureSheetTeams),
+  }
 }
 
 export function listLeagues() {
@@ -19,9 +172,9 @@ export function listLeagues() {
     const sections = data.sections?.map((s) => ({
       id: s.id,
       label: s.label,
-      divisions: s.divisions.map((d) => ({ id: d.id, label: d.label })),
+      divisions: (s.divisions ?? []).map((d) => divisionListMeta(data, s.id, d)),
     }))
-    const divisions = data.divisions?.map((d) => ({ id: d.id, label: d.label }))
+    const divisions = data.divisions?.map((d) => divisionListMeta(data, null, d))
     return { id, name: data.name, sections, divisions }
   })
 }
@@ -39,12 +192,208 @@ export function saveLeague(leagueId, data) {
   if (!file) throw new Error('Unknown league')
   const path = join(DATA_DIR, file)
   writeFileSync(path, `${JSON.stringify(data, null, 2)}\n`, 'utf8')
+  persistLeaguesNav()
+}
+
+/** Update home/away club strings in saved week results after a spelling rename. */
+function replaceClubNameInDivisionResults(division, from, to) {
+  if (!from || from === to) return
+  const weeks = division.results?.weeks
+  if (!weeks || typeof weeks !== 'object') return
+  for (const arr of Object.values(weeks)) {
+    if (!Array.isArray(arr)) continue
+    for (const m of arr) {
+      if (!m || typeof m !== 'object') continue
+      if (m.home === from) m.home = to
+      if (m.away === from) m.away = to
+    }
+  }
+}
+
+/**
+ * Replace `division.teams` with edited names — **same length only** (schedule uses indices).
+ * Propagates renames through `division.results` match rows where the club name matched.
+ */
+export function updateDivisionTeamNames(leagueId, { sectionId, divisionId, teams }) {
+  const league = loadLeague(leagueId)
+  const { division } = getDivision(league, { sectionId: sectionId || null, divisionId })
+  if (!division) throw new Error('Division not found')
+
+  const prev = division.teams
+  if (!Array.isArray(prev)) throw new Error('Division has no teams array')
+  if (!Array.isArray(teams)) throw new Error('teams must be an array')
+  if (teams.length !== prev.length) {
+    throw new Error(
+      `Must keep exactly ${prev.length} team slots — fixtures rely on sheet order. Rename lines only.`,
+    )
+  }
+
+  const next = teams.map((t) => String(t ?? '').trim())
+  for (let i = 0; i < prev.length; i += 1) {
+    const oldName = String(prev[i] ?? '').trim()
+    const newName = next[i] ?? ''
+    if (oldName && newName && oldName !== newName) {
+      replaceClubNameInDivisionResults(division, oldName, newName)
+    }
+  }
+
+  division.teams = next
+  saveLeague(leagueId, league)
+  return { ok: true }
+}
+
+export function updateLeagueStructureLabels(leagueId, payload = {}) {
+  const league = loadLeague(leagueId)
+
+  if (payload.leagueName != null && String(payload.leagueName).trim()) {
+    league.name = String(payload.leagueName).trim()
+  }
+
+  const sid = payload.sectionId != null ? String(payload.sectionId).trim() : ''
+  if (sid && payload.sectionLabel != null && league.sections?.length) {
+    const sec = league.sections.find((s) => s.id === sid)
+    if (sec) sec.label = String(payload.sectionLabel).trim()
+  }
+
+  const did = payload.divisionId != null ? String(payload.divisionId).trim().toLowerCase() : ''
+  if (did && payload.divisionLabel != null) {
+    const { division } = getDivision(league, {
+      sectionId: league.sections?.length ? sid || null : null,
+      divisionId: did,
+    })
+    if (!division) throw new Error('Division not found')
+    division.label = String(payload.divisionLabel).trim()
+  }
+
+  saveLeague(leagueId, league)
+  return { ok: true }
+}
+
+export function addLeagueDivision(leagueId, { sectionId, divisionId, label }) {
+  const league = loadLeague(leagueId)
+  const lbl = String(label ?? '').trim()
+  const rawId = String(divisionId ?? '').trim().toLowerCase()
+  const did = rawId ? slugifyLeagueKey(rawId) : slugifyLeagueKey(lbl).slice(0, 48)
+  if (!did) throw new Error('Division id or label is required')
+
+  if (league.sections?.length) {
+    const sid = String(sectionId ?? '').trim()
+    const sec = league.sections.find((s) => s.id === sid)
+    if (!sec) throw new Error('Section not found')
+    const slots = inferTeamSlotCount(league, sid)
+    if (sec.divisions.some((d) => d.id === did)) throw new Error('Division id already exists')
+    sec.divisions.push({
+      id: did,
+      label: lbl || did,
+      teams: Array.from({ length: slots }, (_, i) => `Team ${i + 1}`),
+      results: { weeks: {} },
+    })
+  } else {
+    const slots = inferTeamSlotCount(league, null)
+    if (!league.divisions) league.divisions = []
+    if (league.divisions.some((d) => d.id === did)) throw new Error('Division id already exists')
+    const row = {
+      id: did,
+      label: lbl || did,
+      teams: Array.from({ length: slots }, (_, i) => `Team ${i + 1}`),
+      results: { weeks: {} },
+    }
+    const donorPlayDay = league.divisions.find((d) => d.playDay)?.playDay
+    if (donorPlayDay) row.playDay = donorPlayDay
+    league.divisions.push(row)
+  }
+
+  saveLeague(leagueId, league)
+  return { ok: true, divisionId: did }
+}
+
+export function addLeagueSection(leagueId, { sectionId, label, cloneScheduleFromSectionId }) {
+  const league = loadLeague(leagueId)
+
+  if (Array.isArray(league.divisions) && league.divisions.length && !league.sections?.length) {
+    throw new Error(
+      'This league uses top-level divisions only — convert it manually before adding sections.',
+    )
+  }
+
+  if (!league.sections) league.sections = []
+
+  const sid = slugifyLeagueKey(sectionId)
+  if (!sid) throw new Error('Section id is required')
+  if (league.sections.some((s) => s.id === sid)) throw new Error('Section id already exists')
+
+  let scheduleTemplate = []
+  const cloneSrc = String(cloneScheduleFromSectionId ?? '').trim()
+  const donor = league.sections.find((s) => s.id === cloneSrc)
+  if (donor?.scheduleTemplate?.length) {
+    scheduleTemplate = JSON.parse(JSON.stringify(donor.scheduleTemplate))
+  } else if (league.sections[0]?.scheduleTemplate?.length) {
+    scheduleTemplate = JSON.parse(JSON.stringify(league.sections[0].scheduleTemplate))
+  }
+
+  const slots = inferTeamSlotCountFromTemplate(scheduleTemplate)
+
+  league.sections.push({
+    id: sid,
+    label: String(label ?? '').trim() || sid,
+    scheduleTemplate,
+    divisions: [
+      {
+        id: 'a',
+        label: 'Division A',
+        teams: Array.from({ length: slots }, (_, i) => `Team ${i + 1}`),
+        results: { weeks: {} },
+      },
+    ],
+  })
+
+  saveLeague(leagueId, league)
+  return { ok: true, sectionId: sid }
+}
+
+export function createLeagueFromClone({ leagueId, name, cloneFromLeagueId }) {
+  const lid = slugifyLeagueKey(leagueId)
+  if (!lid) throw new Error('League id is required (use letters, numbers and hyphens)')
+  if (LEAGUE_FILES[lid]) throw new Error('That league id already exists')
+
+  const donorKey = String(cloneFromLeagueId ?? '').trim()
+  if (!donorKey || !LEAGUE_FILES[donorKey]) {
+    throw new Error('Pick an existing league to copy fixtures structure from')
+  }
+
+  const donor = loadLeague(donorKey)
+  const copy = JSON.parse(JSON.stringify(donor))
+  copy.id = lid
+  copy.name = String(name ?? '').trim() || lid
+
+  function resetDivision(div, sectionIdForSlots) {
+    const slots = inferTeamSlotCount(copy, sectionIdForSlots)
+    div.teams = Array.from({ length: slots }, (_, i) => `Team ${i + 1}`)
+    div.results = { weeks: {} }
+  }
+
+  if (copy.sections?.length) {
+    for (const sec of copy.sections) {
+      for (const div of sec.divisions ?? []) resetDivision(div, sec.id)
+    }
+  } else {
+    for (const div of copy.divisions ?? []) resetDivision(div, null)
+  }
+
+  const filename = `${lid}.json`
+  writeFileSync(join(DATA_DIR, filename), `${JSON.stringify(copy, null, 2)}\n`, 'utf8')
+
+  LEAGUE_FILES[lid] = filename
+  persistLeagueRegistry()
+  persistLeaguesNav()
+
+  return { ok: true, leagueId: lid }
 }
 
 export function getDivision(league, { sectionId, divisionId }) {
   if (league.sections) {
     const section = league.sections.find((s) => s.id === sectionId)
-    const division = section?.divisions.find((d) => d.id === divisionId)
+    const division = section?.divisions?.find((d) => d.id === divisionId)
     return { section, division }
   }
   const division = league.divisions?.find((d) => d.id === divisionId)
@@ -68,6 +417,83 @@ export function getDivisionFixtures(league, { sectionId, divisionId }) {
   return buildDivisionFixtures(league.scheduleTemplate, division.teams, getDate)
 }
 
+/**
+ * Fixtures for one week paired with editable fields from saved JSON.
+ * Order follows fixture sheet (home clubs as scheduled).
+ */
+export function getWeekEditableMatchRows(league, { sectionId, divisionId, week }) {
+  const { division } = getDivision(league, { sectionId, divisionId })
+  if (!division) throw new Error('Division not found')
+
+  const fixtures = getDivisionFixtures(league, { sectionId, divisionId })
+  const weekFx = fixtures.find((w) => String(w.week) === String(week))
+  const savedWeek = division.results?.weeks?.[String(week)] ?? []
+
+  /** @type {object[]} */
+  const rows = []
+  for (const m of weekFx?.matches ?? []) {
+    if (m.isBye || !m.away) continue
+
+    const saved = savedWeek.find(
+      (r) =>
+        r &&
+        ((r.home === m.home && r.away === m.away) ||
+          (r.home === m.away && r.away === m.home)),
+    )
+
+    let homePoints = ''
+    let awayPoints = ''
+    let homeShots = ''
+    let awayShots = ''
+    let homePlayersText = ''
+    let awayPlayersText = ''
+    let matchDate = ''
+    let rinkShotsJson = ''
+
+    if (saved) {
+      const flipped = saved.home === m.away && saved.away === m.home
+      const hs = flipped ? saved.awayShots : saved.homeShots
+      const asVal = flipped ? saved.homeShots : saved.awayShots
+
+      homeShots = Number.isFinite(hs) ? String(hs) : ''
+      awayShots = Number.isFinite(asVal) ? String(asVal) : ''
+
+      const hpSave = flipped ? saved.awayPoints : saved.homePoints
+      const apSave = flipped ? saved.homePoints : saved.awayPoints
+      if (Number.isFinite(hpSave)) homePoints = String(hpSave)
+      if (Number.isFinite(apSave)) awayPoints = String(apSave)
+
+      matchDate = saved.matchDate ?? ''
+      rinkShotsJson =
+        saved.rinkShots && Array.isArray(saved.rinkShots) && saved.rinkShots.length
+          ? JSON.stringify(saved.rinkShots)
+          : ''
+
+      if (saved.players && typeof saved.players === 'object') {
+        const hList = flipped ? saved.players.away : saved.players.home
+        const aList = flipped ? saved.players.home : saved.players.away
+        homePlayersText = Array.isArray(hList) ? hList.join('; ') : ''
+        awayPlayersText = Array.isArray(aList) ? aList.join('; ') : ''
+      }
+    }
+
+    rows.push({
+      home: m.home,
+      away: m.away,
+      homePoints,
+      awayPoints,
+      homeShots,
+      awayShots,
+      homePlayersText,
+      awayPlayersText,
+      matchDate,
+      rinkShotsJson,
+    })
+  }
+
+  return { fixtureWeekDate: weekFx?.date ?? null, matches: rows }
+}
+
 export function mergeWeekResults(league, { sectionId, divisionId, week, matches }) {
   const { division } = getDivision(league, { sectionId, divisionId })
   if (!division) throw new Error('Division not found')
@@ -81,12 +507,6 @@ export function mergeWeekResults(league, { sectionId, divisionId, week, matches 
 
   for (const incoming of matches) {
     if (!incoming?.home || !incoming?.away) continue
-    const homeShots = Number(incoming.homeShots)
-    const awayShots = Number(incoming.awayShots)
-    if (!Number.isFinite(homeShots) || !Number.isFinite(awayShots)) continue
-
-    const homePoints = Number(incoming.homePoints)
-    const awayPoints = Number(incoming.awayPoints)
 
     const idx = merged.findIndex(
       (r) =>
@@ -94,6 +514,20 @@ export function mergeWeekResults(league, { sectionId, divisionId, week, matches 
         ((r.home === incoming.home && r.away === incoming.away) ||
           (r.home === incoming.away && r.away === incoming.home)),
     )
+
+    if (incoming.clear) {
+      if (idx >= 0) merged.splice(idx, 1)
+      continue
+    }
+
+    const homeShots = Number(incoming.homeShots)
+    const awayShots = Number(incoming.awayShots)
+
+    if (!Number.isFinite(homeShots) || !Number.isFinite(awayShots)) continue
+
+    const homePoints = Number(incoming.homePoints)
+    const awayPoints = Number(incoming.awayPoints)
+
     const row = {
       home: incoming.home,
       away: incoming.away,
@@ -104,18 +538,37 @@ export function mergeWeekResults(league, { sectionId, divisionId, week, matches 
       row.homePoints = homePoints
       row.awayPoints = awayPoints
     }
-    if (incoming.players) row.players = incoming.players
+    if (incoming.players && typeof incoming.players === 'object') {
+      const h = incoming.players.home ?? []
+      const a = incoming.players.away ?? []
+      const hasPlayers =
+        (Array.isArray(h) && h.length > 0) || (Array.isArray(a) && a.length > 0)
+      if (hasPlayers) {
+        row.players = {
+          home: Array.isArray(h) ? h : [],
+          away: Array.isArray(a) ? a : [],
+        }
+      }
+    }
+    if (incoming.matchDate) row.matchDate = incoming.matchDate
+    if (incoming.rinkShots && Array.isArray(incoming.rinkShots) && incoming.rinkShots.length) {
+      row.rinkShots = incoming.rinkShots
+    }
     if (idx >= 0) merged[idx] = row
     else merged.push(row)
   }
 
   division.results.weeks[weekKey] = merged
 
-  const fixtures = applyResultsToFixtures(
-    getDivisionFixtures(league, { sectionId, divisionId }),
+  const fxWeeks = getDivisionFixtures(league, { sectionId, divisionId })
+  const fixtures = applyResultsToFixtures(fxWeeks, division.results.weeks)
+  const scheduledWeekKeys = new Set(fxWeeks.map((w) => String(w.week)))
+  const standings = computeStandingsFromResults(
+    division.teams,
     division.results.weeks,
+    scheduledWeekKeys,
+    division.standingsSeed ?? null,
   )
-  const standings = computeStandingsFromResults(division.teams, division.results.weeks)
 
   return { league, fixtures, standings, savedWeek: weekKey, matchCount: merged.length }
 }

@@ -6,6 +6,7 @@ import { CompetitionsPage } from './pages/CompetitionsPage'
 import { OfficersPage } from './pages/OfficersPage'
 import { RulesPage } from './pages/RulesPage'
 import { FormsPage } from './pages/FormsPage'
+import { WebFormPage } from './pages/WebFormPage'
 import { AdminPage } from './pages/AdminPage'
 import './App.css'
 
@@ -25,9 +26,11 @@ export default function App() {
           element={<LeaguesPage />}
         />
         <Route path="competitions" element={<CompetitionsPage />} />
+        <Route path="competitions/:compId" element={<CompetitionsPage />} />
         <Route path="officers" element={<OfficersPage />} />
         <Route path="rules" element={<RulesPage />} />
         <Route path="forms" element={<FormsPage />} />
+        <Route path="forms/:formId" element={<WebFormPage />} />
         <Route path="admin" element={<AdminPage />} />
       </Route>
     </Routes>

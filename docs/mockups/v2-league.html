@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  MOCKUP v2 — league page (Two Wood League example).
+  Match cards mirror the FotMob reference: team rows left, score column,
+  status block right behind a vertical hairline.
+  Static sketch only — linked from v2-home.html.
+-->
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mock v2 — Two Wood League</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --ink: #0a0a0a;
+      --ink-2: #52525b;
+      --ink-3: #a1a1aa;
+      --line: #e4e4e7;
+      --line-strong: #d4d4d8;
+      --panel: #fafafa;
+      --green: #00935f;
+      --blue: #2563eb;   /* this league's accent */
+      --accent: var(--blue);
+      --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', 'JetBrains Mono', Menlo, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    html { -webkit-font-smoothing: antialiased; }
+    body {
+      background: var(--bg); color: var(--ink);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 16px; line-height: 1.5;
+    }
+    a { color: inherit; text-decoration: none; }
+    .frame { max-width: 1080px; margin: 0 auto; border-left: 1px solid var(--line); border-right: 1px solid var(--line); min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* header (same system as home) */
+    header { display: flex; align-items: stretch; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--bg); z-index: 10; }
+    .brand { display: flex; align-items: center; gap: 12px; padding: 0 20px; height: 56px; border-right: 1px solid var(--line); flex-shrink: 0; }
+    .brand__mark { width: 26px; height: 26px; background: var(--ink); color: #fff; font-family: var(--mono); font-size: 11px; font-weight: 700; display: grid; place-items: center; }
+    .brand__name { font-size: 13px; font-weight: 600; line-height: 1.25; }
+    .brand__name small { display: block; font-family: var(--mono); font-size: 10px; font-weight: 400; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.12em; }
+    nav { display: flex; align-items: stretch; flex: 1; overflow-x: auto; scrollbar-width: none; }
+    nav::-webkit-scrollbar { display: none; }
+    nav a { display: flex; align-items: center; padding: 0 18px; font-size: 13.5px; font-weight: 500; color: var(--ink-2); border-right: 1px solid var(--line); white-space: nowrap; transition: background 0.12s, color 0.12s; }
+    nav a:hover { background: var(--panel); color: var(--ink); }
+    nav a.active { background: var(--ink); color: #fff; font-weight: 600; }
+    .hdr-util { margin-left: auto; display: flex; align-items: center; padding: 0 20px; border-left: 1px solid var(--line); font-family: var(--mono); font-size: 11px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.1em; }
+
+    /* league masthead */
+    .mast { padding: 36px 40px 0; border-bottom: 1px solid var(--line); }
+    .crumb { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); display: flex; gap: 8px; margin-bottom: 16px; }
+    .crumb a:hover { color: var(--ink); }
+    .mast__row { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+    .mast h1 { font-size: clamp(24px, 3.5vw, 34px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.1; padding-left: 14px; border-left: 4px solid var(--accent); }
+    .mast__sub { padding-left: 18px; margin-top: 6px; color: var(--ink-2); font-size: 14px; }
+    .days { display: flex; gap: 4px; padding-top: 6px; }
+    .day { width: 26px; height: 26px; display: grid; place-items: center; font-family: var(--mono); font-size: 10.5px; font-weight: 600; color: var(--ink-3); border: 1px solid var(--line); }
+    .day.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    /* division switcher — flush square segments */
+    .divs { display: flex; margin-top: 28px; border-top: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+    .divs::-webkit-scrollbar { display: none; }
+    .divs a {
+      padding: 12px 22px; font-size: 13.5px; font-weight: 500; color: var(--ink-2);
+      border-right: 1px solid var(--line); white-space: nowrap;
+      transition: background 0.12s, color 0.12s;
+      position: relative;
+    }
+    .divs a:first-child { border-left: 1px solid var(--line); }
+    .divs a:hover { background: var(--panel); color: var(--ink); }
+    .divs a.active { background: var(--ink); color: #fff; font-weight: 600; }
+
+    /* content tabs — quiet underline level */
+    .tabs { display: flex; gap: 28px; padding: 0 40px; border-bottom: 1px solid var(--line); }
+    .tabs a { padding: 14px 0 12px; font-size: 14px; font-weight: 500; color: var(--ink-2); border-bottom: 2px solid transparent; margin-bottom: -1px; }
+    .tabs a:hover { color: var(--ink); }
+    .tabs a.active { color: var(--ink); font-weight: 600; border-bottom-color: var(--ink); }
+
+    main { padding: 28px 40px 56px; display: flex; flex-direction: column; gap: 36px; }
+
+    /* round header */
+    .round-head { display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1px solid var(--line); padding-bottom: 10px; margin-bottom: 14px; }
+    .round-head h3 { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+    .round-head span { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-3); }
+
+    /* ── match cards: FotMob reference layout ── */
+    .match-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+    .match {
+      display: grid; grid-template-columns: 1fr 92px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      transition: border-color 0.12s;
+    }
+    .match:hover { border-color: var(--ink); }
+    .match__teams { padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+    .match__row { display: flex; align-items: center; gap: 10px; }
+    .match__dot { width: 8px; height: 8px; background: var(--line-strong); flex-shrink: 0; }
+    .match__row.win .match__dot { background: var(--green); }
+    .match__team { flex: 1; min-width: 0; font-size: 14.5px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--ink-2); }
+    .match__row.win .match__team { color: var(--ink); font-weight: 600; }
+    .match__score { font-family: var(--mono); font-size: 15px; font-weight: 600; color: var(--ink-2); }
+    .match__row.win .match__score { color: var(--ink); }
+    .match__status {
+      border-left: 1px solid var(--line);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+      padding: 8px;
+      text-align: center;
+    }
+    .match__when { font-size: 12.5px; font-weight: 600; }
+    .match__state { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3); }
+    .match--live .match__when { color: var(--green); }
+    .match--live .match__state { color: var(--green); }
+    .match--live { border-color: var(--green); }
+
+    /* ── table ── */
+    table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+    th, td { padding: 11px 12px; text-align: left; border-bottom: 1px solid var(--line); }
+    th { font-family: var(--mono); font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-3); padding-bottom: 8px; }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+    td.pos { font-family: var(--mono); font-size: 12.5px; color: var(--ink-3); width: 44px; position: relative; }
+    tr.q td.pos::before { content: ''; position: absolute; left: 0; top: 25%; bottom: 25%; width: 3px; background: var(--green); }
+    td.team { font-weight: 600; }
+    td.pts { font-weight: 700; font-variant-numeric: tabular-nums; }
+    tbody tr:hover { background: var(--panel); }
+    .table-note { margin-top: 10px; font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-3); display: flex; align-items: center; gap: 8px; }
+    .table-note::before { content: ''; width: 10px; height: 3px; background: var(--green); }
+
+    footer { margin-top: auto; border-top: 1px solid var(--line); padding: 20px 40px; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.1em; }
+
+    @media (max-width: 860px) {
+      .mast { padding: 24px 20px 0; }
+      .tabs, main, footer { padding-left: 20px; padding-right: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+
+    <header>
+      <a class="brand" href="v2-home.html">
+        <span class="brand__mark">IB</span>
+        <span class="brand__name">Ipswich &amp; District<small>Federation bowls</small></span>
+      </a>
+      <nav>
+        <a class="active" href="v2-home.html">Leagues</a>
+        <a href="#">Competitions</a>
+        <a href="#">Officers</a>
+        <a href="#">Rules</a>
+        <a href="#">Forms</a>
+      </nav>
+      <span class="hdr-util">2026</span>
+    </header>
+
+    <section class="mast">
+      <div class="crumb"><a href="v2-home.html">Leagues</a> <span>/</span> <span>Two Wood</span></div>
+      <div class="mast__row">
+        <div>
+          <h1>Two Wood League</h1>
+          <p class="mast__sub">Pairs · Tuesday &amp; Thursday evenings · 2026 season</p>
+        </div>
+        <span class="days">
+          <span class="day">M</span><span class="day on">T</span><span class="day">W</span><span class="day on">T</span><span class="day">F</span><span class="day">S</span><span class="day">S</span>
+        </span>
+      </div>
+      <div class="divs">
+        <a href="#">Div A</a>
+        <a href="#">Div B</a>
+        <a class="active" href="#">Div C</a>
+        <a href="#">Div D</a>
+        <a href="#">Div E</a>
+        <a href="#">Div F</a>
+        <a href="#">Div G</a>
+      </div>
+    </section>
+
+    <div class="tabs">
+      <a class="active" href="#">Fixtures &amp; results</a>
+      <a href="#">Table</a>
+      <a href="#">Overview</a>
+    </div>
+
+    <main>
+
+      <section>
+        <div class="round-head">
+          <h3>Round 9</h3>
+          <span>Tue 21 Jul</span>
+        </div>
+        <div class="match-grid">
+          <article class="match match--live">
+            <div class="match__teams">
+              <div class="match__row"><span class="match__dot"></span><span class="match__team">Bramford Road</span><span class="match__score">12</span></div>
+              <div class="match__row"><span class="match__dot"></span><span class="match__team">Rushmere St Andrew</span><span class="match__score">14</span></div>
+            </div>
+            <div class="match__status">
+              <span class="match__when">Today</span>
+              <span class="match__state">End 15</span>
+            </div>
+          </article>
+          <article class="match">
+            <div class="match__teams">
+              <div class="match__row win"><span class="match__dot"></span><span class="match__team">Kesgrave</span><span class="match__score">21</span></div>
+              <div class="match__row"><span class="match__dot"></span><span class="match__team">Whitton Sports</span><span class="match__score">13</span></div>
+            </div>
+            <div class="match__status">
+              <span class="match__when">Today</span>
+              <span class="match__state">Full time</span>
+            </div>
+          </article>
+          <article class="match">
+            <div class="match__teams">
+              <div class="match__row"><span class="match__dot"></span><span class="match__team">Henley</span><span class="match__score">9</span></div>
+              <div class="match__row win"><span class="match__dot"></span><span class="match__team">Martlesham Heath</span><span class="match__score">24</span></div>
+            </div>
+            <div class="match__status">
+              <span class="match__when">Today</span>
+              <span class="match__state">Full time</span>
+            </div>
+          </article>
+          <article class="match">
+            <div class="match__teams">
+              <div class="match__row"><span class="match__dot"></span><span class="match__team">Sproughton</span><span class="match__score">–</span></div>
+              <div class="match__row"><span class="match__dot"></span><span class="match__team">Claydon</span><span class="match__score">–</span></div>
+            </div>
+            <div class="match__status">
+              <span class="match__when">19:00</span>
+              <span class="match__state">Tue 28 Jul</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <div class="round-head">
+          <h3>Round 8</h3>
+          <span>Tue 14 Jul</span>
+        </div>
+        <div class="match-grid">
+          <article class="match">
+            <div class="match__teams">
+              <div class="match__row win"><span class="match__dot"></span><span class="match__team">Rushmere St Andrew</span><span class="match__score">18</span></div>
+              <div class="match__row"><span class="match__dot"></span><span class="match__team">Henley</span><span class="match__score">15</span></div>
+            </div>
+            <div class="match__status">
+              <span class="match__when">14 Jul</span>
+              <span class="match__state">Full time</span>
+            </div>
+          </article>
+          <article class="match">
+            <div class="match__teams">
+              <div class="match__row"><span class="match__dot"></span><span class="match__team">Whitton Sports</span><span class="match__score">11</span></div>
+              <div class="match__row win"><span class="match__dot"></span><span class="match__team">Bramford Road</span><span class="match__score">19</span></div>
+            </div>
+            <div class="match__status">
+              <span class="match__when">14 Jul</span>
+              <span class="match__state">Full time</span>
+            </div>
+          </article>
+          <article class="match">
+            <div class="match__teams">
+              <div class="match__row win"><span class="match__dot"></span><span class="match__team">Claydon</span><span class="match__score">22</span></div>
+              <div class="match__row"><span class="match__dot"></span><span class="match__team">Kesgrave</span><span class="match__score">17</span></div>
+            </div>
+            <div class="match__status">
+              <span class="match__when">14 Jul</span>
+              <span class="match__state">Full time</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <div class="round-head">
+          <h3>Table</h3>
+          <span>After round 8</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>Team</th>
+              <th class="num">P</th><th class="num">W</th><th class="num">L</th>
+              <th class="num">For</th><th class="num">Agst</th><th class="num">Pts</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="q"><td class="pos">1</td><td class="team">Martlesham Heath</td><td class="num">8</td><td class="num">7</td><td class="num">1</td><td class="num">148</td><td class="num">96</td><td class="num pts">14</td></tr>
+            <tr class="q"><td class="pos">2</td><td class="team">Rushmere St Andrew</td><td class="num">8</td><td class="num">6</td><td class="num">2</td><td class="num">139</td><td class="num">104</td><td class="num pts">12</td></tr>
+            <tr><td class="pos">3</td><td class="team">Kesgrave</td><td class="num">8</td><td class="num">5</td><td class="num">3</td><td class="num">131</td><td class="num">118</td><td class="num pts">10</td></tr>
+            <tr><td class="pos">4</td><td class="team">Bramford Road</td><td class="num">8</td><td class="num">4</td><td class="num">4</td><td class="num">122</td><td class="num">125</td><td class="num pts">8</td></tr>
+            <tr><td class="pos">5</td><td class="team">Claydon</td><td class="num">8</td><td class="num">3</td><td class="num">5</td><td class="num">117</td><td class="num">128</td><td class="num pts">6</td></tr>
+            <tr><td class="pos">6</td><td class="team">Whitton Sports</td><td class="num">8</td><td class="num">2</td><td class="num">6</td><td class="num">104</td><td class="num">139</td><td class="num pts">4</td></tr>
+            <tr><td class="pos">7</td><td class="team">Henley</td><td class="num">8</td><td class="num">2</td><td class="num">6</td><td class="num">98</td><td class="num">143</td><td class="num pts">4</td></tr>
+            <tr><td class="pos">8</td><td class="team">Sproughton</td><td class="num">8</td><td class="num">1</td><td class="num">7</td><td class="num">95</td><td class="num">151</td><td class="num pts">2</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note">Promotion places</p>
+      </section>
+
+    </main>
+
+    <footer>
+      <span>Ipswich &amp; District Federation</span>
+      <span>Est. 1921</span>
+    </footer>
+
+  </div>
+</body>
+</html>

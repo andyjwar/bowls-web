@@ -5,9 +5,9 @@ import { useTheme } from '../hooks/useTheme'
 const NAV = [
   { to: '/', label: 'Home', match: (p) => p === '/' },
   { to: '/leagues', label: 'Leagues', match: (p) => p.startsWith('/leagues') },
-  { to: '/competitions', label: 'Competitions (2026)', match: (p) => p.startsWith('/competitions') },
+  { to: '/competitions', label: 'Competitions', match: (p) => p.startsWith('/competitions') },
   { to: '/officers', label: 'League Officers', match: (p) => p.startsWith('/officers') },
-  { to: '/rules', label: 'Rules & Constitution', match: (p) => p.startsWith('/rules') },
+  { to: '/rules', label: 'Rules', match: (p) => p.startsWith('/rules') },
   { to: '/forms', label: 'Forms', match: (p) => p.startsWith('/forms') },
 ]
 
@@ -19,13 +19,13 @@ export function AppShell() {
     <div className="bowls-app" data-theme={theme}>
       <header className="site-header">
         <div className="site-header__inner">
-          <NavLink to="/" className="site-brand">
-            <span className="site-brand__title">Ipswich &amp; District Federation</span>
-            <span className="site-brand__sub">Bowls League</span>
+          <NavLink to="/" className="site-brand" aria-label="Home">
+            <img
+              className="site-brand__logo"
+              src={`${import.meta.env.BASE_URL}logo.png`}
+              alt="Ipswich & District Federation Bowls League"
+            />
           </NavLink>
-          <div className="site-header__actions">
-            <ThemeToggle value={theme} onChange={setTheme} />
-          </div>
           <nav className="site-nav" aria-label="Main">
             {NAV.map(({ to, label, match }) => {
               const active = match(pathname)
@@ -40,6 +40,9 @@ export function AppShell() {
               )
             })}
           </nav>
+          <div className="site-header__actions">
+            <ThemeToggle value={theme} onChange={setTheme} />
+          </div>
         </div>
       </header>
       <main className="site-main">

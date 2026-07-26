@@ -4,6 +4,19 @@ import {
   adminLogout,
   checkAdminSession,
   fetchAdminLeagues,
+  fetchAdminLeagueDocument,
+  saveAdminDivisionTeams,
+  saveAdminLeagueLabels,
+  addAdminLeagueDivision,
+  addAdminLeagueSection,
+  createAdminLeague,
+  fetchAdminRegisteredPlayers,
+  saveAdminRegisteredTeam,
+  seedAdminRegisteredPlayersFromLeague,
+  parseRegisteredPlayersText,
+  parseRegisteredPlayersFile,
+  fetchWeekResults,
+  importCsv,
   importScoreSheet,
   saveResults,
 } from '../lib/adminApi'
@@ -66,11 +79,177 @@ export function useAdmin() {
     }
   }, [])
 
+  const importCsvFile = useCallback(async (formData) => {
+    setBusy(true)
+    setError(null)
+    try {
+      const data = await importCsv(formData)
+      if (!data.ok) {
+        const msg = data.errors?.length
+          ? data.errors.join(' ')
+          : data.error || 'CSV import failed'
+        setError(msg)
+      }
+      return data
+    } catch (e) {
+      setError(e.message)
+      return { ok: false }
+    } finally {
+      setBusy(false)
+    }
+  }, [])
+
   const applyResults = useCallback(async (payload) => {
     setBusy(true)
     setError(null)
     try {
       return await saveResults(payload)
+    } catch (e) {
+      setError(e.message)
+      throw e
+    } finally {
+      setBusy(false)
+    }
+  }, [])
+
+  const loadWeekResults = useCallback(async (params) => {
+    setError(null)
+    try {
+      return await fetchWeekResults(params)
+    } catch (e) {
+      setError(e.message)
+      throw e
+    }
+  }, [])
+
+  const loadLeagueDocument = useCallback(async (leagueId) => {
+    setError(null)
+    try {
+      return await fetchAdminLeagueDocument(leagueId)
+    } catch (e) {
+      setError(e.message)
+      throw e
+    }
+  }, [])
+
+  const saveDivisionTeams = useCallback(async (leagueId, payload) => {
+    setBusy(true)
+    setError(null)
+    try {
+      return await saveAdminDivisionTeams(leagueId, payload)
+    } catch (e) {
+      setError(e.message)
+      throw e
+    } finally {
+      setBusy(false)
+    }
+  }, [])
+
+  const saveLeagueStructureLabels = useCallback(async (leagueId, payload) => {
+    setBusy(true)
+    setError(null)
+    try {
+      return await saveAdminLeagueLabels(leagueId, payload)
+    } catch (e) {
+      setError(e.message)
+      throw e
+    } finally {
+      setBusy(false)
+    }
+  }, [])
+
+  const addLeagueDivisionRequest = useCallback(async (leagueId, payload) => {
+    setBusy(true)
+    setError(null)
+    try {
+      return await addAdminLeagueDivision(leagueId, payload)
+    } catch (e) {
+      setError(e.message)
+      throw e
+    } finally {
+      setBusy(false)
+    }
+  }, [])
+
+  const addLeagueSectionRequest = useCallback(async (leagueId, payload) => {
+    setBusy(true)
+    setError(null)
+    try {
+      return await addAdminLeagueSection(leagueId, payload)
+    } catch (e) {
+      setError(e.message)
+      throw e
+    } finally {
+      setBusy(false)
+    }
+  }, [])
+
+  const createLeagueRequest = useCallback(async (payload) => {
+    setBusy(true)
+    setError(null)
+    try {
+      const out = await createAdminLeague(payload)
+      await loadLeagues()
+      return out
+    } catch (e) {
+      setError(e.message)
+      throw e
+    } finally {
+      setBusy(false)
+    }
+  }, [loadLeagues])
+
+  const loadRegisteredPlayersMap = useCallback(async () => {
+    setError(null)
+    try {
+      return await fetchAdminRegisteredPlayers()
+    } catch (e) {
+      setError(e.message)
+      throw e
+    }
+  }, [])
+
+  const saveRegisteredTeamSheet = useCallback(async (payload) => {
+    setBusy(true)
+    setError(null)
+    try {
+      return await saveAdminRegisteredTeam(payload)
+    } catch (e) {
+      setError(e.message)
+      throw e
+    } finally {
+      setBusy(false)
+    }
+  }, [])
+
+  const seedRegisteredPlayersFromLeague = useCallback(async (lid) => {
+    setError(null)
+    try {
+      return await seedAdminRegisteredPlayersFromLeague(lid)
+    } catch (e) {
+      setError(e.message)
+      throw e
+    }
+  }, [])
+
+  const parseRegisteredTeamListText = useCallback(async (text) => {
+    setBusy(true)
+    setError(null)
+    try {
+      return await parseRegisteredPlayersText(text)
+    } catch (e) {
+      setError(e.message)
+      throw e
+    } finally {
+      setBusy(false)
+    }
+  }, [])
+
+  const parseRegisteredTeamListFile = useCallback(async (formData) => {
+    setBusy(true)
+    setError(null)
+    try {
+      return await parseRegisteredPlayersFile(formData)
     } catch (e) {
       setError(e.message)
       throw e
@@ -89,7 +268,21 @@ export function useAdmin() {
       login,
       logout,
       importFile,
+      importCsvFile,
       applyResults,
+      loadWeekResults,
+      loadLeagues,
+      loadLeagueDocument,
+      saveDivisionTeams,
+      saveLeagueStructureLabels,
+      addLeagueDivision: addLeagueDivisionRequest,
+      addLeagueSection: addLeagueSectionRequest,
+      createLeague: createLeagueRequest,
+      loadRegisteredPlayersMap,
+      saveRegisteredTeamSheet,
+      seedRegisteredPlayersFromLeague,
+      parseRegisteredTeamListText,
+      parseRegisteredTeamListFile,
       setError,
     }),
     [
@@ -101,7 +294,21 @@ export function useAdmin() {
       login,
       logout,
       importFile,
+      importCsvFile,
       applyResults,
+      loadWeekResults,
+      loadLeagues,
+      loadLeagueDocument,
+      saveDivisionTeams,
+      saveLeagueStructureLabels,
+      addLeagueDivisionRequest,
+      addLeagueSectionRequest,
+      createLeagueRequest,
+      loadRegisteredPlayersMap,
+      saveRegisteredTeamSheet,
+      seedRegisteredPlayersFromLeague,
+      parseRegisteredTeamListText,
+      parseRegisteredTeamListFile,
     ],
   )
 }

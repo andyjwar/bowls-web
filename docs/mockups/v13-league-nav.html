@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>League nav v13 — menu options</title>
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --card: #ffffff;
+    --border: #e3e6ea;
+    --row-hi: #f2f4f6;
+    --text: #3a4048;
+    --text-strong: #14181d;
+    --muted: #6b7280;
+    --green: #256e3d;
+    --green-soft: rgba(37, 110, 61, 0.1);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  h1 { font-size: 1.5rem; letter-spacing: -0.02em; color: var(--text-strong); margin: 0 0 0.4rem; }
+  .lead { margin: 0 0 1rem; color: var(--muted); font-size: 0.95rem; }
+  .opt { margin: 3rem 0 0; padding-top: 2rem; border-top: 1px solid var(--border); }
+  .opt__tag {
+    display: inline-block; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em;
+    text-transform: uppercase; color: #fff; background: var(--text-strong); padding: 4px 10px; margin: 0 0 0.5rem;
+  }
+  .opt__title { font-size: 1.05rem; font-weight: 800; color: var(--text-strong); margin: 0 0 0.25rem; letter-spacing: -0.01em; }
+  .opt__note { margin: 0 0 1.25rem; font-size: 0.88rem; color: var(--muted); max-width: 44rem; }
+  .frame { background: var(--card); border: 1px solid var(--border); padding: 1.4rem 1.5rem 1.6rem; }
+
+  /* table stub */
+  .stub { margin-top: 1.4rem; }
+  .stub__row { display: flex; justify-content: space-between; padding: 0.65rem 0.25rem; border-top: 1px solid var(--border); font-size: 0.9rem; }
+  .stub__row b { color: var(--text-strong); font-weight: 650; }
+  .stub__row span { color: var(--muted); }
+
+  /* ------- shared pieces ------- */
+  .seg { display: inline-flex; border: 1px solid var(--border); }
+  .seg button {
+    appearance: none; border: none; background: var(--card); font: inherit; cursor: pointer;
+    padding: 8px 16px; font-size: 0.9rem; font-weight: 650; color: var(--text);
+  }
+  .seg button + button { border-left: 1px solid var(--border); }
+  .seg button.on { background: var(--green); color: #fff; }
+
+  .tabs { display: flex; gap: 1.4rem; border-bottom: 1px solid var(--border); }
+  .tabs a {
+    padding: 0.55rem 2px 0.6rem; font-size: 0.92rem; font-weight: 600; color: var(--muted);
+    text-decoration: none; border-bottom: 3px solid transparent; margin-bottom: -1px;
+  }
+  .tabs a.on { color: var(--text-strong); font-weight: 750; border-bottom-color: var(--green); }
+
+  .letters { display: flex; gap: 6px; }
+  .letters button {
+    appearance: none; font: inherit; cursor: pointer; width: 38px; height: 38px;
+    display: grid; place-items: center; background: var(--row-hi); border: none;
+    font-size: 0.95rem; font-weight: 750; color: var(--text);
+  }
+  .letters button.on { background: var(--green); color: #fff; }
+
+  /* A: everything underline */
+  .rowA + .rowA { margin-top: 0.1rem; }
+  .tabs--lg a { font-size: 1rem; padding-top: 0; }
+  .tabs--sub a { font-size: 0.88rem; }
+
+  /* C: toolbar split */
+  .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+
+  /* D: banner-integrated */
+  .band { background: var(--green); margin: -1.4rem -1.5rem 0; padding: 1.2rem 1.5rem 0; color: #fff; }
+  .band__title { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 0.9rem; }
+  .band .tabs { border-bottom: none; gap: 0.25rem; }
+  .band .tabs a {
+    color: rgba(255,255,255,0.75); border-bottom: none; margin-bottom: 0;
+    padding: 0.55rem 0.9rem 0.65rem; font-weight: 650;
+  }
+  .band .tabs a.on { color: var(--green); background: var(--card); font-weight: 750; }
+  .below-band { padding-top: 1.1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>League page — menu options</h1>
+  <p class="lead">Four ways to tidy the section / division / view stack. All shown for Samford, Division B, Table.</p>
+
+  <!-- A -->
+  <div class="opt">
+    <span class="opt__tag">Option A</span>
+    <p class="opt__title">One language: underline tabs, three sizes</p>
+    <p class="opt__note">Every row is the same control — underline tabs — just stepping down in size. Tight vertical rhythm, nothing competing.</p>
+    <div class="frame">
+      <div class="rowA">
+        <nav class="tabs tabs--lg">
+          <a href="#" class="on">Monday Evening</a>
+          <a href="#">Wednesday Afternoon</a>
+        </nav>
+      </div>
+      <div class="rowA" style="margin-top: 0.9rem;">
+        <nav class="tabs">
+          <a href="#">Division A</a><a href="#" class="on">Division B</a><a href="#">Division C</a><a href="#">Division D</a><a href="#">Division E</a>
+        </nav>
+      </div>
+      <div class="rowA" style="margin-top: 0.9rem;">
+        <nav class="tabs tabs--sub">
+          <a href="#" class="on">Table</a><a href="#">Results</a><a href="#">Fixtures</a>
+        </nav>
+      </div>
+      <div class="stub">
+        <div class="stub__row"><b>1&nbsp;&nbsp;Bealings</b><span>— pts</span></div>
+        <div class="stub__row"><b>2&nbsp;&nbsp;Bentley</b><span>— pts</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B -->
+  <div class="opt">
+    <span class="opt__tag">Option B</span>
+    <p class="opt__title">Letter squares for divisions</p>
+    <p class="opt__note">Divisions become single-letter squares — compact, obvious, and very tappable. Section stays segmented, views stay underlined. One row each, close together.</p>
+    <div class="frame">
+      <div class="seg">
+        <button class="on">Monday Evening</button>
+        <button>Wednesday Afternoon</button>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; margin-top: 0.9rem;">
+        <span style="font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Division</span>
+        <div class="letters">
+          <button>A</button><button class="on">B</button><button>C</button><button>D</button><button>E</button>
+        </div>
+      </div>
+      <nav class="tabs" style="margin-top: 1rem;">
+        <a href="#" class="on">Table</a><a href="#">Results</a><a href="#">Fixtures</a>
+      </nav>
+      <div class="stub">
+        <div class="stub__row"><b>1&nbsp;&nbsp;Bealings</b><span>— pts</span></div>
+        <div class="stub__row"><b>2&nbsp;&nbsp;Bentley</b><span>— pts</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- C -->
+  <div class="opt">
+    <span class="opt__tag">Option C</span>
+    <p class="opt__title">Two-line toolbar</p>
+    <p class="opt__note">Section and view share one line (section left, view right); divisions get their own row of letter squares beneath. Shortest stack — the table starts sooner.</p>
+    <div class="frame">
+      <div class="toolbar">
+        <div class="seg">
+          <button class="on">Monday Evening</button>
+          <button>Wednesday Afternoon</button>
+        </div>
+        <div class="seg">
+          <button class="on">Table</button>
+          <button>Results</button>
+          <button>Fixtures</button>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; margin-top: 0.8rem;">
+        <div class="letters">
+          <button>A</button><button class="on">B</button><button>C</button><button>D</button><button>E</button>
+        </div>
+      </div>
+      <div class="stub">
+        <div class="stub__row"><b>1&nbsp;&nbsp;Bealings</b><span>— pts</span></div>
+        <div class="stub__row"><b>2&nbsp;&nbsp;Bentley</b><span>— pts</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- D -->
+  <div class="opt">
+    <span class="opt__tag">Option D</span>
+    <p class="opt__title">Sections live in the banner</p>
+    <p class="opt__note">Monday / Wednesday become white tabs sitting on the bottom edge of the green league banner — the big choice is made where the league name is. Below: division letters left, view tabs right.</p>
+    <div class="frame">
+      <div class="band">
+        <p class="band__title">Samford League</p>
+        <nav class="tabs">
+          <a href="#" class="on">Monday Evening</a>
+          <a href="#">Wednesday Afternoon</a>
+        </nav>
+      </div>
+      <div class="below-band">
+        <div class="letters">
+          <button>A</button><button class="on">B</button><button>C</button><button>D</button><button>E</button>
+        </div>
+        <nav class="tabs" style="border-bottom:none;">
+          <a href="#" class="on">Table</a><a href="#">Results</a><a href="#">Fixtures</a>
+        </nav>
+      </div>
+      <div class="stub">
+        <div class="stub__row"><b>1&nbsp;&nbsp;Bealings</b><span>— pts</span></div>
+        <div class="stub__row"><b>2&nbsp;&nbsp;Bentley</b><span>— pts</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

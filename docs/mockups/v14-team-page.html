@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Team pages v14 — options</title>
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --card: #ffffff;
+    --border: #e3e6ea;
+    --row-hi: #f2f4f6;
+    --text: #3a4048;
+    --text-strong: #14181d;
+    --muted: #6b7280;
+    --green: #256e3d;
+    --green-soft: rgba(37, 110, 61, 0.12);
+    --red-soft: rgba(126, 48, 64, 0.1);
+    --oxblood: #7e3040;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  h1 { font-size: 1.5rem; letter-spacing: -0.02em; color: var(--text-strong); margin: 0 0 0.4rem; }
+  .lead { margin: 0 0 1rem; color: var(--muted); font-size: 0.95rem; }
+  .opt { margin: 3rem 0 0; padding-top: 2rem; border-top: 1px solid var(--border); }
+  .opt__tag {
+    display: inline-block; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em;
+    text-transform: uppercase; color: #fff; background: var(--text-strong); padding: 4px 10px; margin: 0 0 0.5rem;
+  }
+  .opt__title { font-size: 1.05rem; font-weight: 800; color: var(--text-strong); margin: 0 0 0.25rem; letter-spacing: -0.01em; }
+  .opt__note { margin: 0 0 1.25rem; font-size: 0.88rem; color: var(--muted); max-width: 44rem; }
+  .frame { background: var(--card); border: 1px solid var(--border); padding: 1.3rem 1.4rem 1.5rem; }
+
+  /* ---------- entry point: standings ---------- */
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  th { text-align: left; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding: 0.5rem 0.4rem; border-bottom: 1px solid var(--border); }
+  td { padding: 0.7rem 0.4rem; border-bottom: 1px solid var(--border); }
+  tr.lead-row { background: var(--green-soft); }
+  tr.lead-row .pos { color: var(--green); font-weight: 800; }
+  .pos { width: 2rem; color: var(--muted); font-weight: 600; }
+  td.num { text-align: center; color: var(--muted); }
+  .teamlink { color: var(--text-strong); font-weight: 650; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+  .teamlink::after { content: '›'; color: var(--green); font-weight: 800; opacity: 0; transition: opacity .12s, transform .12s; }
+  .teamlink:hover { color: var(--green); }
+  .teamlink:hover::after { opacity: 1; }
+
+  /* ---------- team banner ---------- */
+  .tban { background: var(--green); color: #fff; padding: 1.2rem 1.4rem 1.3rem; margin: -1.3rem -1.4rem 1.2rem; }
+  .tban__back { display: inline-block; background: #fff; color: var(--green); font-size: 0.8rem; font-weight: 700; padding: 0.4rem 0.75rem; text-decoration: none; margin-bottom: 0.7rem; }
+  .tban__name { margin: 0; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em; }
+  .tban__meta { margin: 0.25rem 0 0; font-size: 0.88rem; font-weight: 600; opacity: 0.85; }
+  .tban__chips { display: flex; gap: 8px; margin-top: 0.85rem; flex-wrap: wrap; }
+  .tban__chip { background: rgba(255,255,255,0.14); padding: 6px 12px; font-size: 0.82rem; font-weight: 700; }
+  .tban__chip b { font-weight: 800; }
+
+  /* ---------- match rows ---------- */
+  .mrow {
+    display: grid; grid-template-columns: 3.4rem 1fr auto; align-items: center; gap: 0.9rem;
+    padding: 0.65rem 0.75rem; border-bottom: 1px solid var(--border); background: var(--card);
+  }
+  .mrow:last-child { border-bottom: none; }
+  .mrow__date { font-size: 0.76rem; font-weight: 700; color: var(--muted); text-transform: uppercase; line-height: 1.25; }
+  .mrow__teams { display: flex; flex-direction: column; gap: 2px; font-size: 0.92rem; }
+  .mrow__teams .win { font-weight: 750; color: var(--text-strong); }
+  .mrow__scores { display: flex; flex-direction: column; gap: 2px; align-items: flex-end; font-variant-numeric: tabular-nums; font-size: 0.95rem; }
+  .mrow__scores .win { background: var(--green-soft); color: var(--green); font-weight: 800; padding: 0 0.4rem; }
+  .badge { font-size: 0.68rem; font-weight: 800; padding: 3px 7px; }
+  .badge--w { background: var(--green-soft); color: var(--green); }
+  .badge--l { background: var(--red-soft); color: var(--oxblood); }
+  .mrow--up .mrow__teams { color: var(--text); }
+  .mrow__venue { font-size: 0.8rem; color: var(--muted); font-weight: 600; }
+  .mrow--next { border: 2px solid var(--green); }
+  .nexttag { font-size: 0.66rem; font-weight: 800; letter-spacing: 0.1em; color: #fff; background: var(--green); padding: 3px 7px; }
+
+  .divider { display: flex; align-items: center; gap: 10px; margin: 1.1rem 0 0.6rem; }
+  .divider span { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase; color: var(--green); }
+  .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .seclabel { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); margin: 1.2rem 0 0.5rem; }
+  .listbox { border: 1px solid var(--border); }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 640px) { .cols { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Team pages — how they could work</h1>
+  <p class="lead">Entry point first, then three ways a team's results and fixtures can live on one page.</p>
+
+  <!-- ENTRY -->
+  <div class="opt">
+    <span class="opt__tag">Entry point</span>
+    <p class="opt__title">Team names in the table are links</p>
+    <p class="opt__note">Names keep their weight but act as links — hovering shows a green chevron so it's obviously clickable. Tapping goes straight to the team's page. (Match cards' team names could link the same way.)</p>
+    <div class="frame">
+      <table>
+        <tr><th>#</th><th>Team</th><th style="text-align:center;">P</th><th style="text-align:center;">Points</th></tr>
+        <tr class="lead-row"><td class="pos">1</td><td><a href="#" class="teamlink">Kirton A</a></td><td class="num">4</td><td class="num"><b>8</b></td></tr>
+        <tr><td class="pos">2</td><td><a href="#" class="teamlink">Waldringfield Swans</a></td><td class="num">4</td><td class="num"><b>6</b></td></tr>
+        <tr><td class="pos">3</td><td><a href="#" class="teamlink">Westerfield Yellows</a></td><td class="num">4</td><td class="num"><b>5</b></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- OPTION A -->
+  <div class="opt">
+    <span class="opt__tag">Option A</span>
+    <p class="opt__title">One season timeline, "up next" divider</p>
+    <p class="opt__note">Everything in one chronological list: played matches at the top with scores and W/L badges, then a clear green divider, then what's still to come — the very next match outlined. No tabs, nothing to learn; you scroll the season.</p>
+    <div class="frame">
+      <div class="tban">
+        <a class="tban__back" href="#">← Division B table</a>
+        <h2 class="tban__name">Kirton A</h2>
+        <p class="tban__meta">Samford · Monday Evening · Division B</p>
+        <div class="tban__chips">
+          <span class="tban__chip"><b>1st</b> of 8</span>
+          <span class="tban__chip">Played <b>4</b></span>
+          <span class="tban__chip">Won <b>3</b></span>
+          <span class="tban__chip">Lost <b>1</b></span>
+        </div>
+      </div>
+
+      <div class="listbox">
+        <div class="mrow">
+          <span class="mrow__date">Mon<br>4 May</span>
+          <span class="mrow__teams"><span class="win">Kirton A</span><span>Bealings</span></span>
+          <span class="mrow__scores"><span class="win">64</span><span>48</span></span>
+        </div>
+        <div class="mrow">
+          <span class="mrow__date">Mon<br>11 May</span>
+          <span class="mrow__teams"><span>Bentley</span><span class="win">Kirton A</span></span>
+          <span class="mrow__scores"><span>52</span><span class="win">61</span></span>
+        </div>
+        <div class="mrow">
+          <span class="mrow__date">Mon<br>18 May</span>
+          <span class="mrow__teams"><span class="win">California</span><span>Kirton A</span></span>
+          <span class="mrow__scores"><span class="win">70</span><span>55</span></span>
+        </div>
+      </div>
+
+      <div class="divider"><span>Up next</span></div>
+
+      <div class="listbox">
+        <div class="mrow mrow--next">
+          <span class="mrow__date">Mon<br>1 Jun</span>
+          <span class="mrow__teams"><span>Kirton A</span><span>Capel Kites</span></span>
+          <span class="nexttag">NEXT</span>
+        </div>
+        <div class="mrow mrow--up">
+          <span class="mrow__date">Mon<br>8 Jun</span>
+          <span class="mrow__teams"><span>Kesgrave Blues</span><span>Kirton A</span></span>
+          <span class="mrow__venue">Away</span>
+        </div>
+        <div class="mrow mrow--up">
+          <span class="mrow__date">Mon<br>15 Jun</span>
+          <span class="mrow__teams"><span>Kirton A</span><span>Sproughton Reds</span></span>
+          <span class="mrow__venue">Home</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTION B -->
+  <div class="opt">
+    <span class="opt__tag">Option B</span>
+    <p class="opt__title">Next match pinned, then two labelled sections</p>
+    <p class="opt__note">The next match gets a big outlined card right under the banner (that's the #1 question a player has). Below it, "Results" and "Fixtures" are separate, clearly-labelled stacks — same info as A but grouped rather than one stream.</p>
+    <div class="frame">
+      <div class="tban">
+        <a class="tban__back" href="#">← Division B table</a>
+        <h2 class="tban__name">Kirton A</h2>
+        <p class="tban__meta">Samford · Monday Evening · Division B</p>
+      </div>
+
+      <div class="listbox" style="border:2px solid var(--green);">
+        <div class="mrow" style="border-bottom:none;">
+          <span class="mrow__date">Mon<br>1 Jun</span>
+          <span class="mrow__teams"><span><b>Kirton A</b> v Capel Kites</span><span class="mrow__venue">Home · 6:15pm</span></span>
+          <span class="nexttag">NEXT MATCH</span>
+        </div>
+      </div>
+
+      <p class="seclabel">Results</p>
+      <div class="listbox">
+        <div class="mrow">
+          <span class="mrow__date">Mon<br>18 May</span>
+          <span class="mrow__teams"><span class="win">California</span><span>Kirton A</span></span>
+          <span class="mrow__scores"><span class="win">70</span><span>55</span></span>
+        </div>
+        <div class="mrow">
+          <span class="mrow__date">Mon<br>11 May</span>
+          <span class="mrow__teams"><span>Bentley</span><span class="win">Kirton A</span></span>
+          <span class="mrow__scores"><span>52</span><span class="win">61</span></span>
+        </div>
+      </div>
+
+      <p class="seclabel">Fixtures</p>
+      <div class="listbox">
+        <div class="mrow mrow--up">
+          <span class="mrow__date">Mon<br>8 Jun</span>
+          <span class="mrow__teams"><span>Kesgrave Blues</span><span>Kirton A</span></span>
+          <span class="mrow__venue">Away</span>
+        </div>
+        <div class="mrow mrow--up">
+          <span class="mrow__date">Mon<br>15 Jun</span>
+          <span class="mrow__teams"><span>Kirton A</span><span>Sproughton Reds</span></span>
+          <span class="mrow__venue">Home</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTION C -->
+  <div class="opt">
+    <span class="opt__tag">Option C</span>
+    <p class="opt__title">Side-by-side columns (desktop)</p>
+    <p class="opt__note">Results on the left, fixtures on the right, so the whole season is visible without scrolling. Collapses to stacked sections (Option B) on phones. Densest; a bit more to take in.</p>
+    <div class="frame">
+      <div class="tban">
+        <a class="tban__back" href="#">← Division B table</a>
+        <h2 class="tban__name">Kirton A</h2>
+        <p class="tban__meta">Samford · Monday Evening · Division B</p>
+      </div>
+      <div class="cols">
+        <div>
+          <p class="seclabel" style="margin-top:0;">Results</p>
+          <div class="listbox">
+            <div class="mrow">
+              <span class="mrow__date">18 May</span>
+              <span class="mrow__teams"><span class="win">California</span><span>Kirton A</span></span>
+              <span class="mrow__scores"><span class="win">70</span><span>55</span></span>
+            </div>
+            <div class="mrow">
+              <span class="mrow__date">11 May</span>
+              <span class="mrow__teams"><span>Bentley</span><span class="win">Kirton A</span></span>
+              <span class="mrow__scores"><span>52</span><span class="win">61</span></span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p class="seclabel" style="margin-top:0;">Fixtures</p>
+          <div class="listbox">
+            <div class="mrow mrow--next">
+              <span class="mrow__date">1 Jun</span>
+              <span class="mrow__teams"><span>Kirton A</span><span>Capel Kites</span></span>
+              <span class="nexttag">NEXT</span>
+            </div>
+            <div class="mrow mrow--up">
+              <span class="mrow__date">8 Jun</span>
+              <span class="mrow__teams"><span>Kesgrave Blues</span><span>Kirton A</span></span>
+              <span class="mrow__venue">Away</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

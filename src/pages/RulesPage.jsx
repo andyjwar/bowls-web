@@ -1,25 +1,24 @@
 import { useState } from 'react'
 import { RULES_SECTIONS } from '../data/rulesContent'
 
-function RulesPillNav({ sections, activeId, onSelect }) {
+function RulesSectionCards({ sections, activeId, onSelect }) {
   return (
-    <nav className="pill-nav rules-pills" aria-label="Rules sections">
-      <div className="pill-nav__scroll">
-        {sections.map((section) => {
-          const active = section.id === activeId
-          return (
-            <button
-              key={section.id}
-              type="button"
-              className={`pill-nav__btn${active ? ' pill-nav__btn--active' : ''}`}
-              aria-current={active ? 'true' : undefined}
-              onClick={() => onSelect(section.id)}
-            >
-              {section.label}
-            </button>
-          )
-        })}
-      </div>
+    <nav className="rules-cards" aria-label="Rules sections">
+      {sections.map((section, index) => {
+        const active = section.id === activeId
+        return (
+          <button
+            key={section.id}
+            type="button"
+            className={`rules-card${active ? ' rules-card--active' : ''}`}
+            aria-current={active ? 'true' : undefined}
+            onClick={() => onSelect(section.id)}
+          >
+            <span className="rules-card__num">{String(index + 1).padStart(2, '0')}</span>
+            <span className="rules-card__label">{section.label}</span>
+          </button>
+        )
+      })}
     </nav>
   )
 }
@@ -69,23 +68,20 @@ export function RulesPage() {
     RULES_SECTIONS.find((s) => s.id === activeId) ?? RULES_SECTIONS[0]
 
   return (
-    <div className="page">
-      <section className="tile">
-        <p className="rules-page__kicker">Ipswich &amp; District Federation Bowls League</p>
-        <h1 className="page-title">Rules &amp; Constitution</h1>
-        <p className="page-lead">
-          Standing orders, playing rules and league constitution (updated January 2025).
-        </p>
-        <RulesPillNav
-          sections={RULES_SECTIONS}
-          activeId={activeId}
-          onSelect={setActiveId}
-        />
-      </section>
+    <div className="page page--rules">
+      <header className="page-head page-head--hub">
+        <h1 className="page-head__title page-head__title--xl">Rules</h1>
+      </header>
 
-      <section className="tile rules-panel">
+      <RulesSectionCards
+        sections={RULES_SECTIONS}
+        activeId={activeId}
+        onSelect={setActiveId}
+      />
+
+      <div className="rules-panel">
         <RulesSectionContent section={activeSection} />
-      </section>
+      </div>
     </div>
   )
 }

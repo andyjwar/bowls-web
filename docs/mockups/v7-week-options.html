@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- v7 — Tile 2 (poster) locked. Four alternative "this week" treatments. -->
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Week view — rethink options</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #131417;
+      --ink-2: #66696e;
+      --ink-3: #a9acb0;
+      --line: #e7e7e4;
+      --paper: #fafaf8;
+      --green: #00a86b;
+      --blue: #2f6bff;
+      --coral: #ff5c37;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; padding-bottom: 140px; }
+    a { color: inherit; text-decoration: none; }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 0 28px; }
+
+    .intro { padding: 56px 0 8px; }
+    .intro h1 { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; }
+    .intro p { color: var(--ink-2); margin-top: 8px; max-width: 60ch; }
+
+    .spec { margin: 56px 0 16px; display: flex; align-items: baseline; gap: 14px; }
+    .spec__num { font-size: 13px; font-weight: 800; background: var(--ink); color: #fff; padding: 3px 10px; }
+    .spec__name { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+    .spec__note { font-size: 13px; color: var(--ink-3); }
+
+    /* locked poster tiles */
+    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
+    @media (max-width: 760px) { .grid3 { grid-template-columns: 1fr; } }
+    .t2 {
+      aspect-ratio: 1.45; display: flex; flex-direction: column; padding: 24px;
+      background: var(--c); color: #fff;
+      transition: filter .12s, transform .15s; position: relative;
+    }
+    .t2:hover { filter: brightness(1.07); transform: translateY(-3px); }
+    .t2__name { font-size: clamp(22px, 2.8vw, 28px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.08; }
+    .t2__days { margin-top: 8px; font-size: 15px; font-weight: 700; opacity: .92; }
+    .t2__sub { margin-top: auto; font-size: 12.5px; opacity: .7; }
+    .t2 svg { position: absolute; right: 22px; bottom: 22px; opacity: .85; transition: transform .15s; }
+    .t2:hover svg { transform: translateX(4px); }
+
+    /* ===== W1: none — just a "next match day" line ===== */
+    .nextline {
+      display: flex; align-items: center; gap: 12px;
+      border: 1px solid var(--line); background: #fff;
+      padding: 16px 20px; font-size: 14.5px;
+    }
+    .nextline b { font-weight: 700; }
+    .nextline i { width: 9px; height: 9px; background: var(--green); display: inline-block; }
+    .nextline a { margin-left: auto; font-weight: 700; font-size: 13.5px; color: var(--green); }
+
+    /* ===== W2: tonight card ===== */
+    .tonight {
+      background: #131518; color: #f2f3f4;
+      padding: 24px; display: flex; align-items: center; gap: 24px;
+    }
+    .tonight__label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .14em; color: var(--green); }
+    .tonight__what { font-size: clamp(19px, 2.6vw, 24px); font-weight: 800; letter-spacing: -0.025em; margin-top: 4px; }
+    .tonight__sub { font-size: 13px; color: #9ba1a7; margin-top: 3px; }
+    .tonight__go {
+      margin-left: auto; display: inline-flex; align-items: center; gap: 8px;
+      background: var(--green); color: #0c0f12;
+      padding: 11px 18px; font-size: 13.5px; font-weight: 700;
+      transition: filter .12s;
+    }
+    .tonight__go:hover { filter: brightness(1.1); }
+
+    /* ===== W3: date carousel (fotmob) ===== */
+    .caro { display: flex; border: 1px solid var(--line); background: #fff; overflow-x: auto; }
+    .caro a {
+      flex: 1 0 90px; text-align: center; padding: 12px 0 14px;
+      border-right: 1px solid var(--line); position: relative;
+      transition: background .12s;
+    }
+    .caro a:last-child { border-right: none; }
+    .caro a:hover { background: var(--paper); }
+    .caro .dw { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-3); }
+    .caro .dn { font-size: 17px; font-weight: 800; margin-top: 2px; }
+    .caro .tag { display: block; margin: 7px auto 0; font-size: 10.5px; font-weight: 700; color: #fff; background: var(--c); width: fit-content; padding: 2px 8px; }
+    .caro .tag--none { background: transparent; color: var(--ink-3); font-weight: 600; }
+    .caro .on { background: #131518; color: #fff; }
+    .caro .on .dw { color: #9ba1a7; }
+    .caro .on:hover { background: #131518; }
+
+    /* ===== W4: results pulse ===== */
+    .pulse { border: 1px solid var(--line); background: #fff; }
+    .pulse__row { display: flex; align-items: center; gap: 14px; padding: 14px 20px; border-bottom: 1px solid var(--line); font-size: 14px; }
+    .pulse__row:last-child { border-bottom: none; }
+    .pulse__dot { width: 8px; height: 8px; background: var(--c); flex: none; }
+    .pulse__txt b { font-weight: 700; }
+    .pulse__meta { margin-left: auto; font-size: 12px; color: var(--ink-3); white-space: nowrap; }
+    .pulse__more { display: block; text-align: center; padding: 12px; font-size: 13px; font-weight: 700; color: var(--ink-2); background: var(--paper); }
+    .pulse__more:hover { color: var(--ink); }
+
+    .hr { height: 1px; background: var(--line); margin: 72px 0 0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="intro">
+      <h1>The week view, four other ways</h1>
+      <p>Poster tiles are locked in above each option. The question is what (if anything) sits under them. W1 is the least, W4 is the most.</p>
+    </div>
+
+    <!-- W1 -->
+    <div class="spec"><span class="spec__num">W1</span><span class="spec__name">Nothing — one line</span><span class="spec__note">days are already on the tiles; just say what's next</span></div>
+    <div class="grid3">
+      <a class="t2" href="#" style="--c:var(--green)"><span class="t2__name">Samford</span><span class="t2__days">Mon &amp; Wed</span><span class="t2__sub">6 divisions</span><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+      <a class="t2" href="#" style="--c:var(--blue)"><span class="t2__name">Two Wood</span><span class="t2__days">Tue &amp; Thu</span><span class="t2__sub">7 divisions</span><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+      <a class="t2" href="#" style="--c:var(--coral)"><span class="t2__name">Triples</span><span class="t2__days">Fri</span><span class="t2__sub">5 divisions</span><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+    </div>
+    <div style="margin-top:12px">
+      <div class="nextline"><i></i><span><b>Next up:</b> Samford, Monday 27 July</span><a href="#">See fixtures →</a></div>
+    </div>
+
+    <!-- W2 -->
+    <div class="spec"><span class="spec__num">W2</span><span class="spec__name">Tonight card</span><span class="spec__note">one dark banner, only ever shows today (or next match day)</span></div>
+    <div class="grid3">
+      <a class="t2" href="#" style="--c:var(--green)"><span class="t2__name">Samford</span><span class="t2__days">Mon &amp; Wed</span><span class="t2__sub">6 divisions</span><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+      <a class="t2" href="#" style="--c:var(--blue)"><span class="t2__name">Two Wood</span><span class="t2__days">Tue &amp; Thu</span><span class="t2__sub">7 divisions</span><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+      <a class="t2" href="#" style="--c:var(--coral)"><span class="t2__name">Triples</span><span class="t2__days">Fri</span><span class="t2__sub">5 divisions</span><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+    </div>
+    <div style="margin-top:12px">
+      <div class="tonight">
+        <div>
+          <div class="tonight__label">Monday</div>
+          <div class="tonight__what">Samford · Round 11</div>
+          <div class="tonight__sub">4 matches across Division 1 &amp; 2</div>
+        </div>
+        <a class="tonight__go" href="#">View matches
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7.5h8M7 3.5l4 4-4 4"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- W3 -->
+    <div class="spec"><span class="spec__num">W3</span><span class="spec__name">Date carousel</span><span class="spec__note">FotMob-style day strip; tap a day to see its matches</span></div>
+    <div class="grid3">
+      <a class="t2" href="#" style="--c:var(--green)"><span class="t2__name">Samford</span><span class="t2__days">Mon &amp; Wed</span><span class="t2__sub">6 divisions</span><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+      <a class="t2" href="#" style="--c:var(--blue)"><span class="t2__name">Two Wood</span><span class="t2__days">Tue &amp; Thu</span><span class="t2__sub">7 divisions</span><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+      <a class="t2" href="#" style="--c:var(--coral)"><span class="t2__name">Triples</span><span class="t2__days">Fri</span><span class="t2__sub">5 divisions</span><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+    </div>
+    <div style="margin-top:12px">
+      <div class="caro">
+        <a href="#" class="on"><span class="dw">Today</span><span class="dn">25</span><span class="tag tag--none" style="color:#9ba1a7">—</span></a>
+        <a href="#"><span class="dw">Sun</span><span class="dn">26</span><span class="tag tag--none">—</span></a>
+        <a href="#" style="--c:var(--green)"><span class="dw">Mon</span><span class="dn">27</span><span class="tag">Samford</span></a>
+        <a href="#" style="--c:var(--blue)"><span class="dw">Tue</span><span class="dn">28</span><span class="tag">Two Wood</span></a>
+        <a href="#" style="--c:var(--green)"><span class="dw">Wed</span><span class="dn">29</span><span class="tag">Samford</span></a>
+        <a href="#" style="--c:var(--blue)"><span class="dw">Thu</span><span class="dn">30</span><span class="tag">Two Wood</span></a>
+        <a href="#" style="--c:var(--coral)"><span class="dw">Fri</span><span class="dn">31</span><span class="tag">Triples</span></a>
+      </div>
+    </div>
+
+    <!-- W4 -->
+    <div class="spec"><span class="spec__num">W4</span><span class="spec__name">Latest results</span><span class="spec__note">skip the calendar entirely — show recent scores instead</span></div>
+    <div class="grid3">
+      <a class="t2" href="#" style="--c:var(--green)"><span class="t2__name">Samford</span><span class="t2__days">Mon &amp; Wed</span><span class="t2__sub">6 divisions</span><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+      <a class="t2" href="#" style="--c:var(--blue)"><span class="t2__name">Two Wood</span><span class="t2__days">Tue &amp; Thu</span><span class="t2__sub">7 divisions</span><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+      <a class="t2" href="#" style="--c:var(--coral)"><span class="t2__name">Triples</span><span class="t2__days">Fri</span><span class="t2__sub">5 divisions</span><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+    </div>
+    <div style="margin-top:12px">
+      <div class="pulse">
+        <div class="pulse__row" style="--c:var(--coral)"><span class="pulse__dot"></span><span class="pulse__txt"><b>Bramford 18</b> – 12 Claydon</span><span class="pulse__meta">Triples · Fri 24 Jul</span></div>
+        <div class="pulse__row" style="--c:var(--blue)"><span class="pulse__dot"></span><span class="pulse__txt"><b>Henley 21</b> – 9 Sproughton</span><span class="pulse__meta">Two Wood · Thu 23 Jul</span></div>
+        <div class="pulse__row" style="--c:var(--green)"><span class="pulse__dot"></span><span class="pulse__txt">Whitton 14 – <b>16 Rushmere</b></span><span class="pulse__meta">Samford · Wed 22 Jul</span></div>
+        <a class="pulse__more" href="#">All results →</a>
+      </div>
+    </div>
+
+    <div class="hr"></div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- v8 — Palette sampler on the real poster tile design. Pick a letter. -->
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Palette sampler</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root { --ink: #131417; --ink-2: #66696e; --ink-3: #a9acb0; --line: #e7e7e4; --paper: #f6f7f8; }
+    * { box-sizing: border-box; margin: 0; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; padding-bottom: 120px; }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 0 28px; }
+    .intro { padding: 48px 0 4px; }
+    .intro h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.03em; }
+    .intro p { color: var(--ink-2); margin-top: 6px; }
+    .spec { margin: 44px 0 14px; display: flex; align-items: baseline; gap: 14px; }
+    .spec__num { font-size: 13px; font-weight: 800; background: var(--ink); color: #fff; padding: 3px 10px; }
+    .spec__name { font-size: 15px; font-weight: 700; }
+    .spec__note { font-size: 13px; color: var(--ink-3); }
+    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media (max-width: 760px) { .grid3 { grid-template-columns: 1fr; } }
+
+    .t {
+      aspect-ratio: 1.45; display: flex; flex-direction: column;
+      padding: 22px; background: var(--c); color: #fff; position: relative;
+      text-decoration: none; transition: filter .12s, transform .15s;
+    }
+    .t:hover { filter: brightness(1.07); transform: translateY(-3px); }
+    .t__name { font-size: clamp(20px, 2.6vw, 26px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.08; }
+    .t__days { margin-top: 7px; font-size: 14.5px; font-weight: 700; opacity: .92; }
+    .t__sub { margin-top: auto; font-size: 12.5px; opacity: .7; }
+    .t__arrow { position: absolute; right: 20px; bottom: 20px; opacity: .85; }
+
+    /* D: navy + colour chip variant */
+    .t--mark .t__days { color: var(--mark); opacity: 1; }
+    .t--mark::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--mark); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="intro">
+      <h1>Palette options</h1>
+      <p>Same tiles, different colour logic. Tell me a letter.</p>
+    </div>
+
+    <!-- A: deep crest -->
+    <div class="spec"><span class="spec__num">A</span><span class="spec__name">Deep crest</span><span class="spec__note">crest hues, darkened & softened — richer, less flag-like</span></div>
+    <div class="grid3">
+      <a class="t" href="#" style="--c:#256e3d"><span class="t__name">Samford</span><span class="t__days">Mon &amp; Wed</span><span class="t__sub">6 divisions</span><svg class="t__arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+      <a class="t" href="#" style="--c:#1d3a6e"><span class="t__name">Two Wood</span><span class="t__days">Tue &amp; Thu</span><span class="t__sub">7 divisions</span><svg class="t__arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+      <a class="t" href="#" style="--c:#7e3040"><span class="t__name">Triples</span><span class="t__days">Wed</span><span class="t__sub">5 divisions</span><svg class="t__arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+    </div>
+
+    <!-- B: modern crest -->
+    <div class="spec"><span class="spec__num">B</span><span class="spec__name">Modern crest</span><span class="spec__note">crest hues, brightened toward the earlier mockups</span></div>
+    <div class="grid3">
+      <a class="t" href="#" style="--c:#12a150"><span class="t__name">Samford</span><span class="t__days">Mon &amp; Wed</span><span class="t__sub">6 divisions</span><svg class="t__arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+      <a class="t" href="#" style="--c:#2563eb"><span class="t__name">Two Wood</span><span class="t__days">Tue &amp; Thu</span><span class="t__sub">7 divisions</span><svg class="t__arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+      <a class="t" href="#" style="--c:#0e91b4"><span class="t__name">Triples</span><span class="t__days">Wed</span><span class="t__sub">5 divisions</span><svg class="t__arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+    </div>
+
+    <!-- C: cool family -->
+    <div class="spec"><span class="spec__num">C</span><span class="spec__name">Cool family</span><span class="spec__note">green, teal, navy — neighbours on the wheel, no red</span></div>
+    <div class="grid3">
+      <a class="t" href="#" style="--c:#1f8a4c"><span class="t__name">Samford</span><span class="t__days">Mon &amp; Wed</span><span class="t__sub">6 divisions</span><svg class="t__arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+      <a class="t" href="#" style="--c:#0f7490"><span class="t__name">Two Wood</span><span class="t__days">Tue &amp; Thu</span><span class="t__sub">7 divisions</span><svg class="t__arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+      <a class="t" href="#" style="--c:#1d3f8f"><span class="t__name">Triples</span><span class="t__days">Wed</span><span class="t__sub">5 divisions</span><svg class="t__arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+    </div>
+
+    <!-- D: one navy, colour marks -->
+    <div class="spec"><span class="spec__num">D</span><span class="spec__name">One colour, coloured marks</span><span class="spec__note">all tiles crest navy; league colour only in the top edge + days</span></div>
+    <div class="grid3">
+      <a class="t t--mark" href="#" style="--c:#1c3d77; --mark:#4ade80"><span class="t__name">Samford</span><span class="t__days">Mon &amp; Wed</span><span class="t__sub">6 divisions</span><svg class="t__arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+      <a class="t t--mark" href="#" style="--c:#1c3d77; --mark:#7dd3fc"><span class="t__name">Two Wood</span><span class="t__days">Tue &amp; Thu</span><span class="t__sub">7 divisions</span><svg class="t__arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+      <a class="t t--mark" href="#" style="--c:#1c3d77; --mark:#fbbf24"><span class="t__name">Triples</span><span class="t__days">Wed</span><span class="t__sub">5 divisions</span><svg class="t__arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h11M10.5 4.5L16 10l-5.5 5.5"/></svg></a>
+    </div>
+
+  </div>
+</body>
+</html>

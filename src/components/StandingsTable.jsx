@@ -1,11 +1,13 @@
-import { displayStat, formatShotDiff } from '../lib/standings'
+import { Link } from 'react-router-dom'
+import { displayStat } from '../lib/standings'
 
-export function StandingsTable({ rows, divisionLabel }) {
+function shotsCell(value, played) {
+  return played === 0 ? '—' : String(value)
+}
+
+export function StandingsTable({ rows }) {
   return (
     <div className="standings-panel">
-      <h2 className="standings-panel__title">
-        {divisionLabel ? `${divisionLabel} — Table` : 'League table'}
-      </h2>
       <div className="table-scroll">
         <table className="standings-table">
           <thead>
@@ -18,41 +20,38 @@ export function StandingsTable({ rows, divisionLabel }) {
                 P
               </th>
               <th scope="col" className="standings-table__num">
-                W
+                For
               </th>
               <th scope="col" className="standings-table__num">
-                D
-              </th>
-              <th scope="col" className="standings-table__num">
-                L
-              </th>
-              <th scope="col" className="standings-table__num">
-                +/−
+                Against
               </th>
               <th scope="col" className="standings-table__num standings-table__pts">
-                Pts
+                Points
               </th>
             </tr>
           </thead>
           <tbody>
             {rows.map((row, index) => (
               <tr key={row.team}>
-                <td className="standings-table__pos">{index + 1}</td>
-                <td className="standings-table__team">{row.team}</td>
+                <td className="standings-table__pos">
+                  <span className="standings-table__pos-badge">{index + 1}</span>
+                </td>
+                <td className="standings-table__team">
+                  <Link
+                    className="standings-table__team-link"
+                    to={{ search: `?tab=matches&team=${encodeURIComponent(row.team)}` }}
+                  >
+                    {row.team}
+                  </Link>
+                </td>
                 <td className="standings-table__num">
                   {displayStat(row.played, row.played)}
                 </td>
                 <td className="standings-table__num">
-                  {displayStat(row.won, row.played)}
+                  {shotsCell(row.shotsFor ?? 0, row.played)}
                 </td>
                 <td className="standings-table__num">
-                  {displayStat(row.drawn, row.played)}
-                </td>
-                <td className="standings-table__num">
-                  {displayStat(row.lost, row.played)}
-                </td>
-                <td className="standings-table__num">
-                  {row.played === 0 ? '—' : formatShotDiff(row.shotDiff)}
+                  {shotsCell(row.shotsAgainst ?? 0, row.played)}
                 </td>
                 <td className="standings-table__num standings-table__pts">
                   {displayStat(row.points, row.played)}

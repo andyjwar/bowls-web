@@ -6,46 +6,793 @@
       "id": "monday-evening",
       "label": "Monday Evening",
       "scheduleTemplate": [
-        { "week": 1, "date": "2026-05-11", "pairings": [{ "home": 3, "away": 6 }, { "home": 4, "away": 5 }, { "home": 2, "away": 7 }, { "home": 1, "away": 8 }] },
-        { "week": 2, "date": "2026-05-18", "pairings": [{ "home": 1, "away": 5 }, { "home": 2, "away": 4 }, { "home": 7, "away": 6 }, { "home": 8, "away": 3 }] },
-        { "week": 3, "date": "2026-05-25", "pairings": [{ "home": 7, "away": 8 }, { "home": 6, "away": 1 }, { "home": 5, "away": 2 }, { "home": 4, "away": 3 }] },
-        { "week": 4, "date": "2026-06-01", "pairings": [{ "home": 4, "away": 8 }, { "home": 2, "away": 6 }, { "home": 3, "away": 5 }, { "home": 1, "away": 7 }] },
-        { "week": 5, "date": "2026-06-08", "pairings": [{ "home": 4, "away": 1 }, { "home": 3, "away": 2 }, { "home": 5, "away": 7 }, { "home": 6, "away": 8 }] },
-        { "week": 6, "date": "2026-06-15", "pairings": [{ "home": 1, "away": 3 }, { "home": 7, "away": 4 }, { "home": 6, "away": 5 }, { "home": 8, "away": 2 }] },
-        { "week": 7, "date": "2026-06-22", "pairings": [{ "home": 2, "away": 1 }, { "home": 4, "away": 6 }, { "home": 3, "away": 7 }, { "home": 5, "away": 8 }] },
-        { "week": 8, "date": "2026-06-29", "pairings": [{ "home": 8, "away": 1 }, { "home": 6, "away": 3 }, { "home": 5, "away": 4 }, { "home": 7, "away": 2 }] },
-        { "week": 9, "date": "2026-07-06", "pairings": [{ "home": 6, "away": 2 }, { "home": 5, "away": 3 }, { "home": 7, "away": 1 }, { "home": 8, "away": 4 }] },
-        { "week": 10, "date": "2026-07-13", "pairings": [{ "home": 1, "away": 6 }, { "home": 2, "away": 5 }, { "home": 3, "away": 4 }, { "home": 8, "away": 7 }] },
-        { "week": 11, "date": "2026-07-20", "pairings": [{ "home": 5, "away": 1 }, { "home": 4, "away": 2 }, { "home": 6, "away": 7 }, { "home": 3, "away": 8 }] },
-        { "week": 12, "date": "2026-07-27", "pairings": [{ "home": 3, "away": 1 }, { "home": 4, "away": 7 }, { "home": 5, "away": 6 }, { "home": 2, "away": 8 }] },
-        { "week": 13, "date": "2026-08-03", "pairings": [{ "home": 8, "away": 6 }, { "home": 1, "away": 4 }, { "home": 2, "away": 3 }, { "home": 7, "away": 5 }] },
-        { "week": 14, "date": "2026-08-10", "pairings": [{ "home": 1, "away": 2 }, { "home": 6, "away": 4 }, { "home": 7, "away": 3 }, { "home": 8, "away": 5 }] }
+        {
+          "week": 1,
+          "date": "2026-05-11",
+          "pairings": [
+            {
+              "home": 3,
+              "away": 6
+            },
+            {
+              "home": 4,
+              "away": 5
+            },
+            {
+              "home": 2,
+              "away": 7
+            },
+            {
+              "home": 1,
+              "away": 8
+            }
+          ]
+        },
+        {
+          "week": 2,
+          "date": "2026-05-18",
+          "pairings": [
+            {
+              "home": 1,
+              "away": 5
+            },
+            {
+              "home": 2,
+              "away": 4
+            },
+            {
+              "home": 7,
+              "away": 6
+            },
+            {
+              "home": 8,
+              "away": 3
+            }
+          ]
+        },
+        {
+          "week": 3,
+          "date": "2026-05-25",
+          "pairings": [
+            {
+              "home": 7,
+              "away": 8
+            },
+            {
+              "home": 6,
+              "away": 1
+            },
+            {
+              "home": 5,
+              "away": 2
+            },
+            {
+              "home": 4,
+              "away": 3
+            }
+          ]
+        },
+        {
+          "week": 4,
+          "date": "2026-06-01",
+          "pairings": [
+            {
+              "home": 4,
+              "away": 8
+            },
+            {
+              "home": 2,
+              "away": 6
+            },
+            {
+              "home": 3,
+              "away": 5
+            },
+            {
+              "home": 1,
+              "away": 7
+            }
+          ]
+        },
+        {
+          "week": 5,
+          "date": "2026-06-08",
+          "pairings": [
+            {
+              "home": 4,
+              "away": 1
+            },
+            {
+              "home": 3,
+              "away": 2
+            },
+            {
+              "home": 5,
+              "away": 7
+            },
+            {
+              "home": 6,
+              "away": 8
+            }
+          ]
+        },
+        {
+          "week": 6,
+          "date": "2026-06-15",
+          "pairings": [
+            {
+              "home": 1,
+              "away": 3
+            },
+            {
+              "home": 7,
+              "away": 4
+            },
+            {
+              "home": 6,
+              "away": 5
+            },
+            {
+              "home": 8,
+              "away": 2
+            }
+          ]
+        },
+        {
+          "week": 7,
+          "date": "2026-06-22",
+          "pairings": [
+            {
+              "home": 2,
+              "away": 1
+            },
+            {
+              "home": 4,
+              "away": 6
+            },
+            {
+              "home": 3,
+              "away": 7
+            },
+            {
+              "home": 5,
+              "away": 8
+            }
+          ]
+        },
+        {
+          "week": 8,
+          "date": "2026-06-29",
+          "pairings": [
+            {
+              "home": 8,
+              "away": 1
+            },
+            {
+              "home": 6,
+              "away": 3
+            },
+            {
+              "home": 5,
+              "away": 4
+            },
+            {
+              "home": 7,
+              "away": 2
+            }
+          ]
+        },
+        {
+          "week": 9,
+          "date": "2026-07-06",
+          "pairings": [
+            {
+              "home": 6,
+              "away": 2
+            },
+            {
+              "home": 5,
+              "away": 3
+            },
+            {
+              "home": 7,
+              "away": 1
+            },
+            {
+              "home": 8,
+              "away": 4
+            }
+          ]
+        },
+        {
+          "week": 10,
+          "date": "2026-07-13",
+          "pairings": [
+            {
+              "home": 1,
+              "away": 6
+            },
+            {
+              "home": 2,
+              "away": 5
+            },
+            {
+              "home": 3,
+              "away": 4
+            },
+            {
+              "home": 8,
+              "away": 7
+            }
+          ]
+        },
+        {
+          "week": 11,
+          "date": "2026-07-20",
+          "pairings": [
+            {
+              "home": 5,
+              "away": 1
+            },
+            {
+              "home": 4,
+              "away": 2
+            },
+            {
+              "home": 6,
+              "away": 7
+            },
+            {
+              "home": 3,
+              "away": 8
+            }
+          ]
+        },
+        {
+          "week": 12,
+          "date": "2026-07-27",
+          "pairings": [
+            {
+              "home": 3,
+              "away": 1
+            },
+            {
+              "home": 4,
+              "away": 7
+            },
+            {
+              "home": 5,
+              "away": 6
+            },
+            {
+              "home": 2,
+              "away": 8
+            }
+          ]
+        },
+        {
+          "week": 13,
+          "date": "2026-08-03",
+          "pairings": [
+            {
+              "home": 8,
+              "away": 6
+            },
+            {
+              "home": 1,
+              "away": 4
+            },
+            {
+              "home": 2,
+              "away": 3
+            },
+            {
+              "home": 7,
+              "away": 5
+            }
+          ]
+        },
+        {
+          "week": 14,
+          "date": "2026-08-10",
+          "pairings": [
+            {
+              "home": 1,
+              "away": 2
+            },
+            {
+              "home": 6,
+              "away": 4
+            },
+            {
+              "home": 7,
+              "away": 3
+            },
+            {
+              "home": 8,
+              "away": 5
+            }
+          ]
+        }
       ],
       "divisions": [
         {
           "id": "a",
           "label": "Division A",
-          "teams": ["Stone Lodge Blues", "Waldringfield Swans", "Kirton A", "Westerfield Yellows", "E-of-E Co-op Reds", "Marlborough", "Holbrook", "Bye"]
+          "teams": [
+            "Stone Lodge Blues",
+            "Waldringfield Swans",
+            "Kirton A",
+            "Westerfield Yellows",
+            "E-of-E Co-op Reds",
+            "Marlborough",
+            "Hollbrook",
+            "Bye"
+          ],
+          "results": {
+            "weeks": {
+              "1": [
+                {
+                  "home": "Waldringfield Swans",
+                  "away": "Hollbrook",
+                  "homeShots": 59,
+                  "awayShots": 46,
+                  "homePoints": 5,
+                  "awayPoints": 1,
+                  "players": {
+                    "home": [
+                      "S Smith",
+                      "S Smith",
+                      "G Coles",
+                      "J Hay",
+                      "E Hay",
+                      "D Hay",
+                      "A Ward",
+                      "K Smith",
+                      "P Ham"
+                    ],
+                    "away": [
+                      "R Rankin",
+                      "D Carling",
+                      "A Mower",
+                      "G Westley",
+                      "M Pink",
+                      "M Pink",
+                      "D Harper",
+                      "M Lambs",
+                      "P Abbott"
+                    ]
+                  },
+                  "matchDate": "2026-05-11",
+                  "rinkShots": [
+                    {
+                      "homeShots": 21,
+                      "awayShots": 13
+                    },
+                    {
+                      "homeShots": 20,
+                      "awayShots": 13
+                    },
+                    {
+                      "homeShots": 18,
+                      "awayShots": 20
+                    }
+                  ]
+                },
+                {
+                  "home": "Kirton A",
+                  "away": "Marlborough",
+                  "homeShots": 65,
+                  "awayShots": 48,
+                  "homePoints": 5,
+                  "awayPoints": 1,
+                  "players": {
+                    "home": [
+                      "H Birch",
+                      "P Butter",
+                      "E Dobson",
+                      "J Birch",
+                      "P Coxon",
+                      "P Hilton",
+                      "N Steel",
+                      "R Pinney",
+                      "R Glendinning"
+                    ],
+                    "away": [
+                      "D Cooke",
+                      "J Fry",
+                      "P Carr",
+                      "I Ablitt",
+                      "D Brooks",
+                      "B Middleton",
+                      "R Howlett",
+                      "D Nightingale",
+                      "N Doughty"
+                    ]
+                  },
+                  "matchDate": "2026-05-11",
+                  "rinkShots": [
+                    {
+                      "homeShots": 21,
+                      "awayShots": 15
+                    },
+                    {
+                      "homeShots": 19,
+                      "awayShots": 21
+                    },
+                    {
+                      "homeShots": 25,
+                      "awayShots": 12
+                    }
+                  ]
+                },
+                {
+                  "home": "Westerfield Yellows",
+                  "away": "E-of-E Co-op Reds",
+                  "homeShots": 50,
+                  "awayShots": 49,
+                  "homePoints": 4,
+                  "awayPoints": 2
+                }
+              ]
+            }
+          }
         },
         {
           "id": "b",
           "label": "Division B",
-          "teams": ["Capel Kites", "Sproughton Reds", "Kesgrave Blues", "California", "Stone Lodge Reds", "Bealings", "Bentley", "Westerfield Blues"]
+          "teams": [
+            "Capel Kites",
+            "Sproughton Reds",
+            "Kesgrave Blues",
+            "California",
+            "Stone Lodge Reds",
+            "Bealings",
+            "Bentley",
+            "Westerfield Blues"
+          ]
         },
         {
           "id": "c",
           "label": "Division C",
-          "teams": ["Gipping EE Wolves", "Bredfield", "Margaret Catchpole Blues", "Shotley Rose", "Brantham", "Waldringfield Ducks", "Kesgrave Greens", "Bye"]
+          "teams": [
+            "Gipping EE Wolves",
+            "Bredfield",
+            "Margaret Catchpole Blues",
+            "Shotley Rose",
+            "Brantham",
+            "Waldringfield Ducks",
+            "Kesgrave Greens",
+            "Bye"
+          ],
+          "results": {
+            "weeks": {
+              "1": [
+                {
+                  "home": "Shotley Rose",
+                  "away": "Brantham",
+                  "homeShots": 79,
+                  "awayShots": 35,
+                  "homePoints": 6,
+                  "awayPoints": 0,
+                  "players": {
+                    "home": [
+                      "J Kimble",
+                      "J Cotting",
+                      "S Whitney",
+                      "N Bentley",
+                      "J Leach",
+                      "P Catchpole",
+                      "A Gilmore",
+                      "B Tite",
+                      "A Coulson"
+                    ],
+                    "away": [
+                      "M Dickinson",
+                      "R Dawson",
+                      "S Stoke",
+                      "M Chatfield",
+                      "P Dannister",
+                      "J Halsall",
+                      "K Chambers",
+                      "P Neary",
+                      "A Dickinson"
+                    ]
+                  },
+                  "matchDate": "2026-05-11",
+                  "rinkShots": [
+                    {
+                      "homeShots": 22,
+                      "awayShots": 16
+                    },
+                    {
+                      "homeShots": 32,
+                      "awayShots": 8
+                    },
+                    {
+                      "homeShots": 25,
+                      "awayShots": 11
+                    }
+                  ]
+                },
+                {
+                  "home": "MCBC Blues",
+                  "away": "Waldringfield Ducks",
+                  "homeShots": 51,
+                  "awayShots": 59,
+                  "homePoints": 1,
+                  "awayPoints": 5,
+                  "players": {
+                    "home": [
+                      "C Cousins",
+                      "N Chan",
+                      "P Cousins",
+                      "R Rosie",
+                      "K Boyton",
+                      "M Stranix",
+                      "D Steggles",
+                      "D Girling",
+                      "M Alcock"
+                    ],
+                    "away": [
+                      "A Penny",
+                      "L Nunn",
+                      "K Baker",
+                      "D Farmer",
+                      "S Dye",
+                      "N Coleman",
+                      "D Cooper",
+                      "M South",
+                      "R Morphen"
+                    ]
+                  },
+                  "matchDate": "2026-05-11",
+                  "rinkShots": [
+                    {
+                      "homeShots": 19,
+                      "awayShots": 17
+                    },
+                    {
+                      "homeShots": 17,
+                      "awayShots": 25
+                    },
+                    {
+                      "homeShots": 15,
+                      "awayShots": 17
+                    }
+                  ]
+                }
+              ]
+            }
+          }
         },
         {
           "id": "d",
           "label": "Division D",
-          "teams": ["Roundwood", "Newton Road", "East Bergholt", "Copdock & Washbrook", "Gipping EE Wrens", "Sproughton Blues", "Margaret Catchpole Reds", "Martlesham"]
+          "teams": [
+            "Roundwood",
+            "Newton Road",
+            "East Bergholt",
+            "Copdock & Washbrook",
+            "Gipping EE Wrens",
+            "Sproughton Blues",
+            "Margaret Catchpole Reds",
+            "Martlesham"
+          ],
+          "results": {
+            "weeks": {
+              "1": [
+                {
+                  "home": "Roundwood",
+                  "away": "Martlesham",
+                  "homeShots": 69,
+                  "awayShots": 50,
+                  "homePoints": 6,
+                  "awayPoints": 0,
+                  "players": {
+                    "home": [
+                      "D Berridge",
+                      "G Quinton",
+                      "T Watt",
+                      "R Atkins",
+                      "K Calderhead",
+                      "D Dowman",
+                      "J Downing",
+                      "S Gross",
+                      "P Dunn"
+                    ],
+                    "away": [
+                      "N Clarke",
+                      "M Drake",
+                      "C Anderson",
+                      "S Hurrell",
+                      "D Drake",
+                      "V Maisey",
+                      "T Cooper",
+                      "A Harvey",
+                      "J Anderson"
+                    ]
+                  },
+                  "matchDate": "2026-05-11",
+                  "rinkShots": [
+                    {
+                      "homeShots": 23,
+                      "awayShots": 14
+                    },
+                    {
+                      "homeShots": 21,
+                      "awayShots": 12
+                    },
+                    {
+                      "homeShots": 25,
+                      "awayShots": 24
+                    }
+                  ]
+                },
+                {
+                  "home": "East Bergholt",
+                  "away": "Sproughton Blues",
+                  "homeShots": 72,
+                  "awayShots": 46,
+                  "homePoints": 6,
+                  "awayPoints": 0,
+                  "players": {
+                    "home": [
+                      "Rex Copland",
+                      "Richard Pooley",
+                      "John Mayhew(s)",
+                      "Geoff Barford",
+                      "Dennis Bloom",
+                      "Tony Furtado(s)",
+                      "Martin Reeve",
+                      "John Page",
+                      "Colin Thurketle(s)"
+                    ],
+                    "away": [
+                      "J Mott",
+                      "W J King",
+                      "S Page",
+                      "Mrs M Fisk",
+                      "Mrs S Lilley",
+                      "A Simmons",
+                      "T Garnham",
+                      "Mrs J Fegte",
+                      "M Jones"
+                    ]
+                  },
+                  "matchDate": "2026-05-11",
+                  "rinkShots": [
+                    {
+                      "homeShots": 22,
+                      "awayShots": 19
+                    },
+                    {
+                      "homeShots": 31,
+                      "awayShots": 16
+                    },
+                    {
+                      "homeShots": 19,
+                      "awayShots": 11
+                    }
+                  ]
+                }
+              ]
+            }
+          }
         },
         {
           "id": "e",
           "label": "Division E",
-          "teams": ["E-of-E Co-op Blues", "St John's URC", "Hospitals Ribbans Park", "Ipswich & District", "Capel Kestrels", "Felixstowe BC", "Kirton B", "Norbridge"]
+          "teams": [
+            "E-of-E Co-op Blues",
+            "St John's URC",
+            "Hospitals Ribbans Park",
+            "Ipswich & District",
+            "Capel Kestrels",
+            "Felixstowe BC",
+            "Kirton B",
+            "Norbridge"
+          ],
+          "results": {
+            "weeks": {
+              "1": [
+                {
+                  "home": "Ipswich & District",
+                  "away": "Capel Kestrels",
+                  "homeShots": 64,
+                  "awayShots": 50,
+                  "homePoints": 5,
+                  "awayPoints": 1,
+                  "players": {
+                    "home": [
+                      "P Howards",
+                      "D Fitch",
+                      "T Hedges",
+                      "A Bowen",
+                      "C Woodgate",
+                      "B Palmer",
+                      "D Brame",
+                      "J Brame",
+                      "D Sargeant"
+                    ],
+                    "away": [
+                      "A Temme",
+                      "C Mitchell",
+                      "T Robertson",
+                      "J Fleming",
+                      "R French",
+                      "M Temme",
+                      "S Prentt",
+                      "C Smith",
+                      "P Gowen"
+                    ]
+                  },
+                  "matchDate": "2026-05-11",
+                  "rinkShots": [
+                    {
+                      "homeShots": 22,
+                      "awayShots": 16
+                    },
+                    {
+                      "homeShots": 22,
+                      "awayShots": 10
+                    },
+                    {
+                      "homeShots": 20,
+                      "awayShots": 24
+                    }
+                  ]
+                },
+                {
+                  "home": "Hospitals Ribbans Park",
+                  "away": "Felixstowe BC",
+                  "homeShots": 73,
+                  "awayShots": 39,
+                  "homePoints": 6,
+                  "awayPoints": 0,
+                  "players": {
+                    "home": [
+                      "A Keighley",
+                      "P Rogers",
+                      "A Black",
+                      "P Westwood",
+                      "P Morgan",
+                      "B Brandall",
+                      "I Turner",
+                      "C Smith",
+                      "D Russell"
+                    ],
+                    "away": [
+                      "J Bradford",
+                      "S Byrne",
+                      "S Wright",
+                      "S Clazebrook",
+                      "B Childs",
+                      "P Wilkinson",
+                      "C Potter",
+                      "J Holt",
+                      "K Skeet"
+                    ]
+                  },
+                  "matchDate": "2026-05-11",
+                  "rinkShots": [
+                    {
+                      "homeShots": 22,
+                      "awayShots": 15
+                    },
+                    {
+                      "homeShots": 25,
+                      "awayShots": 14
+                    },
+                    {
+                      "homeShots": 26,
+                      "awayShots": 10
+                    }
+                  ]
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -53,26 +800,329 @@
       "id": "wednesday-afternoon",
       "label": "Wednesday Afternoon",
       "scheduleTemplate": [
-        { "week": 1, "date": "2026-05-13", "pairings": [{ "home": 8, "away": 1 }, { "home": 6, "away": 3 }, { "home": 5, "away": 4 }, { "home": 7, "away": 2 }] },
-        { "week": 2, "date": "2026-05-20", "pairings": [{ "home": 4, "away": 8 }, { "home": 2, "away": 6 }, { "home": 3, "away": 5 }, { "home": 1, "away": 7 }] },
-        { "week": 3, "date": "2026-05-27", "pairings": [{ "home": 7, "away": 8 }, { "home": 6, "away": 1 }, { "home": 5, "away": 2 }, { "home": 4, "away": 3 }] },
-        { "week": 4, "date": "2026-06-03", "pairings": [{ "home": 8, "away": 3 }, { "home": 1, "away": 5 }, { "home": 2, "away": 4 }, { "home": 7, "away": 6 }] },
-        { "week": 5, "date": "2026-06-10", "pairings": [{ "home": 8, "away": 2 }, { "home": 1, "away": 3 }, { "home": 7, "away": 4 }, { "home": 6, "away": 5 }] },
-        { "week": 6, "date": "2026-06-17", "pairings": [{ "home": 5, "away": 8 }, { "home": 2, "away": 1 }, { "home": 4, "away": 6 }, { "home": 3, "away": 7 }] },
-        { "week": 7, "date": "2026-06-24", "pairings": [{ "home": 1, "away": 8 }, { "home": 3, "away": 6 }, { "home": 4, "away": 5 }, { "home": 2, "away": 7 }] },
-        { "week": 8, "date": "2026-07-01", "pairings": [{ "home": 8, "away": 4 }, { "home": 6, "away": 2 }, { "home": 5, "away": 3 }, { "home": 7, "away": 1 }] },
-        { "week": 9, "date": "2026-07-08", "pairings": [{ "home": 8, "away": 7 }, { "home": 1, "away": 6 }, { "home": 2, "away": 5 }, { "home": 3, "away": 4 }] },
-        { "week": 10, "date": "2026-07-15", "pairings": [{ "home": 3, "away": 8 }, { "home": 5, "away": 1 }, { "home": 4, "away": 2 }, { "home": 6, "away": 7 }] },
-        { "week": 11, "date": "2026-07-22", "pairings": [{ "home": 8, "away": 6 }, { "home": 1, "away": 4 }, { "home": 2, "away": 3 }, { "home": 7, "away": 5 }] },
-        { "week": 12, "date": "2026-07-29", "pairings": [{ "home": 2, "away": 8 }, { "home": 3, "away": 1 }, { "home": 5, "away": 6 }, { "home": 4, "away": 7 }] },
-        { "week": 13, "date": "2026-08-05", "pairings": [{ "home": 8, "away": 5 }, { "home": 1, "away": 2 }, { "home": 7, "away": 3 }, { "home": 6, "away": 4 }] },
-        { "week": 14, "date": "2026-08-12", "pairings": [{ "home": 6, "away": 8 }, { "home": 4, "away": 1 }, { "home": 3, "away": 2 }, { "home": 5, "away": 7 }] }
+        {
+          "week": 1,
+          "date": "2026-05-13",
+          "pairings": [
+            {
+              "home": 8,
+              "away": 1
+            },
+            {
+              "home": 6,
+              "away": 3
+            },
+            {
+              "home": 5,
+              "away": 4
+            },
+            {
+              "home": 7,
+              "away": 2
+            }
+          ]
+        },
+        {
+          "week": 2,
+          "date": "2026-05-20",
+          "pairings": [
+            {
+              "home": 4,
+              "away": 8
+            },
+            {
+              "home": 2,
+              "away": 6
+            },
+            {
+              "home": 3,
+              "away": 5
+            },
+            {
+              "home": 1,
+              "away": 7
+            }
+          ]
+        },
+        {
+          "week": 3,
+          "date": "2026-05-27",
+          "pairings": [
+            {
+              "home": 7,
+              "away": 8
+            },
+            {
+              "home": 6,
+              "away": 1
+            },
+            {
+              "home": 5,
+              "away": 2
+            },
+            {
+              "home": 4,
+              "away": 3
+            }
+          ]
+        },
+        {
+          "week": 4,
+          "date": "2026-06-03",
+          "pairings": [
+            {
+              "home": 8,
+              "away": 3
+            },
+            {
+              "home": 1,
+              "away": 5
+            },
+            {
+              "home": 2,
+              "away": 4
+            },
+            {
+              "home": 7,
+              "away": 6
+            }
+          ]
+        },
+        {
+          "week": 5,
+          "date": "2026-06-10",
+          "pairings": [
+            {
+              "home": 8,
+              "away": 2
+            },
+            {
+              "home": 1,
+              "away": 3
+            },
+            {
+              "home": 7,
+              "away": 4
+            },
+            {
+              "home": 6,
+              "away": 5
+            }
+          ]
+        },
+        {
+          "week": 6,
+          "date": "2026-06-17",
+          "pairings": [
+            {
+              "home": 5,
+              "away": 8
+            },
+            {
+              "home": 2,
+              "away": 1
+            },
+            {
+              "home": 4,
+              "away": 6
+            },
+            {
+              "home": 3,
+              "away": 7
+            }
+          ]
+        },
+        {
+          "week": 7,
+          "date": "2026-06-24",
+          "pairings": [
+            {
+              "home": 1,
+              "away": 8
+            },
+            {
+              "home": 3,
+              "away": 6
+            },
+            {
+              "home": 4,
+              "away": 5
+            },
+            {
+              "home": 2,
+              "away": 7
+            }
+          ]
+        },
+        {
+          "week": 8,
+          "date": "2026-07-01",
+          "pairings": [
+            {
+              "home": 8,
+              "away": 4
+            },
+            {
+              "home": 6,
+              "away": 2
+            },
+            {
+              "home": 5,
+              "away": 3
+            },
+            {
+              "home": 7,
+              "away": 1
+            }
+          ]
+        },
+        {
+          "week": 9,
+          "date": "2026-07-08",
+          "pairings": [
+            {
+              "home": 8,
+              "away": 7
+            },
+            {
+              "home": 1,
+              "away": 6
+            },
+            {
+              "home": 2,
+              "away": 5
+            },
+            {
+              "home": 3,
+              "away": 4
+            }
+          ]
+        },
+        {
+          "week": 10,
+          "date": "2026-07-15",
+          "pairings": [
+            {
+              "home": 3,
+              "away": 8
+            },
+            {
+              "home": 5,
+              "away": 1
+            },
+            {
+              "home": 4,
+              "away": 2
+            },
+            {
+              "home": 6,
+              "away": 7
+            }
+          ]
+        },
+        {
+          "week": 11,
+          "date": "2026-07-22",
+          "pairings": [
+            {
+              "home": 8,
+              "away": 6
+            },
+            {
+              "home": 1,
+              "away": 4
+            },
+            {
+              "home": 2,
+              "away": 3
+            },
+            {
+              "home": 7,
+              "away": 5
+            }
+          ]
+        },
+        {
+          "week": 12,
+          "date": "2026-07-29",
+          "pairings": [
+            {
+              "home": 2,
+              "away": 8
+            },
+            {
+              "home": 3,
+              "away": 1
+            },
+            {
+              "home": 5,
+              "away": 6
+            },
+            {
+              "home": 4,
+              "away": 7
+            }
+          ]
+        },
+        {
+          "week": 13,
+          "date": "2026-08-05",
+          "pairings": [
+            {
+              "home": 8,
+              "away": 5
+            },
+            {
+              "home": 1,
+              "away": 2
+            },
+            {
+              "home": 7,
+              "away": 3
+            },
+            {
+              "home": 6,
+              "away": 4
+            }
+          ]
+        },
+        {
+          "week": 14,
+          "date": "2026-08-12",
+          "pairings": [
+            {
+              "home": 6,
+              "away": 8
+            },
+            {
+              "home": 4,
+              "away": 1
+            },
+            {
+              "home": 3,
+              "away": 2
+            },
+            {
+              "home": 5,
+              "away": 7
+            }
+          ]
+        }
       ],
       "divisions": [
         {
           "id": "1",
           "label": "Division 1",
-          "teams": ["Melton Purples", "Holbrook", "Woodbridge", "Felixstowe BC", "Kesgrave", "Kirton & Falkenham", "Stone Lodge", "Westerfield"]
+          "teams": [
+            "Melton Purples",
+            "Holbrook",
+            "Woodbridge",
+            "Felixstowe BC",
+            "Kesgrave",
+            "Kirton & Falkenham",
+            "Stone Lodge",
+            "Westerfield"
+          ]
         }
       ]
     }

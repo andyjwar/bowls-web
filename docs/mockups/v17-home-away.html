@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>v17 — home &amp; away columns</title>
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --card: #ffffff;
+    --border: #e3e6ea;
+    --row-hi: #f2f4f6;
+    --text: #3a4048;
+    --text-strong: #14181d;
+    --muted: #8a919b;
+    --muted-2: #6b7280;
+    --green: #256e3d;
+    --green-soft: rgba(37, 110, 61, 0.12);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  h1 { font-size: 1.4rem; letter-spacing: -0.02em; color: var(--text-strong); margin: 0 0 0.3rem; }
+  .lead { margin: 0 0 1rem; color: var(--muted); font-size: 0.95rem; }
+  .opt { margin: 2.6rem 0 0; }
+  .opt__tag { display: inline-block; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; background: var(--text-strong); padding: 4px 10px; margin-bottom: 0.4rem; }
+  .opt__note { margin: 0 0 0.8rem; font-size: 0.88rem; color: var(--muted); max-width: 44rem; }
+  .sub { margin: 1.1rem 0 0.35rem; font-size: 0.72rem; font-weight: 750; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted-2); }
+
+  /* ---- shared: all-teams week tile ---- */
+  .week { background: var(--card); border: 1px solid var(--border); }
+  .week__head { display: flex; justify-content: space-between; align-items: baseline; padding: 0.7rem 1rem; background: var(--row-hi); border-bottom: 1px solid var(--border); }
+  .week__title { margin: 0; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; color: var(--text-strong); }
+  .week__date { font-size: 0.8rem; font-weight: 600; color: var(--muted); }
+
+  .row { display: grid; grid-template-columns: 24px 1fr auto 1fr 24px; gap: 0.75rem; align-items: center; padding: 0.85rem 1rem; }
+  .row + .row, .colhead + .row { border-top: 1px solid var(--border); }
+  .home { text-align: right; font-size: 0.95rem; font-weight: 600; color: var(--text-strong); }
+  .away { text-align: left; font-size: 0.95rem; font-weight: 600; color: var(--text-strong); }
+  .win { font-weight: 800; }
+  .lose { color: var(--muted); font-weight: 600; }
+  .pill { min-width: 3.9rem; text-align: center; padding: 0.25rem 0.6rem; background: var(--green-soft); color: var(--green); font-weight: 800; font-size: 0.95rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .vs { min-width: 3.9rem; text-align: center; font-size: 0.85rem; font-weight: 700; color: var(--muted); }
+  .chip { display: inline-block; width: 20px; height: 20px; line-height: 20px; text-align: center; font-size: 0.68rem; font-weight: 800; }
+  .chip--w { background: var(--green); color: #fff; }
+  .chip--l { background: var(--row-hi); color: var(--muted); }
+  .chip--d { background: #e8e4d4; color: #7a7150; }
+
+  /* slim column-header strip (options A & D) */
+  .colhead { display: grid; grid-template-columns: 24px 1fr auto 1fr 24px; gap: 0.75rem; padding: 0.35rem 1rem; font-size: 0.62rem; font-weight: 750; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .colhead .ch-home { text-align: right; }
+  .colhead .ch-away { text-align: left; }
+  .colhead .ch-mid { min-width: 3.9rem; text-align: center; }
+
+  /* ---- shared: single-team list ---- */
+  .list { background: var(--card); border: 1px solid var(--border); }
+  .lrow { display: grid; grid-template-columns: 5.4rem 1fr auto 3.2rem; gap: 0.75rem; align-items: center; padding: 0.85rem 1rem; }
+  .lrow + .lrow, .lcolhead + .lrow { border-top: 1px solid var(--border); }
+  .lrow__date { font-size: 0.8rem; font-weight: 600; color: var(--muted); white-space: nowrap; }
+  .lrow__match { font-size: 0.95rem; font-weight: 600; color: var(--text-strong); }
+  .lrow__match .sep { color: var(--muted); font-weight: 600; margin: 0 0.35rem; }
+  .lrow__result { text-align: right; }
+  .lcolhead { display: grid; grid-template-columns: 5.4rem 1fr auto 3.2rem; gap: 0.75rem; padding: 0.35rem 1rem; background: var(--row-hi); border-bottom: 1px solid var(--border); font-size: 0.62rem; font-weight: 750; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .lcolhead .lc-result { text-align: right; }
+
+  /* B: tiny H / A letters beside team names */
+  .ha { font-size: 0.62rem; font-weight: 750; letter-spacing: 0.06em; color: var(--muted); vertical-align: 0.12em; margin: 0 0.3rem; }
+
+  /* C: restructured single-team list — date | H/A | opponent | score | result */
+  .c .lrow, .c .lcolhead { grid-template-columns: 5.4rem 24px 1fr auto 3.2rem; }
+  .vchip { display: inline-block; width: 20px; height: 20px; line-height: 20px; text-align: center; font-size: 0.68rem; font-weight: 800; background: var(--row-hi); color: var(--muted-2); }
+  .c .lrow__match { font-weight: 700; }
+  .c .lscore { font-size: 0.9rem; font-weight: 800; color: var(--green); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .c .lscore--tbd { color: var(--muted); font-weight: 700; }
+
+  /* D: header strip + venue tint on home fixtures */
+  .d .lrow--home { border-left: 3px solid var(--green); padding-left: calc(1rem - 3px); }
+  .d .lrow--home .lrow__date { color: var(--green); font-weight: 750; }
+  .d .lcolhead { padding-left: 1rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Home &amp; away columns</h1>
+  <p class="lead">Four ways to make home/away explicit on the match list — each shown on the all-teams week tile and on the single-team filtered list. Home is always the left column.</p>
+
+  <!-- ============ OPTION A ============ -->
+  <div class="opt a">
+    <span class="opt__tag">A — column headers</span>
+    <p class="opt__note">A slim label strip on each tile and on the list: HOME over the left column, AWAY over the right. Rows stay exactly as they are — zero clutter inside the rows, and it doubles as a header for DATE and RESULT on the filtered list.</p>
+
+    <p class="sub">All teams</p>
+    <div class="week">
+      <div class="week__head"><h3 class="week__title">Week 1</h3><span class="week__date">Mon, 11 May</span></div>
+      <div class="colhead"><span></span><span class="ch-home">Home</span><span class="ch-mid"></span><span class="ch-away">Away</span><span></span></div>
+      <div class="row"><span class="chip chip--w">W</span><span class="home win">Kirton A</span><span class="pill">5 – 1</span><span class="away lose">Marlborough</span><span class="chip chip--l">L</span></div>
+      <div class="row"><span class="chip chip--l">L</span><span class="home lose">Waldringfield Swans</span><span class="pill">1 – 5</span><span class="away win">Hollbrook</span><span class="chip chip--w">W</span></div>
+      <div class="row"><span class="chip chip--w">W</span><span class="home win">Westerfield Yellows</span><span class="pill">4 – 2</span><span class="away lose">E-of-E Co-op Reds</span><span class="chip chip--l">L</span></div>
+      <div class="row"><span></span><span class="home">Stone Lodge Blues</span><span class="vs">v</span><span class="away">Samford</span><span></span></div>
+    </div>
+
+    <p class="sub">Single team — Kirton A</p>
+    <div class="list">
+      <div class="lcolhead"><span>Date</span><span>Home <span style="letter-spacing:0">·</span> Away</span><span></span><span class="lc-result">Result</span></div>
+      <div class="lrow"><span class="lrow__date">Mon 11 May</span><span class="lrow__match"><strong>Kirton A</strong> 5<span class="sep">–</span>1 Marlborough</span><span></span><span class="lrow__result"><span class="chip chip--w">W</span></span></div>
+      <div class="lrow"><span class="lrow__date">Mon 18 May</span><span class="lrow__match">Hollbrook 4<span class="sep">–</span>2 <strong>Kirton A</strong></span><span></span><span class="lrow__result"><span class="chip chip--l">L</span></span></div>
+      <div class="lrow"><span class="lrow__date">Mon 25 May</span><span class="lrow__match"><strong>Kirton A</strong> 3<span class="sep">–</span>3 Stone Lodge Blues</span><span></span><span class="lrow__result"><span class="chip chip--d">D</span></span></div>
+      <div class="lrow"><span class="lrow__date">Mon 1 Jun</span><span class="lrow__match">Westerfield Yellows <span class="sep">v</span> <strong>Kirton A</strong></span><span></span><span class="lrow__result"></span></div>
+    </div>
+  </div>
+
+  <!-- ============ OPTION B ============ -->
+  <div class="opt b">
+    <span class="opt__tag">B — tiny H / A letters</span>
+    <p class="opt__note">Small muted H and A markers sit immediately beside each team name, inside the row. No headers, so nothing extra above the rows — but every row now carries two extra glyphs, and the letters compete with the W/L chips.</p>
+
+    <p class="sub">All teams</p>
+    <div class="week">
+      <div class="week__head"><h3 class="week__title">Week 1</h3><span class="week__date">Mon, 11 May</span></div>
+      <div class="row"><span class="chip chip--w">W</span><span class="home win">Kirton A<span class="ha">H</span></span><span class="pill">5 – 1</span><span class="away lose"><span class="ha">A</span>Marlborough</span><span class="chip chip--l">L</span></div>
+      <div class="row"><span class="chip chip--l">L</span><span class="home lose">Waldringfield Swans<span class="ha">H</span></span><span class="pill">1 – 5</span><span class="away win"><span class="ha">A</span>Hollbrook</span><span class="chip chip--w">W</span></div>
+      <div class="row"><span class="chip chip--w">W</span><span class="home win">Westerfield Yellows<span class="ha">H</span></span><span class="pill">4 – 2</span><span class="away lose"><span class="ha">A</span>E-of-E Co-op Reds</span><span class="chip chip--l">L</span></div>
+      <div class="row"><span></span><span class="home">Stone Lodge Blues<span class="ha">H</span></span><span class="vs">v</span><span class="away"><span class="ha">A</span>Samford</span><span></span></div>
+    </div>
+
+    <p class="sub">Single team — Kirton A</p>
+    <div class="list">
+      <div class="lrow"><span class="lrow__date">Mon 11 May</span><span class="lrow__match"><strong>Kirton A</strong><span class="ha">H</span> 5<span class="sep">–</span>1 Marlborough<span class="ha">A</span></span><span></span><span class="lrow__result"><span class="chip chip--w">W</span></span></div>
+      <div class="lrow"><span class="lrow__date">Mon 18 May</span><span class="lrow__match">Hollbrook<span class="ha">H</span> 4<span class="sep">–</span>2 <strong>Kirton A</strong><span class="ha">A</span></span><span></span><span class="lrow__result"><span class="chip chip--l">L</span></span></div>
+      <div class="lrow"><span class="lrow__date">Mon 25 May</span><span class="lrow__match"><strong>Kirton A</strong><span class="ha">H</span> 3<span class="sep">–</span>3 Stone Lodge Blues<span class="ha">A</span></span><span></span><span class="lrow__result"><span class="chip chip--d">D</span></span></div>
+      <div class="lrow"><span class="lrow__date">Mon 1 Jun</span><span class="lrow__match">Westerfield Yellows<span class="ha">H</span> <span class="sep">v</span> <strong>Kirton A</strong><span class="ha">A</span></span><span></span><span class="lrow__result"></span></div>
+    </div>
+  </div>
+
+  <!-- ============ OPTION C ============ -->
+  <div class="opt c">
+    <span class="opt__tag">C — single-team venue column</span>
+    <p class="opt__note">The all-teams tile keeps a header strip (home/away is already positional there). The filtered list is restructured around the selected team: date | H/A chip | opponent | score | result. The team's own name disappears from every row, so each row gets shorter and the venue reads as a proper column.</p>
+
+    <p class="sub">All teams</p>
+    <div class="week">
+      <div class="week__head"><h3 class="week__title">Week 1</h3><span class="week__date">Mon, 11 May</span></div>
+      <div class="colhead"><span></span><span class="ch-home">Home</span><span class="ch-mid"></span><span class="ch-away">Away</span><span></span></div>
+      <div class="row"><span class="chip chip--w">W</span><span class="home win">Kirton A</span><span class="pill">5 – 1</span><span class="away lose">Marlborough</span><span class="chip chip--l">L</span></div>
+      <div class="row"><span class="chip chip--l">L</span><span class="home lose">Waldringfield Swans</span><span class="pill">1 – 5</span><span class="away win">Hollbrook</span><span class="chip chip--w">W</span></div>
+      <div class="row"><span class="chip chip--w">W</span><span class="home win">Westerfield Yellows</span><span class="pill">4 – 2</span><span class="away lose">E-of-E Co-op Reds</span><span class="chip chip--l">L</span></div>
+      <div class="row"><span></span><span class="home">Stone Lodge Blues</span><span class="vs">v</span><span class="away">Samford</span><span></span></div>
+    </div>
+
+    <p class="sub">Single team — Kirton A</p>
+    <div class="list">
+      <div class="lcolhead"><span>Date</span><span>H/A</span><span>Opponent</span><span>Score</span><span class="lc-result">Result</span></div>
+      <div class="lrow"><span class="lrow__date">Mon 11 May</span><span class="vchip">H</span><span class="lrow__match">Marlborough</span><span class="lscore">5 – 1</span><span class="lrow__result"><span class="chip chip--w">W</span></span></div>
+      <div class="lrow"><span class="lrow__date">Mon 18 May</span><span class="vchip">A</span><span class="lrow__match">Hollbrook</span><span class="lscore">2 – 4</span><span class="lrow__result"><span class="chip chip--l">L</span></span></div>
+      <div class="lrow"><span class="lrow__date">Mon 25 May</span><span class="vchip">H</span><span class="lrow__match">Stone Lodge Blues</span><span class="lscore">3 – 3</span><span class="lrow__result"><span class="chip chip--d">D</span></span></div>
+      <div class="lrow"><span class="lrow__date">Mon 1 Jun</span><span class="vchip">A</span><span class="lrow__match">Westerfield Yellows</span><span class="lscore lscore--tbd">v</span><span class="lrow__result"></span></div>
+    </div>
+  </div>
+
+  <!-- ============ OPTION D ============ -->
+  <div class="opt d">
+    <span class="opt__tag">D — headers + venue tint</span>
+    <p class="opt__note">Column headers as in A, plus in the single-team list home fixtures get a thin green left border and a green date. Home games become scannable down the page without reading anything — the tint carries the meaning, the header explains it.</p>
+
+    <p class="sub">All teams</p>
+    <div class="week">
+      <div class="week__head"><h3 class="week__title">Week 1</h3><span class="week__date">Mon, 11 May</span></div>
+      <div class="colhead"><span></span><span class="ch-home">Home</span><span class="ch-mid"></span><span class="ch-away">Away</span><span></span></div>
+      <div class="row"><span class="chip chip--w">W</span><span class="home win">Kirton A</span><span class="pill">5 – 1</span><span class="away lose">Marlborough</span><span class="chip chip--l">L</span></div>
+      <div class="row"><span class="chip chip--l">L</span><span class="home lose">Waldringfield Swans</span><span class="pill">1 – 5</span><span class="away win">Hollbrook</span><span class="chip chip--w">W</span></div>
+      <div class="row"><span class="chip chip--w">W</span><span class="home win">Westerfield Yellows</span><span class="pill">4 – 2</span><span class="away lose">E-of-E Co-op Reds</span><span class="chip chip--l">L</span></div>
+      <div class="row"><span></span><span class="home">Stone Lodge Blues</span><span class="vs">v</span><span class="away">Samford</span><span></span></div>
+    </div>
+
+    <p class="sub">Single team — Kirton A <span style="text-transform:none; letter-spacing:0; font-weight:600;">(green edge = home)</span></p>
+    <div class="list">
+      <div class="lcolhead"><span>Date</span><span>Home <span style="letter-spacing:0">·</span> Away</span><span></span><span class="lc-result">Result</span></div>
+      <div class="lrow lrow--home"><span class="lrow__date">Mon 11 May</span><span class="lrow__match"><strong>Kirton A</strong> 5<span class="sep">–</span>1 Marlborough</span><span></span><span class="lrow__result"><span class="chip chip--w">W</span></span></div>
+      <div class="lrow"><span class="lrow__date">Mon 18 May</span><span class="lrow__match">Hollbrook 4<span class="sep">–</span>2 <strong>Kirton A</strong></span><span></span><span class="lrow__result"><span class="chip chip--l">L</span></span></div>
+      <div class="lrow lrow--home"><span class="lrow__date">Mon 25 May</span><span class="lrow__match"><strong>Kirton A</strong> 3<span class="sep">–</span>3 Stone Lodge Blues</span><span></span><span class="lrow__result"><span class="chip chip--d">D</span></span></div>
+      <div class="lrow"><span class="lrow__date">Mon 1 Jun</span><span class="lrow__match">Westerfield Yellows <span class="sep">v</span> <strong>Kirton A</strong></span><span></span><span class="lrow__result"></span></div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

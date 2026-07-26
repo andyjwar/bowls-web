@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Officers v12 — one-line chips + colour options</title>
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --card: #ffffff;
+    --border: #e3e6ea;
+    --row-hi: #f2f4f6;
+    --text: #3a4048;
+    --text-strong: #14181d;
+    --muted: #6b7280;
+    --green: #256e3d;
+    --navy: #1d3a6e;
+    --oxblood: #7e3040;
+    --violet: #4c3585;
+    --charcoal: #2b3138;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  h1 { font-size: 1.5rem; letter-spacing: -0.02em; color: var(--text-strong); margin: 0 0 0.4rem; }
+  .lead { margin: 0 0 2.5rem; color: var(--muted); font-size: 0.95rem; }
+  .opt {
+    margin: 3rem 0 0;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+  .opt__tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--text-strong);
+    padding: 4px 10px;
+    margin: 0 0 0.5rem;
+  }
+  .opt__title { font-size: 1.05rem; font-weight: 800; color: var(--text-strong); margin: 0 0 0.25rem; letter-spacing: -0.01em; }
+  .opt__note { margin: 0 0 1.25rem; font-size: 0.88rem; color: var(--muted); max-width: 46rem; }
+
+  .section-label {
+    margin: 1.4rem 0 0.7rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 12px;
+  }
+
+  /* base card */
+  .oc {
+    display: flex;
+    flex-direction: column;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--accent, var(--green));
+    padding: 1.05rem 1.15rem;
+  }
+  .oc__role {
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+    color: var(--accent, var(--green));
+  }
+  .oc__name {
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--text-strong);
+    margin-top: 4px;
+  }
+  .oc__chips { display: flex; gap: 6px; margin-top: 0.85rem; }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: var(--row-hi);
+    padding: 7px 11px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .chip svg { flex-shrink: 0; color: var(--accent, var(--green)); }
+  .chip--open { background: var(--accent, var(--green)); color: #fff; }
+  .chip--open svg { color: #fff; }
+
+  /* B: equal thirds */
+  .oc--thirds .oc__chips { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+  .oc--thirds .oc__chips.two { grid-template-columns: 1fr 1fr; }
+
+  /* C: icon-led squares */
+  .oc--icons .chip { flex-direction: column; gap: 5px; padding: 9px 0; flex: 1; font-size: 0.72rem; font-weight: 700; }
+
+  .detail {
+    margin-top: 0.7rem;
+    padding: 0.6rem 0.8rem;
+    background: var(--row-hi);
+    font-size: 0.9rem;
+  }
+  .detail a { color: var(--text-strong); font-weight: 600; text-decoration: underline; text-decoration-color: var(--accent, var(--green)); text-underline-offset: 3px; }
+
+  /* colour scoping */
+  .accent-green { --accent: var(--green); }
+  .accent-navy { --accent: var(--navy); }
+  .accent-oxblood { --accent: var(--oxblood); }
+  .accent-violet { --accent: var(--violet); }
+  .accent-charcoal { --accent: var(--charcoal); }
+  .accent-charcoal .chip svg, .oc.accent-charcoal .oc__role { }
+
+  /* E: charcoal spine, green icons only */
+  .oc--mini { --accent: var(--charcoal); }
+  .oc--mini .chip svg { color: var(--green); }
+  .oc--mini .oc__role { color: var(--muted); }
+
+  /* F: tinted headband */
+  .oc--band { border-left: 1px solid var(--border); padding: 0; overflow: hidden; }
+  .oc--band .oc__head {
+    background: var(--accent, var(--green));
+    padding: 0.75rem 1.15rem 0.8rem;
+  }
+  .oc--band .oc__role { color: rgba(255,255,255,0.75); }
+  .oc--band .oc__name { color: #fff; font-size: 1.2rem; }
+  .oc--band .oc__chips { padding: 0.9rem 1.15rem 1.05rem; margin-top: 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Officers — one-line chips &amp; colour options</h1>
+  <p class="lead">Top: three ways to fit Phone / Email / Address on a single line. Below: the same page in different colour treatments.</p>
+
+  <!-- ============ LAYOUTS ============ -->
+  <div class="opt">
+    <span class="opt__tag">Layout A</span>
+    <p class="opt__title">Compact chips, single row</p>
+    <p class="opt__note">Same chips as now, slightly tighter, forced onto one line. Simple, keeps the labels.</p>
+    <div class="cards">
+      <div class="oc accent-green">
+        <span class="oc__role">Samford</span>
+        <span class="oc__name">Christopher Rozier</span>
+        <span class="oc__chips">
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>Phone</span>
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</span>
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7.5 13.5S12 9.5 12 6.25A4.4 4.4 0 007.5 1.9 4.4 4.4 0 003 6.25c0 3.25 4.5 7.25 4.5 7.25z"/><circle cx="7.5" cy="6.1" r="1.6"/></svg>Address</span>
+        </span>
+      </div>
+      <div class="oc accent-green">
+        <span class="oc__role">Two Wood</span>
+        <span class="oc__name">Ed Dale</span>
+        <span class="oc__chips">
+          <span class="chip chip--open"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>Phone</span>
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</span>
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7.5 13.5S12 9.5 12 6.25A4.4 4.4 0 007.5 1.9 4.4 4.4 0 003 6.25c0 3.25 4.5 7.25 4.5 7.25z"/><circle cx="7.5" cy="6.1" r="1.6"/></svg>Address</span>
+        </span>
+        <div class="detail"><a href="#">01473 311650</a> &nbsp; <a href="#">07716 494678</a></div>
+      </div>
+      <div class="oc accent-green">
+        <span class="oc__role">Triples</span>
+        <span class="oc__name">Linda Bestow</span>
+        <span class="oc__chips">
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>Phone</span>
+          <span class="chip chip--open"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</span>
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7.5 13.5S12 9.5 12 6.25A4.4 4.4 0 007.5 1.9 4.4 4.4 0 003 6.25c0 3.25 4.5 7.25 4.5 7.25z"/><circle cx="7.5" cy="6.1" r="1.6"/></svg>Address</span>
+        </span>
+        <div class="detail"><a href="#">linda.bestow@gmail.com</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="opt">
+    <span class="opt__tag">Layout B</span>
+    <p class="opt__title">Full-width row, equal thirds</p>
+    <p class="opt__note">The three chips stretch to fill the card, so every card lines up perfectly whatever the labels.</p>
+    <div class="cards">
+      <div class="oc oc--thirds accent-green">
+        <span class="oc__role">Samford</span>
+        <span class="oc__name">Christopher Rozier</span>
+        <span class="oc__chips">
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>Phone</span>
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</span>
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7.5 13.5S12 9.5 12 6.25A4.4 4.4 0 007.5 1.9 4.4 4.4 0 003 6.25c0 3.25 4.5 7.25 4.5 7.25z"/><circle cx="7.5" cy="6.1" r="1.6"/></svg>Address</span>
+        </span>
+      </div>
+      <div class="oc oc--thirds accent-green">
+        <span class="oc__role">Chairman</span>
+        <span class="oc__name">Barrie Cracknell</span>
+        <span class="oc__chips two">
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>Phone</span>
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</span>
+        </span>
+      </div>
+      <div class="oc oc--thirds accent-green">
+        <span class="oc__role">Triples</span>
+        <span class="oc__name">Linda Bestow</span>
+        <span class="oc__chips">
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>Phone</span>
+          <span class="chip chip--open"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</span>
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7.5 13.5S12 9.5 12 6.25A4.4 4.4 0 007.5 1.9 4.4 4.4 0 003 6.25c0 3.25 4.5 7.25 4.5 7.25z"/><circle cx="7.5" cy="6.1" r="1.6"/></svg>Address</span>
+        </span>
+        <div class="detail"><a href="#">linda.bestow@gmail.com</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="opt">
+    <span class="opt__tag">Layout C</span>
+    <p class="opt__title">Icon-led squares</p>
+    <p class="opt__note">Bigger tap targets with the icon on top — friendly on phones, always one line.</p>
+    <div class="cards">
+      <div class="oc oc--icons accent-green">
+        <span class="oc__role">Samford</span>
+        <span class="oc__name">Christopher Rozier</span>
+        <span class="oc__chips">
+          <span class="chip"><svg width="16" height="16" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>Phone</span>
+          <span class="chip"><svg width="16" height="16" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</span>
+          <span class="chip"><svg width="16" height="16" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7.5 13.5S12 9.5 12 6.25A4.4 4.4 0 007.5 1.9 4.4 4.4 0 003 6.25c0 3.25 4.5 7.25 4.5 7.25z"/><circle cx="7.5" cy="6.1" r="1.6"/></svg>Address</span>
+        </span>
+      </div>
+      <div class="oc oc--icons accent-green">
+        <span class="oc__role">Two Wood</span>
+        <span class="oc__name">Ed Dale</span>
+        <span class="oc__chips">
+          <span class="chip chip--open"><svg width="16" height="16" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>Phone</span>
+          <span class="chip"><svg width="16" height="16" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</span>
+          <span class="chip"><svg width="16" height="16" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7.5 13.5S12 9.5 12 6.25A4.4 4.4 0 007.5 1.9 4.4 4.4 0 003 6.25c0 3.25 4.5 7.25 4.5 7.25z"/><circle cx="7.5" cy="6.1" r="1.6"/></svg>Address</span>
+        </span>
+        <div class="detail"><a href="#">01473 311650</a> &nbsp; <a href="#">07716 494678</a></div>
+      </div>
+      <div class="oc oc--icons accent-green">
+        <span class="oc__role">Triples</span>
+        <span class="oc__name">Linda Bestow</span>
+        <span class="oc__chips">
+          <span class="chip"><svg width="16" height="16" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>Phone</span>
+          <span class="chip"><svg width="16" height="16" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</span>
+          <span class="chip"><svg width="16" height="16" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7.5 13.5S12 9.5 12 6.25A4.4 4.4 0 007.5 1.9 4.4 4.4 0 003 6.25c0 3.25 4.5 7.25 4.5 7.25z"/><circle cx="7.5" cy="6.1" r="1.6"/></svg>Address</span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ COLOURS ============ -->
+  <div class="opt">
+    <span class="opt__tag">Colour 1</span>
+    <p class="opt__title">All crest green (current)</p>
+    <p class="opt__note">One accent everywhere. Calm, matches the rest of the site.</p>
+    <p class="section-label">League officers</p>
+    <div class="cards">
+      <div class="oc accent-green"><span class="oc__role">Chairman</span><span class="oc__name">Barrie Cracknell</span></div>
+      <div class="oc accent-green"><span class="oc__role">Secretary</span><span class="oc__name">Helen Swift</span></div>
+      <div class="oc accent-green"><span class="oc__role">Treasurer</span><span class="oc__name">George Wiseman</span></div>
+    </div>
+    <p class="section-label">Fixtures &amp; results secretaries</p>
+    <div class="cards">
+      <div class="oc accent-green"><span class="oc__role">Samford</span><span class="oc__name">Christopher Rozier</span></div>
+      <div class="oc accent-green"><span class="oc__role">Two Wood</span><span class="oc__name">Ed Dale</span></div>
+      <div class="oc accent-green"><span class="oc__role">Triples</span><span class="oc__name">Linda Bestow</span></div>
+    </div>
+  </div>
+
+  <div class="opt">
+    <span class="opt__tag">Colour 2</span>
+    <p class="opt__title">One colour per section</p>
+    <p class="opt__note">Every card inside a section shares one accent: navy for league officers, green for fixtures &amp; results, oxblood for competitions. Three colours total on the page, never three in one row.</p>
+    <p class="section-label">League officers</p>
+    <div class="cards">
+      <div class="oc accent-navy"><span class="oc__role">Chairman</span><span class="oc__name">Barrie Cracknell</span></div>
+      <div class="oc accent-navy"><span class="oc__role">Secretary</span><span class="oc__name">Helen Swift</span></div>
+      <div class="oc accent-navy"><span class="oc__role">Treasurer</span><span class="oc__name">George Wiseman</span></div>
+    </div>
+    <p class="section-label">Fixtures &amp; results secretaries</p>
+    <div class="cards">
+      <div class="oc accent-green"><span class="oc__role">Samford</span><span class="oc__name">Christopher Rozier</span></div>
+      <div class="oc accent-green"><span class="oc__role">Two Wood</span><span class="oc__name">Ed Dale</span></div>
+      <div class="oc accent-green"><span class="oc__role">Triples</span><span class="oc__name">Linda Bestow</span></div>
+    </div>
+    <p class="section-label">Competitions</p>
+    <div class="cards">
+      <div class="oc accent-oxblood"><span class="oc__role">Competitions Secretary</span><span class="oc__name">David Sarjeant</span></div>
+      <div class="oc accent-oxblood"><span class="oc__role">Team Comps</span><span class="oc__name">Barrie Cracknell</span></div>
+      <div class="oc accent-oxblood"><span class="oc__role">Committee</span><span class="oc__name">Joyce Fisher</span></div>
+    </div>
+  </div>
+
+  <div class="opt">
+    <span class="opt__tag">Colour 3</span>
+    <p class="opt__title">All navy</p>
+    <p class="opt__note">Same single-accent idea but in the crest navy — a bit more formal / committee feel.</p>
+    <p class="section-label">League officers</p>
+    <div class="cards">
+      <div class="oc accent-navy"><span class="oc__role">Chairman</span><span class="oc__name">Barrie Cracknell</span></div>
+      <div class="oc accent-navy"><span class="oc__role">Secretary</span><span class="oc__name">Helen Swift</span></div>
+      <div class="oc accent-navy"><span class="oc__role">Treasurer</span><span class="oc__name">George Wiseman</span></div>
+    </div>
+  </div>
+
+  <div class="opt">
+    <span class="opt__tag">Colour 4</span>
+    <p class="opt__title">Near-neutral</p>
+    <p class="opt__note">Charcoal spine and grey role text; the only colour is the green contact icons. The quietest option.</p>
+    <p class="section-label">League officers</p>
+    <div class="cards">
+      <div class="oc oc--mini"><span class="oc__role">Chairman</span><span class="oc__name">Barrie Cracknell</span>
+        <span class="oc__chips">
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>Phone</span>
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</span>
+        </span>
+      </div>
+      <div class="oc oc--mini"><span class="oc__role">Secretary</span><span class="oc__name">Helen Swift</span>
+        <span class="oc__chips">
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>Phone</span>
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</span>
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7.5 13.5S12 9.5 12 6.25A4.4 4.4 0 007.5 1.9 4.4 4.4 0 003 6.25c0 3.25 4.5 7.25 4.5 7.25z"/><circle cx="7.5" cy="6.1" r="1.6"/></svg>Address</span>
+        </span>
+      </div>
+      <div class="oc oc--mini"><span class="oc__role">Treasurer</span><span class="oc__name">George Wiseman</span>
+        <span class="oc__chips">
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>Phone</span>
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</span>
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7.5 13.5S12 9.5 12 6.25A4.4 4.4 0 007.5 1.9 4.4 4.4 0 003 6.25c0 3.25 4.5 7.25 4.5 7.25z"/><circle cx="7.5" cy="6.1" r="1.6"/></svg>Address</span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="opt">
+    <span class="opt__tag">Colour 5</span>
+    <p class="opt__title">Solid headband</p>
+    <p class="opt__note">Role + name sit on a solid green band, contacts below on white. Bolder, poster-like — matches the home tiles most directly.</p>
+    <p class="section-label">League officers</p>
+    <div class="cards">
+      <div class="oc oc--band accent-green">
+        <div class="oc__head"><span class="oc__role">Chairman</span><br /><span class="oc__name">Barrie Cracknell</span></div>
+        <span class="oc__chips">
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>Phone</span>
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</span>
+        </span>
+      </div>
+      <div class="oc oc--band accent-green">
+        <div class="oc__head"><span class="oc__role">Secretary</span><br /><span class="oc__name">Helen Swift</span></div>
+        <span class="oc__chips">
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>Phone</span>
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</span>
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7.5 13.5S12 9.5 12 6.25A4.4 4.4 0 007.5 1.9 4.4 4.4 0 003 6.25c0 3.25 4.5 7.25 4.5 7.25z"/><circle cx="7.5" cy="6.1" r="1.6"/></svg>Address</span>
+        </span>
+      </div>
+      <div class="oc oc--band accent-green">
+        <div class="oc__head"><span class="oc__role">Treasurer</span><br /><span class="oc__name">George Wiseman</span></div>
+        <span class="oc__chips">
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2h3l1 3.5-2 1a9 9 0 004.5 4.5l1-2L14 10v3a1 1 0 01-1 1A11 11 0 012 3a1 1 0 011-1z"/></svg>Phone</span>
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="12" height="9"/><path d="M1.5 4l6 4.5L13.5 4"/></svg>Email</span>
+          <span class="chip"><svg width="13" height="13" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7.5 13.5S12 9.5 12 6.25A4.4 4.4 0 007.5 1.9 4.4 4.4 0 003 6.25c0 3.25 4.5 7.25 4.5 7.25z"/><circle cx="7.5" cy="6.1" r="1.6"/></svg>Address</span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

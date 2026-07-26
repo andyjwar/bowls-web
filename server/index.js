@@ -6,10 +6,16 @@ import { timingSafeEqual } from 'crypto'
 import {
   getDivision,
   getDivisionFixtures,
+  getWeekEditableMatchRows,
   listLeagues,
   loadLeague,
   mergeWeekResults,
   saveLeague,
+  updateDivisionTeamNames,
+  updateLeagueStructureLabels,
+  addLeagueDivision,
+  addLeagueSection,
+  createLeagueFromClone,
 } from './leagueStore.js'
 import { extractTextFromUpload } from './ocr.js'
 import { parseScoreSheetText, fuzzyMatchTeam } from './parseScoreText.js'
@@ -17,6 +23,10 @@ import { identifyTargetFromText } from './detectTarget.js'
 import { parseSamfordResultsForm, isSamfordResultsForm } from './parseSamfordForm.js'
 import { validateFormPlayers } from './validatePlayers.js'
 import { structuredToSamfordHints } from './visionExtract.js'
+import { executeCsvImport } from './csvImport.js'
+import { loadRegisteredPlayers, setTeamRegisteredPlayers, seedRosterClubsFromLeague } from './rosterStore.js'
+import { parseRosterFromText, parseRosterUploadBuffer } from './rosterUploadParse.js'
+import { addFormSubmission, loadFormSubmissions } from './formsStore.js'
 
 function mergeVisionHints(samfordForm, hints) {
   if (!hints) return samfordForm
@@ -74,6 +84,58 @@ const upload = multer({
     cb(ok ? null : new Error('Only images and PDF files are allowed'), ok)
   },
 })
+
+const csvUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 2 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    const name = (file.originalname || '').toLowerCase()
+    const ok =
+      file.mimetype === 'text/csv' ||
+      file.mimetype === 'application/csv' ||
+      file.mimetype === 'text/plain' ||
+      name.endsWith('.csv')
+    cb(ok ? null : new Error('Upload a .csv file'), ok)
+  },
+})
+
+const rosterListUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 6 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    const name = (file.originalname || '').toLowerCase()
+    const mt = (file.mimetype || '').toLowerCase()
+    const extOk = /\.(csv|txt|xlsx|xls)$/i.test(name)
+    const ok =
+      extOk ||
+      name.endsWith('.csv') ||
+      name.endsWith('.txt') ||
+      name.endsWith('.xlsx') ||
+      name.endsWith('.xls') ||
+      mt.includes('csv') ||
+      mt.includes('text/plain') ||
+      mt.includes('spreadsheet') ||
+      mt.includes('excel') ||
+      mt.includes('officedocument') ||
+      (mt === 'application/octet-stream' && extOk)
+    cb(ok ? null : new Error('Upload a .csv, .txt, or Excel .xlsx / .xls file'), ok)
+  },
+})
+
+function optionalRosterListFile(req, res, next) {
+  const ct = req.headers['content-type'] || ''
+  if (ct.includes('multipart/form-data')) {
+    rosterListUpload.single('file')(req, res, (err) => {
+      if (err) {
+        res.status(400).json({ ok: false, error: err.message || 'Upload failed' })
+        return
+      }
+      next()
+    })
+  } else {
+    next()
+  }
+}
 
 function safePasswordMatch(given) {
   const a = Buffer.from(String(given ?? ''))
@@ -133,6 +195,196 @@ app.post('/api/admin/logout', requireAuth, (req, res) => {
 
 app.get('/api/admin/leagues', requireAuth, (_req, res) => {
   res.json({ leagues: listLeagues() })
+})
+
+app.post('/api/admin/leagues', requireAuth, (req, res) => {
+  try {
+    const { leagueId, name, cloneFromLeagueId } = req.body ?? {}
+    const out = createLeagueFromClone({
+      leagueId,
+      name,
+      cloneFromLeagueId,
+    })
+    res.json({ ok: true, ...out })
+  } catch (e) {
+    res.status(400).json({ error: e.message || 'Could not create league' })
+  }
+})
+
+app.get('/api/admin/league/:leagueId', requireAuth, (req, res) => {
+  try {
+    const leagueId = String(req.params.leagueId ?? '').trim()
+    const league = loadLeague(leagueId)
+    res.json({ ok: true, league })
+  } catch (e) {
+    res.status(400).json({ error: e.message || 'Unknown league' })
+  }
+})
+
+app.put('/api/admin/league/:leagueId/division-teams', requireAuth, (req, res) => {
+  try {
+    const leagueId = String(req.params.leagueId ?? '').trim()
+    const { sectionId, divisionId, teams } = req.body ?? {}
+    if (!divisionId) {
+      res.status(400).json({ error: 'divisionId is required' })
+      return
+    }
+    if (!Array.isArray(teams)) {
+      res.status(400).json({ error: 'teams must be an array of names' })
+      return
+    }
+    updateDivisionTeamNames(leagueId, {
+      sectionId: sectionId ? String(sectionId).trim() : null,
+      divisionId: String(divisionId).trim().toLowerCase(),
+      teams,
+    })
+    res.json({ ok: true })
+  } catch (e) {
+    res.status(400).json({ error: e.message || 'Save failed' })
+  }
+})
+
+app.put('/api/admin/league/:leagueId/labels', requireAuth, (req, res) => {
+  try {
+    const leagueId = String(req.params.leagueId ?? '').trim()
+    const body = req.body ?? {}
+    updateLeagueStructureLabels(leagueId, {
+      leagueName: body.leagueName,
+      sectionId: body.sectionId != null ? String(body.sectionId).trim() : '',
+      sectionLabel: body.sectionLabel,
+      divisionId: body.divisionId != null ? String(body.divisionId).trim().toLowerCase() : '',
+      divisionLabel: body.divisionLabel,
+    })
+    res.json({ ok: true })
+  } catch (e) {
+    res.status(400).json({ error: e.message || 'Save failed' })
+  }
+})
+
+app.post('/api/admin/league/:leagueId/divisions', requireAuth, (req, res) => {
+  try {
+    const leagueId = String(req.params.leagueId ?? '').trim()
+    const { sectionId, divisionId, label } = req.body ?? {}
+    const out = addLeagueDivision(leagueId, {
+      sectionId: sectionId != null ? String(sectionId).trim() : '',
+      divisionId: divisionId != null ? String(divisionId).trim() : '',
+      label,
+    })
+    res.json({ ok: true, ...out })
+  } catch (e) {
+    res.status(400).json({ error: e.message || 'Could not add division' })
+  }
+})
+
+app.post('/api/admin/league/:leagueId/sections', requireAuth, (req, res) => {
+  try {
+    const leagueId = String(req.params.leagueId ?? '').trim()
+    const { sectionId, label, cloneScheduleFromSectionId } = req.body ?? {}
+    const out = addLeagueSection(leagueId, {
+      sectionId,
+      label,
+      cloneScheduleFromSectionId,
+    })
+    res.json({ ok: true, ...out })
+  } catch (e) {
+    res.status(400).json({ error: e.message || 'Could not add section' })
+  }
+})
+
+app.get('/api/admin/registered-players', requireAuth, (_req, res) => {
+  res.json({ ok: true, roster: loadRegisteredPlayers() })
+})
+
+app.put('/api/admin/registered-players/team', requireAuth, (req, res) => {
+  try {
+    const { leagueId, sectionId, teamName, players } = req.body ?? {}
+    const lid = String(leagueId ?? '').trim()
+    if (!lid) {
+      res.status(400).json({ error: 'leagueId is required' })
+      return
+    }
+    const tn = String(teamName ?? '').trim()
+    if (!tn) {
+      res.status(400).json({ error: 'teamName is required' })
+      return
+    }
+    const sid = String(sectionId ?? '').trim() || '_'
+    const out = setTeamRegisteredPlayers(lid, sid, tn, players)
+    res.json({ ok: true, ...out })
+  } catch (e) {
+    res.status(400).json({ error: e.message || 'Save failed' })
+  }
+})
+
+app.post('/api/admin/registered-players/seed-league', requireAuth, (req, res) => {
+  try {
+    const leagueId = String(req.body?.leagueId ?? '').trim()
+    if (!leagueId) {
+      res.status(400).json({ error: 'leagueId is required' })
+      return
+    }
+    const out = seedRosterClubsFromLeague(leagueId)
+    res.json({ ok: true, ...out })
+  } catch (e) {
+    res.status(400).json({ error: e.message || 'Seed failed' })
+  }
+})
+
+app.post(
+  '/api/admin/registered-players/parse-upload',
+  requireAuth,
+  optionalRosterListFile,
+  (req, res) => {
+    try {
+      if (req.file?.buffer) {
+        const names = parseRosterUploadBuffer(
+          req.file.buffer,
+          req.file.originalname,
+          req.file.mimetype,
+        )
+        res.json({ ok: true, names, count: names.length })
+        return
+      }
+      const text = req.body?.text
+      if (typeof text !== 'string') {
+        res.status(400).json({
+          ok: false,
+          error: 'Upload a file (field name "file") or send JSON { "text": "..." }',
+        })
+        return
+      }
+      if (text.length > 800_000) {
+        res.status(400).json({ ok: false, error: 'Pasted text is too long (max ~800k characters)' })
+        return
+      }
+      const names = parseRosterFromText(text)
+      res.json({ ok: true, names, count: names.length })
+    } catch (e) {
+      res.status(400).json({ ok: false, error: e.message || 'Could not read that list' })
+    }
+  },
+)
+
+app.get('/api/admin/week-results', requireAuth, (req, res) => {
+  try {
+    const leagueId = String(req.query?.leagueId ?? '').trim()
+    const divisionId = String(req.query?.divisionId ?? '').trim().toLowerCase()
+    const weekRaw = req.query?.week
+    const sectionId = String(req.query?.sectionId ?? '').trim()
+    if (!leagueId || !divisionId || weekRaw === '' || weekRaw === undefined) {
+      res.status(400).json({ error: 'leagueId, divisionId and week query params are required' })
+      return
+    }
+    const league = loadLeague(leagueId)
+    const payload = getWeekEditableMatchRows(league, {
+      sectionId: sectionId || null,
+      divisionId,
+      week: weekRaw,
+    })
+    res.json({ ok: true, ...payload })
+  } catch (e) {
+    res.status(500).json({ error: e.message || 'Could not load week results' })
+  }
 })
 
 app.post('/api/admin/import', requireAuth, (req, res, next) => {
@@ -319,6 +571,135 @@ app.post('/api/admin/import', requireAuth, (req, res, next) => {
     })
   } catch (e) {
     res.status(500).json({ error: e.message || 'Import failed' })
+  }
+})
+
+app.post('/api/admin/import-csv', requireAuth, (req, res, next) => {
+  csvUpload.single('file')(req, res, (err) => {
+    if (err) {
+      res.status(400).json({ ok: false, error: err.message || 'Upload failed' })
+      return
+    }
+    next()
+  })
+}, (req, res) => {
+  try {
+    if (!req.file) {
+      res.status(400).json({ ok: false, error: 'No file uploaded' })
+      return
+    }
+    const defaultLeagueId = String(req.body?.defaultLeagueId ?? '').trim()
+    const defaultSectionId = String(req.body?.defaultSectionId ?? '').trim()
+    const result = executeCsvImport(req.file.buffer, {
+      leagueId: defaultLeagueId,
+      sectionId: defaultSectionId,
+    })
+    if (!result.ok) {
+      res.status(400).json({
+        ok: false,
+        errors: result.errors,
+        warnings: result.warnings,
+        pendingFixtures: result.pendingFixtures ?? [],
+      })
+      return
+    }
+    res.json({
+      ok: true,
+      warnings: result.warnings,
+      batches: result.batches,
+      entries: result.entries ?? result.fixtureRows ?? [],
+      fixtureRows: result.fixtureRows ?? result.entries ?? [],
+      pendingFixtures: result.pendingFixtures ?? [],
+      roster: result.roster,
+    })
+  } catch (e) {
+    res.status(500).json({ ok: false, error: e.message || 'CSV import failed' })
+  }
+})
+
+/* ── Public form submissions (no auth — this is the website's fillable forms) ── */
+
+const FORM_TYPES = {
+  'player-transfer': {
+    required: ['playerName', 'fromClub', 'toClub', 'contact'],
+  },
+  'weekly-results': {
+    required: [
+      'league',
+      'division',
+      'matchDate',
+      'homeTeam',
+      'awayTeam',
+      'rinkScores',
+      'homeTotal',
+      'awayTotal',
+      'submittedBy',
+      'contact',
+    ],
+  },
+  'cup-results': {
+    required: [
+      'cup',
+      'round',
+      'matchDate',
+      'homeTeam',
+      'awayTeam',
+      'homeScore',
+      'awayScore',
+      'submittedBy',
+      'contact',
+    ],
+  },
+  'competitions-entry': {
+    required: ['entrantName', 'club', 'contact', 'competitions'],
+  },
+  'player-registration': {
+    required: ['league', 'team', 'players', 'secretaryName', 'contact'],
+  },
+  'league-application': {
+    required: ['clubName', 'section', 'contactName', 'contact'],
+  },
+}
+
+app.post('/api/forms/:formType', (req, res) => {
+  try {
+    const formType = String(req.params.formType ?? '').trim()
+    const spec = FORM_TYPES[formType]
+    if (!spec) {
+      res.status(404).json({ error: 'Unknown form' })
+      return
+    }
+    const raw = req.body?.fields
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+      res.status(400).json({ error: 'fields object is required' })
+      return
+    }
+    const fields = {}
+    for (const [k, v] of Object.entries(raw)) {
+      const key = String(k).slice(0, 60)
+      const val = String(v ?? '').trim().slice(0, 2000)
+      if (val) fields[key] = val
+    }
+    const missing = spec.required.filter((k) => !fields[k])
+    if (missing.length) {
+      res.status(400).json({ error: `Missing required fields: ${missing.join(', ')}` })
+      return
+    }
+    const record = addFormSubmission(formType, fields)
+    res.json({ ok: true, id: record.id })
+  } catch (e) {
+    res.status(500).json({ error: e.message || 'Could not save the form' })
+  }
+})
+
+app.get('/api/admin/form-submissions', requireAuth, (_req, res) => {
+  try {
+    const submissions = [...loadFormSubmissions()].sort((a, b) =>
+      String(b.submittedAt).localeCompare(String(a.submittedAt)),
+    )
+    res.json({ ok: true, submissions })
+  } catch (e) {
+    res.status(500).json({ error: e.message || 'Could not load submissions' })
   }
 })
 

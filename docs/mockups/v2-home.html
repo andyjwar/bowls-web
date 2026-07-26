@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  MOCKUP v2 — front page. "cursor.com meets fotmob.com"
+  Sharp squares, hairline grid, one mono label voice, color used as thin
+  strategic accents (league edge bars + day-of-week chips).
+  Static sketch only — click a league panel to open v2-league.html.
+-->
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mock v2 — Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --ink: #0a0a0a;
+      --ink-2: #52525b;
+      --ink-3: #a1a1aa;
+      --line: #e4e4e7;
+      --line-strong: #d4d4d8;
+      --panel: #fafafa;
+      --green: #00935f;   /* pitch — the ONE brand accent */
+      --blue: #2563eb;
+      --orange: #e8590c;
+      --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', 'JetBrains Mono', Menlo, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; }
+    html { -webkit-font-smoothing: antialiased; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .frame { max-width: 1080px; margin: 0 auto; border-left: 1px solid var(--line); border-right: 1px solid var(--line); min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* ── Header: boxed segments, not a floating link list ── */
+    header {
+      display: flex;
+      align-items: stretch;
+      border-bottom: 1px solid var(--line);
+      position: sticky; top: 0; background: var(--bg); z-index: 10;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 12px;
+      padding: 0 20px; height: 56px;
+      border-right: 1px solid var(--line);
+      flex-shrink: 0;
+    }
+    .brand__mark {
+      width: 26px; height: 26px; background: var(--ink); color: #fff;
+      font-family: var(--mono); font-size: 11px; font-weight: 700;
+      display: grid; place-items: center; letter-spacing: 0.02em;
+    }
+    .brand__name { font-size: 13px; font-weight: 600; line-height: 1.25; }
+    .brand__name small { display: block; font-family: var(--mono); font-size: 10px; font-weight: 400; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.12em; }
+    nav { display: flex; align-items: stretch; flex: 1; overflow-x: auto; scrollbar-width: none; }
+    nav::-webkit-scrollbar { display: none; }
+    nav a {
+      display: flex; align-items: center; padding: 0 18px;
+      font-size: 13.5px; font-weight: 500; color: var(--ink-2);
+      border-right: 1px solid var(--line);
+      white-space: nowrap;
+      transition: background 0.12s, color 0.12s;
+    }
+    nav a:hover { background: var(--panel); color: var(--ink); }
+    nav a.active { background: var(--ink); color: #fff; font-weight: 600; }
+    .hdr-util {
+      margin-left: auto; display: flex; align-items: center; padding: 0 20px;
+      border-left: 1px solid var(--line);
+      font-family: var(--mono); font-size: 11px; color: var(--ink-3);
+      text-transform: uppercase; letter-spacing: 0.1em; white-space: nowrap;
+    }
+
+    /* ── Hero ── */
+    .hero { padding: 64px 40px 56px; border-bottom: 1px solid var(--line); }
+    .eyebrow {
+      font-family: var(--mono); font-size: 11px; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.16em; color: var(--green);
+      display: flex; align-items: center; gap: 8px; margin-bottom: 18px;
+    }
+    .eyebrow::before { content: ''; width: 8px; height: 8px; background: var(--green); }
+    h1 { font-size: clamp(28px, 4.5vw, 44px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.08; max-width: 20ch; }
+    .hero p { margin-top: 14px; color: var(--ink-2); max-width: 52ch; font-size: 16px; }
+
+    /* ── Section label row ── */
+    .sect {
+      display: flex; align-items: baseline; justify-content: space-between;
+      padding: 20px 40px 14px;
+    }
+    .sect h2 {
+      font-family: var(--mono); font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.16em; color: var(--ink-3);
+    }
+    .sect span { font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
+
+    /* ── League panels ── */
+    .league {
+      display: grid;
+      grid-template-columns: 4px 1fr auto auto 56px;
+      align-items: center;
+      gap: 0 32px;
+      border-top: 1px solid var(--line);
+      min-height: 104px;
+      padding-right: 0;
+      transition: background 0.12s;
+      position: relative;
+    }
+    .league:last-of-type { border-bottom: 1px solid var(--line); }
+    .league:hover { background: var(--panel); }
+    .league__edge { align-self: stretch; background: var(--accent); }
+    .league__main { padding: 20px 0; min-width: 0; }
+    .league__name { font-size: 19px; font-weight: 600; letter-spacing: -0.015em; }
+    .league__meta { margin-top: 4px; font-size: 13.5px; color: var(--ink-2); }
+    .league__meta b { color: var(--ink); font-weight: 600; }
+
+    /* Day-of-week chips: M T W T F S S, active = filled with league accent */
+    .days { display: flex; gap: 4px; }
+    .day {
+      width: 26px; height: 26px;
+      display: grid; place-items: center;
+      font-family: var(--mono); font-size: 10.5px; font-weight: 600;
+      color: var(--ink-3);
+      border: 1px solid var(--line);
+      background: var(--bg);
+    }
+    .day.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    .league__stats {
+      display: flex; gap: 28px; padding-right: 8px;
+      font-family: var(--mono); font-size: 11px; color: var(--ink-3);
+      text-transform: uppercase; letter-spacing: 0.08em;
+      text-align: right;
+    }
+    .league__stats b { display: block; font-size: 20px; color: var(--ink); font-weight: 600; letter-spacing: 0; margin-bottom: 2px; }
+
+    .league__go {
+      align-self: stretch; display: grid; place-items: center;
+      border-left: 1px solid var(--line);
+      color: var(--ink-3); transition: background 0.12s, color 0.12s;
+    }
+    .league:hover .league__go { background: var(--ink); color: #fff; }
+
+    /* ── This week strip ── */
+    .week-strip {
+      display: grid; grid-template-columns: repeat(7, 1fr);
+      border-top: 1px solid var(--line);
+    }
+    .week-strip > div {
+      border-right: 1px solid var(--line);
+      padding: 14px 16px 16px;
+      min-height: 96px;
+    }
+    .week-strip > div:last-child { border-right: none; }
+    .ws-day { font-family: var(--mono); font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); margin-bottom: 10px; }
+    .ws-item { font-size: 12.5px; font-weight: 500; line-height: 1.35; padding-left: 8px; border-left: 2px solid var(--dot, var(--ink)); margin-bottom: 6px; }
+    .ws-item small { display: block; color: var(--ink-3); font-weight: 400; font-size: 11px; }
+    .ws-empty { color: var(--line-strong); font-family: var(--mono); font-size: 11px; }
+    .ws-today .ws-day { color: var(--green); }
+    .ws-today { background: #f4fbf8; }
+
+    footer {
+      margin-top: auto;
+      border-top: 1px solid var(--line);
+      padding: 20px 40px;
+      display: flex; justify-content: space-between;
+      font-family: var(--mono); font-size: 11px; color: var(--ink-3);
+      text-transform: uppercase; letter-spacing: 0.1em;
+    }
+
+    @media (max-width: 860px) {
+      .hero, .sect, footer { padding-left: 20px; padding-right: 20px; }
+      .league { grid-template-columns: 4px 1fr 56px; gap: 0 16px; }
+      .days { display: none; }
+      .league__stats { display: none; }
+      .week-strip { grid-template-columns: repeat(2, 1fr); }
+      .week-strip > div { border-bottom: 1px solid var(--line); }
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+
+    <header>
+      <a class="brand" href="#">
+        <span class="brand__mark">IB</span>
+        <span class="brand__name">Ipswich &amp; District<small>Federation bowls</small></span>
+      </a>
+      <nav>
+        <a class="active" href="#">Leagues</a>
+        <a href="#">Competitions</a>
+        <a href="#">Officers</a>
+        <a href="#">Rules</a>
+        <a href="#">Forms</a>
+      </nav>
+      <span class="hdr-util">2026</span>
+    </header>
+
+    <section class="hero">
+      <div class="eyebrow">2026 season · in play</div>
+      <h1>League bowls, every week of the season.</h1>
+      <p>Fixtures, results and tables for all federation leagues. Find your league below — matches run Monday to Thursday across the district.</p>
+    </section>
+
+    <div class="sect">
+      <h2>Leagues in play</h2>
+      <span>3 leagues · 13 divisions</span>
+    </div>
+
+    <a class="league" href="v2-league.html" style="--accent: var(--green)">
+      <span class="league__edge"></span>
+      <span class="league__main">
+        <span class="league__name">Samford League</span>
+        <span class="league__meta">Rinks fours · <b>Monday evenings</b> &amp; <b>Wednesday afternoons</b></span>
+      </span>
+      <span class="days" aria-label="Plays Monday and Wednesday">
+        <span class="day on">M</span><span class="day">T</span><span class="day on">W</span><span class="day">T</span><span class="day">F</span><span class="day">S</span><span class="day">S</span>
+      </span>
+      <span class="league__stats">
+        <span><b>6</b>divisions</span>
+        <span><b>44</b>teams</span>
+      </span>
+      <span class="league__go">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9h12M10 4l5 5-5 5"/></svg>
+      </span>
+    </a>
+
+    <a class="league" href="v2-league.html" style="--accent: var(--blue)">
+      <span class="league__edge"></span>
+      <span class="league__main">
+        <span class="league__name">Two Wood League</span>
+        <span class="league__meta">Pairs · <b>Tuesday</b> &amp; <b>Thursday</b> evenings</span>
+      </span>
+      <span class="days" aria-label="Plays Tuesday and Thursday">
+        <span class="day">M</span><span class="day on">T</span><span class="day">W</span><span class="day on">T</span><span class="day">F</span><span class="day">S</span><span class="day">S</span>
+      </span>
+      <span class="league__stats">
+        <span><b>7</b>divisions</span>
+        <span><b>56</b>teams</span>
+      </span>
+      <span class="league__go">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9h12M10 4l5 5-5 5"/></svg>
+      </span>
+    </a>
+
+    <a class="league" href="v2-league.html" style="--accent: var(--orange)">
+      <span class="league__edge"></span>
+      <span class="league__main">
+        <span class="league__name">Triples League</span>
+        <span class="league__meta">Triples · <b>Friday</b> evenings</span>
+      </span>
+      <span class="days" aria-label="Plays Friday">
+        <span class="day">M</span><span class="day">T</span><span class="day">W</span><span class="day">T</span><span class="day on">F</span><span class="day">S</span><span class="day">S</span>
+      </span>
+      <span class="league__stats">
+        <span><b>5</b>divisions</span>
+        <span><b>40</b>teams</span>
+      </span>
+      <span class="league__go">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9h12M10 4l5 5-5 5"/></svg>
+      </span>
+    </a>
+
+    <div class="sect">
+      <h2>This week</h2>
+      <span>Mon 20 – Sun 26 Jul</span>
+    </div>
+
+    <div class="week-strip">
+      <div>
+        <div class="ws-day">Mon</div>
+        <div class="ws-item" style="--dot: var(--green)">Samford — Round 11<small>Evening rinks</small></div>
+      </div>
+      <div>
+        <div class="ws-day">Tue</div>
+        <div class="ws-item" style="--dot: var(--blue)">Two Wood — Round 9<small>Divisions A–D</small></div>
+      </div>
+      <div>
+        <div class="ws-day">Wed</div>
+        <div class="ws-item" style="--dot: var(--green)">Samford — Round 11<small>Afternoon</small></div>
+      </div>
+      <div>
+        <div class="ws-day">Thu</div>
+        <div class="ws-item" style="--dot: var(--blue)">Two Wood — Round 9<small>Divisions E–G</small></div>
+      </div>
+      <div>
+        <div class="ws-day">Fri</div>
+        <div class="ws-item" style="--dot: var(--orange)">Triples — Round 8<small>All divisions</small></div>
+      </div>
+      <div class="ws-today">
+        <div class="ws-day">Sat · today</div>
+        <div class="ws-empty">No matches</div>
+      </div>
+      <div>
+        <div class="ws-day">Sun</div>
+        <div class="ws-empty">No matches</div>
+      </div>
+    </div>
+
+    <footer>
+      <span>Ipswich &amp; District Federation</span>
+      <span>Est. 1921</span>
+    </footer>
+
+  </div>
+</body>
+</html>

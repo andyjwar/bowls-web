@@ -1,57 +1,5 @@
 export const RULES_SECTIONS = [
   {
-    id: 'constitution',
-    label: 'Constitution',
-    title: 'Constitution (Updated January 2025)',
-    blocks: [
-      {
-        type: 'numbered',
-        items: [
-          {
-            n: 1,
-            text: 'The association shall be known as the Ipswich & District Federation Bowls League, membership to be open to all bowls clubs in Ipswich and surrounding districts. The aim of the association is to manage and promote bowls. All League, Cup and Competition games not covered by the following rules shall be played under the rules of the Suffolk County Bowls Association (SCBA) and/or the Suffolk County Women’s Bowls Association (SCWBA). All clubs and players must be affiliated to the SCBA and/or the SCWBA.',
-          },
-          {
-            n: 2,
-            text: 'All clubs must submit their application to join the league for the following season no later than seven days prior to the Annual General Meeting each year.',
-          },
-          {
-            n: 3,
-            text: 'The affiliation fee for membership, for each team, shall be paid on or before the Annual General Meeting each year. If, on the date of the Annual General Meeting each year, the fees have not been received by the Treasurer, the Secretary shall write to or contact via email each offending club informing them that they have incurred a fine of £10.00 to cover the administration cost involved.',
-          },
-          {
-            n: 4,
-            text: 'The affairs of the association shall be conducted by a management committee which shall consist of a Chairman, Vice-Chairman, General Secretary, Treasurer, three Results and/or Fixtures Secretaries, Competitions Secretary, Website Co-ordinator, Results Information Officer, Interleague Manager and four committee members. Seven committee members to form a quorum. Any member of the management committee who fails to attend three consecutive meetings without reasonable excuse could lose their position on said committee. The committee will have power to co-opt any person to fill any vacancy or assist in special duties that may arise.',
-          },
-          {
-            n: 5,
-            text: 'The management committee shall be elected at the Annual General Meeting which must be held before 31st December each year, when the Secretary’s report and the Treasurer’s financial statement, duly audited, shall be presented. The Secretary shall announce the meeting at least 60 days before the date stated. The Secretary shall invite representatives of all affiliated clubs to attend the Annual General Meeting but only two delegates from each affiliated club and members of the management committee shall have the power to vote. Each club must be represented by at least one person at the Annual General Meeting and any club not represented will incur a fine of £10.00.',
-          },
-          {
-            n: 6,
-            text: 'The rules and fees of the association shall only be altered or added to at the Annual General Meeting. All motions from clubs to be received by the Secretary in writing at least 42 days before the AGM. All notices of motion, including any from the management committee, to be sent in writing to all clubs at least 28 days before the AGM. Any amendments to motions should be received by the Secretary in writing at least 14 days before the AGM.',
-          },
-          {
-            n: 7,
-            text: 'An Extraordinary General Meeting shall be called by the combined request of at least three clubs. Such a request must be signed by the Chairman and Secretary of each club who must state fully the purpose for the meeting being called. The association’s Secretary shall give at least seven day\'s notice of an Extraordinary General Meeting to all clubs and only the subject for which the meeting has been called shall be discussed.',
-          },
-          {
-            n: 8,
-            text: 'Protests: The subject of a protest must be made in writing and forwarded to the Secretary within seven days of the occurrence, together with a fee of £10.00 which shall be returned if the protest is sustained or may be forfeited at the discretion of the committee. The decision of the committee shall be notified by the Secretary to all persons concerned.',
-          },
-          {
-            n: 9,
-            text: 'The management committee has been appointed to deal with any infringements of the rules. The committee has the power to order re-plays and to deal with all matters not covered by the rules.',
-          },
-          {
-            n: 10,
-            text: 'All fines must be remitted to the Treasurer within 14 days. Failure to abide by this rule may warrant a further fine of £10.00 or points being deducted at the discretion of the management committee.',
-          },
-        ],
-      },
-    ],
-  },
-  {
     id: 'divisional-formation',
     label: 'Divisional formation',
     title: 'Divisional formation',

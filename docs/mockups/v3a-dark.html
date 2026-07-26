@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Direction A — "Night game": dark, sleek, one green accent. -->
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Direction A — Night game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0e1012;
+      --raise: #16191c;
+      --raise-2: #1d2125;
+      --line: #262b30;
+      --text: #e8eaec;
+      --text-2: #9aa3ab;
+      --text-3: #5c656d;
+      --green: #00c471;
+      --green-dim: rgba(0, 196, 113, 0.12);
+    }
+    * { box-sizing: border-box; margin: 0; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 16px; line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    .wrap { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+
+    /* nav: floating dark bar with segmented active state */
+    header { border-bottom: 1px solid var(--line); }
+    .bar { display: flex; align-items: center; height: 64px; gap: 32px; }
+    .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; letter-spacing: -0.01em; }
+    .logo i { width: 10px; height: 10px; background: var(--green); display: block; }
+    nav { display: flex; gap: 4px; margin-left: auto; }
+    nav a {
+      padding: 8px 14px; font-size: 14px; font-weight: 500; color: var(--text-2);
+      transition: color .12s, background .12s;
+    }
+    nav a:hover { color: var(--text); background: var(--raise); }
+    nav a.on { color: var(--bg); background: var(--green); font-weight: 600; }
+
+    .hero { padding: 72px 0 56px; }
+    .hero h1 {
+      font-size: clamp(30px, 5vw, 52px); font-weight: 800; letter-spacing: -0.035em;
+      line-height: 1.05; max-width: 16ch;
+    }
+    .hero h1 em { font-style: normal; color: var(--green); }
+    .hero p { margin-top: 16px; color: var(--text-2); max-width: 46ch; font-size: 17px; }
+
+    .label { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin: 0 0 14px; }
+
+    .leagues { display: flex; flex-direction: column; gap: 10px; padding-bottom: 32px; }
+    .lg {
+      display: flex; align-items: center; gap: 24px;
+      background: var(--raise);
+      border: 1px solid var(--line);
+      padding: 22px 26px;
+      transition: border-color .12s, background .12s;
+    }
+    .lg:hover { border-color: var(--green); background: var(--raise-2); }
+    .lg__body { flex: 1; min-width: 0; }
+    .lg__name { font-size: 19px; font-weight: 700; letter-spacing: -0.015em; }
+    .lg__meta { margin-top: 3px; font-size: 14px; color: var(--text-2); }
+    .days { display: flex; gap: 5px; }
+    .day {
+      width: 30px; height: 30px; display: grid; place-items: center;
+      font-size: 11.5px; font-weight: 600; color: var(--text-3);
+      background: var(--raise-2);
+    }
+    .day.on { background: var(--green); color: #06130d; }
+    .lg__count { text-align: right; font-size: 13px; color: var(--text-2); width: 90px; }
+    .lg__count b { display: block; font-size: 22px; color: var(--text); font-weight: 700; }
+    .lg__arrow { color: var(--text-3); transition: color .12s, transform .15s; }
+    .lg:hover .lg__arrow { color: var(--green); transform: translateX(3px); }
+
+    .strip { border-top: 1px solid var(--line); padding: 28px 0 64px; }
+    .week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+    .wd { background: var(--raise); border: 1px solid var(--line); padding: 12px 14px; min-height: 92px; }
+    .wd h4 { font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--text-3); margin-bottom: 8px; }
+    .wd.today { border-color: var(--green); }
+    .wd.today h4 { color: var(--green); }
+    .we { font-size: 13px; font-weight: 600; line-height: 1.3; }
+    .we small { display: block; font-weight: 400; color: var(--text-2); font-size: 12px; }
+    .none { color: var(--text-3); font-size: 12px; }
+
+    @media (max-width: 800px) {
+      .days, .lg__count { display: none; }
+      .week { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap bar">
+      <span class="logo"><i></i>Ipswich &amp; District Bowls</span>
+      <nav>
+        <a class="on" href="#">Leagues</a>
+        <a href="#">Competitions</a>
+        <a href="#">Officers</a>
+        <a href="#">Rules</a>
+        <a href="#">Forms</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero wrap">
+    <h1>Every league. Every result. <em>Every week.</em></h1>
+    <p>Fixtures, results and tables for the 2026 federation season — matches run Monday to Friday across the district.</p>
+  </section>
+
+  <section class="wrap">
+    <p class="label">Leagues in play</p>
+    <div class="leagues">
+      <a class="lg" href="#">
+        <span class="lg__body">
+          <span class="lg__name">Samford League</span>
+          <div class="lg__meta">Rinks fours · Monday evenings &amp; Wednesday afternoons</div>
+        </span>
+        <span class="days">
+          <span class="day on">M</span><span class="day">T</span><span class="day on">W</span><span class="day">T</span><span class="day">F</span>
+        </span>
+        <span class="lg__count"><b>6</b>divisions</span>
+        <svg class="lg__arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 10h11M11 5l5 5-5 5"/></svg>
+      </a>
+      <a class="lg" href="#">
+        <span class="lg__body">
+          <span class="lg__name">Two Wood League</span>
+          <div class="lg__meta">Pairs · Tuesday &amp; Thursday evenings</div>
+        </span>
+        <span class="days">
+          <span class="day">M</span><span class="day on">T</span><span class="day">W</span><span class="day on">T</span><span class="day">F</span>
+        </span>
+        <span class="lg__count"><b>7</b>divisions</span>
+        <svg class="lg__arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 10h11M11 5l5 5-5 5"/></svg>
+      </a>
+      <a class="lg" href="#">
+        <span class="lg__body">
+          <span class="lg__name">Triples League</span>
+          <div class="lg__meta">Triples · Friday evenings</div>
+        </span>
+        <span class="days">
+          <span class="day">M</span><span class="day">T</span><span class="day">W</span><span class="day">T</span><span class="day on">F</span>
+        </span>
+        <span class="lg__count"><b>5</b>divisions</span>
+        <svg class="lg__arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 10h11M11 5l5 5-5 5"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <section class="strip">
+    <div class="wrap">
+      <p class="label">This week</p>
+      <div class="week">
+        <div class="wd"><h4>Mon</h4><p class="we">Samford R11<small>Evening</small></p></div>
+        <div class="wd"><h4>Tue</h4><p class="we">Two Wood R9<small>Div A–D</small></p></div>
+        <div class="wd"><h4>Wed</h4><p class="we">Samford R11<small>Afternoon</small></p></div>
+        <div class="wd"><h4>Thu</h4><p class="we">Two Wood R9<small>Div E–G</small></p></div>
+        <div class="wd"><h4>Fri</h4><p class="we">Triples R8<small>All divisions</small></p></div>
+        <div class="wd today"><h4>Sat · Today</h4><p class="none">No matches</p></div>
+        <div class="wd"><h4>Sun</h4><p class="none">No matches</p></div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
