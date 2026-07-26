@@ -333,53 +333,6 @@
             "weeks": {
               "1": [
                 {
-                  "home": "Waldringfield Swans",
-                  "away": "Hollbrook",
-                  "homeShots": 59,
-                  "awayShots": 46,
-                  "homePoints": 5,
-                  "awayPoints": 1,
-                  "players": {
-                    "home": [
-                      "S Smith",
-                      "S Smith",
-                      "G Coles",
-                      "J Hay",
-                      "E Hay",
-                      "D Hay",
-                      "A Ward",
-                      "K Smith",
-                      "P Ham"
-                    ],
-                    "away": [
-                      "R Rankin",
-                      "D Carling",
-                      "A Mower",
-                      "G Westley",
-                      "M Pink",
-                      "M Pink",
-                      "D Harper",
-                      "M Lambs",
-                      "P Abbott"
-                    ]
-                  },
-                  "matchDate": "2026-05-11",
-                  "rinkShots": [
-                    {
-                      "homeShots": 21,
-                      "awayShots": 13
-                    },
-                    {
-                      "homeShots": 20,
-                      "awayShots": 13
-                    },
-                    {
-                      "homeShots": 18,
-                      "awayShots": 20
-                    }
-                  ]
-                },
-                {
                   "home": "Kirton A",
                   "away": "Marlborough",
                   "homeShots": 65,
@@ -433,6 +386,24 @@
                   "awayShots": 49,
                   "homePoints": 4,
                   "awayPoints": 2
+                },
+                {
+                  "home": "Waldringfield Swans",
+                  "away": "Hollbrook",
+                  "homeShots": 1,
+                  "awayShots": 1,
+                  "homePoints": 2,
+                  "awayPoints": 2
+                }
+              ],
+              "12": [
+                {
+                  "home": "Kirton A",
+                  "away": "Stone Lodge Blues",
+                  "homeShots": 4,
+                  "awayShots": 3,
+                  "homePoints": 2,
+                  "awayPoints": 5
                 }
               ]
             }

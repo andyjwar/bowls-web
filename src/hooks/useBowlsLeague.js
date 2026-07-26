@@ -4,9 +4,9 @@ import { applyResultsToFixtures, computeStandingsFromResults } from '../lib/resu
 
 /** Fallback before `/data/leagues-nav.json` loads (and if fetch fails). */
 export const LEAGUES = [
-  { id: 'samford-2026', label: 'Samford League 2026' },
-  { id: 'two-wood-2026', label: 'Two Wood League 2026' },
-  { id: 'triples-2026', label: 'Triples League 2026' },
+  { id: 'samford-2026', label: 'Samford League 2026', season: 2026 },
+  { id: 'two-wood-2026', label: 'Two Wood League 2026', season: 2026 },
+  { id: 'triples-2026', label: 'Triples League 2026', season: 2026 },
 ]
 
 function leagueDocumentPath(leagueId) {

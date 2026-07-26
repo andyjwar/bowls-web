@@ -31,7 +31,7 @@ export default function App() {
         <Route path="rules" element={<RulesPage />} />
         <Route path="forms" element={<FormsPage />} />
         <Route path="forms/:formId" element={<WebFormPage />} />
-        <Route path="admin" element={<AdminPage />} />
+        <Route path="admin/*" element={<AdminPage />} />
       </Route>
     </Routes>
   )

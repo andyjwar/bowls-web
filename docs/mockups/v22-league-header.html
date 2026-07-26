@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>v22 — league header / toolbar options</title>
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --card: #ffffff;
+    --border: #e3e6ea;
+    --row-hi: #f2f4f6;
+    --text: #3a4048;
+    --text-strong: #14181d;
+    --muted: #8a919b;
+    --navy: #1d3a6e;
+    --navy-soft: rgba(29, 58, 110, 0.12);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { max-width: 900px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  h1 { font-size: 1.4rem; letter-spacing: -0.02em; color: var(--text-strong); margin: 0 0 0.3rem; }
+  .lead { margin: 0 0 1rem; color: var(--muted); font-size: 0.95rem; }
+  .opt { margin: 3.2rem 0 0; }
+  .opt__tag { display: inline-block; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; background: var(--text-strong); padding: 4px 10px; margin-bottom: 0.4rem; }
+  .opt__note { margin: 0 0 1rem; font-size: 0.88rem; color: var(--muted); max-width: 48rem; }
+
+  /* ---------- shared banner ---------- */
+  .banner { background: var(--navy); color: #fff; padding: 1.3rem 1.5rem 0; }
+  .banner--pad { padding-bottom: 1.3rem; }
+  .banner__back { display: inline-block; background: #fff; color: var(--navy); font-size: 0.78rem; font-weight: 700; text-decoration: none; padding: 6px 12px; margin-bottom: 0.9rem; }
+  .banner__title { margin: 0 0 0.75rem; font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; }
+
+  .btabs { display: flex; gap: 4px; }
+  .btab { padding: 0.55rem 0.95rem 0.65rem; font-size: 0.92rem; font-weight: 600; color: rgba(255,255,255,0.75); text-decoration: none; white-space: nowrap; }
+  .btab--active { background: var(--bg); color: var(--navy); font-weight: 750; }
+
+  /* ---------- shared bits ---------- */
+  .letters { display: flex; gap: 6px; }
+  .letter { min-width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center; padding: 0 10px; background: var(--row-hi); font-size: 0.95rem; font-weight: 750; color: var(--text); text-decoration: none; }
+  .letter--active { background: var(--navy); color: #fff; }
+
+  .vtabs { display: flex; gap: 1.3rem; }
+  .vtab { position: relative; padding: 0.45rem 2px 0.55rem; font-size: 0.92rem; font-weight: 600; color: var(--muted); text-decoration: none; }
+  .vtab--active { color: var(--text-strong); font-weight: 750; }
+  .vtab--active::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--navy); }
+
+  .content { margin-top: 1.1rem; }
+  .fake-table { background: var(--card); border: 1px solid var(--border); }
+  .fake-table div { padding: 0.65rem 1rem; font-size: 0.88rem; border-top: 1px solid var(--border); }
+  .fake-table div:first-child { border-top: 0; background: var(--row-hi); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+  /* ============ A: view tabs join the banner row ============ */
+  .a-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; }
+  .a-toolbar { margin-top: 1.1rem; }
+
+  /* ============ B: everything in the banner ============ */
+  .b-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; flex-wrap: wrap; }
+  .b-left { display: flex; align-items: flex-end; gap: 4px; }
+  .b-letters { display: flex; gap: 5px; margin: 0 0 6px 1.2rem; }
+  .b-letter { min-width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.14); color: rgba(255,255,255,0.85); font-size: 0.88rem; font-weight: 750; text-decoration: none; }
+  .b-letter--active { background: #fff; color: var(--navy); }
+
+  /* ============ C: grouped toolbar ============ */
+  .c-toolbar { display: flex; align-items: center; gap: 1.1rem; margin-top: 1.1rem; }
+  .c-divider { width: 1px; height: 26px; background: var(--border); }
+
+  /* ============ D: full-width tab bar ============ */
+  .d-bar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; border-bottom: 2px solid var(--border); margin-top: 0.2rem; }
+  .d-vtabs { display: flex; gap: 1.6rem; }
+  .d-vtab { position: relative; padding: 0.8rem 2px; font-size: 0.95rem; font-weight: 600; color: var(--muted); text-decoration: none; }
+  .d-vtab--active { color: var(--text-strong); font-weight: 750; }
+  .d-vtab--active::after { content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 3px; background: var(--navy); }
+  .d-letters { display: flex; gap: 6px; }
+  .d-letter { min-width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; background: var(--row-hi); font-size: 0.88rem; font-weight: 750; color: var(--text); text-decoration: none; }
+  .d-letter--active { background: var(--navy); color: #fff; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>League header — bringing the controls together</h1>
+  <p class="lead">Problem: division letters (left) and Table/Matches (right) sit at opposite edges with dead space between. Four ways to tighten it, borrowing the competitions banner-tab feel.</p>
+
+  <!-- ============================ A ============================ -->
+  <div class="opt">
+    <span class="opt__tag">Option A — Table/Matches join the banner</span>
+    <p class="opt__note">The view tabs move into the banner on the same row as the day tabs, right-aligned — exactly the competitions treatment. Division letters get the row below to themselves, left-aligned, close to the table they control.</p>
+
+    <div class="banner">
+      <a class="banner__back" href="#">&larr; All leagues</a>
+      <h2 class="banner__title">Two Wood</h2>
+      <div class="a-row">
+        <nav class="btabs">
+          <a class="btab btab--active" href="#">Tuesday</a>
+          <a class="btab" href="#">Thursday</a>
+        </nav>
+        <nav class="btabs">
+          <a class="btab btab--active" href="#">Table</a>
+          <a class="btab" href="#">Matches</a>
+        </nav>
+      </div>
+    </div>
+    <div class="a-toolbar letters">
+      <a class="letter letter--active" href="#">A</a>
+      <a class="letter" href="#">B</a>
+      <a class="letter" href="#">C</a>
+      <a class="letter" href="#">D</a>
+    </div>
+    <div class="content fake-table">
+      <div>Division A standings</div>
+      <div>1&nbsp;&nbsp;Ipswich &amp; District</div>
+      <div>2&nbsp;&nbsp;Margaret Catchpole</div>
+    </div>
+  </div>
+
+  <!-- ============================ B ============================ -->
+  <div class="opt">
+    <span class="opt__tag">Option B — everything in the banner</span>
+    <p class="opt__note">The banner becomes the whole control centre: day tabs plus ghost-white division squares on the left, Table/Matches on the right. Content starts immediately below — no toolbar row at all.</p>
+
+    <div class="banner">
+      <a class="banner__back" href="#">&larr; All leagues</a>
+      <h2 class="banner__title">Two Wood</h2>
+      <div class="b-row">
+        <div class="b-left">
+          <nav class="btabs">
+            <a class="btab btab--active" href="#">Tuesday</a>
+            <a class="btab" href="#">Thursday</a>
+          </nav>
+          <nav class="b-letters">
+            <a class="b-letter b-letter--active" href="#">A</a>
+            <a class="b-letter" href="#">B</a>
+            <a class="b-letter" href="#">C</a>
+            <a class="b-letter" href="#">D</a>
+          </nav>
+        </div>
+        <nav class="btabs">
+          <a class="btab btab--active" href="#">Table</a>
+          <a class="btab" href="#">Matches</a>
+        </nav>
+      </div>
+    </div>
+    <div class="content fake-table">
+      <div>Division A standings</div>
+      <div>1&nbsp;&nbsp;Ipswich &amp; District</div>
+      <div>2&nbsp;&nbsp;Margaret Catchpole</div>
+    </div>
+  </div>
+
+  <!-- ============================ C ============================ -->
+  <div class="opt">
+    <span class="opt__tag">Option C — grouped toolbar</span>
+    <p class="opt__note">Everything stays below the banner but clusters on the left: letters, a thin divider, then Table/Matches. No stretch across the page, so the eye takes it in as one control strip.</p>
+
+    <div class="banner">
+      <a class="banner__back" href="#">&larr; All leagues</a>
+      <h2 class="banner__title">Two Wood</h2>
+      <nav class="btabs">
+        <a class="btab btab--active" href="#">Tuesday</a>
+        <a class="btab" href="#">Thursday</a>
+      </nav>
+    </div>
+    <div class="c-toolbar">
+      <nav class="letters">
+        <a class="letter letter--active" href="#">A</a>
+        <a class="letter" href="#">B</a>
+        <a class="letter" href="#">C</a>
+        <a class="letter" href="#">D</a>
+      </nav>
+      <div class="c-divider"></div>
+      <nav class="vtabs">
+        <a class="vtab vtab--active" href="#">Table</a>
+        <a class="vtab" href="#">Matches</a>
+      </nav>
+    </div>
+    <div class="content fake-table">
+      <div>Division A standings</div>
+      <div>1&nbsp;&nbsp;Ipswich &amp; District</div>
+      <div>2&nbsp;&nbsp;Margaret Catchpole</div>
+    </div>
+  </div>
+
+  <!-- ============================ D ============================ -->
+  <div class="opt">
+    <span class="opt__tag">Option D — full-width tab bar</span>
+    <p class="opt__note">FotMob-style: Table/Matches becomes an underlined tab bar spanning the page directly under the banner, with the division letters riding on the right end of the same bar. The bottom border ties both ends together so nothing floats.</p>
+
+    <div class="banner">
+      <a class="banner__back" href="#">&larr; All leagues</a>
+      <h2 class="banner__title">Two Wood</h2>
+      <nav class="btabs">
+        <a class="btab btab--active" href="#">Tuesday</a>
+        <a class="btab" href="#">Thursday</a>
+      </nav>
+    </div>
+    <div class="d-bar">
+      <nav class="d-vtabs">
+        <a class="d-vtab d-vtab--active" href="#">Table</a>
+        <a class="d-vtab" href="#">Matches</a>
+      </nav>
+      <nav class="d-letters">
+        <a class="d-letter d-letter--active" href="#">A</a>
+        <a class="d-letter" href="#">B</a>
+        <a class="d-letter" href="#">C</a>
+        <a class="d-letter" href="#">D</a>
+      </nav>
+    </div>
+    <div class="content fake-table">
+      <div>Division A standings</div>
+      <div>1&nbsp;&nbsp;Ipswich &amp; District</div>
+      <div>2&nbsp;&nbsp;Margaret Catchpole</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,8 +1,12 @@
 import { useLeagueHubSummaries } from '../hooks/useLeagueHubSummaries'
+import { useSiteConfig, splitLeaguesBySeason } from '../hooks/useSiteConfig'
 import { LeaguePosterGrid } from './LeaguePosterGrid'
+import { PastSeasonsStrip } from '../pages/HomePage'
 
 export function LeaguesHub({ items, ready }) {
-  const { summaries } = useLeagueHubSummaries(items)
+  const { activeSeason } = useSiteConfig()
+  const { active, past } = splitLeaguesBySeason(items, activeSeason)
+  const { summaries } = useLeagueHubSummaries(active)
 
   return (
     <div className="page page--leagues page--leagues-hub">
@@ -16,7 +20,10 @@ export function LeaguesHub({ items, ready }) {
       {!ready ? (
         <p className="page-state">Loading leagues…</p>
       ) : (
-        <LeaguePosterGrid items={items} summaries={summaries} />
+        <>
+          <LeaguePosterGrid items={active} summaries={summaries} />
+          <PastSeasonsStrip past={past} />
+        </>
       )}
     </div>
   )

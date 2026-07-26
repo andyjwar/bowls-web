@@ -314,6 +314,9 @@ export function LeaguesPage() {
                       : `/leagues/${encodeURIComponent(leagueId)}/${encodeURIComponent(id)}`
                   }
                 />
+                {divisionItems.length > 0 ? (
+                  <div className="league-toolbar__divider" aria-hidden="true" />
+                ) : null}
                 <ViewTabs tab={tab} pathname={location.pathname} />
               </div>
 

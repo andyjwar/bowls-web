@@ -1,0 +1,27 @@
+# Render blueprint — creates the web service when you pick "New > Blueprint"
+# in the Render dashboard and select this repo.
+#
+# Data-only commits made by the server itself include "[skip render]" in the
+# commit message, so they do not trigger a redeploy here (the GitHub Pages
+# workflow still rebuilds the public site on every push).
+services:
+  - type: web
+    name: ipswich-bowls
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: node server/index.js
+    healthCheckPath: /api/admin/session
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: GITHUB_REPO
+        value: andyjwar/bowls-web
+      - key: GITHUB_BRANCH
+        value: main
+      - key: GITHUB_TOKEN
+        sync: false # paste your fine-grained PAT in the Render dashboard
+      - key: ADMIN_PASSWORD
+        sync: false # set your real admin password in the Render dashboard
+      - key: SESSION_SECRET
+        generateValue: true

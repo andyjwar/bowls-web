@@ -1,14 +1,17 @@
 [
   {
     "id": "samford-2026",
-    "label": "Samford League 2026"
+    "label": "Samford League 2026",
+    "season": 2026
   },
   {
     "id": "two-wood-2026",
-    "label": "Two Wood League 2026"
+    "label": "Two Wood League 2026",
+    "season": 2026
   },
   {
     "id": "triples-2026",
-    "label": "Triples League 2026"
+    "label": "Triples League 2026",
+    "season": 2026
   }
 ]

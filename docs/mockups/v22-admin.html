@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>v22 &mdash; admin redesign: score entry first</title>
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --card: #ffffff;
+    --border: #e3e6ea;
+    --row-hi: #f2f4f6;
+    --text: #3a4048;
+    --text-strong: #14181d;
+    --muted: #8a919b;
+    --muted-2: #6b7280;
+    --green: #256e3d;
+    --green-soft: rgba(37, 110, 61, 0.12);
+    --navy: #1d3a6e;
+    --navy-soft: rgba(29, 58, 110, 0.12);
+    --oxblood: #7e3040;
+    --oxblood-soft: rgba(126, 48, 64, 0.12);
+    --violet: #4c3585;
+    --amber: #92600a;
+    --amber-soft: rgba(146, 96, 10, 0.14);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  h1 { font-size: 1.4rem; letter-spacing: -0.02em; color: var(--text-strong); margin: 0 0 0.3rem; }
+  .lead { margin: 0 0 1rem; color: var(--muted); font-size: 0.95rem; max-width: 46rem; }
+  .opt { margin: 3rem 0 0; }
+  .opt__tag { display: inline-block; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; background: var(--text-strong); padding: 4px 10px; margin-bottom: 0.4rem; }
+  .opt__note { margin: 0 0 0.9rem; font-size: 0.88rem; color: var(--muted); max-width: 46rem; }
+  .opt__verdict { margin: 0.9rem 0 0; font-size: 0.88rem; color: var(--muted-2); max-width: 46rem; }
+  .opt__verdict strong { color: var(--text-strong); }
+
+  /* ---- fact box ---- */
+  .fact { background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--green); padding: 1rem 1.2rem; max-width: 46rem; }
+  .fact h2 { margin: 0 0 0.4rem; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-strong); }
+  .fact p { margin: 0 0 0.55rem; font-size: 0.88rem; }
+  .fact ul { margin: 0; padding-left: 1.1rem; font-size: 0.85rem; }
+  .fact li { margin: 0.15rem 0; }
+
+  /* ---- admin shell chrome ---- */
+  .shell { border: 1px solid var(--border); background: var(--card); }
+  .shell__bar { display: flex; align-items: center; gap: 1rem; padding: 0.7rem 1.1rem; border-bottom: 1px solid var(--border); }
+  .shell__title { font-size: 0.95rem; font-weight: 800; color: var(--text-strong); letter-spacing: -0.01em; }
+  .shell__nav { display: flex; gap: 0.15rem; margin-left: 0.5rem; }
+  .shell__navitem { font-size: 0.8rem; font-weight: 700; color: var(--muted-2); padding: 0.35rem 0.7rem; cursor: default; }
+  .shell__navitem--active { color: var(--text-strong); box-shadow: inset 0 -2.5px 0 var(--text-strong); }
+  .shell__navitem .bdg { display: inline-block; min-width: 1.15rem; text-align: center; margin-left: 0.3rem; font-size: 0.66rem; font-weight: 800; color: #fff; background: var(--oxblood); border-radius: 99px; padding: 1px 4px; }
+  .shell__out { margin-left: auto; font-size: 0.78rem; font-weight: 700; color: var(--muted); }
+  .shell__body { padding: 1.1rem; }
+
+  /* ---- overview: entry queue cards ---- */
+  .queue { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0.8rem; }
+  .qc { border: 1px solid var(--border); background: var(--card); padding: 0.75rem 0.85rem 0.85rem; border-top: 4px solid var(--border); }
+  .qc--green { border-top-color: var(--green); }
+  .qc--navy { border-top-color: var(--navy); }
+  .qc--ox { border-top-color: var(--oxblood); }
+  .qc__league { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted-2); }
+  .qc__what { margin-top: 2px; font-size: 0.95rem; font-weight: 800; color: var(--text-strong); }
+  .qc__date { font-size: 0.78rem; color: var(--muted); margin-top: 1px; }
+  .qc__meter { margin-top: 0.6rem; height: 6px; background: var(--row-hi); position: relative; }
+  .qc__meter i { position: absolute; inset: 0 auto 0 0; background: var(--green); }
+  .qc--navy .qc__meter i { background: var(--navy); }
+  .qc--ox .qc__meter i { background: var(--oxblood); }
+  .qc__stat { display: flex; justify-content: space-between; margin-top: 0.45rem; font-size: 0.76rem; font-weight: 700; }
+  .qc__stat .todo { color: var(--amber); }
+  .qc__stat .done { color: var(--muted); }
+  .qc__go { display: inline-block; margin-top: 0.55rem; font-size: 0.78rem; font-weight: 800; color: var(--violet); }
+  .qc--complete { opacity: 0.75; }
+  .qc--complete .qc__go { color: var(--muted); }
+  .ov__row { display: flex; gap: 0.8rem; margin-top: 0.8rem; flex-wrap: wrap; }
+  .ov__aside { flex: 1 1 260px; border: 1px solid var(--border); padding: 0.7rem 0.85rem; }
+  .ov__aside h3 { margin: 0 0 0.4rem; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted-2); }
+  .ov__aside ul { list-style: none; margin: 0; padding: 0; }
+  .ov__aside li { font-size: 0.82rem; padding: 0.25rem 0; border-top: 1px solid var(--row-hi); display: flex; justify-content: space-between; gap: 0.6rem; }
+  .ov__aside li:first-of-type { border-top: none; }
+  .ov__aside .who { font-weight: 700; color: var(--text-strong); }
+  .ov__aside .when { color: var(--muted); font-size: 0.74rem; white-space: nowrap; }
+
+  /* ---- score entry: picker rows ---- */
+  .pick { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+  .pick + .pick { margin-top: 0.6rem; }
+  .pick__label { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); width: 4.4rem; }
+  .pill { font-size: 0.8rem; font-weight: 750; padding: 0.32rem 0.75rem; border: 1px solid var(--border); color: var(--muted-2); background: var(--card); cursor: default; }
+  .pill--green { background: var(--green); border-color: var(--green); color: #fff; }
+  .pill--navy-soft { background: var(--navy-soft); border-color: transparent; color: var(--navy); }
+  .pill--ox-soft { background: var(--oxblood-soft); border-color: transparent; color: var(--oxblood); }
+  .seg { display: flex; }
+  .seg .pill { border-right-width: 0; }
+  .seg .pill:last-child { border-right-width: 1px; }
+  .seg .pill--on { background: var(--green-soft); color: var(--green); font-weight: 800; }
+  .lett { display: flex; gap: 0.3rem; }
+  .lett span { display: inline-flex; align-items: center; justify-content: center; width: 1.9rem; height: 1.9rem; font-size: 0.82rem; font-weight: 800; border: 1px solid var(--border); color: var(--muted-2); }
+  .lett span.on { background: var(--green); border-color: var(--green); color: #fff; }
+  .wk { display: flex; align-items: center; gap: 0.6rem; }
+  .wk__arrow { width: 1.9rem; height: 1.9rem; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--border); font-weight: 800; color: var(--muted-2); }
+  .wk__now { font-size: 0.88rem; font-weight: 800; color: var(--text-strong); }
+  .wk__date { font-size: 0.78rem; color: var(--muted); }
+  .wk__closest { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--green); background: var(--green-soft); padding: 2px 7px; }
+
+  /* ---- score entry grid ---- */
+  .grid { margin-top: 1rem; border: 1px solid var(--border); }
+  .grid table { width: 100%; border-collapse: collapse; }
+  .grid th { text-align: left; font-size: 0.66rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding: 0.5rem 0.65rem; background: var(--row-hi); border-bottom: 1px solid var(--border); }
+  .grid td { padding: 0.45rem 0.65rem; border-bottom: 1px solid var(--row-hi); font-size: 0.85rem; vertical-align: middle; }
+  .grid tr:last-child td { border-bottom: none; }
+  .grid .team { font-weight: 700; color: var(--text-strong); white-space: nowrap; }
+  .grid .team--away { text-align: right; }
+  .grid .vs { color: var(--muted); font-size: 0.72rem; text-align: center; }
+  .num { width: 3.2rem; padding: 0.3rem 0.35rem; font-size: 0.88rem; font-weight: 700; text-align: center; border: 1px solid var(--border); background: var(--card); color: var(--text-strong); font-variant-numeric: tabular-nums; }
+  .num--empty { background: #fffdf4; border-color: #e7d9ae; }
+  .pts { font-size: 0.82rem; font-weight: 800; color: var(--muted-2); text-align: center; font-variant-numeric: tabular-nums; }
+  .badge { display: inline-block; font-size: 0.64rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; padding: 2.5px 7px; white-space: nowrap; }
+  .badge--saved { color: var(--green); background: var(--green-soft); }
+  .badge--todo { color: var(--amber); background: var(--amber-soft); }
+  .badge--name { color: var(--oxblood); background: var(--oxblood-soft); }
+  .rowlink { font-size: 0.74rem; font-weight: 750; color: var(--violet); white-space: nowrap; }
+  .gridfoot { display: flex; align-items: center; gap: 0.8rem; padding: 0.7rem 0.85rem; border-top: 1px solid var(--border); background: var(--row-hi); }
+  .btn { font-size: 0.82rem; font-weight: 800; padding: 0.45rem 1rem; border: none; background: var(--green); color: #fff; }
+  .btn--ghost { background: transparent; color: var(--muted-2); border: 1px solid var(--border); font-weight: 700; }
+  .gridfoot__hint { font-size: 0.78rem; color: var(--muted); }
+
+  /* ---- cup admin ---- */
+  .cup { display: flex; flex-direction: column; gap: 0.9rem; }
+  .cup__round { border: 1px solid var(--border); }
+  .cup__rh { display: flex; justify-content: space-between; align-items: baseline; padding: 0.5rem 0.85rem; background: var(--row-hi); border-bottom: 1px solid var(--border); }
+  .cup__rname { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-strong); }
+  .cup__rmeta { font-size: 0.76rem; color: var(--muted); }
+  .cup table { width: 100%; border-collapse: collapse; }
+  .cup td { padding: 0.4rem 0.85rem; font-size: 0.85rem; border-bottom: 1px solid var(--row-hi); }
+  .cup tr:last-child td { border-bottom: none; }
+  .cup .tie { font-size: 0.68rem; font-weight: 800; color: var(--muted); width: 2rem; }
+  .cup .team { font-weight: 700; color: var(--text-strong); }
+  .cup .wo { font-size: 0.74rem; font-weight: 750; color: var(--muted-2); }
+  .cup select { font-size: 0.78rem; padding: 0.25rem 0.3rem; border: 1px solid var(--border); color: var(--text); background: var(--card); }
+  .cup__advance { font-size: 0.76rem; color: var(--muted); padding: 0.55rem 0.85rem; border-top: 1px solid var(--border); }
+  .cup__advance strong { color: var(--green); }
+
+  /* ---- clubs & players ---- */
+  .clubs { display: grid; grid-template-columns: 220px 1fr; border: 1px solid var(--border); }
+  .clubs__list { border-right: 1px solid var(--border); max-height: 24rem; overflow: hidden; }
+  .clubs__search { display: block; width: calc(100% - 1.2rem); margin: 0.6rem; padding: 0.35rem 0.5rem; font-size: 0.8rem; border: 1px solid var(--border); color: var(--muted); }
+  .clubs__list ul { list-style: none; margin: 0; padding: 0; }
+  .clubs__list li { display: flex; justify-content: space-between; align-items: baseline; padding: 0.42rem 0.85rem; font-size: 0.82rem; font-weight: 700; color: var(--text-strong); border-top: 1px solid var(--row-hi); }
+  .clubs__list li.on { background: var(--green-soft); box-shadow: inset 3px 0 0 var(--green); }
+  .clubs__list .n { font-size: 0.7rem; font-weight: 800; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .clubs__detail { padding: 0.85rem 1rem; }
+  .clubs__club { font-size: 1rem; font-weight: 800; color: var(--text-strong); }
+  .clubs__leagues { margin: 0.25rem 0 0.7rem; display: flex; gap: 0.35rem; flex-wrap: wrap; }
+  .chip { font-size: 0.66rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; padding: 2.5px 8px; }
+  .chip--green { color: var(--green); background: var(--green-soft); }
+  .chip--navy { color: var(--navy); background: var(--navy-soft); }
+  .chip--ox { color: var(--oxblood); background: var(--oxblood-soft); }
+  .roster { column-width: 12rem; column-gap: 1.6rem; }
+  .roster li { font-size: 0.83rem; padding: 0.16rem 0; break-inside: avoid; list-style: none; }
+  .roster { margin: 0; padding: 0; }
+  .roster .flag { font-size: 0.64rem; font-weight: 800; color: var(--amber); margin-left: 0.3rem; }
+  .clubs__actions { display: flex; gap: 0.6rem; margin-top: 0.8rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>v22 &mdash; admin redesign: score entry first</h1>
+  <p class="lead">
+    The public site now leads with leagues, cups, and &ldquo;this week&rdquo;. The admin page still leads with CSV import,
+    and manual score entry is three clicks deep inside &ldquo;League history&rdquo;. This flips it: the primary admin job is
+    entering a week of scores per league, with everything else behind it.
+  </p>
+
+  <div class="fact">
+    <h2>What exists today vs what the public site needs</h2>
+    <p><strong>Keeps working, just re-homed:</strong></p>
+    <ul>
+      <li>CSV import + imported-results check &rarr; becomes a secondary &ldquo;Bulk import&rdquo; tool inside Results.</li>
+      <li>League teams (club names per division) and Registered players &rarr; merge into one &ldquo;Clubs &amp; players&rdquo; area.</li>
+      <li>Form submissions &rarr; stays, but gets an unread badge in the nav.</li>
+    </ul>
+    <p style="margin-top:0.55rem"><strong>Genuinely missing today:</strong></p>
+    <ul>
+      <li>A week-at-a-time score entry grid (the fixture editor is one modal per match).</li>
+      <li>Any cup/competition editing &mdash; <code>competitions-2026.json</code> is hand-edited while the public site now has bracket + matches views.</li>
+      <li>An overview of what still needs entering, mirroring the public &ldquo;This week&rdquo; carousel.</li>
+    </ul>
+  </div>
+
+  <!-- ============================ A =============================== -->
+  <section class="opt">
+    <span class="opt__tag">A &mdash; overview landing: the entry queue</span>
+    <p class="opt__note">
+      After sign-in you land on a queue, not a form. One card per league-day for the current week, driven by the same
+      schedule data as the public day carousel: how many fixtures have scores, how many don&rsquo;t. Click through to the
+      entry grid (option B) with league, division, and week pre-selected. Cup rounds and new form submissions surface here too.
+    </p>
+
+    <div class="shell">
+      <div class="shell__bar">
+        <span class="shell__title">League admin</span>
+        <nav class="shell__nav">
+          <span class="shell__navitem shell__navitem--active">This week</span>
+          <span class="shell__navitem">Results</span>
+          <span class="shell__navitem">Competitions</span>
+          <span class="shell__navitem">Clubs &amp; players</span>
+          <span class="shell__navitem">Forms<span class="bdg">2</span></span>
+        </nav>
+        <span class="shell__out">Sign out</span>
+      </div>
+      <div class="shell__body">
+        <div class="queue">
+          <div class="qc qc--green">
+            <div class="qc__league">Samford &middot; Monday</div>
+            <div class="qc__what">Week 11 scores</div>
+            <div class="qc__date">Mon 20 Jul</div>
+            <div class="qc__meter"><i style="width:25%"></i></div>
+            <div class="qc__stat"><span class="todo">3 to enter</span><span class="done">1 of 4 saved</span></div>
+            <span class="qc__go">Enter scores &rarr;</span>
+          </div>
+          <div class="qc qc--green">
+            <div class="qc__league">Samford &middot; Wednesday</div>
+            <div class="qc__what">Week 11 scores</div>
+            <div class="qc__date">Wed 22 Jul</div>
+            <div class="qc__meter"><i style="width:100%"></i></div>
+            <div class="qc__stat"><span class="done">All 4 saved</span><span class="done">&#10003;</span></div>
+            <span class="qc__go">Review &rarr;</span>
+          </div>
+          <div class="qc qc--navy">
+            <div class="qc__league">Two Wood &middot; Tuesday</div>
+            <div class="qc__what">Week 10 scores &middot; Divs A&ndash;D</div>
+            <div class="qc__date">Tue 21 Jul</div>
+            <div class="qc__meter"><i style="width:60%"></i></div>
+            <div class="qc__stat"><span class="todo">6 to enter</span><span class="done">9 of 15 saved</span></div>
+            <span class="qc__go">Enter scores &rarr;</span>
+          </div>
+          <div class="qc qc--navy">
+            <div class="qc__league">Two Wood &middot; Thursday</div>
+            <div class="qc__what">Week 10 scores &middot; Divs E&ndash;G</div>
+            <div class="qc__date">Thu 23 Jul</div>
+            <div class="qc__meter"><i style="width:0%"></i></div>
+            <div class="qc__stat"><span class="todo">11 to enter</span><span class="done">0 of 11 saved</span></div>
+            <span class="qc__go">Enter scores &rarr;</span>
+          </div>
+          <div class="qc qc--ox">
+            <div class="qc__league">Triples &middot; Friday</div>
+            <div class="qc__what">Week 9 scores</div>
+            <div class="qc__date">Fri 24 Jul</div>
+            <div class="qc__meter"><i style="width:80%"></i></div>
+            <div class="qc__stat"><span class="todo">2 to enter</span><span class="done">8 of 10 saved</span></div>
+            <span class="qc__go">Enter scores &rarr;</span>
+          </div>
+          <div class="qc qc--green qc--complete">
+            <div class="qc__league">Samford Knockout Cup</div>
+            <div class="qc__what">2nd Round &middot; 1 tie awaited</div>
+            <div class="qc__date">Fri 17 Jul</div>
+            <div class="qc__meter"><i style="width:75%"></i></div>
+            <div class="qc__stat"><span class="todo">Shotley Rose v Holbrook</span></div>
+            <span class="qc__go">Enter result &rarr;</span>
+          </div>
+        </div>
+
+        <div class="ov__row">
+          <div class="ov__aside">
+            <h3>New form submissions</h3>
+            <ul>
+              <li><span class="who">Player transfer &mdash; J. Baker, California &rarr; Kesgrave</span><span class="when">Fri 24 Jul</span></li>
+              <li><span class="who">Player registration &mdash; Westerfield (2 names)</span><span class="when">Thu 23 Jul</span></li>
+            </ul>
+          </div>
+          <div class="ov__aside">
+            <h3>Recently saved</h3>
+            <ul>
+              <li><span class="who">Two Wood Div B week 10 &mdash; 4 results</span><span class="when">today 18:42</span></li>
+              <li><span class="who">Samford Monday A week 11 &mdash; 1 result</span><span class="when">today 18:31</span></li>
+              <li><span class="who">CSV import &mdash; 12 rows, 2 name checks</span><span class="when">Wed 22 Jul</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="opt__verdict">
+      <strong>Why this works:</strong> the &ldquo;closest week&rdquo; logic already exists in AdminLeagueHistory, and saved
+      results are already queryable per division/week &mdash; the cards are a count over data we already load. The queue
+      makes &ldquo;what&rsquo;s left to do on Friday night&rdquo; visible at a glance.
+    </p>
+  </section>
+
+  <!-- ============================ B =============================== -->
+  <section class="opt">
+    <span class="opt__tag">B &mdash; score entry by league, a week at a time</span>
+    <p class="opt__note">
+      The core screen. Same drill-down order as the public league pages (league &rarr; day/section &rarr; division
+      &rarr; week) so the mental model matches, but every fixture in the week is an editable row. Shots are typed,
+      points auto-fill from the league&rsquo;s rules but stay editable, and one button saves the whole week.
+      Player names and rink detail stay in the per-match editor, opened only when needed.
+    </p>
+
+    <div class="shell">
+      <div class="shell__bar">
+        <span class="shell__title">League admin</span>
+        <nav class="shell__nav">
+          <span class="shell__navitem">This week</span>
+          <span class="shell__navitem shell__navitem--active">Results</span>
+          <span class="shell__navitem">Competitions</span>
+          <span class="shell__navitem">Clubs &amp; players</span>
+          <span class="shell__navitem">Forms<span class="bdg">2</span></span>
+        </nav>
+        <span class="shell__out">Sign out</span>
+      </div>
+      <div class="shell__body">
+        <div class="pick">
+          <span class="pick__label">League</span>
+          <span class="pill pill--green">Samford</span>
+          <span class="pill pill--navy-soft">Two Wood</span>
+          <span class="pill pill--ox-soft">Triples</span>
+          <span class="pill" style="margin-left:auto">&#8613; Bulk CSV import</span>
+        </div>
+        <div class="pick">
+          <span class="pick__label">Day</span>
+          <span class="seg">
+            <span class="pill pill--on">Monday</span>
+            <span class="pill">Wednesday</span>
+          </span>
+          <span class="pick__label" style="width:auto; margin-left:0.8rem">Division</span>
+          <span class="lett"><span class="on">A</span><span>B</span></span>
+          <span class="wk" style="margin-left:auto">
+            <span class="wk__arrow">&larr;</span>
+            <span>
+              <span class="wk__now">Week 11</span>
+              <span class="wk__date">&middot; Mon 20 Jul</span>
+            </span>
+            <span class="wk__closest">this week</span>
+            <span class="wk__arrow">&rarr;</span>
+          </span>
+        </div>
+
+        <div class="grid">
+          <table>
+            <thead>
+              <tr>
+                <th>Home</th><th style="text-align:center">Shots</th><th></th><th style="text-align:center">Shots</th><th>Away</th>
+                <th style="text-align:center">Pts</th><th>Status</th><th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="team">Kesgrave</td>
+                <td style="text-align:center"><span class="num">67</span></td>
+                <td class="vs">v</td>
+                <td style="text-align:center"><span class="num">54</span></td>
+                <td class="team">Westerfield</td>
+                <td class="pts">6 &ndash; 1</td>
+                <td><span class="badge badge--saved">Saved</span></td>
+                <td><span class="rowlink">Players &amp; rinks</span></td>
+              </tr>
+              <tr>
+                <td class="team">Margaret Catchpole</td>
+                <td style="text-align:center"><span class="num num--empty">&nbsp;</span></td>
+                <td class="vs">v</td>
+                <td style="text-align:center"><span class="num num--empty">&nbsp;</span></td>
+                <td class="team">Stone Lodge</td>
+                <td class="pts">&ndash;</td>
+                <td><span class="badge badge--todo">To enter</span></td>
+                <td><span class="rowlink">Players &amp; rinks</span></td>
+              </tr>
+              <tr>
+                <td class="team">Sproughton</td>
+                <td style="text-align:center"><span class="num">72</span></td>
+                <td class="vs">v</td>
+                <td style="text-align:center"><span class="num">58</span></td>
+                <td class="team">Hadleigh</td>
+                <td class="pts">7 &ndash; 0</td>
+                <td><span class="badge badge--name">Name check</span></td>
+                <td><span class="rowlink">Players &amp; rinks</span></td>
+              </tr>
+              <tr>
+                <td class="team">E-of-E Co-op</td>
+                <td style="text-align:center"><span class="num num--empty">&nbsp;</span></td>
+                <td class="vs">v</td>
+                <td style="text-align:center"><span class="num num--empty">&nbsp;</span></td>
+                <td class="team">Holbrook</td>
+                <td class="pts">&ndash;</td>
+                <td><span class="badge badge--todo">To enter</span></td>
+                <td><span class="rowlink">Players &amp; rinks</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="gridfoot">
+            <span class="btn">Save week 11</span>
+            <span class="btn btn--ghost">Discard changes</span>
+            <span class="gridfoot__hint">2 of 4 entered &middot; points auto-fill from shots, editable per row</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="opt__verdict">
+      <strong>Why this works:</strong> the save endpoint (<code>POST /api/admin/results</code>) already accepts a batch of
+      match rows per league/division/week &mdash; this grid is just N rows serialized with the existing payload helper,
+      instead of one modal per fixture. The current fixture editor survives as the &ldquo;Players &amp; rinks&rdquo; drawer.
+    </p>
+  </section>
+
+  <!-- ============================ C =============================== -->
+  <section class="opt">
+    <span class="opt__tag">C &mdash; competitions: round-by-round cup entry</span>
+    <p class="opt__note">
+      Today the cup JSON is edited by hand while the public site renders brackets from it. Minimal admin: each round is a
+      list of ties with score boxes and a walkover select; saving a round offers to fill winners into the next round&rsquo;s
+      placeholders (the <code>from: [F, B]</code> links already exist in the data).
+    </p>
+
+    <div class="shell">
+      <div class="shell__bar">
+        <span class="shell__title">League admin</span>
+        <nav class="shell__nav">
+          <span class="shell__navitem">This week</span>
+          <span class="shell__navitem">Results</span>
+          <span class="shell__navitem shell__navitem--active">Competitions</span>
+          <span class="shell__navitem">Clubs &amp; players</span>
+          <span class="shell__navitem">Forms<span class="bdg">2</span></span>
+        </nav>
+        <span class="shell__out">Sign out</span>
+      </div>
+      <div class="shell__body">
+        <div class="pick" style="margin-bottom:1rem">
+          <span class="pick__label">Cup</span>
+          <span class="pill pill--green">Samford Knockout Cup</span>
+          <span class="pill">Two Wood Cup</span>
+        </div>
+        <div class="cup">
+          <div class="cup__round">
+            <div class="cup__rh"><span class="cup__rname">2nd Round</span><span class="cup__rmeta">Fri 17 Jul</span></div>
+            <table>
+              <tr>
+                <td class="tie">1</td>
+                <td class="team">E-of-E Co-op</td>
+                <td style="text-align:center"><span class="num">61</span></td>
+                <td class="vs">v</td>
+                <td style="text-align:center"><span class="num">83</span></td>
+                <td class="team">Sproughton</td>
+                <td><select><option>Played</option><option>Walkover home</option><option>Walkover away</option><option>Awaited</option></select></td>
+              </tr>
+              <tr>
+                <td class="tie">2</td>
+                <td class="team">Holbrook</td>
+                <td style="text-align:center"><span class="num num--empty">&nbsp;</span></td>
+                <td class="vs">v</td>
+                <td style="text-align:center"><span class="num num--empty">&nbsp;</span></td>
+                <td class="team">Margaret Catchpole</td>
+                <td><select><option>Awaited</option><option>Played</option><option>Walkover home</option><option>Walkover away</option></select></td>
+              </tr>
+              <tr>
+                <td class="tie">3</td>
+                <td class="team">Felixstowe B.C.</td>
+                <td style="text-align:center"><span class="num">75</span></td>
+                <td class="vs">v</td>
+                <td style="text-align:center"><span class="num">70</span></td>
+                <td class="team">Stone Lodge</td>
+                <td><select><option>Played</option><option>Walkover home</option><option>Walkover away</option><option>Awaited</option></select></td>
+              </tr>
+              <tr>
+                <td class="tie">4</td>
+                <td class="team">Kesgrave</td>
+                <td style="text-align:center"><span class="num">68</span></td>
+                <td class="vs">v</td>
+                <td style="text-align:center"><span class="num">79</span></td>
+                <td class="team">Westerfield</td>
+                <td><select><option>Played</option><option>Walkover home</option><option>Walkover away</option><option>Awaited</option></select></td>
+              </tr>
+            </table>
+            <div class="cup__advance">On save: <strong>Sproughton, Felixstowe B.C., Westerfield advance</strong> to Semi-final slots 1, 3, 4 &middot; tie 2 stays TBC</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ D =============================== -->
+  <section class="opt">
+    <span class="opt__tag">D &mdash; clubs &amp; players: one place per club</span>
+    <p class="opt__note">
+      Merges today&rsquo;s &ldquo;League teams&rdquo; and &ldquo;Registered players&rdquo; tabs. Left: every club with a
+      registered-player count. Right: which leagues/divisions the club plays in, plus the master roster used for the
+      &ldquo;name check&rdquo; badge in score entry. Paste/upload parsing and seed-from-league carry over unchanged.
+    </p>
+
+    <div class="shell">
+      <div class="shell__bar">
+        <span class="shell__title">League admin</span>
+        <nav class="shell__nav">
+          <span class="shell__navitem">This week</span>
+          <span class="shell__navitem">Results</span>
+          <span class="shell__navitem">Competitions</span>
+          <span class="shell__navitem shell__navitem--active">Clubs &amp; players</span>
+          <span class="shell__navitem">Forms<span class="bdg">2</span></span>
+        </nav>
+        <span class="shell__out">Sign out</span>
+      </div>
+      <div class="shell__body" style="padding:0">
+        <div class="clubs">
+          <div class="clubs__list">
+            <span class="clubs__search">Search clubs&hellip;</span>
+            <ul>
+              <li>Bealings <span class="n">14</span></li>
+              <li>California <span class="n">11</span></li>
+              <li class="on">Kesgrave <span class="n">19</span></li>
+              <li>Margaret Catchpole <span class="n">16</span></li>
+              <li>Sproughton <span class="n">12</span></li>
+              <li>Stone Lodge <span class="n">15</span></li>
+              <li>Westerfield <span class="n">18</span></li>
+            </ul>
+          </div>
+          <div class="clubs__detail">
+            <div class="clubs__club">Kesgrave</div>
+            <div class="clubs__leagues">
+              <span class="chip chip--green">Samford &middot; Monday A</span>
+              <span class="chip chip--navy">Two Wood &middot; Div C</span>
+              <span class="chip chip--ox">Triples</span>
+            </div>
+            <ul class="roster">
+              <li>A. Abbott</li>
+              <li>P. Barker</li>
+              <li>D. Cole</li>
+              <li>M. Denny</li>
+              <li>S. Eastwood</li>
+              <li>J. Fisher <span class="flag">new &middot; from form</span></li>
+              <li>R. Gates</li>
+              <li>T. Howell</li>
+              <li>B. Ingram</li>
+              <li>C. Jarvis</li>
+              <li>L. Keeble</li>
+              <li>N. Lambert</li>
+            </ul>
+            <div class="clubs__actions">
+              <span class="btn btn--ghost">Add player</span>
+              <span class="btn btn--ghost">Paste / upload list</span>
+              <span class="btn btn--ghost">Seed from league entries</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="opt__verdict">
+      <strong>Phasing:</strong> B is the core and ships first (it reuses the existing save endpoint), A is a thin layer of
+      counts on top of B, then C (cups need a small server API for <code>competitions-2026.json</code>), then D which is
+      mostly a re-layout of two existing panels. The player-registration form submissions feeding the &ldquo;new &middot;
+      from form&rdquo; flag in D is the last step.
+    </p>
+  </section>
+</div>
+</body>
+</html>

@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { Link, Navigate, Route, Routes } from 'react-router-dom'
+import { AdminCupEntry } from '../components/AdminCupEntry'
 import { AdminFixtureEditorPanel } from '../components/AdminFixtureEditorPanel'
+import { AdminHome } from '../components/AdminHome'
 import { AdminLeagueHistory } from '../components/AdminLeagueHistory'
-import { AdminLeagueSetup } from '../components/AdminLeagueSetup'
-import { AdminRegisteredTeamsPanel } from '../components/AdminRegisteredTeamsPanel'
+import { AdminSeasonPage } from '../components/AdminSeasonPage'
 import { AdminFormSubmissionsPanel } from '../components/AdminFormSubmissionsPanel'
+import { AdminScoreEntry } from '../components/AdminScoreEntry'
 import { useAdmin } from '../hooks/useAdmin'
 import { rebuildCsvFixtureEntriesFromSavedWeeks } from '../lib/adminCsvHydrate'
 import {
@@ -86,16 +89,22 @@ function groupImportedCsvFixtures(entries, leagues) {
   return groups
 }
 
-export function AdminPage() {
-  const admin = useAdmin()
-  const [password, setPassword] = useState('')
+function AdminBackLink() {
+  return (
+    <Link to="/admin" className="admin-backlink">
+      ← Admin home
+    </Link>
+  )
+}
+
+/** Bulk CSV import + imported-results check + league history (the old Results tab). */
+function AdminCsvTools({ admin }) {
   const [saveMessage, setSaveMessage] = useState('')
   const [csvImportMessage, setCsvImportMessage] = useState('')
   const [csvImportWarnings, setCsvImportWarnings] = useState([])
   const [csvImportEntries, setCsvImportEntries] = useState([])
   const [editingCsvEntry, setEditingCsvEntry] = useState(null)
   const [leagueDataRevision, setLeagueDataRevision] = useState(0)
-  const [adminTab, setAdminTab] = useState('results')
   const csvFileInputRef = useRef(null)
 
   const csvFixtureGroups = useMemo(
@@ -104,7 +113,6 @@ export function AdminPage() {
   )
 
   useEffect(() => {
-    if (!admin.authenticated) return
     try {
       const raw = sessionStorage.getItem(CSV_ENTRIES_SESSION_KEY)
       if (!raw) return
@@ -113,12 +121,7 @@ export function AdminPage() {
     } catch {
       /* ignore */
     }
-  }, [admin.authenticated])
-
-  async function handleLogin(e) {
-    e.preventDefault()
-    await admin.login(password)
-  }
+  }, [])
 
   async function handleCsvChange(e) {
     const file = e.target.files?.[0]
@@ -184,7 +187,7 @@ export function AdminPage() {
     }
     if (roster.attempted) {
       parts.push(
-        `Optional player-lines from this spreadsheet (if any): ${roster.playersAdded ?? 0} new name(s) merged into registered-players.json (${roster.duplicatesSkipped ?? 0} duplicates skipped). The authoritative club lists are edited on the Registered players tab.`,
+        `Optional player-lines from this spreadsheet (if any): ${roster.playersAdded ?? 0} new name(s) merged into registered-players.json (${roster.duplicatesSkipped ?? 0} duplicates skipped). The authoritative club lists are edited on the Players & clubs page.`,
       )
     }
     if (!batches.length && !roster.attempted && !pendingFixtures.length) {
@@ -236,49 +239,6 @@ export function AdminPage() {
     setEditingCsvEntry((cur) => (cur && csvEntryRowKey(cur) === k ? null : cur))
   }
 
-  if (admin.checking) {
-    return (
-      <div className="page">
-        <section className="tile">
-          <p className="page-lead">Checking admin session…</p>
-        </section>
-      </div>
-    )
-  }
-
-  if (!admin.authenticated) {
-    return (
-      <div className="page page--admin">
-        <section className="tile tile--narrow">
-          <h1 className="page-title">Admin login</h1>
-          <p className="page-lead">
-            Sign in to manage results (CSV and manual fixtures), league team sheets, and the master
-            registered-player list used to verify competitor names from score sheets — each area is
-            separate; the Registered players tab does not depend on a results CSV upload.
-          </p>
-          <form className="admin-form" onSubmit={handleLogin}>
-            <label className="admin-label" htmlFor="admin-password">
-              Password
-            </label>
-            <input
-              id="admin-password"
-              type="password"
-              className="admin-input"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoComplete="current-password"
-              required
-            />
-            {admin.error ? <p className="admin-error">{admin.error}</p> : null}
-            <button type="submit" className="admin-btn" disabled={admin.busy}>
-              {admin.busy ? 'Signing in…' : 'Sign in'}
-            </button>
-          </form>
-        </section>
-      </div>
-    )
-  }
-
   return (
     <div className="page page--admin">
       {editingCsvEntry ? (
@@ -304,45 +264,8 @@ export function AdminPage() {
       ) : null}
 
       <section className="tile">
-        <div className="admin-header">
-          <div>
-            <h1 className="page-title">League admin</h1>
-          </div>
-          <button type="button" className="admin-btn admin-btn--ghost" onClick={admin.logout}>
-            Sign out
-          </button>
-        </div>
-        <nav className="admin-subnav" aria-label="Admin areas">
-          {[
-            { id: 'results', label: 'Results' },
-            { id: 'league', label: 'League teams' },
-            { id: 'rosters', label: 'Registered players' },
-            { id: 'forms', label: 'Form submissions' },
-          ].map((t) => (
-            <button
-              key={t.id}
-              type="button"
-              className={`admin-btn admin-btn--ghost admin-subnav__btn${
-                adminTab === t.id ? ' admin-subnav__btn--active' : ''
-              }`}
-              onClick={() => setAdminTab(t.id)}
-            >
-              {t.label}
-            </button>
-          ))}
-        </nav>
-      </section>
-
-      {adminTab === 'league' ? <AdminLeagueSetup admin={admin} /> : null}
-
-      {adminTab === 'rosters' ? <AdminRegisteredTeamsPanel admin={admin} /> : null}
-
-      {adminTab === 'forms' ? <AdminFormSubmissionsPanel /> : null}
-
-      {adminTab === 'results' ? (
-        <>
-      <section className="tile">
-        <h2 className="tile-title">CSV Import</h2>
+        <AdminBackLink />
+        <h1 className="page-title">Bulk CSV import</h1>
 
         <label className="admin-upload" id="admin-csv-import-anchor">
           <input
@@ -441,7 +364,7 @@ export function AdminPage() {
                           {entry.registrationNeedsReview ? (
                             <span
                               className="admin-csv-entry-badge admin-csv-entry-badge--registration"
-                              title="One or more names on this row did not match the master registered list (Registered players tab)"
+                              title="One or more names on this row did not match the master registered list (Players & clubs page)"
                             >
                               Name check
                             </span>
@@ -487,11 +410,83 @@ export function AdminPage() {
         }}
       />
 
-      </>
-      ) : null}
-
       {saveMessage ? <p className="admin-success">{saveMessage}</p> : null}
       {admin.error ? <p className="admin-error">{admin.error}</p> : null}
     </div>
+  )
+}
+
+function AdminFormsPage() {
+  return (
+    <div className="page page--admin">
+      <AdminBackLink />
+      <AdminFormSubmissionsPanel />
+    </div>
+  )
+}
+
+export function AdminPage() {
+  const admin = useAdmin()
+  const [password, setPassword] = useState('')
+
+  async function handleLogin(e) {
+    e.preventDefault()
+    await admin.login(password)
+  }
+
+  if (admin.checking) {
+    return (
+      <div className="page">
+        <section className="tile">
+          <p className="page-lead">Checking admin session…</p>
+        </section>
+      </div>
+    )
+  }
+
+  if (!admin.authenticated) {
+    return (
+      <div className="page page--admin">
+        <section className="tile tile--narrow">
+          <h1 className="page-title">Admin login</h1>
+          <p className="page-lead">
+            Sign in to enter league and cup scores, manage club player lists, and read
+            form submissions.
+          </p>
+          <form className="admin-form" onSubmit={handleLogin}>
+            <label className="admin-label" htmlFor="admin-password">
+              Password
+            </label>
+            <input
+              id="admin-password"
+              type="password"
+              className="admin-input"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+              required
+            />
+            {admin.error ? <p className="admin-error">{admin.error}</p> : null}
+            <button type="submit" className="admin-btn" disabled={admin.busy}>
+              {admin.busy ? 'Signing in…' : 'Sign in'}
+            </button>
+          </form>
+        </section>
+      </div>
+    )
+  }
+
+  return (
+    <Routes>
+      <Route index element={<AdminHome admin={admin} />} />
+      <Route path="league/:leagueId" element={<AdminScoreEntry admin={admin} />} />
+      <Route path="cup/:compId" element={<AdminCupEntry admin={admin} />} />
+      <Route path="csv" element={<AdminCsvTools admin={admin} />} />
+      <Route path="season" element={<AdminSeasonPage admin={admin} />} />
+      <Route path="teams" element={<Navigate to="/admin/season" replace />} />
+      <Route path="players" element={<Navigate to="/admin/season" replace />} />
+      <Route path="forms" element={<AdminFormsPage />} />
+      <Route path="*" element={<Navigate to="/admin" replace />} />
+    </Routes>
   )
 }

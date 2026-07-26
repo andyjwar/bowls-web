@@ -3,15 +3,24 @@ import session from 'express-session'
 import multer from 'multer'
 import cors from 'cors'
 import { timingSafeEqual } from 'crypto'
+import { existsSync } from 'fs'
+import { dirname, join } from 'path'
+import { fileURLToPath } from 'url'
 import {
+  activeLeagueIdByPrefix,
+  deleteLeague,
   getDivision,
   getDivisionFixtures,
   getWeekEditableMatchRows,
+  listKnownSeasons,
   listLeagues,
   loadLeague,
   mergeWeekResults,
+  persistLeaguesNav,
   saveLeague,
+  startNewSeason,
   updateDivisionTeamNames,
+  updateScheduleDates,
   updateLeagueStructureLabels,
   addLeagueDivision,
   addLeagueSection,
@@ -27,6 +36,13 @@ import { executeCsvImport } from './csvImport.js'
 import { loadRegisteredPlayers, setTeamRegisteredPlayers, seedRosterClubsFromLeague } from './rosterStore.js'
 import { parseRosterFromText, parseRosterUploadBuffer } from './rosterUploadParse.js'
 import { addFormSubmission, loadFormSubmissions } from './formsStore.js'
+import {
+  createSeasonCompetitionsFile,
+  loadCompetitions,
+  updateCompetitionRounds,
+} from './competitionsStore.js'
+import { getActiveSeason, setActiveSeason } from './siteConfigStore.js'
+import { isGitSyncEnabled, pullDataFromGitHub, scheduleDataPush } from './gitSync.js'
 
 function mergeVisionHints(samfordForm, hints) {
   if (!hints) return samfordForm
@@ -71,7 +87,8 @@ function resolveImportTarget(reqBody, rawText) {
   return { leagueId, sectionId, divisionId, week, detection }
 }
 
-const PORT = Number(process.env.ADMIN_PORT || 3001)
+// Render (and most hosts) assign the port via PORT; ADMIN_PORT is the local-dev override.
+const PORT = Number(process.env.PORT || process.env.ADMIN_PORT || 3001)
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'changeme'
 const SESSION_SECRET = process.env.SESSION_SECRET || 'bowls-dev-secret-change-me'
 
@@ -151,6 +168,10 @@ function requireAuth(req, res, next) {
 
 const app = express()
 
+// Render terminates HTTPS at its proxy; without this, secure session cookies
+// are never set in production.
+app.set('trust proxy', 1)
+
 app.use(
   cors({
     origin: true,
@@ -173,6 +194,19 @@ app.use(
   }),
 )
 
+// After any successful admin save, push the changed data files to GitHub.
+// No-op unless GITHUB_TOKEN is set (i.e. only on the hosted server); a push
+// that finds nothing changed in public/data does nothing.
+app.use('/api/admin', (req, res, next) => {
+  if (req.method !== 'GET') {
+    res.on('finish', () => {
+      const isAuthRoute = req.path === '/login' || req.path === '/logout'
+      if (res.statusCode < 300 && !isAuthRoute) scheduleDataPush()
+    })
+  }
+  next()
+})
+
 app.get('/api/admin/session', (req, res) => {
   res.json({ authenticated: Boolean(req.session?.admin) })
 })
@@ -194,7 +228,42 @@ app.post('/api/admin/logout', requireAuth, (req, res) => {
 })
 
 app.get('/api/admin/leagues', requireAuth, (_req, res) => {
-  res.json({ leagues: listLeagues() })
+  res.json({
+    leagues: listLeagues(),
+    activeSeason: getActiveSeason(),
+    seasons: listKnownSeasons(),
+  })
+})
+
+/** Start a new season: clone active leagues (+dates shifted), fresh cups file, switch over. */
+app.post('/api/admin/season', requireAuth, (req, res) => {
+  try {
+    const year = Number(req.body?.year)
+    const fromSeason = getActiveSeason()
+    const out = startNewSeason(year)
+    const cups = createSeasonCompetitionsFile(fromSeason, year)
+    setActiveSeason(year)
+    persistLeaguesNav()
+    res.json({ ok: true, ...out, cups, activeSeason: year })
+  } catch (e) {
+    res.status(400).json({ error: e.message || 'Could not start the season' })
+  }
+})
+
+/** Point the public site at a different existing season (reversible). */
+app.put('/api/admin/active-season', requireAuth, (req, res) => {
+  try {
+    const year = Number(req.body?.year)
+    if (!listKnownSeasons().includes(year)) {
+      res.status(400).json({ error: 'No leagues exist for that season' })
+      return
+    }
+    setActiveSeason(year)
+    persistLeaguesNav()
+    res.json({ ok: true, activeSeason: year })
+  } catch (e) {
+    res.status(400).json({ error: e.message || 'Could not switch season' })
+  }
 })
 
 app.post('/api/admin/leagues', requireAuth, (req, res) => {
@@ -237,6 +306,31 @@ app.put('/api/admin/league/:leagueId/division-teams', requireAuth, (req, res) =>
       sectionId: sectionId ? String(sectionId).trim() : null,
       divisionId: String(divisionId).trim().toLowerCase(),
       teams,
+    })
+    res.json({ ok: true })
+  } catch (e) {
+    res.status(400).json({ error: e.message || 'Save failed' })
+  }
+})
+
+/** Unregister a league (data file stays on disk). */
+app.delete('/api/admin/league/:leagueId', requireAuth, (req, res) => {
+  try {
+    const out = deleteLeague(String(req.params.leagueId ?? '').trim())
+    res.json({ ok: true, ...out })
+  } catch (e) {
+    res.status(400).json({ error: e.message || 'Could not remove the league' })
+  }
+})
+
+/** Edit fixture dates on a day's schedule grid (pairings untouched). */
+app.put('/api/admin/league/:leagueId/schedule-dates', requireAuth, (req, res) => {
+  try {
+    const leagueId = String(req.params.leagueId ?? '').trim()
+    const { sectionId, rows } = req.body ?? {}
+    updateScheduleDates(leagueId, {
+      sectionId: sectionId ? String(sectionId).trim() : null,
+      rows,
     })
     res.json({ ok: true })
   } catch (e) {
@@ -418,7 +512,8 @@ app.post('/api/admin/import', requireAuth, (req, res, next) => {
     let playerValidation = null
 
     if (isSamfordResultsForm(rawText) || visionHints) {
-      const samfordLeague = loadLeague('samford-2026')
+      const samfordLeagueId = activeLeagueIdByPrefix('samford') ?? 'samford-2026'
+      const samfordLeague = loadLeague(samfordLeagueId)
       const mondayTeams =
         samfordLeague.sections
           ?.find((s) => s.id === 'monday-evening')
@@ -436,7 +531,7 @@ app.post('/api/admin/import', requireAuth, (req, res, next) => {
       samfordForm = mergeVisionHints(samfordForm, visionHints)
 
       if (samfordForm) {
-        leagueId = leagueId || 'samford-2026'
+        leagueId = leagueId || samfordLeagueId
         sectionId = sectionId || samfordForm.sectionId || 'monday-evening'
         divisionId = divisionId || samfordForm.divisionId || null
 
@@ -703,6 +798,25 @@ app.get('/api/admin/form-submissions', requireAuth, (_req, res) => {
   }
 })
 
+app.get('/api/admin/competitions', requireAuth, (_req, res) => {
+  try {
+    const doc = loadCompetitions()
+    res.json({ ok: true, competitions: doc.competitions ?? [] })
+  } catch (e) {
+    res.status(500).json({ error: e.message || 'Could not load competitions' })
+  }
+})
+
+app.put('/api/admin/competition/:compId', requireAuth, (req, res) => {
+  try {
+    const compId = String(req.params.compId ?? '').trim()
+    const competition = updateCompetitionRounds(compId, req.body?.rounds)
+    res.json({ ok: true, competition })
+  } catch (e) {
+    res.status(400).json({ error: e.message || 'Save failed' })
+  }
+})
+
 app.post('/api/admin/results', requireAuth, (req, res) => {
   try {
     const { leagueId, sectionId, divisionId, week, matches } = req.body ?? {}
@@ -731,6 +845,40 @@ app.post('/api/admin/results', requireAuth, (req, res) => {
     res.status(500).json({ error: e.message || 'Save failed' })
   }
 })
+
+// ---------------------------------------------------------------------------
+// Static site hosting (used on Render, harmless in local dev where Vite serves
+// the frontend on its own port).
+// ---------------------------------------------------------------------------
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const DIST_DIR = join(__dirname, '../dist')
+const PUBLIC_DATA_DIR = join(__dirname, '../public/data')
+
+// Serve /data from public/data ahead of dist/: admin saves write to
+// public/data, and the copy baked into dist/ at build time goes stale.
+app.use('/data', express.static(PUBLIC_DATA_DIR))
+
+if (existsSync(join(DIST_DIR, 'index.html'))) {
+  app.use(express.static(DIST_DIR))
+  // SPA fallback so refreshing /admin, /leagues etc. still loads the app.
+  app.use((req, res, next) => {
+    if (req.method !== 'GET' || req.path.startsWith('/api')) return next()
+    res.sendFile(join(DIST_DIR, 'index.html'))
+  })
+}
+
+// On hosts with an ephemeral disk the checked-out data files may be stale
+// (they're whatever was on the branch at build time) — pull the latest
+// committed data before accepting any traffic.
+if (isGitSyncEnabled()) {
+  try {
+    await pullDataFromGitHub()
+  } catch (e) {
+    console.error(`[git-sync] Startup pull failed: ${e.message}`)
+    // Editing (and later pushing) stale data is worse than not starting.
+    process.exit(1)
+  }
+}
 
 const server = app.listen(PORT, () => {
   console.log(`Bowls admin API listening on http://localhost:${PORT}`)

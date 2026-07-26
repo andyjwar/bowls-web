@@ -2,7 +2,7 @@
  * Shared helpers for building POST /api/admin/results payloads from admin form rows.
  */
 
-import { formatFixtureDate } from './fixtures'
+import { formatFixtureDate } from './fixtures.js'
 
 /** @param {string | undefined | null} s */
 export function parsePlayersBlob(s) {
@@ -46,9 +46,13 @@ export function serializeAdminMatchRows(rows) {
       awayShots: asVal,
     }
 
-    const hp = Number(m.homePoints)
-    const ap = Number(m.awayPoints)
-    if (Number.isFinite(hp) && Number.isFinite(ap)) {
+    // Points are optional: blank fields are omitted so the server / standings
+    // treat the result as a plain win (2–0) rather than an explicit 0–0.
+    const hpRaw = String(m.homePoints ?? '').trim()
+    const apRaw = String(m.awayPoints ?? '').trim()
+    const hp = Number(hpRaw)
+    const ap = Number(apRaw)
+    if (hpRaw !== '' && apRaw !== '' && Number.isFinite(hp) && Number.isFinite(ap)) {
       row.homePoints = hp
       row.awayPoints = ap
     }

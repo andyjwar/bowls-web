@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>v25 &mdash; match points: four ways to make them un-clunky</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  /* Same tokens as src/App.css (.bowls-app light theme) */
+  :root {
+    --fm-bg: #f6f7f8;
+    --fm-card: #ffffff;
+    --fm-border: #eceef0;
+    --fm-text: #1f2937;
+    --fm-text-strong: #0b1418;
+    --fm-muted: #6b7280;
+    --fm-muted-strong: #4b5563;
+    --fm-pitch: #256e3d;
+    --fm-row-hi: #f4f5f7;
+    --green: #256e3d;   --green-soft: rgba(37, 110, 61, 0.12);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--fm-bg); color: var(--fm-text); font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-feature-settings: 'cv02','cv03','cv04','cv11'; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 940px; margin: 0 auto; padding: 2.5rem clamp(1rem, 4vw, 2rem) 5rem; }
+  h1 { font-size: 1.4rem; letter-spacing: -0.02em; color: var(--fm-text-strong); margin: 0 0 0.3rem; }
+  .lead { margin: 0 0 1rem; color: var(--fm-muted); font-size: 0.95rem; max-width: 46rem; }
+  .opt { margin: 3.2rem 0 0; }
+  .opt__tag { display: inline-block; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; background: var(--fm-text-strong); padding: 4px 10px; margin-bottom: 0.4rem; }
+  .opt__note { margin: 0 0 1.1rem; font-size: 0.88rem; color: var(--fm-muted); max-width: 46rem; }
+  .opt__verdict { margin: 1rem 0 0; font-size: 0.88rem; color: var(--fm-muted-strong); max-width: 46rem; }
+  .opt__verdict strong { color: var(--fm-text-strong); }
+  .tile-caption { margin: 1.3rem 0 0.45rem; font-size: 0.74rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fm-muted); }
+
+  /* ── match week tile, as src/App.css ── */
+  .match-week { background: var(--fm-card); border: 1px solid var(--fm-border); }
+  .match-week__head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--fm-border); background: var(--fm-row-hi); }
+  .match-week__title { margin: 0; font-size: 0.85rem; font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase; color: var(--fm-text-strong); }
+  .match-week__date { font-size: 0.82rem; font-weight: 600; color: var(--fm-muted); }
+  .match-row { display: grid; grid-template-columns: 1fr auto 1fr 6.5rem; align-items: center; gap: 0.75rem; padding: 0.8rem 1rem; }
+  .match-row + .match-row, .match-row + .row-group, .row-group + .match-row, .row-group + .row-group { border-top: 1px solid var(--fm-border); }
+  .row-group .match-row { border-top: none; }
+  .match-row__home { text-align: right; font-weight: 600; color: var(--fm-text-strong); font-size: 0.92rem; }
+  .match-row__away { font-weight: 600; color: var(--fm-text-strong); font-size: 0.92rem; }
+  .match-row__mid { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; font-size: 0.95rem; font-weight: 800; color: var(--fm-text-strong); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .match-row__state { font-size: 0.72rem; font-weight: 700; text-align: right; color: var(--fm-muted); display: inline-flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+  .match-row__state--saved { color: var(--green); }
+  .match-row__state--dirty { color: var(--fm-text-strong); }
+
+  .score-in { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .score-in input, .score-box { width: 3rem; height: 2.1rem; text-align: center; font: inherit; font-weight: 800; font-size: 0.95rem; color: var(--fm-text-strong); background: var(--fm-row-hi); border: 1px solid var(--fm-border); border-radius: 0; padding: 0; }
+  .score-box { display: inline-grid; place-items: center; font-variant-numeric: tabular-nums; }
+  .score-box--filled { background: #fff; border-color: var(--green); }
+  .score-in .dash { color: var(--fm-muted); font-weight: 600; }
+
+  .match-week__foot { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 0.9rem; padding: 0.7rem 1rem; border-top: 1px solid var(--fm-border); }
+  .save-btn { font: inherit; font-size: 0.85rem; font-weight: 750; padding: 0.5rem 1.1rem; border: 0; background: var(--green); color: #fff; }
+  .match-week__foot-hint { font-size: 0.76rem; color: var(--fm-muted); }
+
+  /* ── A: saved points shown quietly under the printed score ── */
+  .pts-mini { font-size: 0.66rem; font-weight: 750; letter-spacing: 0.05em; color: var(--green); font-variant-numeric: tabular-nums; }
+  .pts-mini--derived { color: var(--fm-muted); opacity: 0.75; font-weight: 600; }
+
+  /* ── B: labelled columns; points boxes visually secondary ── */
+  .colhead-row { display: grid; grid-template-columns: 1fr auto 1fr 6.5rem; gap: 0.75rem; padding: 0.6rem 1rem 0; }
+  .colhead-mid { display: inline-flex; align-items: center; }
+  .colhead { font-size: 0.6rem; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; color: var(--fm-muted); text-align: center; }
+  .pts-in { display: inline-flex; align-items: center; gap: 0.3rem; margin-left: 0.9rem; }
+  .pts-in input, .pts-box { width: 2.2rem; height: 1.7rem; text-align: center; font: inherit; font-weight: 700; font-size: 0.78rem; color: var(--fm-muted-strong); background: transparent; border: 1px dashed #d3d7db; border-radius: 0; padding: 0; }
+  .pts-box { display: inline-grid; place-items: center; font-variant-numeric: tabular-nums; }
+  .pts-box--filled, .pts-in input.filled { background: #fff; border: 1px solid var(--green); color: var(--fm-text-strong); font-weight: 800; }
+  .pts-in .dash { color: var(--fm-muted); font-weight: 600; font-size: 0.78rem; }
+
+  /* ── C: quick-pick chips under a row once shots are in ── */
+  .pts-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 0 1rem 0.75rem; }
+  .match-row--open { padding-bottom: 0.45rem; }
+  .pts-chips__label { font-size: 0.6rem; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; color: var(--fm-muted); margin-right: 0.3rem; }
+  .pts-chip { font: inherit; font-size: 0.74rem; font-weight: 750; font-variant-numeric: tabular-nums; padding: 4px 10px; background: var(--fm-row-hi); border: 1px solid var(--fm-border); color: var(--fm-text); cursor: pointer; white-space: nowrap; }
+  .pts-chip--sel { background: var(--green); border-color: var(--green); color: #fff; }
+  .pts-chip--other { background: transparent; border: 1px dashed #d3d7db; color: var(--fm-muted); font-weight: 600; }
+  .pts-chips__skip { font-size: 0.7rem; font-weight: 600; color: var(--fm-muted); margin-left: 0.3rem; }
+
+  /* ── D: per-tile reveal bar ── */
+  .tile-tools { display: flex; justify-content: flex-end; align-items: center; gap: 0.6rem; padding: 0.45rem 1rem; border-bottom: 1px solid var(--fm-border); background: #fff; }
+  .pts-toggle { appearance: none; background: none; border: 0; padding: 0; font: inherit; font-size: 0.72rem; font-weight: 700; color: var(--fm-muted-strong); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+  .pts-toggle--on { color: var(--green); text-decoration: none; }
+  .pts-toggle--on::before { content: '✓ '; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>v25 &mdash; match points, un-clunkied</h1>
+  <p class="lead">
+    The shots boxes work; the two tiny unlabelled PTS boxes are the clunky part. Grounding: in the real data,
+    <strong>every</strong> saved Samford result carries points and they are always one of the fixed rink-and-aggregate
+    combos summing to 6 (6&ndash;0, 5&ndash;1, 4&ndash;2 &hellip;), while Two Wood and Triples have <strong>never</strong>
+    recorded points &mdash; they just score 2 for a win. Four options below; same week tile, same fixtures.
+  </p>
+
+  <!-- ============================ A =============================== -->
+  <section class="opt">
+    <span class="opt__tag">A &mdash; shots only &middot; points live in the details editor</span>
+    <p class="opt__note">
+      The row is just shots &mdash; nothing else to explain. Match points move into the players &amp; rinks panel
+      you already open by tapping a team name. After saving, the row shows the points quietly under the score:
+      green when an admin entered real points, faint &ldquo;auto&rdquo; when standings fell back to 2&ndash;0.
+    </p>
+
+    <div class="match-week" style="--league-color: var(--green)">
+      <div class="match-week__head">
+        <h3 class="match-week__title">Week 13 &middot; Division A</h3>
+        <span class="match-week__date">Wed 29 Jul 2026</span>
+      </div>
+
+      <div class="match-row">
+        <span class="match-row__home">Stone Lodge</span>
+        <span class="match-row__mid"><span>67&thinsp;&ndash;&thinsp;54</span><span class="pts-mini">5&ndash;1 pts</span></span>
+        <span class="match-row__away">Kirton &amp; Falkenham</span>
+        <span class="match-row__state match-row__state--saved">Saved &#10003;</span>
+      </div>
+
+      <div class="match-row">
+        <span class="match-row__home">Capel St Mary Kites</span>
+        <span class="score-in"><input value="" /><span class="dash">&ndash;</span><input value="" /></span>
+        <span class="match-row__away">Norbridge</span>
+        <span class="match-row__state">To enter</span>
+      </div>
+
+      <div class="match-row">
+        <span class="match-row__home">Waldringfield</span>
+        <span class="match-row__mid"><span>58&thinsp;&ndash;&thinsp;72</span><span class="pts-mini pts-mini--derived">0&ndash;2 auto</span></span>
+        <span class="match-row__away">E-of-E Co-op A</span>
+        <span class="match-row__state match-row__state--saved">Saved &#10003;</span>
+      </div>
+
+      <div class="match-row">
+        <span class="match-row__home">Westerfield Greens</span>
+        <span class="score-in"><span class="score-box score-box--filled">61</span><span class="dash">&ndash;</span><span class="score-box score-box--filled">70</span></span>
+        <span class="match-row__away">Bealings</span>
+        <span class="match-row__state match-row__state--dirty">Not saved</span>
+      </div>
+
+      <div class="match-week__foot">
+        <button class="save-btn">Save week</button>
+        <span class="match-week__foot-hint">Match points? Tap a team for players, rinks &amp; points &middot; blank scores a win 2&ndash;0</span>
+      </div>
+    </div>
+
+    <p class="opt__verdict">
+      <strong>Pros:</strong> the cleanest possible row; perfect for Two Wood and Triples, which never use points.
+      <strong>Cons:</strong> Samford enters real points on every fixture, every week &mdash; opening the detail panel
+      four extra times per tile turns a 30-second job into a chore.
+    </p>
+  </section>
+
+  <!-- ============================ B =============================== -->
+  <section class="opt">
+    <span class="opt__tag">B &mdash; labelled columns &middot; points visually secondary</span>
+    <p class="opt__note">
+      Same layout as today, but a small uppercase header row names the columns once per tile, so the boxes explain
+      themselves. Points boxes go dashed-and-hollow until used &mdash; clearly optional &mdash; and turn solid
+      when filled. Saved rows keep the same column rhythm.
+    </p>
+
+    <div class="match-week" style="--league-color: var(--green)">
+      <div class="match-week__head">
+        <h3 class="match-week__title">Week 13 &middot; Division A</h3>
+        <span class="match-week__date">Wed 29 Jul 2026</span>
+      </div>
+
+      <div class="colhead-row">
+        <span></span>
+        <span class="colhead-mid">
+          <span class="colhead" style="width: 7.6rem">Shots</span>
+          <span class="colhead" style="width: 5.6rem; margin-left: 1.4rem">Match pts</span>
+        </span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <div class="match-row" style="border-top: none; padding-top: 0.45rem">
+        <span class="match-row__home">Stone Lodge</span>
+        <span class="score-in">
+          <input value="" /><span class="dash">&ndash;</span><input value="" />
+          <span class="pts-in"><input value="" /><span class="dash">&ndash;</span><input value="" /></span>
+        </span>
+        <span class="match-row__away">Kirton &amp; Falkenham</span>
+        <span class="match-row__state">To enter</span>
+      </div>
+
+      <div class="match-row">
+        <span class="match-row__home">Capel St Mary Kites</span>
+        <span class="score-in">
+          <span class="score-box score-box--filled">72</span><span class="dash">&ndash;</span><span class="score-box score-box--filled">58</span>
+          <span class="pts-in"><span class="pts-box pts-box--filled">5</span><span class="dash">&ndash;</span><span class="pts-box pts-box--filled">1</span></span>
+        </span>
+        <span class="match-row__away">Norbridge</span>
+        <span class="match-row__state match-row__state--dirty">Not saved</span>
+      </div>
+
+      <div class="match-row">
+        <span class="match-row__home">Waldringfield</span>
+        <span class="score-in">
+          <span class="score-box score-box--filled">58</span><span class="dash">&ndash;</span><span class="score-box score-box--filled">72</span>
+          <span class="pts-in"><span class="pts-box">&nbsp;</span><span class="dash">&ndash;</span><span class="pts-box">&nbsp;</span></span>
+        </span>
+        <span class="match-row__away">E-of-E Co-op A</span>
+        <span class="match-row__state match-row__state--dirty">Not saved</span>
+      </div>
+
+      <div class="match-row">
+        <span class="match-row__home">Westerfield Greens</span>
+        <span class="score-in">
+          <input value="" /><span class="dash">&ndash;</span><input value="" />
+          <span class="pts-in"><input value="" /><span class="dash">&ndash;</span><input value="" /></span>
+        </span>
+        <span class="match-row__away">Bealings</span>
+        <span class="match-row__state">To enter</span>
+      </div>
+
+      <div class="match-week__foot">
+        <button class="save-btn">Save week</button>
+        <span class="match-week__foot-hint">Points optional &middot; blank scores a win 2&ndash;0 &middot; tap a team for players &amp; rinks</span>
+      </div>
+    </div>
+
+    <p class="opt__verdict">
+      <strong>Pros:</strong> smallest change from today; one header row removes the mystery, dashed boxes read as
+      &ldquo;optional&rdquo;. <strong>Cons:</strong> the row still carries four boxes everywhere &mdash; Two Wood and
+      Triples admins see dashed boxes they will never fill, and typing points is still two tiny targets.
+    </p>
+  </section>
+
+  <!-- ============================ C =============================== -->
+  <section class="opt">
+    <span class="opt__tag">C &mdash; quick-pick chips once shots are in</span>
+    <p class="opt__note">
+      Rows are shots-only. The moment a row has both shot totals, a chip strip slides open under it with the only
+      point results that exist in this league (rink points + aggregate always sum to 6): one tap and done. Every
+      Samford result ever saved is one of these combos. &ldquo;Skip&rdquo; keeps the 2&ndash;0 fallback;
+      &ldquo;other&rdquo; opens two boxes for the odd case.
+    </p>
+
+    <div class="match-week" style="--league-color: var(--green)">
+      <div class="match-week__head">
+        <h3 class="match-week__title">Week 13 &middot; Division A</h3>
+        <span class="match-week__date">Wed 29 Jul 2026</span>
+      </div>
+
+      <div class="match-row">
+        <span class="match-row__home">Stone Lodge</span>
+        <span class="score-in"><input value="" /><span class="dash">&ndash;</span><input value="" /></span>
+        <span class="match-row__away">Kirton &amp; Falkenham</span>
+        <span class="match-row__state">To enter</span>
+      </div>
+
+      <div class="row-group">
+        <div class="match-row match-row--open">
+          <span class="match-row__home">Capel St Mary Kites</span>
+          <span class="score-in"><span class="score-box score-box--filled">72</span><span class="dash">&ndash;</span><span class="score-box score-box--filled">58</span></span>
+          <span class="match-row__away">Norbridge</span>
+          <span class="match-row__state match-row__state--dirty">Not saved</span>
+        </div>
+        <div class="pts-chips">
+          <span class="pts-chips__label">Match pts</span>
+          <button class="pts-chip">6&ndash;0</button>
+          <button class="pts-chip pts-chip--sel">5&ndash;1</button>
+          <button class="pts-chip">4&ndash;2</button>
+          <button class="pts-chip">2&ndash;4</button>
+          <button class="pts-chip">1&ndash;5</button>
+          <button class="pts-chip">0&ndash;6</button>
+          <button class="pts-chip pts-chip--other">other&hellip;</button>
+          <span class="pts-chips__skip">or skip &middot; counts 2&ndash;0</span>
+        </div>
+      </div>
+
+      <div class="match-row">
+        <span class="match-row__home">Waldringfield</span>
+        <span class="match-row__mid"><span>58&thinsp;&ndash;&thinsp;72</span><span class="pts-mini">1&ndash;5 pts</span></span>
+        <span class="match-row__away">E-of-E Co-op A</span>
+        <span class="match-row__state match-row__state--saved">Saved &#10003;</span>
+      </div>
+
+      <div class="row-group">
+        <div class="match-row match-row--open">
+          <span class="match-row__home">Westerfield Greens</span>
+          <span class="score-in"><span class="score-box score-box--filled">65</span><span class="dash">&ndash;</span><span class="score-box score-box--filled">65</span></span>
+          <span class="match-row__away">Bealings</span>
+          <span class="match-row__state match-row__state--dirty">Not saved</span>
+        </div>
+        <div class="pts-chips">
+          <span class="pts-chips__label">Match pts</span>
+          <button class="pts-chip">4&ndash;2</button>
+          <button class="pts-chip pts-chip--sel">3&ndash;3</button>
+          <button class="pts-chip">2&ndash;4</button>
+          <button class="pts-chip pts-chip--other">other&hellip;</button>
+          <span class="pts-chips__skip">or skip &middot; draw counts 1&ndash;1</span>
+        </div>
+      </div>
+
+      <div class="match-week__foot">
+        <button class="save-btn">Save week</button>
+        <span class="match-week__foot-hint">Pick match points after shots, or skip &middot; tap a team for players &amp; rinks</span>
+      </div>
+    </div>
+
+    <p class="opt__verdict">
+      <strong>Pros:</strong> one tap instead of two tiny inputs; impossible to enter a combo the league doesn't award;
+      leagues without points never see chips because rows without a pick just fall back. The chip set can even be
+      pre-narrowed by who won the shots. <strong>Cons:</strong> rows change height as chips appear; the strip is a new
+      pattern the site doesn't use elsewhere.
+    </p>
+  </section>
+
+  <!-- ============================ D =============================== -->
+  <section class="opt">
+    <span class="opt__tag">D &mdash; per-tile reveal: &lsquo;+ match points&rsquo;</span>
+    <p class="opt__note">
+      Rows are shots-only by default. A quiet toggle on the tile reveals the points column for leagues that award
+      them &mdash; ticked once, remembered per league. Shown both ways: hidden (how Two Wood and Triples would always
+      look) and revealed (how Samford would look every week).
+    </p>
+
+    <p class="tile-caption">Points hidden &mdash; the default</p>
+    <div class="match-week" style="--league-color: var(--green)">
+      <div class="match-week__head">
+        <h3 class="match-week__title">Week 13 &middot; Division A</h3>
+        <span class="match-week__date">Wed 29 Jul 2026</span>
+      </div>
+      <div class="tile-tools">
+        <button class="pts-toggle">+ match points</button>
+      </div>
+
+      <div class="match-row" style="border-top: none">
+        <span class="match-row__home">Stone Lodge</span>
+        <span class="score-in"><input value="" /><span class="dash">&ndash;</span><input value="" /></span>
+        <span class="match-row__away">Kirton &amp; Falkenham</span>
+        <span class="match-row__state">To enter</span>
+      </div>
+
+      <div class="match-row">
+        <span class="match-row__home">Capel St Mary Kites</span>
+        <span class="score-in"><span class="score-box score-box--filled">72</span><span class="dash">&ndash;</span><span class="score-box score-box--filled">58</span></span>
+        <span class="match-row__away">Norbridge</span>
+        <span class="match-row__state match-row__state--dirty">Not saved</span>
+      </div>
+
+      <div class="match-week__foot">
+        <button class="save-btn">Save week</button>
+        <span class="match-week__foot-hint">Wins score 2&ndash;0 &middot; tap a team for players &amp; rinks</span>
+      </div>
+    </div>
+
+    <p class="tile-caption">Points revealed &mdash; remembered for this league</p>
+    <div class="match-week" style="--league-color: var(--green)">
+      <div class="match-week__head">
+        <h3 class="match-week__title">Week 13 &middot; Division A</h3>
+        <span class="match-week__date">Wed 29 Jul 2026</span>
+      </div>
+      <div class="tile-tools">
+        <button class="pts-toggle pts-toggle--on">match points on</button>
+      </div>
+
+      <div class="colhead-row">
+        <span></span>
+        <span class="colhead-mid">
+          <span class="colhead" style="width: 7.6rem">Shots</span>
+          <span class="colhead" style="width: 5.6rem; margin-left: 1.4rem">Match pts</span>
+        </span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <div class="match-row" style="border-top: none; padding-top: 0.45rem">
+        <span class="match-row__home">Stone Lodge</span>
+        <span class="score-in">
+          <input value="" /><span class="dash">&ndash;</span><input value="" />
+          <span class="pts-in"><input value="" /><span class="dash">&ndash;</span><input value="" /></span>
+        </span>
+        <span class="match-row__away">Kirton &amp; Falkenham</span>
+        <span class="match-row__state">To enter</span>
+      </div>
+
+      <div class="match-row">
+        <span class="match-row__home">Capel St Mary Kites</span>
+        <span class="score-in">
+          <span class="score-box score-box--filled">72</span><span class="dash">&ndash;</span><span class="score-box score-box--filled">58</span>
+          <span class="pts-in"><span class="pts-box pts-box--filled">5</span><span class="dash">&ndash;</span><span class="pts-box pts-box--filled">1</span></span>
+        </span>
+        <span class="match-row__away">Norbridge</span>
+        <span class="match-row__state match-row__state--dirty">Not saved</span>
+      </div>
+
+      <div class="match-week__foot">
+        <button class="save-btn">Save week</button>
+        <span class="match-week__foot-hint">Blank points score a win 2&ndash;0 &middot; tap a team for players &amp; rinks</span>
+      </div>
+    </div>
+
+    <p class="opt__verdict">
+      <strong>Pros:</strong> Two Wood and Triples get clean rows forever; Samford flips one switch once.
+      <strong>Cons:</strong> the toggle is really a league setting wearing a button costume &mdash; if the app already
+      knows which leagues award points, it should just show the right layout without asking.
+    </p>
+  </section>
+
+  <!-- ============================ verdict =============================== -->
+  <section class="opt">
+    <span class="opt__tag">Recommendation</span>
+    <p class="opt__verdict">
+      <strong>Drive it from the league, then use C's chips where points exist.</strong> The data already answers the
+      question D asks with a toggle: Samford records points on 100% of results, Two Wood and Triples on 0%. So leagues
+      without points get option A's shots-only rows automatically (with the faint &ldquo;auto 2&ndash;0&rdquo; on saved
+      rows), and Samford gets option C's chip strip &mdash; one tap for a result that is always one of a handful of
+      combos, no tiny boxes, no wrong totals. Option B is the safe fallback if a new league turns up with free-form
+      points, and its &ldquo;other&hellip;&rdquo; escape hatch already covers that inside C.
+    </p>
+  </section>
+</div>
+</body>
+</html>

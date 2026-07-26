@@ -1,5 +1,6 @@
 import { Link, Navigate, useParams, useSearchParams } from 'react-router-dom'
 import { useCompetitions } from '../hooks/useCompetitions'
+import { useSiteConfig } from '../hooks/useSiteConfig'
 import { CupBracket, hasBracket } from '../components/CupBracket'
 import { CupMatches } from '../components/MatchList'
 import { PosterTile } from '../components/LeaguePosterGrid'
@@ -40,13 +41,13 @@ function roundsToWeeks(rounds) {
   }))
 }
 
-function CompetitionsHub({ competitions, loading }) {
+function CompetitionsHub({ competitions, loading, season }) {
   return (
     <div className="page page--competitions">
       <header className="page-head page-head--hub">
         <h1 className="page-head__title page-head__title--xl">Competitions</h1>
         <p className="page-head__lead">
-          Knockout cups for the 2026 season. Pick one to see the draw and results.
+          Knockout cups for the {season} season. Pick one to see the draw and results.
         </p>
       </header>
 
@@ -140,9 +141,12 @@ function CompetitionDetail({ comp, palette }) {
 export function CompetitionsPage() {
   const { compId } = useParams()
   const { competitions, loading } = useCompetitions()
+  const { activeSeason } = useSiteConfig()
 
   if (!compId) {
-    return <CompetitionsHub competitions={competitions} loading={loading} />
+    return (
+      <CompetitionsHub competitions={competitions} loading={loading} season={activeSeason} />
+    )
   }
 
   if (loading) {

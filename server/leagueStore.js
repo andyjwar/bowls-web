@@ -3,6 +3,7 @@ import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 import { buildDivisionFixtures } from '../src/lib/fixtures.js'
 import { applyResultsToFixtures, computeStandingsFromResults } from '../src/lib/results.js'
+import { getActiveSeason } from './siteConfigStore.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const DATA_DIR = join(__dirname, '../public/data')
@@ -42,10 +43,63 @@ export function persistLeagueRegistry() {
   )
 }
 
-/** Public navigation (`/data/leagues-nav.json`) — ids must match league JSON files under `/public/data`. */
+/** Season a league belongs to — explicit `season` field, else the year suffix of its id. */
+export function leagueSeason(leagueId, doc = null) {
+  const explicit = Number(doc?.season)
+  if (Number.isInteger(explicit)) return explicit
+  const m = /-(\d{4})$/.exec(String(leagueId ?? ''))
+  return m ? Number(m[1]) : null
+}
+
+/** Registry ids for the currently active season (nav order). */
+export function activeSeasonLeagueIds() {
+  const active = getActiveSeason()
+  return Object.keys(LEAGUE_FILES).filter((id) => {
+    const season = leagueSeason(id, safeLoadLeague(id))
+    return season == null || season === active
+  })
+}
+
+/** First active-season league whose id starts with a prefix (e.g. 'samford'). */
+export function activeLeagueIdByPrefix(prefix) {
+  return activeSeasonLeagueIds().find((id) => id.startsWith(prefix)) ?? null
+}
+
+function safeLoadLeague(id) {
+  try {
+    return loadLeague(id)
+  } catch {
+    return null
+  }
+}
+
+/** Every season present across registered leagues, newest first. */
+export function listKnownSeasons() {
+  const seasons = new Set()
+  for (const id of Object.keys(LEAGUE_FILES)) {
+    const s = leagueSeason(id, safeLoadLeague(id))
+    if (s != null) seasons.add(s)
+  }
+  return [...seasons].sort((a, b) => b - a)
+}
+
+/**
+ * Public navigation (`/data/leagues-nav.json`) — ids must match league JSON files under
+ * `/public/data`. Active-season leagues come first; past seasons follow, newest first.
+ */
 export function persistLeaguesNav() {
   try {
-    const rows = listLeagues().map((l) => ({ id: l.id, label: l.name }))
+    const active = getActiveSeason()
+    const rows = listLeagues().map((l) => ({ id: l.id, label: l.name, season: l.season }))
+    rows.sort((a, b) => {
+      const sa = a.season ?? active
+      const sb = b.season ?? active
+      const rankA = sa === active ? 0 : 1
+      const rankB = sb === active ? 0 : 1
+      if (rankA !== rankB) return rankA - rankB
+      if (sa !== sb) return sb - sa
+      return 0
+    })
     writeFileSync(join(DATA_DIR, 'leagues-nav.json'), `${JSON.stringify(rows, null, 2)}\n`, 'utf8')
   } catch (e) {
     console.warn('Could not write leagues-nav.json:', e.message)
@@ -175,7 +229,7 @@ export function listLeagues() {
       divisions: (s.divisions ?? []).map((d) => divisionListMeta(data, s.id, d)),
     }))
     const divisions = data.divisions?.map((d) => divisionListMeta(data, null, d))
-    return { id, name: data.name, sections, divisions }
+    return { id, name: data.name, season: leagueSeason(id, data), sections, divisions }
   })
 }
 
@@ -285,7 +339,7 @@ export function addLeagueDivision(leagueId, { sectionId, divisionId, label }) {
     sec.divisions.push({
       id: did,
       label: lbl || did,
-      teams: Array.from({ length: slots }, (_, i) => `Team ${i + 1}`),
+      teams: Array.from({ length: slots }, () => 'Bye'),
       results: { weeks: {} },
     })
   } else {
@@ -295,7 +349,7 @@ export function addLeagueDivision(leagueId, { sectionId, divisionId, label }) {
     const row = {
       id: did,
       label: lbl || did,
-      teams: Array.from({ length: slots }, (_, i) => `Team ${i + 1}`),
+      teams: Array.from({ length: slots }, () => 'Bye'),
       results: { weeks: {} },
     }
     const donorPlayDay = league.divisions.find((d) => d.playDay)?.playDay
@@ -336,12 +390,12 @@ export function addLeagueSection(leagueId, { sectionId, label, cloneScheduleFrom
   league.sections.push({
     id: sid,
     label: String(label ?? '').trim() || sid,
-    scheduleTemplate,
+      scheduleTemplate,
     divisions: [
       {
         id: 'a',
         label: 'Division A',
-        teams: Array.from({ length: slots }, (_, i) => `Team ${i + 1}`),
+        teams: Array.from({ length: slots }, () => 'Bye'),
         results: { weeks: {} },
       },
     ],
@@ -365,11 +419,13 @@ export function createLeagueFromClone({ leagueId, name, cloneFromLeagueId }) {
   const copy = JSON.parse(JSON.stringify(donor))
   copy.id = lid
   copy.name = String(name ?? '').trim() || lid
+  copy.season = getActiveSeason()
 
   function resetDivision(div, sectionIdForSlots) {
     const slots = inferTeamSlotCount(copy, sectionIdForSlots)
-    div.teams = Array.from({ length: slots }, (_, i) => `Team ${i + 1}`)
+    div.teams = Array.from({ length: slots }, () => 'Bye')
     div.results = { weeks: {} }
+    delete div.standingsSeed
   }
 
   if (copy.sections?.length) {
@@ -388,6 +444,151 @@ export function createLeagueFromClone({ leagueId, name, cloneFromLeagueId }) {
   persistLeaguesNav()
 
   return { ok: true, leagueId: lid }
+}
+
+/**
+ * Unregister a league: it disappears from the registry, nav, public site and
+ * admin. The JSON data file is left on disk so nothing is lost — re-adding the
+ * registry entry would bring it straight back.
+ */
+export function deleteLeague(leagueId) {
+  const id = String(leagueId ?? '').trim()
+  if (!LEAGUE_FILES[id]) throw new Error('Unknown league')
+  delete LEAGUE_FILES[id]
+  persistLeagueRegistry()
+  persistLeaguesNav()
+  return { ok: true, leagueId: id }
+}
+
+const SEASON_DATE_KEYS = ['date', 'thursdayDate', 'tuesdayDate']
+
+/**
+ * Edit fixture dates on a schedule grid. `rows` is a partial update keyed by
+ * week number, e.g. `[{ week: 1, date: '2027-05-10' }]` (flat leagues use
+ * `tuesdayDate` / `thursdayDate` instead of `date`). Only date columns the
+ * template already has can be set — pairings are untouched.
+ */
+export function updateScheduleDates(leagueId, { sectionId, rows }) {
+  const league = loadLeague(leagueId)
+
+  let tmpl
+  if (league.sections?.length) {
+    const sec = league.sections.find((s) => s.id === String(sectionId ?? '').trim())
+    if (!sec) throw new Error('Section not found')
+    tmpl = sec.scheduleTemplate
+  } else {
+    tmpl = league.scheduleTemplate
+  }
+  if (!Array.isArray(tmpl) || !tmpl.length) throw new Error('League has no fixture schedule')
+  if (!Array.isArray(rows) || !rows.length) throw new Error('No date changes supplied')
+
+  const byWeek = new Map(tmpl.map((r) => [String(r.week), r]))
+  for (const row of rows) {
+    const target = byWeek.get(String(row?.week))
+    if (!target) throw new Error(`Unknown week ${row?.week}`)
+    for (const key of SEASON_DATE_KEYS) {
+      if (row[key] === undefined) continue
+      if (target[key] === undefined) {
+        throw new Error(`Week ${row.week} has no "${key}" column in this schedule`)
+      }
+      const value = String(row[key]).trim()
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+        throw new Error(`Week ${row.week}: dates must be YYYY-MM-DD`)
+      }
+      target[key] = value
+    }
+  }
+
+  saveLeague(leagueId, league)
+  return { ok: true }
+}
+
+/** Shift an ISO date by whole weeks (keeps the weekday). */
+function shiftIsoDateByWeeks(iso, weeks) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso ?? '').trim())
+  if (!m) return iso
+  const d = new Date(Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3])))
+  d.setUTCDate(d.getUTCDate() + weeks * 7)
+  return d.toISOString().slice(0, 10)
+}
+
+function shiftScheduleTemplateDates(tmpl, weeks) {
+  for (const row of tmpl ?? []) {
+    for (const key of SEASON_DATE_KEYS) {
+      if (row[key]) row[key] = shiftIsoDateByWeeks(row[key], weeks)
+    }
+  }
+}
+
+/**
+ * Clone every active-season league into a new season: same structure and team
+ * slots, fixture dates shifted forward by whole years (52 weeks each, keeping
+ * play days), results emptied, standings seeds dropped. Old season files stay
+ * on disk and in the registry, so past seasons remain browsable.
+ */
+export function startNewSeason(yearRaw) {
+  const year = Number(yearRaw)
+  if (!Number.isInteger(year) || year < 2000 || year > 2100) {
+    throw new Error('Season must be a 4-digit year (e.g. 2027)')
+  }
+
+  const fromSeason = getActiveSeason()
+  if (year === fromSeason) throw new Error(`${year} is already the active season`)
+
+  const sourceIds = activeSeasonLeagueIds()
+  if (!sourceIds.length) throw new Error('No leagues found for the current season')
+
+  const yearsAhead = year - fromSeason
+  if (yearsAhead < 1) {
+    throw new Error(
+      `New season must be after the current one (${fromSeason}) — to view an old season, switch the active season instead`,
+    )
+  }
+  const weeksToShift = yearsAhead * 52
+
+  /* Validate all target ids before writing anything. */
+  const plans = sourceIds.map((id) => {
+    const newId = /-\d{4}$/.test(id)
+      ? id.replace(/-\d{4}$/, `-${year}`)
+      : `${id}-${year}`
+    if (LEAGUE_FILES[newId]) throw new Error(`League ${newId} already exists`)
+    return { id, newId }
+  })
+
+  const created = []
+  for (const { id, newId } of plans) {
+    const donor = loadLeague(id)
+    const copy = JSON.parse(JSON.stringify(donor))
+    copy.id = newId
+    copy.season = year
+    copy.name = String(copy.name ?? '').includes(String(fromSeason))
+      ? String(copy.name).replaceAll(String(fromSeason), String(year))
+      : `${String(copy.name ?? newId).trim()} ${year}`
+
+    if (copy.sections?.length) {
+      for (const sec of copy.sections) {
+        shiftScheduleTemplateDates(sec.scheduleTemplate, weeksToShift)
+        for (const div of sec.divisions ?? []) {
+          div.results = { weeks: {} }
+          delete div.standingsSeed
+        }
+      }
+    } else {
+      shiftScheduleTemplateDates(copy.scheduleTemplate, weeksToShift)
+      for (const div of copy.divisions ?? []) {
+        div.results = { weeks: {} }
+        delete div.standingsSeed
+      }
+    }
+
+    const filename = `${newId}.json`
+    writeFileSync(join(DATA_DIR, filename), `${JSON.stringify(copy, null, 2)}\n`, 'utf8')
+    LEAGUE_FILES[newId] = filename
+    created.push(newId)
+  }
+
+  persistLeagueRegistry()
+  return { created, fromSeason, year }
 }
 
 export function getDivision(league, { sectionId, divisionId }) {

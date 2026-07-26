@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>v24 — week navigation options (score entry)</title>
+<style>
+  :root {
+    --fm-bg: #f6f7f8;
+    --fm-card: #ffffff;
+    --fm-border: #eceef0;
+    --fm-border-strong: #dde0e3;
+    --fm-text: #1f2933;
+    --fm-text-strong: #0b1418;
+    --fm-muted: #6b7280;
+    --fm-muted-strong: #4b5563;
+    --fm-row-hi: #f4f5f7;
+    --green: #256e3d;
+    --green-soft: rgba(37, 110, 61, 0.12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--fm-bg);
+    color: var(--fm-text);
+    padding: 2.2rem 1.2rem 4rem;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; }
+
+  .intro { margin-bottom: 2.4rem; }
+  .intro .eyebrow { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fm-muted); }
+  .intro h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.03em; color: var(--fm-text-strong); margin-top: 0.2rem; }
+  .intro p { font-size: 0.9rem; color: var(--fm-muted-strong); margin-top: 0.5rem; max-width: 56ch; }
+
+  .option { margin: 0 0 3.4rem; }
+  .option__tag {
+    display: inline-block; background: var(--fm-text-strong); color: #fff;
+    font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 4px 10px; margin-bottom: 0.55rem;
+  }
+  .option__title { font-size: 1.12rem; font-weight: 800; letter-spacing: -0.02em; color: var(--fm-text-strong); }
+  .option__desc { font-size: 0.85rem; color: var(--fm-muted-strong); margin: 0.35rem 0 1.1rem; max-width: 62ch; }
+
+  /* ── shared building blocks (site look) ── */
+  .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.9rem; flex-wrap: wrap; }
+  .div-letters { display: flex; gap: 6px; }
+  .div-letter {
+    width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center;
+    background: var(--fm-row-hi); font-size: 0.95rem; font-weight: 750; color: var(--fm-muted-strong);
+    cursor: pointer; user-select: none;
+  }
+  .div-letter--active { background: var(--green); color: #fff; box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px var(--green); }
+
+  .match-week { background: var(--fm-card); box-shadow: 0 0 0 1px var(--fm-border); margin-bottom: 0.9rem; }
+  .match-week__head {
+    display: flex; align-items: center; justify-content: space-between; gap: 0.8rem;
+    padding: 0.65rem 1rem; background: var(--fm-row-hi); border-bottom: 1px solid var(--fm-border);
+  }
+  .match-week__title { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--fm-text-strong); }
+  .match-week__date { font-size: 0.78rem; font-weight: 600; color: var(--fm-muted); }
+  .match-row {
+    display: grid; grid-template-columns: 1fr auto 1fr 5.4rem; align-items: center; gap: 0.8rem;
+    padding: 0.62rem 1rem; border-bottom: 1px solid var(--fm-border);
+  }
+  .match-row:last-of-type { border-bottom: 0; }
+  .match-row .home { text-align: right; font-size: 0.95rem; font-weight: 600; color: var(--fm-text-strong); }
+  .match-row .away { font-size: 0.95rem; font-weight: 600; color: var(--fm-text-strong); }
+  .score-in { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .score-in input {
+    width: 3rem; height: 2.1rem; text-align: center; font: inherit; font-weight: 800; font-size: 0.95rem;
+    color: var(--fm-text-strong); background: var(--fm-row-hi); border: 1px solid var(--fm-border); border-radius: 0;
+  }
+  .score-in .dash { color: var(--fm-muted); font-weight: 600; }
+  .state { font-size: 0.72rem; font-weight: 700; color: var(--fm-muted); text-align: right; }
+  .match-week__foot { display: flex; align-items: center; gap: 0.9rem; padding: 0.7rem 1rem; border-top: 1px solid var(--fm-border); }
+  .save-btn { font-size: 0.85rem; font-weight: 750; padding: 0.5rem 1.1rem; border: 0; background: var(--green); color: #fff; cursor: pointer; }
+  .foot-hint { font-size: 0.76rem; color: var(--fm-muted); }
+
+  /* ── OPTION A: stepper lives in the tile head ── */
+  .stepper { display: inline-flex; align-items: center; gap: 0.15rem; }
+  .stepper__btn {
+    width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center;
+    background: transparent; border: 1px solid var(--fm-border-strong); color: var(--fm-muted-strong);
+    font-size: 0.95rem; font-weight: 700; cursor: pointer; user-select: none;
+  }
+  .stepper__btn:hover { background: var(--fm-card); }
+  .a-head-center { display: flex; flex-direction: column; align-items: center; gap: 1px; min-width: 12rem; }
+  .a-head-center .wkline { font-size: 0.82rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--fm-text-strong); }
+  .a-head-center .wkline .thiswk { color: var(--green); }
+  .a-head-center .dateline { font-size: 0.72rem; font-weight: 600; color: var(--fm-muted); }
+  .allweeks-link { font-size: 0.8rem; font-weight: 700; color: var(--fm-muted-strong); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+
+  /* ── OPTION B: job shortcuts ── */
+  .seg { display: inline-flex; }
+  .seg__btn {
+    height: 38px; padding: 0 14px; display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+    background: var(--fm-row-hi); border: 0; font: inherit; font-size: 0.82rem; font-weight: 750; color: var(--fm-muted-strong);
+    cursor: pointer; line-height: 1.15; border-right: 1px solid var(--fm-border);
+  }
+  .seg__btn:last-child { border-right: 0; }
+  .seg__btn small { font-size: 0.62rem; font-weight: 600; color: var(--fm-muted); }
+  .seg__btn--active { background: var(--green); color: #fff; }
+  .seg__btn--active small { color: rgba(255,255,255,0.78); }
+  .seg__btn .badge {
+    display: inline-block; min-width: 15px; padding: 0 4px; margin-left: 5px; border-radius: 999px;
+    background: #b3541e; color: #fff; font-size: 0.62rem; font-weight: 800; line-height: 15px;
+  }
+  .wk-select {
+    height: 38px; padding: 0 10px; background: var(--fm-row-hi); border: 0; font: inherit;
+    font-size: 0.82rem; font-weight: 750; color: var(--fm-muted-strong); cursor: pointer;
+  }
+
+  /* ── OPTION C: single-line scroll strip ── */
+  .strip-wrap { position: relative; }
+  .strip {
+    display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px;
+  }
+  .strip::-webkit-scrollbar { display: none; }
+  .wk-pill {
+    flex: 0 0 auto; min-height: 38px; display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 2px 12px 3px; background: var(--fm-row-hi); font-size: 0.8rem; font-weight: 700; color: var(--fm-muted-strong);
+    line-height: 1.2; white-space: nowrap; cursor: pointer; user-select: none;
+  }
+  .wk-pill small { font-size: 0.62rem; font-weight: 600; color: var(--fm-muted); }
+  .wk-pill--active { background: var(--green); color: #fff; }
+  .wk-pill--active small { color: rgba(255,255,255,0.78); }
+  .wk-pill--todo { box-shadow: inset 0 -3px 0 #b3541e; }
+  .strip-fade-l, .strip-fade-r {
+    position: absolute; top: 0; bottom: 0; width: 34px; pointer-events: none;
+  }
+  .strip-fade-l { left: 0; background: linear-gradient(90deg, var(--fm-bg), transparent); }
+  .strip-fade-r { right: 0; background: linear-gradient(270deg, var(--fm-bg), transparent); }
+
+  .note { font-size: 0.78rem; color: var(--fm-muted); margin-top: 0.55rem; }
+  .note b { color: var(--fm-muted-strong); }
+
+  /* ── OPTION A · REFINED ── */
+  .option--refined .option__tag { background: var(--green); }
+
+  .stepper__btn { position: relative; }
+  .stepper__miss {
+    position: absolute; top: -6px; right: -6px; min-width: 16px; height: 16px; padding: 0 4px;
+    border-radius: 999px; background: #b3541e; color: #fff; font-size: 0.62rem; font-weight: 800;
+    line-height: 16px; text-align: center;
+  }
+
+  /* clickable middle = the week picker trigger */
+  .wk-btn {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    background: transparent; border: 0; font: inherit; cursor: pointer;
+    font-size: 0.86rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--fm-text-strong); padding: 4px 10px;
+  }
+  .wk-btn:hover { background: var(--fm-card); }
+  .wk-btn .nowdot { width: 7px; height: 7px; border-radius: 999px; background: var(--green); }
+  .wk-btn .caret { font-size: 0.78rem; color: var(--fm-muted-strong); line-height: 1; }
+
+  /* quiet catch-up line under the head */
+  .catchup {
+    display: flex; align-items: center; gap: 0.45rem;
+    padding: 0.45rem 1rem; border-bottom: 1px solid var(--fm-border);
+    font-size: 0.76rem; font-weight: 650; color: var(--fm-muted-strong); cursor: pointer;
+  }
+  .catchup .dot { width: 7px; height: 7px; border-radius: 999px; background: #b3541e; flex: 0 0 auto; }
+  .catchup .go { margin-left: auto; color: var(--fm-muted); font-weight: 700; }
+
+  /* week picker popover (shown open) */
+  .head-anchor { position: relative; }
+  .wk-pop {
+    position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+    width: 250px; background: var(--fm-card); box-shadow: 0 0 0 1px var(--fm-border), 0 14px 34px rgba(11, 20, 24, 0.16);
+    z-index: 5; padding: 4px 0;
+  }
+  .wk-pop__row {
+    display: grid; grid-template-columns: 3.2rem 1fr auto; align-items: center; gap: 0.5rem;
+    padding: 0.4rem 0.85rem; font-size: 0.82rem; font-weight: 700; color: var(--fm-text-strong);
+    cursor: pointer;
+  }
+  .wk-pop__row:hover { background: var(--fm-row-hi); }
+  .wk-pop__row small { font-weight: 600; color: var(--fm-muted); }
+  .wk-pop__row .ok { font-size: 0.72rem; color: var(--fm-border-strong); }
+  .wk-pop__row .miss {
+    font-size: 0.68rem; font-weight: 750; color: #b3541e; display: inline-flex; align-items: center; gap: 0.3rem;
+  }
+  .wk-pop__row .miss::before { content: ''; width: 6px; height: 6px; border-radius: 999px; background: #b3541e; }
+  .wk-pop__row--now { background: var(--green-soft); }
+  .wk-pop__row--now .nowpip { font-size: 0.66rem; font-weight: 800; color: var(--green); letter-spacing: 0.06em; }
+  .wk-pop__row--future { color: var(--fm-muted-strong); }
+  .wk-pop__all {
+    margin-top: 4px; border-top: 1px solid var(--fm-border);
+    padding: 0.5rem 0.85rem; font-size: 0.8rem; font-weight: 750; color: var(--fm-muted-strong); cursor: pointer;
+  }
+  .wk-pop__all:hover { background: var(--fm-row-hi); }
+
+  /* before / after wording strip */
+  .wording { margin: 1.4rem 0 0; }
+  .wording__label {
+    font-size: 0.64rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--fm-muted); margin: 0.7rem 0 0.3rem;
+  }
+  .wording__bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 0.8rem;
+    padding: 0.55rem 1rem; background: var(--fm-row-hi); box-shadow: 0 0 0 1px var(--fm-border);
+  }
+  .wording__bar .mid { text-align: center; }
+  .wording__bar .t1 { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--fm-text-strong); }
+  .wording__bar .t1 .green { color: var(--green); }
+  .wording__bar .t2 { font-size: 0.72rem; font-weight: 600; color: var(--fm-muted); }
+  .wording__bar--after .t1 { display: inline-flex; align-items: center; gap: 0.45rem; }
+  .wording__strike { text-decoration: line-through; text-decoration-color: rgba(179, 84, 30, 0.75); text-decoration-thickness: 2px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="intro">
+    <div class="eyebrow">v24 · Score entry</div>
+    <h1>Week navigation — three options</h1>
+    <p>The entry rows stay exactly as they are. These only change how you pick the week (the current two-row wall of pills).</p>
+  </div>
+
+  <!-- ═══════════════ OPTION A · REFINED ═══════════════ -->
+  <section class="option option--refined" style="padding-bottom: 1rem;">
+    <span class="option__tag">Option A · Refined</span>
+    <div class="option__title">Tap the middle to pick any week — missing scores marked everywhere they matter</div>
+    <p class="option__desc">
+      The centre label is a button: tap it and a compact picker drops down (shown open below).
+      Orange dot + count = weeks with missing scores; the ‹ arrow carries the same count so you
+      can see there's catching up to do without opening anything.
+    </p>
+
+    <div class="toolbar">
+      <div class="div-letters">
+        <span class="div-letter div-letter--active">A</span><span class="div-letter">B</span>
+        <span class="div-letter">C</span><span class="div-letter">D</span><span class="div-letter">E</span>
+      </div>
+    </div>
+
+    <div class="match-week" style="overflow: visible;">
+      <div class="match-week__head head-anchor">
+        <span class="stepper">
+          <span class="stepper__btn">‹<span class="stepper__miss">3</span></span>
+        </span>
+        <button class="wk-btn">
+          <span class="nowdot"></span>
+          Week 12 · 27 Jul
+          <span class="caret">▾</span>
+        </button>
+        <span class="stepper"><span class="stepper__btn">›</span></span>
+
+        <!-- picker shown OPEN -->
+        <div class="wk-pop">
+          <div class="wk-pop__row"><span>Wk 1</span><small>11 May</small><span class="ok">✓</span></div>
+          <div class="wk-pop__row"><span>Wk 2</span><small>18 May</small><span class="ok">✓</span></div>
+          <div class="wk-pop__row"><span>Wk 3</span><small>25 May</small><span class="ok">✓</span></div>
+          <div class="wk-pop__row"><span>Wk 4</span><small>1 Jun</small><span class="ok">✓</span></div>
+          <div class="wk-pop__row"><span>Wk 5</span><small>8 Jun</small><span class="miss">1 missing</span></div>
+          <div class="wk-pop__row"><span>Wk 6</span><small>15 Jun</small><span class="ok">✓</span></div>
+          <div class="wk-pop__row"><span>Wk 7</span><small>22 Jun</small><span class="ok">✓</span></div>
+          <div class="wk-pop__row"><span>Wk 8</span><small>29 Jun</small><span class="ok">✓</span></div>
+          <div class="wk-pop__row"><span>Wk 9</span><small>6 Jul</small><span class="ok">✓</span></div>
+          <div class="wk-pop__row"><span>Wk 10</span><small>13 Jul</small><span class="ok">✓</span></div>
+          <div class="wk-pop__row"><span>Wk 11</span><small>20 Jul</small><span class="miss">2 missing</span></div>
+          <div class="wk-pop__row wk-pop__row--now"><span>Wk 12</span><small>27 Jul</small><span class="nowpip">NOW</span></div>
+          <div class="wk-pop__row wk-pop__row--future"><span>Wk 13</span><small>3 Aug</small><span></span></div>
+          <div class="wk-pop__row wk-pop__row--future"><span>Wk 14</span><small>10 Aug</small><span></span></div>
+          <div class="wk-pop__all">All weeks</div>
+        </div>
+      </div>
+
+      <div class="catchup">
+        <span class="dot"></span>
+        3 missing in earlier weeks
+        <span class="go">Wk 5 →</span>
+      </div>
+
+      <div class="match-row">
+        <span class="home">Kirton A</span>
+        <span class="score-in"><input value="" /><span class="dash">–</span><input value="" /></span>
+        <span class="away">Stone Lodge Blues</span>
+        <span class="state">To enter</span>
+      </div>
+      <div class="match-row">
+        <span class="home">Westerfield Yellows</span>
+        <span class="score-in"><input value="" /><span class="dash">–</span><input value="" /></span>
+        <span class="away">Hollbrook</span>
+        <span class="state">To enter</span>
+      </div>
+      <div class="match-row">
+        <span class="home">E-of-E Co-op Reds</span>
+        <span class="score-in"><input value="" /><span class="dash">–</span><input value="" /></span>
+        <span class="away">Marlborough</span>
+        <span class="state">To enter</span>
+      </div>
+      <div class="match-week__foot">
+        <button class="save-btn">Save week</button>
+        <span class="foot-hint">points optional · tap a team for players</span>
+      </div>
+    </div>
+
+    <!-- room for the open popover to hang below the tile -->
+    <div style="height: 250px;"></div>
+
+    <div class="wording">
+      <div class="wording__label">Wording — before</div>
+      <div class="wording__bar">
+        <span class="stepper"><span class="stepper__btn">‹</span></span>
+        <span class="mid">
+          <div class="t1"><span class="wording__strike">WEEK 12 · DIVISION C · THIS WEEK</span></div>
+          <div class="t2"><span class="wording__strike">Mon, 27 Jul 2026</span></div>
+        </span>
+        <span class="stepper"><span class="stepper__btn">›</span></span>
+      </div>
+      <div class="wording__label">Wording — after</div>
+      <div class="wording__bar wording__bar--after">
+        <span class="stepper"><span class="stepper__btn">‹<span class="stepper__miss">3</span></span></span>
+        <span class="mid">
+          <span class="t1"><span class="nowdot" style="width:7px;height:7px;border-radius:999px;background:var(--green);display:inline-block;"></span> WEEK 12 · 27 JUL <span class="caret" style="font-size:0.78rem;color:var(--fm-muted-strong);">▾</span></span>
+        </span>
+        <span class="stepper"><span class="stepper__btn">›</span></span>
+      </div>
+      <p class="note" style="margin-top:0.7rem;">
+        <b>Cuts:</b> division dropped (the letters row above already says it) · weekday + year dropped ·
+        "this week" → green dot · "All weeks" link folded into the picker · footer hint halved.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════ OPTION A ═══════════════ -->
+  <section class="option">
+    <span class="option__tag">Option A</span>
+    <div class="option__title">Stepper in the week tile — no week toolbar at all</div>
+    <p class="option__desc">
+      The toolbar keeps only the division letters. You flick between weeks with ‹ › arrows
+      right where you're typing. Opens on this week; "All weeks" stacks every tile like now.
+    </p>
+
+    <div class="toolbar">
+      <div class="div-letters">
+        <span class="div-letter">A</span><span class="div-letter">B</span>
+        <span class="div-letter div-letter--active">C</span>
+        <span class="div-letter">D</span><span class="div-letter">E</span>
+      </div>
+      <span class="allweeks-link">All weeks</span>
+    </div>
+
+    <div class="match-week">
+      <div class="match-week__head">
+        <span class="stepper"><span class="stepper__btn">‹</span></span>
+        <span class="a-head-center">
+          <span class="wkline">Week 12 · Division C <span class="thiswk">· this week</span></span>
+          <span class="dateline">Mon, 27 Jul 2026</span>
+        </span>
+        <span class="stepper"><span class="stepper__btn">›</span></span>
+      </div>
+      <div class="match-row">
+        <span class="home">Bramford B</span>
+        <span class="score-in"><input value="" /><span class="dash">–</span><input value="" /></span>
+        <span class="away">Chelmondiston</span>
+        <span class="state">To enter</span>
+      </div>
+      <div class="match-row">
+        <span class="home">Old Felixstowe</span>
+        <span class="score-in"><input value="" /><span class="dash">–</span><input value="" /></span>
+        <span class="away">Trimley</span>
+        <span class="state">To enter</span>
+      </div>
+      <div class="match-week__foot">
+        <button class="save-btn">Save week</button>
+        <span class="foot-hint">‹ › move a week · points optional · tap a team for players &amp; rinks</span>
+      </div>
+    </div>
+    <p class="note"><b>Why it works:</b> zero visual noise — the week is part of the tile you're already looking at. One tap back to catch up on last week.</p>
+  </section>
+
+  <!-- ═══════════════ OPTION B ═══════════════ -->
+  <section class="option">
+    <span class="option__tag">Option B</span>
+    <div class="option__title">Job shortcuts — Last week · This week · All, plus a quiet dropdown</div>
+    <p class="option__desc">
+      Score entry is really three jobs: enter this week, catch up on last week, and the odd
+      old fix. The segmented control covers the first two (with an outstanding count on
+      Last week), the dropdown covers everything else.
+    </p>
+
+    <div class="toolbar">
+      <div class="div-letters">
+        <span class="div-letter">A</span><span class="div-letter">B</span>
+        <span class="div-letter div-letter--active">C</span>
+        <span class="div-letter">D</span><span class="div-letter">E</span>
+      </div>
+      <div style="display:flex; gap:6px; align-items:center;">
+        <div class="seg">
+          <button class="seg__btn">Last week<span class="badge">2</span><small>Wk 11 · 20 Jul</small></button>
+          <button class="seg__btn seg__btn--active">This week<small>Wk 12 · 27 Jul</small></button>
+          <button class="seg__btn">All<small>weeks</small></button>
+        </div>
+        <select class="wk-select"><option>Week…</option></select>
+      </div>
+    </div>
+
+    <div class="match-week">
+      <div class="match-week__head">
+        <span class="match-week__title">Week 12 · Division C</span>
+        <span class="match-week__date">Mon, 27 Jul 2026</span>
+      </div>
+      <div class="match-row">
+        <span class="home">Bramford B</span>
+        <span class="score-in"><input value="" /><span class="dash">–</span><input value="" /></span>
+        <span class="away">Chelmondiston</span>
+        <span class="state">To enter</span>
+      </div>
+      <div class="match-row">
+        <span class="home">Old Felixstowe</span>
+        <span class="score-in"><input value="" /><span class="dash">–</span><input value="" /></span>
+        <span class="away">Trimley</span>
+        <span class="state">To enter</span>
+      </div>
+      <div class="match-week__foot">
+        <button class="save-btn">Save week</button>
+        <span class="foot-hint">points optional · tap a team for players &amp; rinks</span>
+      </div>
+    </div>
+    <p class="note"><b>Why it works:</b> the orange count tells you there's still catching up to do without hunting through pills.</p>
+  </section>
+
+  <!-- ═══════════════ OPTION C ═══════════════ -->
+  <section class="option">
+    <span class="option__tag">Option C</span>
+    <div class="option__title">Same pills, one swipeable line</div>
+    <p class="option__desc">
+      Keep the pills but never wrap: a single horizontal strip that scrolls (auto-centred on
+      this week), with faded edges hinting there's more. Weeks with outstanding scores get an
+      orange underline.
+    </p>
+
+    <div class="toolbar" style="flex-wrap:nowrap; align-items:center;">
+      <div class="div-letters">
+        <span class="div-letter">A</span><span class="div-letter">B</span>
+        <span class="div-letter div-letter--active">C</span>
+        <span class="div-letter">D</span><span class="div-letter">E</span>
+      </div>
+      <div class="strip-wrap" style="flex:1; min-width:0;">
+        <div class="strip">
+          <span class="wk-pill">Wk 8<small>29 Jun</small></span>
+          <span class="wk-pill">Wk 9<small>6 Jul</small></span>
+          <span class="wk-pill">Wk 10<small>13 Jul</small></span>
+          <span class="wk-pill wk-pill--todo">Wk 11<small>20 Jul</small></span>
+          <span class="wk-pill wk-pill--active">Wk 12<small>this week</small></span>
+          <span class="wk-pill">Wk 13<small>3 Aug</small></span>
+          <span class="wk-pill">Wk 14<small>10 Aug</small></span>
+          <span class="wk-pill">All<small>weeks</small></span>
+        </div>
+        <div class="strip-fade-l"></div>
+        <div class="strip-fade-r"></div>
+      </div>
+    </div>
+
+    <div class="match-week">
+      <div class="match-week__head">
+        <span class="match-week__title">Week 12 · Division C</span>
+        <span class="match-week__date">Mon, 27 Jul 2026</span>
+      </div>
+      <div class="match-row">
+        <span class="home">Bramford B</span>
+        <span class="score-in"><input value="" /><span class="dash">–</span><input value="" /></span>
+        <span class="away">Chelmondiston</span>
+        <span class="state">To enter</span>
+      </div>
+      <div class="match-row">
+        <span class="home">Old Felixstowe</span>
+        <span class="score-in"><input value="" /><span class="dash">–</span><input value="" /></span>
+        <span class="away">Trimley</span>
+        <span class="state">To enter</span>
+      </div>
+      <div class="match-week__foot">
+        <button class="save-btn">Save week</button>
+        <span class="foot-hint">points optional · tap a team for players &amp; rinks</span>
+      </div>
+    </div>
+    <p class="note"><b>Why it works:</b> smallest change from what's built; every week is still one tap, just without the wall.</p>
+  </section>
+
+</div>
+</body>
+</html>

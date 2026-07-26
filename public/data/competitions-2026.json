@@ -10,32 +10,182 @@
           "name": "1st Round",
           "date": "2026-07-03",
           "matches": [
-            { "tie": "A", "home": { "name": "Ipswich & District" }, "away": { "name": "Stone Lodge" }, "homeScore": 74, "awayScore": 78 },
-            { "tie": "B", "home": { "name": "Sproughton" }, "away": { "name": "Newton Road B.C." }, "walkover": "home" },
-            { "tie": "C", "home": { "name": "Hadleigh" }, "away": { "name": "Felixstowe B.C." }, "homeScore": 56, "awayScore": 75 },
-            { "tie": "D", "home": { "name": "Kesgrave" }, "away": { "name": "Bealings" }, "homeScore": 75, "awayScore": 68 },
-            { "tie": "E", "home": { "name": "Westerfield" }, "away": { "name": "Hospitals Ribbans Park" }, "homeScore": 96, "awayScore": 58 },
-            { "tie": "F", "home": { "name": "E-of-E Co-op" }, "away": { "name": "Kirton & Falkenham" }, "homeScore": 81, "awayScore": 77 },
-            { "tie": "G", "home": { "name": "Margaret Catchpole" }, "away": { "name": "California" }, "homeScore": 82, "awayScore": 63 },
-            { "tie": "H", "home": { "name": "Shotley Rose" }, "away": { "name": "Holbrook" }, "note": "Score sheet awaited" }
+            {
+              "tie": "A",
+              "home": {
+                "name": "Ipswich & District"
+              },
+              "away": {
+                "name": "Stone Lodge"
+              },
+              "homeScore": 74,
+              "awayScore": 78
+            },
+            {
+              "tie": "B",
+              "home": {
+                "name": "Sproughton"
+              },
+              "away": {
+                "name": "Newton Road B.C."
+              },
+              "walkover": "home"
+            },
+            {
+              "tie": "C",
+              "home": {
+                "name": "Hadleigh"
+              },
+              "away": {
+                "name": "Felixstowe B.C."
+              },
+              "homeScore": 56,
+              "awayScore": 75
+            },
+            {
+              "tie": "D",
+              "home": {
+                "name": "Kesgrave"
+              },
+              "away": {
+                "name": "Bealings"
+              },
+              "homeScore": 75,
+              "awayScore": 68
+            },
+            {
+              "tie": "E",
+              "home": {
+                "name": "Westerfield"
+              },
+              "away": {
+                "name": "Hospitals Ribbans Park"
+              },
+              "homeScore": 96,
+              "awayScore": 58
+            },
+            {
+              "tie": "F",
+              "home": {
+                "name": "E-of-E Co-op"
+              },
+              "away": {
+                "name": "Kirton & Falkenham"
+              },
+              "homeScore": 81,
+              "awayScore": 77
+            },
+            {
+              "tie": "G",
+              "home": {
+                "name": "Margaret Catchpole"
+              },
+              "away": {
+                "name": "California"
+              },
+              "homeScore": 82,
+              "awayScore": 63
+            },
+            {
+              "tie": "H",
+              "home": {
+                "name": "Shotley Rose"
+              },
+              "away": {
+                "name": "Holbrook"
+              },
+              "note": "Score sheet awaited"
+            }
           ]
         },
         {
           "name": "2nd Round",
           "date": "2026-07-17",
           "matches": [
-            { "tie": "1", "from": ["F", "B"], "home": { "name": "E-of-E Co-op" }, "away": { "name": "Sproughton" } },
-            { "tie": "2", "from": ["H", "G"], "home": { "name": "Holbrook" }, "away": { "name": "Margaret Catchpole" } },
-            { "tie": "3", "from": ["C", "A"], "home": { "name": "Felixstowe B.C." }, "away": { "name": "Stone Lodge" } },
-            { "tie": "4", "from": ["D", "E"], "home": { "name": "Kesgrave" }, "away": { "name": "Westerfield" } }
+            {
+              "tie": "1",
+              "from": [
+                "F",
+                "B"
+              ],
+              "home": {
+                "name": "E-of-E Co-op"
+              },
+              "away": {
+                "name": "Sproughton"
+              }
+            },
+            {
+              "tie": "2",
+              "from": [
+                "H",
+                "G"
+              ],
+              "home": {
+                "name": "Holbrook"
+              },
+              "away": {
+                "name": "Margaret Catchpole"
+              }
+            },
+            {
+              "tie": "3",
+              "from": [
+                "C",
+                "A"
+              ],
+              "home": {
+                "name": "Felixstowe B.C."
+              },
+              "away": {
+                "name": "Stone Lodge"
+              }
+            },
+            {
+              "tie": "4",
+              "from": [
+                "D",
+                "E"
+              ],
+              "home": {
+                "name": "Kesgrave"
+              },
+              "away": {
+                "name": "Westerfield"
+              }
+            }
           ]
         },
         {
           "name": "Semi-finals",
           "date": "2026-08-07",
           "matches": [
-            { "tie": "A", "from": ["1", "2"], "home": { "label": "Winner of Tie 1" }, "away": { "label": "Winner of Tie 2" } },
-            { "tie": "B", "from": ["4", "3"], "home": { "label": "Winner of Tie 4" }, "away": { "label": "Winner of Tie 3" } }
+            {
+              "tie": "A",
+              "from": [
+                "1",
+                "2"
+              ],
+              "home": {
+                "label": "Winner of Tie 1"
+              },
+              "away": {
+                "label": "Winner of Tie 2"
+              }
+            },
+            {
+              "tie": "B",
+              "from": [
+                "4",
+                "3"
+              ],
+              "home": {
+                "label": "Winner of Tie 4"
+              },
+              "away": {
+                "label": "Winner of Tie 3"
+              }
+            }
           ]
         },
         {
@@ -43,7 +193,18 @@
           "date": "2026-09-12",
           "venue": "Margaret Catchpole BC",
           "matches": [
-            { "from": ["A", "B"], "home": { "label": "Winner of Semi-final A" }, "away": { "label": "Winner of Semi-final B" } }
+            {
+              "from": [
+                "A",
+                "B"
+              ],
+              "home": {
+                "label": "Winner of Semi-final A"
+              },
+              "away": {
+                "label": "Winner of Semi-final B"
+              }
+            }
           ]
         }
       ]
@@ -58,29 +219,141 @@
           "name": "Preliminary Round",
           "date": "2026-06-26",
           "matches": [
-            { "tie": "A", "home": { "name": "Waldringfield" }, "away": { "name": "Newton Road" } },
-            { "tie": "B", "home": { "name": "Hadleigh" }, "away": { "name": "California" } },
-            { "tie": "C", "home": { "name": "Shotley Rose" }, "away": { "name": "Stone Lodge Reds" } },
-            { "tie": "D", "home": { "name": "Kesgrave" }, "away": { "name": "Stone Lodge Blues" } },
-            { "tie": "E", "home": { "name": "Felixstowe" }, "away": { "name": "Wickham Market" } }
+            {
+              "tie": "A",
+              "home": {
+                "name": "Waldringfield"
+              },
+              "away": {
+                "name": "Newton Road"
+              }
+            },
+            {
+              "tie": "B",
+              "home": {
+                "name": "Hadleigh"
+              },
+              "away": {
+                "name": "California"
+              }
+            },
+            {
+              "tie": "C",
+              "home": {
+                "name": "Shotley Rose"
+              },
+              "away": {
+                "name": "Stone Lodge Reds"
+              }
+            },
+            {
+              "tie": "D",
+              "home": {
+                "name": "Kesgrave"
+              },
+              "away": {
+                "name": "Stone Lodge Blues"
+              }
+            },
+            {
+              "tie": "E",
+              "home": {
+                "name": "Felixstowe"
+              },
+              "away": {
+                "name": "Wickham Market"
+              }
+            }
           ]
         },
         {
           "name": "1st Round",
           "date": "2026-07-10",
           "matches": [
-            { "tie": "1", "from": ["E", "C"], "home": { "label": "Winner of Tie E" }, "away": { "label": "Winner of Tie C" } },
-            { "tie": "2", "from": [null, "A"], "home": { "name": "Ipswich & District" }, "away": { "label": "Winner of Tie A" } },
-            { "tie": "3", "from": [null, "D"], "home": { "name": "Kirton & Falkenham" }, "away": { "label": "Winner of Tie D" } },
-            { "tie": "4", "from": [null, "B"], "home": { "name": "Margaret Catchpole" }, "away": { "label": "Winner of Tie B" } }
+            {
+              "tie": "1",
+              "from": [
+                "E",
+                "C"
+              ],
+              "home": {
+                "label": "Winner of Tie E"
+              },
+              "away": {
+                "label": "Winner of Tie C"
+              }
+            },
+            {
+              "tie": "2",
+              "from": [
+                null,
+                "A"
+              ],
+              "home": {
+                "name": "Ipswich & District"
+              },
+              "away": {
+                "name": "Newton Road"
+              }
+            },
+            {
+              "tie": "3",
+              "from": [
+                null,
+                "D"
+              ],
+              "home": {
+                "name": "Kirton & Falkenham"
+              },
+              "away": {
+                "label": "Winner of Tie D"
+              }
+            },
+            {
+              "tie": "4",
+              "from": [
+                null,
+                "B"
+              ],
+              "home": {
+                "name": "Margaret Catchpole"
+              },
+              "away": {
+                "label": "Winner of Tie B"
+              }
+            }
           ]
         },
         {
           "name": "Semi-finals",
           "date": "2026-08-14",
           "matches": [
-            { "tie": "A", "from": ["2", "4"], "home": { "label": "Winner of Tie 2" }, "away": { "label": "Winner of Tie 4" } },
-            { "tie": "B", "from": ["1", "3"], "home": { "label": "Winner of Tie 1" }, "away": { "label": "Winner of Tie 3" } }
+            {
+              "tie": "A",
+              "from": [
+                "2",
+                "4"
+              ],
+              "home": {
+                "label": "Winner of Tie 2"
+              },
+              "away": {
+                "label": "Winner of Tie 4"
+              }
+            },
+            {
+              "tie": "B",
+              "from": [
+                "1",
+                "3"
+              ],
+              "home": {
+                "label": "Winner of Tie 1"
+              },
+              "away": {
+                "label": "Winner of Tie 3"
+              }
+            }
           ]
         },
         {
@@ -88,7 +361,18 @@
           "date": "2026-09-13",
           "venue": "Margaret Catchpole BC",
           "matches": [
-            { "from": ["B", "A"], "home": { "label": "Winner of Semi-final B" }, "away": { "label": "Winner of Semi-final A" } }
+            {
+              "from": [
+                "B",
+                "A"
+              ],
+              "home": {
+                "label": "Winner of Semi-final B"
+              },
+              "away": {
+                "label": "Winner of Semi-final A"
+              }
+            }
           ]
         }
       ]

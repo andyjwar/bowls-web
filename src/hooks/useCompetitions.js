@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react'
+import { useSiteConfig } from './useSiteConfig'
 
-/** Fetch knockout competitions (cups) from /data/competitions-2026.json. */
+/** Fetch the active season's knockout competitions (`/data/competitions-<season>.json`). */
 export function useCompetitions() {
+  const { activeSeason, ready } = useSiteConfig()
   const [competitions, setCompetitions] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    if (!ready) return
     let cancelled = false
-    fetch(`${import.meta.env.BASE_URL}data/competitions-2026.json`)
+    fetch(`${import.meta.env.BASE_URL}data/competitions-${activeSeason}.json`)
       .then((r) => (r.ok ? r.json() : null))
       .then((json) => {
         if (cancelled) return
@@ -23,7 +26,7 @@ export function useCompetitions() {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [ready, activeSeason])
 
   return { competitions, loading }
 }

@@ -43,6 +43,14 @@ export async function saveAdminDivisionTeams(leagueId, { sectionId, divisionId, 
   })
 }
 
+/** Edit fixture dates on a day's schedule grid — rows like `[{ week, date }]`. */
+export async function saveAdminScheduleDates(leagueId, { sectionId, rows }) {
+  return api(`/league/${encodeURIComponent(leagueId)}/schedule-dates`, {
+    method: 'PUT',
+    body: JSON.stringify({ sectionId, rows }),
+  })
+}
+
 /** Display labels only — league title, section/day title, division title */
 export async function saveAdminLeagueLabels(leagueId, payload) {
   return api(`/league/${encodeURIComponent(leagueId)}/labels`, {
@@ -70,6 +78,21 @@ export async function createAdminLeague(payload) {
     method: 'POST',
     body: JSON.stringify(payload),
   })
+}
+
+/** Unregister a league — it leaves the site and admin; the data file stays on disk. */
+export async function deleteAdminLeague(leagueId) {
+  return api(`/league/${encodeURIComponent(leagueId)}`, { method: 'DELETE' })
+}
+
+/** Clone every active league into a new season and make it the active one. */
+export async function startAdminSeason(year) {
+  return api('/season', { method: 'POST', body: JSON.stringify({ year }) })
+}
+
+/** Point the public site at another existing season (reversible switch). */
+export async function setAdminActiveSeason(year) {
+  return api('/active-season', { method: 'PUT', body: JSON.stringify({ year }) })
 }
 
 /** Full registered-player map for all leagues */
@@ -150,6 +173,19 @@ export async function importScoreSheet(formData) {
 
 export async function saveResults(payload) {
   return api('/results', { method: 'POST', body: JSON.stringify(payload) })
+}
+
+/** Knockout competitions (cups) — fresh read for admin editing */
+export async function fetchAdminCompetitions() {
+  return api('/competitions')
+}
+
+/** Replace one cup's rounds; the server advances winners into `from`-linked slots. */
+export async function saveAdminCompetitionRounds(compId, rounds) {
+  return api(`/competition/${encodeURIComponent(compId)}`, {
+    method: 'PUT',
+    body: JSON.stringify({ rounds }),
+  })
 }
 
 export async function importCsv(formData) {

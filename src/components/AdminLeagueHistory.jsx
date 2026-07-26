@@ -2,11 +2,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { buildDivisionFixtures, formatFixtureDate } from '../lib/fixtures'
 import { applyResultsToFixtures, formatMatchScore } from '../lib/results'
 
-/** @type {Record<string, string>} */
-const DATA_PATHS = {
-  'samford-2026': `${import.meta.env.BASE_URL}data/samford-2026.json`,
-  'two-wood-2026': `${import.meta.env.BASE_URL}data/two-wood-2026.json`,
-  'triples-2026': `${import.meta.env.BASE_URL}data/triples-2026.json`,
+/** Every registered league serves its JSON at `/data/<id>.json`. */
+function leagueDataPath(leagueId) {
+  return leagueId
+    ? `${import.meta.env.BASE_URL}data/${encodeURIComponent(leagueId)}.json`
+    : null
 }
 
 /**
@@ -201,7 +201,7 @@ export function AdminLeagueHistory({
       setLoading(false)
       return
     }
-    const path = DATA_PATHS[hlLeagueId]
+    const path = leagueDataPath(hlLeagueId)
     if (!path) {
       setPayload(null)
       setFetchError('No data file mapped for this league.')

@@ -1,7 +1,5 @@
-import { loadLeague } from './leagueStore.js'
+import { activeSeasonLeagueIds, loadLeague } from './leagueStore.js'
 import { getDivisionFixtures } from './leagueStore.js'
-
-const LEAGUE_IDS = ['samford-2026', 'two-wood-2026', 'triples-2026']
 
 function normalizeName(s) {
   return String(s ?? '')
@@ -90,7 +88,7 @@ function scoreWeek(text, fixtureWeek, parsedDates) {
 
 function iterDivisionTargets() {
   const targets = []
-  for (const leagueId of LEAGUE_IDS) {
+  for (const leagueId of activeSeasonLeagueIds()) {
     const league = loadLeague(leagueId)
     if (league.sections) {
       for (const section of league.sections) {
