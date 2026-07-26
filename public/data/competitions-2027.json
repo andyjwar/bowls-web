@@ -1,0 +1,16 @@
+{
+  "competitions": [
+    {
+      "id": "samford-knockout-cup",
+      "name": "Samford Knockout Cup",
+      "days": "Fridays",
+      "rounds": []
+    },
+    {
+      "id": "millennium-cup",
+      "name": "Millennium Cup",
+      "days": "Fridays",
+      "rounds": []
+    }
+  ]
+}
