@@ -2,63 +2,805 @@
   "id": "two-wood-2026",
   "name": "Two Wood League 2026",
   "scheduleTemplate": [
-    { "week": 1, "tuesdayDate": "2026-04-28", "thursdayDate": "2026-04-30", "pairings": [{ "home": 8, "away": 1 }, { "home": 7, "away": 2 }, { "home": 6, "away": 3 }, { "home": 5, "away": 4 }] },
-    { "week": 2, "tuesdayDate": "2026-05-05", "thursdayDate": "2026-05-07", "pairings": [{ "home": 1, "away": 7 }, { "home": 2, "away": 6 }, { "home": 3, "away": 5 }, { "home": 4, "away": 8 }] },
-    { "week": 3, "tuesdayDate": "2026-05-12", "thursdayDate": "2026-05-14", "pairings": [{ "home": 6, "away": 1 }, { "home": 5, "away": 2 }, { "home": 4, "away": 3 }, { "home": 7, "away": 8 }] },
-    { "week": 4, "tuesdayDate": "2026-05-19", "thursdayDate": "2026-05-21", "pairings": [{ "home": 1, "away": 5 }, { "home": 2, "away": 4 }, { "home": 8, "away": 3 }, { "home": 7, "away": 6 }] },
-    { "week": 5, "tuesdayDate": "2026-05-26", "thursdayDate": "2026-05-28", "pairings": [{ "home": 4, "away": 1 }, { "home": 3, "away": 2 }, { "home": 5, "away": 7 }, { "home": 6, "away": 8 }] },
-    { "week": 6, "tuesdayDate": "2026-06-02", "thursdayDate": "2026-06-04", "pairings": [{ "home": 1, "away": 3 }, { "home": 8, "away": 2 }, { "home": 7, "away": 4 }, { "home": 6, "away": 5 }] },
-    { "week": 7, "tuesdayDate": "2026-06-09", "thursdayDate": "2026-06-11", "pairings": [{ "home": 2, "away": 1 }, { "home": 3, "away": 7 }, { "home": 4, "away": 6 }, { "home": 5, "away": 8 }] },
-    { "week": 8, "tuesdayDate": "2026-06-16", "thursdayDate": "2026-06-18", "pairings": [{ "home": 1, "away": 8 }, { "home": 2, "away": 7 }, { "home": 3, "away": 6 }, { "home": 4, "away": 5 }] },
-    { "week": 9, "tuesdayDate": "2026-06-23", "thursdayDate": "2026-06-25", "pairings": [{ "home": 7, "away": 1 }, { "home": 6, "away": 2 }, { "home": 5, "away": 3 }, { "home": 8, "away": 4 }] },
-    { "week": 10, "tuesdayDate": "2026-06-30", "thursdayDate": "2026-07-02", "pairings": [{ "home": 1, "away": 6 }, { "home": 2, "away": 5 }, { "home": 3, "away": 4 }, { "home": 8, "away": 7 }] },
-    { "week": 11, "tuesdayDate": "2026-07-07", "thursdayDate": "2026-07-09", "pairings": [{ "home": 5, "away": 1 }, { "home": 4, "away": 2 }, { "home": 3, "away": 8 }, { "home": 6, "away": 7 }] },
-    { "week": 12, "tuesdayDate": "2026-07-14", "thursdayDate": "2026-07-16", "pairings": [{ "home": 1, "away": 4 }, { "home": 2, "away": 3 }, { "home": 7, "away": 5 }, { "home": 8, "away": 6 }] },
-    { "week": 13, "tuesdayDate": "2026-07-21", "thursdayDate": "2026-07-23", "pairings": [{ "home": 3, "away": 1 }, { "home": 2, "away": 8 }, { "home": 4, "away": 7 }, { "home": 5, "away": 6 }] },
-    { "week": 14, "tuesdayDate": "2026-07-28", "thursdayDate": "2026-07-30", "pairings": [{ "home": 1, "away": 2 }, { "home": 7, "away": 3 }, { "home": 6, "away": 4 }, { "home": 8, "away": 5 }] }
+    {
+      "week": 1,
+      "tuesdayDate": "2026-04-28",
+      "thursdayDate": "2026-04-30",
+      "pairings": [
+        {
+          "home": 8,
+          "away": 1
+        },
+        {
+          "home": 7,
+          "away": 2
+        },
+        {
+          "home": 6,
+          "away": 3
+        },
+        {
+          "home": 5,
+          "away": 4
+        }
+      ]
+    },
+    {
+      "week": 2,
+      "tuesdayDate": "2026-05-05",
+      "thursdayDate": "2026-05-07",
+      "pairings": [
+        {
+          "home": 1,
+          "away": 7
+        },
+        {
+          "home": 2,
+          "away": 6
+        },
+        {
+          "home": 3,
+          "away": 5
+        },
+        {
+          "home": 4,
+          "away": 8
+        }
+      ]
+    },
+    {
+      "week": 3,
+      "tuesdayDate": "2026-05-12",
+      "thursdayDate": "2026-05-14",
+      "pairings": [
+        {
+          "home": 6,
+          "away": 1
+        },
+        {
+          "home": 5,
+          "away": 2
+        },
+        {
+          "home": 4,
+          "away": 3
+        },
+        {
+          "home": 7,
+          "away": 8
+        }
+      ]
+    },
+    {
+      "week": 4,
+      "tuesdayDate": "2026-05-19",
+      "thursdayDate": "2026-05-21",
+      "pairings": [
+        {
+          "home": 1,
+          "away": 5
+        },
+        {
+          "home": 2,
+          "away": 4
+        },
+        {
+          "home": 8,
+          "away": 3
+        },
+        {
+          "home": 7,
+          "away": 6
+        }
+      ]
+    },
+    {
+      "week": 5,
+      "tuesdayDate": "2026-05-26",
+      "thursdayDate": "2026-05-28",
+      "pairings": [
+        {
+          "home": 4,
+          "away": 1
+        },
+        {
+          "home": 3,
+          "away": 2
+        },
+        {
+          "home": 5,
+          "away": 7
+        },
+        {
+          "home": 6,
+          "away": 8
+        }
+      ]
+    },
+    {
+      "week": 6,
+      "tuesdayDate": "2026-06-02",
+      "thursdayDate": "2026-06-04",
+      "pairings": [
+        {
+          "home": 1,
+          "away": 3
+        },
+        {
+          "home": 8,
+          "away": 2
+        },
+        {
+          "home": 7,
+          "away": 4
+        },
+        {
+          "home": 6,
+          "away": 5
+        }
+      ]
+    },
+    {
+      "week": 7,
+      "tuesdayDate": "2026-06-09",
+      "thursdayDate": "2026-06-11",
+      "pairings": [
+        {
+          "home": 2,
+          "away": 1
+        },
+        {
+          "home": 3,
+          "away": 7
+        },
+        {
+          "home": 4,
+          "away": 6
+        },
+        {
+          "home": 5,
+          "away": 8
+        }
+      ]
+    },
+    {
+      "week": 8,
+      "tuesdayDate": "2026-06-16",
+      "thursdayDate": "2026-06-18",
+      "pairings": [
+        {
+          "home": 1,
+          "away": 8
+        },
+        {
+          "home": 2,
+          "away": 7
+        },
+        {
+          "home": 3,
+          "away": 6
+        },
+        {
+          "home": 4,
+          "away": 5
+        }
+      ]
+    },
+    {
+      "week": 9,
+      "tuesdayDate": "2026-06-23",
+      "thursdayDate": "2026-06-25",
+      "pairings": [
+        {
+          "home": 7,
+          "away": 1
+        },
+        {
+          "home": 6,
+          "away": 2
+        },
+        {
+          "home": 5,
+          "away": 3
+        },
+        {
+          "home": 8,
+          "away": 4
+        }
+      ]
+    },
+    {
+      "week": 10,
+      "tuesdayDate": "2026-06-30",
+      "thursdayDate": "2026-07-02",
+      "pairings": [
+        {
+          "home": 1,
+          "away": 6
+        },
+        {
+          "home": 2,
+          "away": 5
+        },
+        {
+          "home": 3,
+          "away": 4
+        },
+        {
+          "home": 8,
+          "away": 7
+        }
+      ]
+    },
+    {
+      "week": 11,
+      "tuesdayDate": "2026-07-07",
+      "thursdayDate": "2026-07-09",
+      "pairings": [
+        {
+          "home": 5,
+          "away": 1
+        },
+        {
+          "home": 4,
+          "away": 2
+        },
+        {
+          "home": 3,
+          "away": 8
+        },
+        {
+          "home": 6,
+          "away": 7
+        }
+      ]
+    },
+    {
+      "week": 12,
+      "tuesdayDate": "2026-07-14",
+      "thursdayDate": "2026-07-16",
+      "pairings": [
+        {
+          "home": 1,
+          "away": 4
+        },
+        {
+          "home": 2,
+          "away": 3
+        },
+        {
+          "home": 7,
+          "away": 5
+        },
+        {
+          "home": 8,
+          "away": 6
+        }
+      ]
+    },
+    {
+      "week": 13,
+      "tuesdayDate": "2026-07-21",
+      "thursdayDate": "2026-07-23",
+      "pairings": [
+        {
+          "home": 3,
+          "away": 1
+        },
+        {
+          "home": 2,
+          "away": 8
+        },
+        {
+          "home": 4,
+          "away": 7
+        },
+        {
+          "home": 5,
+          "away": 6
+        }
+      ]
+    },
+    {
+      "week": 14,
+      "tuesdayDate": "2026-07-28",
+      "thursdayDate": "2026-07-30",
+      "pairings": [
+        {
+          "home": 1,
+          "away": 2
+        },
+        {
+          "home": 7,
+          "away": 3
+        },
+        {
+          "home": 6,
+          "away": 4
+        },
+        {
+          "home": 8,
+          "away": 5
+        }
+      ]
+    }
   ],
   "divisions": [
     {
       "id": "a",
       "label": "Division A",
       "playDay": "tuesday",
-      "teams": ["Bramford A", "California A", "Norbridge A", "Stone Lodge A", "Marlborough Greens", "Thorndon", "Kirton & Falkenham A", "Felixstowe & Suffolk"]
+      "teams": [
+        "Bramford A",
+        "California A",
+        "Norbridge A",
+        "Stone Lodge A",
+        "Marlborough Greens",
+        "Thorndon",
+        "Kirton & Falkenham A",
+        "Felixstowe & Suffolk"
+      ],
+      "standingsSeed": {
+        "throughWeek": 12,
+        "note": "Official 2-Wood tables, Week 12 (updated 23 July 2026)",
+        "rows": [
+          {
+            "team": "Marlborough Greens",
+            "played": 11,
+            "shotsFor": 778,
+            "shotsAgainst": 453,
+            "points": 55.5
+          },
+          {
+            "team": "Norbridge A",
+            "played": 12,
+            "shotsFor": 701,
+            "shotsAgainst": 618,
+            "points": 47.5
+          },
+          {
+            "team": "Felixstowe & Suffolk",
+            "played": 10,
+            "shotsFor": 569,
+            "shotsAgainst": 526,
+            "points": 41.5
+          },
+          {
+            "team": "Stone Lodge A",
+            "played": 10,
+            "shotsFor": 563,
+            "shotsAgainst": 522,
+            "points": 33
+          },
+          {
+            "team": "Kirton & Falkenham A",
+            "played": 12,
+            "shotsFor": 615,
+            "shotsAgainst": 733,
+            "points": 29
+          },
+          {
+            "team": "Bramford A",
+            "played": 11,
+            "shotsFor": 532,
+            "shotsAgainst": 657,
+            "points": 21.5
+          },
+          {
+            "team": "Thorndon",
+            "played": 11,
+            "shotsFor": 583,
+            "shotsAgainst": 671,
+            "points": 19.5
+          },
+          {
+            "team": "California A",
+            "played": 11,
+            "shotsFor": 532,
+            "shotsAgainst": 693,
+            "points": 16.5
+          }
+        ]
+      }
     },
     {
       "id": "b",
       "label": "Division B",
       "playDay": "tuesday",
-      "teams": ["Kesgrave Blues", "Combs Ford", "Westerfield Blues", "Capel Kites", "Ipswich & District A", "Margaret Catchpole A", "Norbridge B", "IBC Graham Road A"]
+      "teams": [
+        "Kesgrave Blues",
+        "Combs Ford",
+        "Westerfield Blues",
+        "Capel Kites",
+        "Ipswich & District A",
+        "Margaret Catchpole A",
+        "Norbridge B",
+        "IBC Graham Road A"
+      ],
+      "standingsSeed": {
+        "throughWeek": 12,
+        "note": "Official 2-Wood tables, Week 12 (updated 23 July 2026)",
+        "rows": [
+          {
+            "team": "IBC Graham Road A",
+            "played": 10,
+            "shotsFor": 679,
+            "shotsAgainst": 418,
+            "points": 55
+          },
+          {
+            "team": "Ipswich & District A",
+            "played": 11,
+            "shotsFor": 602,
+            "shotsAgainst": 579,
+            "points": 42
+          },
+          {
+            "team": "Combs Ford",
+            "played": 10,
+            "shotsFor": 602,
+            "shotsAgainst": 494,
+            "points": 41.5
+          },
+          {
+            "team": "Capel Kites",
+            "played": 12,
+            "shotsFor": 602,
+            "shotsAgainst": 638,
+            "points": 32
+          },
+          {
+            "team": "Kesgrave Blues",
+            "played": 11,
+            "shotsFor": 550,
+            "shotsAgainst": 577,
+            "points": 27.5
+          },
+          {
+            "team": "Westerfield Blues",
+            "played": 11,
+            "shotsFor": 604,
+            "shotsAgainst": 634,
+            "points": 27
+          },
+          {
+            "team": "Norbridge B",
+            "played": 12,
+            "shotsFor": 588,
+            "shotsAgainst": 731,
+            "points": 23
+          },
+          {
+            "team": "Margaret Catchpole A",
+            "played": 9,
+            "shotsFor": 427,
+            "shotsAgainst": 583,
+            "points": 10
+          }
+        ]
+      }
     },
     {
       "id": "c",
       "label": "Division C",
       "playDay": "tuesday",
-      "teams": ["Holbrook A", "Sproughton A", "Gipping EE Black Birds", "East-of-England Co-op Reds", "Bramford B", "California B", "East Bergholt Herons", "Stone Lodge B"]
+      "teams": [
+        "Holbrook A",
+        "Sproughton A",
+        "Gipping EE Black Birds",
+        "East-of-England Co-op Reds",
+        "Bramford B",
+        "California B",
+        "East Bergholt Herons",
+        "Stone Lodge B"
+      ],
+      "standingsSeed": {
+        "throughWeek": 12,
+        "note": "Official 2-Wood tables, Week 12 (updated 23 July 2026)",
+        "rows": [
+          {
+            "team": "Holbrook A",
+            "played": 10,
+            "shotsFor": 645,
+            "shotsAgainst": 496,
+            "points": 45.5
+          },
+          {
+            "team": "Sproughton A",
+            "played": 11,
+            "shotsFor": 665,
+            "shotsAgainst": 529,
+            "points": 39.5
+          },
+          {
+            "team": "East-of-England Co-op Reds",
+            "played": 10,
+            "shotsFor": 574,
+            "shotsAgainst": 536,
+            "points": 36.5
+          },
+          {
+            "team": "East Bergholt Herons",
+            "played": 10,
+            "shotsFor": 535,
+            "shotsAgainst": 560,
+            "points": 34
+          },
+          {
+            "team": "Gipping EE Black Birds",
+            "played": 10,
+            "shotsFor": 518,
+            "shotsAgainst": 592,
+            "points": 24.5
+          },
+          {
+            "team": "Bramford B",
+            "played": 11,
+            "shotsFor": 555,
+            "shotsAgainst": 670,
+            "points": 19.5
+          },
+          {
+            "team": "California B",
+            "played": 10,
+            "shotsFor": 501,
+            "shotsAgainst": 610,
+            "points": 16.5
+          }
+        ]
+      }
     },
     {
       "id": "d",
       "label": "Division D",
       "playDay": "tuesday",
-      "teams": ["Hadleigh Shearers", "Bealings Blues", "Roundwood", "IBC Graham Road B", "Kesgrave Greens", "Sproughton B", "Bye", "Bye"]
+      "teams": [
+        "Hadleigh Shearers",
+        "Bealings Blues",
+        "Roundwood",
+        "IBC Graham Road B",
+        "Kesgrave Greens",
+        "Sproughton B",
+        "Bye",
+        "Bye"
+      ],
+      "standingsSeed": {
+        "throughWeek": 12,
+        "note": "Official 2-Wood tables, Week 12 (updated 23 July 2026)",
+        "rows": [
+          {
+            "team": "Hadleigh Shearers",
+            "played": 8,
+            "shotsFor": 488,
+            "shotsAgainst": 387,
+            "points": 37
+          },
+          {
+            "team": "IBC Graham Road B",
+            "played": 9,
+            "shotsFor": 503,
+            "shotsAgainst": 469,
+            "points": 35
+          },
+          {
+            "team": "Bealings Blues",
+            "played": 9,
+            "shotsFor": 503,
+            "shotsAgainst": 477,
+            "points": 23
+          },
+          {
+            "team": "Sproughton B",
+            "played": 8,
+            "shotsFor": 416,
+            "shotsAgainst": 490,
+            "points": 22
+          },
+          {
+            "team": "Kesgrave Greens",
+            "played": 9,
+            "shotsFor": 495,
+            "shotsAgainst": 503,
+            "points": 21
+          },
+          {
+            "team": "Roundwood",
+            "played": 9,
+            "shotsFor": 443,
+            "shotsAgainst": 522,
+            "points": 18
+          }
+        ]
+      }
     },
     {
       "id": "e",
       "label": "Division E",
       "playDay": "thursday",
-      "teams": ["Capel Kingfishers", "East of Eng'd Coop Blues", "Bramford Greens", "Holywells", "Hospitals at Ribbans Park", "Copdock & Washbrook", "Bye", "Bye"]
+      "teams": [
+        "Capel Kingfishers",
+        "East of Eng'd Coop Blues",
+        "Bramford Greens",
+        "Holywells",
+        "Hospitals at Ribbans Park",
+        "Copdock & Washbrook",
+        "Bye",
+        "Bye"
+      ],
+      "standingsSeed": {
+        "throughWeek": 12,
+        "note": "Official 2-Wood tables, Week 12 (updated 23 July 2026)",
+        "rows": [
+          {
+            "team": "Holywells",
+            "played": 8,
+            "shotsFor": 457,
+            "shotsAgainst": 419,
+            "points": 35.5
+          },
+          {
+            "team": "Bramford Greens",
+            "played": 7,
+            "shotsFor": 369,
+            "shotsAgainst": 389,
+            "points": 23.5
+          },
+          {
+            "team": "Hospitals at Ribbans Park",
+            "played": 7,
+            "shotsFor": 418,
+            "shotsAgainst": 359,
+            "points": 23
+          },
+          {
+            "team": "Copdock & Washbrook",
+            "played": 5,
+            "shotsFor": 285,
+            "shotsAgainst": 255,
+            "points": 20.5
+          },
+          {
+            "team": "Capel Kingfishers",
+            "played": 6,
+            "shotsFor": 304,
+            "shotsAgainst": 339,
+            "points": 11.5
+          },
+          {
+            "team": "East of Eng'd Coop Blues",
+            "played": 7,
+            "shotsFor": 342,
+            "shotsAgainst": 414,
+            "points": 6
+          }
+        ]
+      }
     },
     {
       "id": "f",
       "label": "Division F",
       "playDay": "thursday",
-      "teams": ["Ipswich & District B", "Westerfield Swans", "Kirton & Falkenham B", "Gipping EE Foxes", "Capel Kingfishers", "Holbrook B", "Bye", "Bye"]
+      "teams": [
+        "Ipswich & District B",
+        "Westerfield Swans",
+        "Kirton & Falkenham B",
+        "Gipping EE Foxes",
+        "Capel Kestrels",
+        "Holbrook B",
+        "Bye",
+        "Bye"
+      ],
+      "standingsSeed": {
+        "throughWeek": 12,
+        "note": "Official 2-Wood tables, Week 12 (updated 23 July 2026)",
+        "rows": [
+          {
+            "team": "Kirton & Falkenham B",
+            "played": 9,
+            "shotsFor": 586,
+            "shotsAgainst": 464,
+            "points": 42
+          },
+          {
+            "team": "Holbrook B",
+            "played": 7,
+            "shotsFor": 387,
+            "shotsAgainst": 341,
+            "points": 32
+          },
+          {
+            "team": "Gipping EE Foxes",
+            "played": 8,
+            "shotsFor": 484,
+            "shotsAgainst": 459,
+            "points": 27.5
+          },
+          {
+            "team": "Capel Kestrels",
+            "played": 8,
+            "shotsFor": 471,
+            "shotsAgainst": 456,
+            "points": 22.5
+          },
+          {
+            "team": "Westerfield Swans",
+            "played": 8,
+            "shotsFor": 408,
+            "shotsAgainst": 458,
+            "points": 14.5
+          },
+          {
+            "team": "Ipswich & District B",
+            "played": 8,
+            "shotsFor": 357,
+            "shotsAgainst": 515,
+            "points": 5.5
+          }
+        ]
+      }
     },
     {
       "id": "g",
       "label": "Division G",
       "playDay": "thursday",
-      "teams": ["Hadleigh Carders", "St Johns URC", "Margaret Catchpole B", "Newton Road Whites", "Sproughton C", "Westerfield Whites", "Bye", "Bye"]
+      "teams": [
+        "Hadleigh Carders",
+        "St Johns URC",
+        "Margaret Catchpole B",
+        "Newton Road Whites",
+        "Sproughton C",
+        "Westerfield Whites",
+        "Bye",
+        "Bye"
+      ],
+      "standingsSeed": {
+        "throughWeek": 12,
+        "note": "Official 2-Wood tables, Week 12 (updated 23 July 2026)",
+        "rows": [
+          {
+            "team": "Westerfield Whites",
+            "played": 7,
+            "shotsFor": 482,
+            "shotsAgainst": 320,
+            "points": 34.5
+          },
+          {
+            "team": "Sproughton C",
+            "played": 9,
+            "shotsFor": 525,
+            "shotsAgainst": 465,
+            "points": 30
+          },
+          {
+            "team": "Newton Road Whites",
+            "played": 7,
+            "shotsFor": 430,
+            "shotsAgainst": 378,
+            "points": 28
+          },
+          {
+            "team": "Hadleigh Carders",
+            "played": 7,
+            "shotsFor": 386,
+            "shotsAgainst": 397,
+            "points": 21
+          },
+          {
+            "team": "St Johns URC",
+            "played": 7,
+            "shotsFor": 356,
+            "shotsAgainst": 414,
+            "points": 18
+          },
+          {
+            "team": "Margaret Catchpole B",
+            "played": 9,
+            "shotsFor": 407,
+            "shotsAgainst": 612,
+            "points": 6.5
+          }
+        ]
+      }
     }
   ]
 }

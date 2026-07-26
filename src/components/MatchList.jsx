@@ -58,7 +58,14 @@ function teamClass(base, { played, draw, won }) {
   return base
 }
 
-function MatchRow({ match, weekDate, isToday, showDate = true, perspectiveTeam }) {
+function MatchRow({
+  match,
+  weekDate,
+  isToday,
+  showDate = true,
+  perspectiveTeam,
+  linkTeams = true,
+}) {
   const single = Boolean(perspectiveTeam)
   const rowMods = `${isToday ? ' match-row--today' : ''}${
     showDate ? '' : ' match-row--nodate'
@@ -101,6 +108,9 @@ function MatchRow({ match, weekDate, isToday, showDate = true, perspectiveTeam }
   const homeBig = hasPoints ? match.homePoints : hasShots ? match.homeShots : null
   const awayBig = hasPoints ? match.awayPoints : hasShots ? match.awayShots : null
   const played = match.played && homeBig != null && awayBig != null
+  /* Cup ties can be decided without a score (walkover) */
+  const walkover = match.walkover === 'home' || match.walkover === 'away'
+  const decided = played || walkover
   const draw = played && !match.homeWon && !match.awayWon
   const shotsTitle =
     hasPoints && hasShots ? `${match.homeShots}–${match.awayShots} shots` : undefined
@@ -118,12 +128,16 @@ function MatchRow({ match, weekDate, isToday, showDate = true, perspectiveTeam }
       {dateCell}
       {venueCell}
       {single ? null : (
-        <ResultChip won={match.homeWon} draw={draw} played={played} />
+        <ResultChip won={match.homeWon} draw={draw} played={decided} />
       )}
       <span
-        className={teamClass('match-row__home', { played, draw, won: match.homeWon })}
+        className={teamClass('match-row__home', {
+          played: decided,
+          draw,
+          won: match.homeWon,
+        })}
       >
-        <TeamLink name={match.home} />
+        {linkTeams ? <TeamLink name={match.home} /> : match.home}
       </span>
       {played ? (
         <span
@@ -132,18 +146,24 @@ function MatchRow({ match, weekDate, isToday, showDate = true, perspectiveTeam }
         >
           {homeBig} – {awayBig}
         </span>
+      ) : walkover ? (
+        <span className="match-row__mid match-row__mid--score">w/o</span>
       ) : (
         <span className="match-row__mid match-row__mid--vs">v</span>
       )}
       <span
-        className={teamClass('match-row__away', { played, draw, won: match.awayWon })}
+        className={teamClass('match-row__away', {
+          played: decided,
+          draw,
+          won: match.awayWon,
+        })}
       >
-        <TeamLink name={match.away} />
+        {linkTeams ? <TeamLink name={match.away} /> : match.away}
       </span>
       <ResultChip
         won={single ? perspectiveWon : match.awayWon}
         draw={draw}
-        played={played}
+        played={decided}
       />
     </div>
   )
@@ -194,10 +214,11 @@ export function NextMatches({ fixtureWeeks }) {
   )
 }
 
-/* Download (.ics / .csv) and print actions for the current fixture list.
-   Exports honour the active team filter because they read the same
-   (already filtered) fixtureWeeks the list renders. */
-function ExportBar({ fixtureWeeks, teamFilter, context }) {
+/* Download (.ics / .csv) and print actions for the current fixture list,
+   as quiet icon links on the toolbar row. Exports honour the active team
+   filter because they read the same (already filtered) fixtureWeeks the
+   list renders. */
+function ToolbarActions({ fixtureWeeks, teamFilter, context }) {
   const exportContext = { ...context, teamFilter: teamFilter || undefined }
 
   const handleCalendar = () => {
@@ -217,16 +238,116 @@ function ExportBar({ fixtureWeeks, teamFilter, context }) {
   }
 
   return (
-    <div className="fixtures__export" role="group" aria-label="Fixture list downloads">
-      <button type="button" className="export-btn" onClick={handleCalendar}>
-        Add to calendar
+    <div
+      className="match-toolbar__actions"
+      role="group"
+      aria-label="Fixture list downloads"
+    >
+      <button
+        type="button"
+        className="match-toolbar__action"
+        onClick={handleCalendar}
+      >
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.4"
+          aria-hidden="true"
+        >
+          <rect x="1" y="2.5" width="12" height="10.5" />
+          <path d="M1 6h12M4 1v3M10 1v3" />
+        </svg>
+        Calendar
       </button>
-      <button type="button" className="export-btn" onClick={() => window.print()}>
+      <button
+        type="button"
+        className="match-toolbar__action"
+        onClick={() => window.print()}
+      >
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.4"
+          aria-hidden="true"
+        >
+          <path d="M3.5 5V1.5h7V5M3.5 10.5H1.5V5h11v5.5h-2" />
+          <rect x="3.5" y="8.5" width="7" height="4.5" />
+        </svg>
         Print
       </button>
-      <button type="button" className="export-btn" onClick={handleCsv}>
-        Spreadsheet (CSV)
+      <button type="button" className="match-toolbar__action" onClick={handleCsv}>
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.4"
+          aria-hidden="true"
+        >
+          <path d="M7 1v8M3.5 5.5L7 9l3.5-3.5M1.5 11.5v1.5h11v-1.5" />
+        </svg>
+        Download
       </button>
+    </div>
+  )
+}
+
+/**
+ * Cup rounds in the league "Matches" format: one tile per round with the
+ * round name and date in the head, line-item rows inside, and the same
+ * calendar/print/download actions above. `weeks` uses the fixtureWeeks
+ * shape with `label` (round name) and optional `venue`.
+ */
+export function CupMatches({ weeks, context }) {
+  const today = useMemo(() => new Date(), [])
+
+  if (!weeks || weeks.length === 0) return null
+
+  return (
+    <div className="fixtures">
+      <div className="match-toolbar match-toolbar--end">
+        <ToolbarActions fixtureWeeks={weeks} teamFilter="" context={context} />
+      </div>
+
+      <div className="match-weeks">
+        {weeks.map((week) => {
+          const today_ = isSameDay(week.date, today)
+          const dateBits = [
+            today_ ? 'Today' : week.date ? shortDate(week.date) : 'Date TBC',
+            week.venue ?? null,
+          ]
+            .filter(Boolean)
+            .join(' · ')
+          return (
+            <section
+              key={week.week}
+              className={`match-week${today_ ? ' match-week--today' : ''}`}
+            >
+              <header className="match-week__head">
+                <h3 className="match-week__title">{week.label ?? `Week ${week.week}`}</h3>
+                <span className="match-week__date">{dateBits}</span>
+              </header>
+              {week.matches.map((match, i) => (
+                <MatchRow
+                  key={`${week.week}-${i}`}
+                  match={match}
+                  weekDate={week.date}
+                  isToday={today_}
+                  showDate={false}
+                  linkTeams={false}
+                />
+              ))}
+            </section>
+          )
+        })}
+      </div>
     </div>
   )
 }
@@ -272,11 +393,14 @@ export function MatchList({
 
   return (
     <div className="fixtures">
-      <div className="fixtures__controls">
-        <label className="control">
-          <span className="control__label" htmlFor={teamSelectId}>
-            Team
-          </span>
+      {/* One toolbar row: team filter left, quiet icon-link actions right.
+          The label is visually hidden — the select's first option already
+          reads "All teams". */}
+      <div className="match-toolbar">
+        <div>
+          <label className="match-toolbar__label" htmlFor={teamSelectId}>
+            Filter by team
+          </label>
           <select
             id={teamSelectId}
             className="control__select"
@@ -290,16 +414,16 @@ export function MatchList({
               </option>
             ))}
           </select>
-        </label>
-      </div>
+        </div>
 
-      {fixtureWeeks.length > 0 ? (
-        <ExportBar
-          fixtureWeeks={fixtureWeeks}
-          teamFilter={teamFilter}
-          context={context}
-        />
-      ) : null}
+        {fixtureWeeks.length > 0 ? (
+          <ToolbarActions
+            fixtureWeeks={fixtureWeeks}
+            teamFilter={teamFilter}
+            context={context}
+          />
+        ) : null}
+      </div>
 
       {fixtureWeeks.length === 0 ? (
         <p className="page-state page-state--muted">{emptyMessage}</p>

@@ -354,6 +354,68 @@
             }
           ]
         }
+      },
+      "standingsSeed": {
+        "throughWeek": 12,
+        "note": "Official Triples tables, Week 12 (updated 26 July 2026)",
+        "rows": [
+          {
+            "team": "Capel St Mary Kites",
+            "played": 11,
+            "shotsFor": 572,
+            "shotsAgainst": 494,
+            "points": 42
+          },
+          {
+            "team": "Stone Lodge",
+            "played": 9,
+            "shotsFor": 520,
+            "shotsAgainst": 363,
+            "points": 41.5
+          },
+          {
+            "team": "Westerfield Greens",
+            "played": 10,
+            "shotsFor": 507,
+            "shotsAgainst": 427,
+            "points": 39.5
+          },
+          {
+            "team": "Bealings",
+            "played": 10,
+            "shotsFor": 476,
+            "shotsAgainst": 548,
+            "points": 29
+          },
+          {
+            "team": "Kirton & Falkenham",
+            "played": 9,
+            "shotsFor": 443,
+            "shotsAgainst": 384,
+            "points": 28
+          },
+          {
+            "team": "E-of-E Co-op A",
+            "played": 10,
+            "shotsFor": 475,
+            "shotsAgainst": 539,
+            "points": 24
+          },
+          {
+            "team": "Waldringfield",
+            "played": 9,
+            "shotsFor": 410,
+            "shotsAgainst": 430,
+            "points": 23.5
+          },
+          {
+            "team": "Norbridge",
+            "played": 10,
+            "shotsFor": 376,
+            "shotsAgainst": 594,
+            "points": 6.5
+          }
+        ]
       }
     },
     {
@@ -368,7 +430,62 @@
         "California",
         "Kesgrave Greens",
         "Bye"
-      ]
+      ],
+      "standingsSeed": {
+        "throughWeek": 12,
+        "note": "Official Triples tables, Week 12 (updated 26 July 2026)",
+        "rows": [
+          {
+            "team": "Bredfield",
+            "played": 8,
+            "shotsFor": 423,
+            "shotsAgainst": 337,
+            "points": 34.5
+          },
+          {
+            "team": "Kesgrave Blues",
+            "played": 8,
+            "shotsFor": 389,
+            "shotsAgainst": 293,
+            "points": 34.5
+          },
+          {
+            "team": "Bentley",
+            "played": 9,
+            "shotsFor": 454,
+            "shotsAgainst": 457,
+            "points": 27.5
+          },
+          {
+            "team": "California",
+            "played": 9,
+            "shotsFor": 421,
+            "shotsAgainst": 437,
+            "points": 24
+          },
+          {
+            "team": "Kesgrave Greens",
+            "played": 9,
+            "shotsFor": 435,
+            "shotsAgainst": 460,
+            "points": 23.5
+          },
+          {
+            "team": "Copdock & Washbrook",
+            "played": 9,
+            "shotsFor": 384,
+            "shotsAgainst": 414,
+            "points": 22.5
+          },
+          {
+            "team": "Bramford",
+            "played": 8,
+            "shotsFor": 336,
+            "shotsAgainst": 443,
+            "points": 13.5
+          }
+        ]
+      }
     },
     {
       "id": "c",
@@ -382,7 +499,62 @@
         "Bye",
         "Ipswich & District",
         "Roundwood"
-      ]
+      ],
+      "standingsSeed": {
+        "throughWeek": 12,
+        "note": "Official Triples tables, Week 12 (updated 26 July 2026)",
+        "rows": [
+          {
+            "team": "Newton Road A",
+            "played": 10,
+            "shotsFor": 536,
+            "shotsAgainst": 456,
+            "points": 35.5
+          },
+          {
+            "team": "IBC Graham Road",
+            "played": 8,
+            "shotsFor": 424,
+            "shotsAgainst": 330,
+            "points": 31.5
+          },
+          {
+            "team": "Holbrook",
+            "played": 10,
+            "shotsFor": 486,
+            "shotsAgainst": 453,
+            "points": 29.5
+          },
+          {
+            "team": "Sproughton",
+            "played": 8,
+            "shotsFor": 385,
+            "shotsAgainst": 401,
+            "points": 28.5
+          },
+          {
+            "team": "Westerfield Oranges",
+            "played": 8,
+            "shotsFor": 345,
+            "shotsAgainst": 406,
+            "points": 20.5
+          },
+          {
+            "team": "Ipswich & District",
+            "played": 7,
+            "shotsFor": 303,
+            "shotsAgainst": 351,
+            "points": 19
+          },
+          {
+            "team": "Roundwood",
+            "played": 9,
+            "shotsFor": 400,
+            "shotsAgainst": 482,
+            "points": 15.5
+          }
+        ]
+      }
     },
     {
       "id": "d",
@@ -396,7 +568,55 @@
         "Margaret Catchpole",
         "Woodbridge",
         "Bye"
-      ]
+      ],
+      "standingsSeed": {
+        "throughWeek": 12,
+        "note": "Official Triples tables, Week 12 (updated 26 July 2026)",
+        "rows": [
+          {
+            "team": "Hadleigh",
+            "played": 8,
+            "shotsFor": 429,
+            "shotsAgainst": 365,
+            "points": 32
+          },
+          {
+            "team": "Woodbridge",
+            "played": 7,
+            "shotsFor": 387,
+            "shotsAgainst": 294,
+            "points": 27.5
+          },
+          {
+            "team": "Capel Kestrels",
+            "played": 10,
+            "shotsFor": 472,
+            "shotsAgainst": 524,
+            "points": 25.5
+          },
+          {
+            "team": "Hospitals Ribbans Park",
+            "played": 8,
+            "shotsFor": 407,
+            "shotsAgainst": 374,
+            "points": 25.5
+          },
+          {
+            "team": "Wickham Market",
+            "played": 8,
+            "shotsFor": 378,
+            "shotsAgainst": 407,
+            "points": 21
+          },
+          {
+            "team": "Shotley Rose",
+            "played": 7,
+            "shotsFor": 316,
+            "shotsAgainst": 381,
+            "points": 17.5
+          }
+        ]
+      }
     },
     {
       "id": "e",
@@ -410,7 +630,62 @@
         "Needham Market",
         "E-of-E Co-op B",
         "Newton Road B"
-      ]
+      ],
+      "standingsSeed": {
+        "throughWeek": 12,
+        "note": "Official Triples tables, Week 12 (updated 26 July 2026)",
+        "rows": [
+          {
+            "team": "Felixstowe BC",
+            "played": 10,
+            "shotsFor": 878,
+            "shotsAgainst": 379,
+            "points": 56.5
+          },
+          {
+            "team": "Melton",
+            "played": 8,
+            "shotsFor": 517,
+            "shotsAgainst": 335,
+            "points": 37.5
+          },
+          {
+            "team": "Hollesley",
+            "played": 9,
+            "shotsFor": 499,
+            "shotsAgainst": 422,
+            "points": 33
+          },
+          {
+            "team": "Needham Market",
+            "played": 10,
+            "shotsFor": 488,
+            "shotsAgainst": 541,
+            "points": 32.5
+          },
+          {
+            "team": "Martlesham",
+            "played": 10,
+            "shotsFor": 405,
+            "shotsAgainst": 604,
+            "points": 15.5
+          },
+          {
+            "team": "E-of-E Co-op B",
+            "played": 8,
+            "shotsFor": 310,
+            "shotsAgainst": 491,
+            "points": 13
+          },
+          {
+            "team": "Newton Road B",
+            "played": 8,
+            "shotsFor": 274,
+            "shotsAgainst": 599,
+            "points": 4
+          }
+        ]
+      }
     }
   ]
 }

@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>v20 — jump to team (6th square)</title>
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --card: #ffffff;
+    --border: #e3e6ea;
+    --row-hi: #f2f4f6;
+    --text: #3a4048;
+    --text-strong: #14181d;
+    --muted: #8a919b;
+    --muted-2: #6b7280;
+    --green: #256e3d;
+    --navy: #1d3a6e;
+    --oxblood: #7e3040;
+    --violet: #4c3585;
+    --teal: #0e6b84;
+    --charcoal: #23272e;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { max-width: 1020px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  h1 { font-size: 1.4rem; letter-spacing: -0.02em; color: var(--text-strong); margin: 0 0 0.3rem; }
+  .lead { margin: 0 0 1rem; color: var(--muted); font-size: 0.95rem; }
+  .opt { margin: 2.8rem 0 0; }
+  .opt__tag { display: inline-block; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; background: var(--text-strong); padding: 4px 10px; margin-bottom: 0.4rem; }
+  .opt__note { margin: 0 0 0.9rem; font-size: 0.88rem; color: var(--muted); max-width: 46rem; }
+
+  /* ---- home grid context ---- */
+  .eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted-2); margin: 0 0 0.6rem; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 1.6rem; }
+  .tile { position: relative; display: flex; flex-direction: column; justify-content: space-between; min-height: 176px; padding: 1.15rem 1.3rem 1rem; color: #fff; }
+  .tile__title { margin: 0; font-size: 1.45rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; }
+  .tile__sub { margin: 0.3rem 0 0; font-size: 0.82rem; font-weight: 600; opacity: 0.75; }
+  .tile__foot { display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; font-weight: 700; }
+  .tile--green { background: var(--green); }
+  .tile--navy { background: var(--navy); }
+  .tile--oxblood { background: var(--oxblood); }
+  .tile--violet { background: var(--violet); }
+  .tile--teal { background: var(--teal); }
+  .arrow { font-size: 1.1rem; }
+
+  /* ---- shared: selects inside the jump tile ---- */
+  .jt-label { display: block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 0.3rem; }
+  .jt-select { appearance: none; -webkit-appearance: none; width: 100%; font: inherit; font-size: 0.88rem; font-weight: 600; padding: 0.5rem 2rem 0.5rem 0.7rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%236b7280' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 0.7rem center; }
+
+  /* ---- A: quiet white tile ---- */
+  .jta { background: var(--card); border: 1px solid var(--border); color: var(--text); display: flex; flex-direction: column; justify-content: space-between; min-height: 176px; padding: 1.15rem 1.3rem 1rem; }
+  .jta__title { margin: 0 0 0.75rem; font-size: 1.05rem; font-weight: 800; letter-spacing: -0.01em; color: var(--text-strong); }
+  .jta .jt-label { color: var(--muted-2); }
+  .jta .jt-select { background-color: var(--card); border: 1px solid var(--border); color: var(--text-strong); }
+  .jta__fields { display: flex; flex-direction: column; gap: 0.6rem; }
+  .jta__foot { display: flex; justify-content: flex-end; margin-top: 0.75rem; }
+  .jta__go { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; font-weight: 700; color: var(--green); text-decoration: none; }
+
+  /* ---- B: charcoal tile, matches the poster family ---- */
+  .jtb { background: var(--charcoal); color: #fff; display: flex; flex-direction: column; justify-content: space-between; min-height: 176px; padding: 1.15rem 1.3rem 1rem; }
+  .jtb__title { margin: 0 0 0.7rem; font-size: 1.45rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; }
+  .jtb .jt-label { color: rgba(255, 255, 255, 0.55); }
+  .jtb .jt-select { background-color: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.25); color: #fff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23ffffff' stroke-width='1.5'/%3E%3C/svg%3E"); }
+  .jtb__fields { display: flex; flex-direction: column; gap: 0.55rem; }
+  .jtb__foot { display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; font-weight: 700; margin-top: 0.7rem; }
+  .jtb__foot span:first-child { opacity: 0.75; }
+
+  /* ---- C: league chips first, then team ---- */
+  .jtc { background: var(--card); border: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; min-height: 176px; padding: 1.15rem 1.3rem 1rem; }
+  .jtc__title { margin: 0 0 0.7rem; font-size: 1.05rem; font-weight: 800; color: var(--text-strong); }
+  .jtc__chips { display: flex; gap: 6px; margin-bottom: 0.7rem; }
+  .jtc__chip { flex: 1; text-align: center; font-size: 0.78rem; font-weight: 750; padding: 0.45rem 0.2rem; border: 1px solid var(--border); background: var(--row-hi); color: var(--text); cursor: pointer; }
+  .jtc__chip--on { background: var(--green); border-color: var(--green); color: #fff; }
+  .jtc .jt-label { color: var(--muted-2); }
+  .jtc .jt-select { background-color: var(--card); border: 1px solid var(--border); color: var(--text-strong); }
+  .jtc__foot { display: flex; justify-content: flex-end; margin-top: 0.7rem; }
+  .jtc__go { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; font-weight: 700; color: var(--green); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Jump to team — as the 6th square</h1>
+  <p class="lead">The Competitions row has an empty third slot. These options fill it with a &ldquo;Jump to team&rdquo; picker: choose a league, then a team, and land on their filtered Matches list. The team dropdown fills in once a league is picked.</p>
+
+  <!-- ============ A ============ -->
+  <div class="opt">
+    <span class="opt__tag">Option A — quiet white square</span>
+    <p class="opt__note">A white outlined tile so it reads as a utility, not another destination. Two stacked dropdowns and a &ldquo;Go&rdquo; link that takes the league&rsquo;s colour once one is chosen. Calmest option; the coloured tiles stay the stars.</p>
+    <p class="eyebrow">Competitions</p>
+    <div class="grid">
+      <div class="tile tile--violet">
+        <div><h3 class="tile__title">Samford<br/>Knockout Cup</h3><p class="tile__sub">Final Sat 12 Sept</p></div>
+        <div class="tile__foot"><span>Fridays</span><span class="arrow">&#8594;</span></div>
+      </div>
+      <div class="tile tile--teal">
+        <div><h3 class="tile__title">Millennium Cup</h3><p class="tile__sub">Final Sun 13 Sept</p></div>
+        <div class="tile__foot"><span>Fridays</span><span class="arrow">&#8594;</span></div>
+      </div>
+      <div class="jta">
+        <div>
+          <h3 class="jta__title">Jump to team</h3>
+          <div class="jta__fields">
+            <div>
+              <label class="jt-label" for="a-league">League</label>
+              <select class="jt-select" id="a-league"><option>Samford</option><option>Two Wood</option><option>Triples</option></select>
+            </div>
+            <div>
+              <label class="jt-label" for="a-team">Team</label>
+              <select class="jt-select" id="a-team"><option>Kirton A</option><option>Marlborough</option><option>Stone Lodge Blues</option></select>
+            </div>
+          </div>
+        </div>
+        <div class="jta__foot"><a class="jta__go" href="#">Go to fixtures <span class="arrow">&#8594;</span></a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ B ============ -->
+  <div class="opt">
+    <span class="opt__tag">Option B — charcoal square, same family as the posters</span>
+    <p class="opt__note">Filled like its neighbours so the row reads as six equal squares, but in neutral charcoal so it doesn&rsquo;t claim a league colour. Title matches the poster type size. Bottom row mirrors the day + arrow anatomy of the other tiles.</p>
+    <p class="eyebrow">Competitions</p>
+    <div class="grid">
+      <div class="tile tile--violet">
+        <div><h3 class="tile__title">Samford<br/>Knockout Cup</h3><p class="tile__sub">Final Sat 12 Sept</p></div>
+        <div class="tile__foot"><span>Fridays</span><span class="arrow">&#8594;</span></div>
+      </div>
+      <div class="tile tile--teal">
+        <div><h3 class="tile__title">Millennium Cup</h3><p class="tile__sub">Final Sun 13 Sept</p></div>
+        <div class="tile__foot"><span>Fridays</span><span class="arrow">&#8594;</span></div>
+      </div>
+      <div class="jtb">
+        <div>
+          <h3 class="jtb__title">Jump to team</h3>
+          <div class="jtb__fields">
+            <select class="jt-select" aria-label="League"><option>Samford</option><option>Two Wood</option><option>Triples</option></select>
+            <select class="jt-select" aria-label="Team"><option>Kirton A</option><option>Marlborough</option><option>Stone Lodge Blues</option></select>
+          </div>
+        </div>
+        <div class="jtb__foot"><span>Straight to their matches</span><span class="arrow">&#8594;</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ C ============ -->
+  <div class="opt">
+    <span class="opt__tag">Option C — league chips, then team</span>
+    <p class="opt__note">One less dropdown: the three leagues are tap-once chips (the picked one fills with its colour), then a single team dropdown. Fastest on a phone, and the colour feedback confirms the league choice. Slightly busier visually.</p>
+    <p class="eyebrow">Competitions</p>
+    <div class="grid">
+      <div class="tile tile--violet">
+        <div><h3 class="tile__title">Samford<br/>Knockout Cup</h3><p class="tile__sub">Final Sat 12 Sept</p></div>
+        <div class="tile__foot"><span>Fridays</span><span class="arrow">&#8594;</span></div>
+      </div>
+      <div class="tile tile--teal">
+        <div><h3 class="tile__title">Millennium Cup</h3><p class="tile__sub">Final Sun 13 Sept</p></div>
+        <div class="tile__foot"><span>Fridays</span><span class="arrow">&#8594;</span></div>
+      </div>
+      <div class="jtc">
+        <div>
+          <h3 class="jtc__title">Jump to team</h3>
+          <div class="jtc__chips">
+            <button class="jtc__chip jtc__chip--on" type="button">Samford</button>
+            <button class="jtc__chip" type="button">Two Wood</button>
+            <button class="jtc__chip" type="button">Triples</button>
+          </div>
+          <div>
+            <label class="jt-label" for="c-team">Team</label>
+            <select class="jt-select" id="c-team"><option>Kirton A</option><option>Marlborough</option><option>Waldringfield Swans</option></select>
+          </div>
+        </div>
+        <div class="jtc__foot"><a class="jtc__go" href="#">Go to fixtures <span class="arrow">&#8594;</span></a></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

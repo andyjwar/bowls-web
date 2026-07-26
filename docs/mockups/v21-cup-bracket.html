@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>v21 — cup bracket variants</title>
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --card: #ffffff;
+    --border: #e3e6ea;
+    --row-hi: #f2f4f6;
+    --text: #3a4048;
+    --text-strong: #14181d;
+    --muted: #8a919b;
+    --muted-2: #6b7280;
+    --violet: #4c3585;
+    --violet-soft: rgba(76, 53, 133, 0.13);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  h1 { font-size: 1.4rem; letter-spacing: -0.02em; color: var(--text-strong); margin: 0 0 0.3rem; }
+  .lead { margin: 0 0 1rem; color: var(--muted); font-size: 0.95rem; }
+  .opt { margin: 3rem 0 0; }
+  .opt__tag { display: inline-block; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; background: var(--text-strong); padding: 4px 10px; margin-bottom: 0.4rem; }
+  .opt__note { margin: 0 0 1rem; font-size: 0.88rem; color: var(--muted); max-width: 48rem; }
+
+  /* ---------- shared match card ---------- */
+  .m { background: var(--card); border: 1px solid var(--border); padding: 0.45rem 0.6rem; width: 100%; }
+  .m__row { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; padding: 0.12rem 0; font-size: 0.82rem; font-weight: 600; color: var(--text-strong); }
+  .m__row--lose { opacity: 0.4; }
+  .m__row--win { font-weight: 800; }
+  .m__row--win .m__score { color: var(--violet); }
+  .m__score { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .m__tie { display: block; margin-top: 2px; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .m--tbd .m__row { color: var(--muted); font-weight: 500; font-style: italic; }
+  .m--final { border: 2px solid var(--violet); }
+  .m--empty .m__row { color: var(--muted-2); font-style: normal; font-weight: 600; }
+
+  /* ================= A: classic left-to-right with connectors ========== */
+  .bkt { display: flex; gap: 0; overflow-x: auto; }
+  .bkt__round { display: flex; flex-direction: column; justify-content: space-around; width: 200px; flex-shrink: 0; }
+  .bkt__title { text-align: left; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.6rem; }
+  .bkt__cell { position: relative; display: flex; align-items: center; flex: 1; padding: 6px 24px 6px 0; }
+  /* stub out of every match */
+  .bkt__round:not(:last-child) .bkt__cell::after { content: ''; position: absolute; right: 0; width: 24px; top: 50%; border-top: 2px solid var(--border); }
+  /* vertical join between the two cells of a pair (span = one cell height) */
+  .bkt__round:not(:last-child) .bkt__cell--top::before,
+  .bkt__round:not(:last-child) .bkt__cell--bot::before { content: ''; position: absolute; right: 0; height: 100%; border-right: 2px solid var(--border); }
+  .bkt__cell--top::before { top: 50%; }
+  .bkt__cell--bot::before { bottom: 50%; }
+  .bkt__round--in .bkt__cell { padding-left: 24px; }
+  .bkt__round--in .bkt__cell .in { content: ''; position: absolute; left: 0; width: 24px; top: 50%; border-top: 2px solid var(--border); }
+  .bkt__finalmeta { margin-top: 0.4rem; font-size: 0.7rem; font-weight: 600; color: var(--muted); text-align: center; }
+
+  /* ================= B: rounds as stacked bands ========== */
+  .bands { display: flex; flex-direction: column; gap: 1.4rem; }
+  .band__head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 0.5rem; }
+  .band__title { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-strong); }
+  .band__date { font-size: 0.78rem; font-weight: 600; color: var(--muted); }
+  .band__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .band__grid--2 { grid-template-columns: repeat(2, 1fr); max-width: 33rem; }
+  .band__grid--1 { grid-template-columns: 1fr; max-width: 22rem; }
+  .band--center .band__grid--2, .band--center .band__grid--1 { margin: 0 auto; }
+  .band--center .band__head { justify-content: center; gap: 0.8rem; }
+
+  /* ================= C: winners path (progression column) ========== */
+  .path { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; align-items: start; }
+  .path__col { display: flex; flex-direction: column; gap: 10px; }
+  .path__title { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.2rem; }
+  .adv { display: flex; align-items: center; gap: 0.35rem; font-size: 0.68rem; font-weight: 700; color: #256e3d; margin-top: 3px; }
+  .adv svg { display: block; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Samford Knockout Cup — bracket variants</h1>
+  <p class="lead">Real data. Losers faded hard, winners bold with the score in cup colour. No &ldquo;Winner of Semi-final A&rdquo; filler — empty slots just wait. Purple = Samford KO Cup accent.</p>
+
+  <!-- ============================ A ============================ -->
+  <div class="opt">
+    <span class="opt__tag">Option A — classic bracket, one direction, with connector lines</span>
+    <p class="opt__note">Everything flows left to right and the connector lines make the routing self-evident: you can follow Margaret Catchpole's line from their 82&ndash;63 win into Tie 2. The final sits on the far right with date and venue. Scrolls sideways on phones.</p>
+    <div class="bkt">
+      <div class="bkt__round">
+        <div class="bkt__title">1st Round · 3 Jul</div>
+        <div class="bkt__cell bkt__cell--top"><div class="m">
+          <div class="m__row m__row--win"><span>E-of-E Co-op</span><span class="m__score">81</span></div>
+          <div class="m__row m__row--lose"><span>Kirton &amp; Falkenham</span><span class="m__score">77</span></div>
+          <span class="m__tie">Tie F</span></div></div>
+        <div class="bkt__cell bkt__cell--bot"><div class="m">
+          <div class="m__row m__row--win"><span>Sproughton</span><span class="m__score">w/o</span></div>
+          <div class="m__row m__row--lose"><span>Newton Road BC</span><span class="m__score">–</span></div>
+          <span class="m__tie">Tie B</span></div></div>
+        <div class="bkt__cell bkt__cell--top"><div class="m">
+          <div class="m__row m__row--lose"><span>Shotley Rose</span><span class="m__score">–</span></div>
+          <div class="m__row m__row--win"><span>Holbrook</span><span class="m__score">*</span></div>
+          <span class="m__tie">Tie H · sheet awaited</span></div></div>
+        <div class="bkt__cell bkt__cell--bot"><div class="m">
+          <div class="m__row m__row--win"><span>Margaret Catchpole</span><span class="m__score">82</span></div>
+          <div class="m__row m__row--lose"><span>California</span><span class="m__score">63</span></div>
+          <span class="m__tie">Tie G</span></div></div>
+        <div class="bkt__cell bkt__cell--top"><div class="m">
+          <div class="m__row m__row--win"><span>Kesgrave</span><span class="m__score">75</span></div>
+          <div class="m__row m__row--lose"><span>Bealings</span><span class="m__score">68</span></div>
+          <span class="m__tie">Tie D</span></div></div>
+        <div class="bkt__cell bkt__cell--bot"><div class="m">
+          <div class="m__row m__row--win"><span>Westerfield</span><span class="m__score">96</span></div>
+          <div class="m__row m__row--lose"><span>Hospitals Ribbans Pk</span><span class="m__score">58</span></div>
+          <span class="m__tie">Tie E</span></div></div>
+        <div class="bkt__cell bkt__cell--top"><div class="m">
+          <div class="m__row m__row--lose"><span>Hadleigh</span><span class="m__score">56</span></div>
+          <div class="m__row m__row--win"><span>Felixstowe BC</span><span class="m__score">75</span></div>
+          <span class="m__tie">Tie C</span></div></div>
+        <div class="bkt__cell bkt__cell--bot"><div class="m">
+          <div class="m__row m__row--lose"><span>Ipswich &amp; District</span><span class="m__score">74</span></div>
+          <div class="m__row m__row--win"><span>Stone Lodge</span><span class="m__score">78</span></div>
+          <span class="m__tie">Tie A</span></div></div>
+      </div>
+      <div class="bkt__round bkt__round--in">
+        <div class="bkt__title">2nd Round · 17 Jul</div>
+        <div class="bkt__cell bkt__cell--top"><span class="in"></span><div class="m">
+          <div class="m__row"><span>E-of-E Co-op</span><span class="m__score">–</span></div>
+          <div class="m__row"><span>Sproughton</span><span class="m__score">–</span></div>
+          <span class="m__tie">Tie 1</span></div></div>
+        <div class="bkt__cell bkt__cell--bot"><span class="in"></span><div class="m">
+          <div class="m__row"><span>Holbrook</span><span class="m__score">–</span></div>
+          <div class="m__row"><span>Margaret Catchpole</span><span class="m__score">–</span></div>
+          <span class="m__tie">Tie 2</span></div></div>
+        <div class="bkt__cell bkt__cell--top"><span class="in"></span><div class="m">
+          <div class="m__row"><span>Kesgrave</span><span class="m__score">–</span></div>
+          <div class="m__row"><span>Westerfield</span><span class="m__score">–</span></div>
+          <span class="m__tie">Tie 4</span></div></div>
+        <div class="bkt__cell bkt__cell--bot"><span class="in"></span><div class="m">
+          <div class="m__row"><span>Felixstowe BC</span><span class="m__score">–</span></div>
+          <div class="m__row"><span>Stone Lodge</span><span class="m__score">–</span></div>
+          <span class="m__tie">Tie 3</span></div></div>
+      </div>
+      <div class="bkt__round bkt__round--in">
+        <div class="bkt__title">Semi-finals · 7 Aug</div>
+        <div class="bkt__cell bkt__cell--top"><span class="in"></span><div class="m m--empty">
+          <div class="m__row"><span>·</span><span class="m__score">–</span></div>
+          <div class="m__row"><span>·</span><span class="m__score">–</span></div>
+          <span class="m__tie">Semi A</span></div></div>
+        <div class="bkt__cell bkt__cell--bot"><span class="in"></span><div class="m m--empty">
+          <div class="m__row"><span>·</span><span class="m__score">–</span></div>
+          <div class="m__row"><span>·</span><span class="m__score">–</span></div>
+          <span class="m__tie">Semi B</span></div></div>
+      </div>
+      <div class="bkt__round bkt__round--in">
+        <div class="bkt__title">Final · 12 Sept</div>
+        <div class="bkt__cell"><span class="in"></span><div>
+          <div class="m m--final m--empty">
+            <div class="m__row"><span>·</span><span class="m__score">–</span></div>
+            <div class="m__row"><span>·</span><span class="m__score">–</span></div>
+          </div>
+          <div class="bkt__finalmeta">Margaret Catchpole BC</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================ B ============================ -->
+  <div class="opt">
+    <span class="opt__tag">Option B — rounds as stacked bands (pyramid)</span>
+    <p class="opt__note">No sideways anything: each round is a full-width band that narrows as the cup progresses, with the final centred at the bottom. Reads top to bottom like the paper sheet, works on any screen width, and the fading makes each band's winners pop. The trade-off: routing is implied by order (Tie F &amp; Tie B feed Tie 1), not drawn.</p>
+    <div class="bands">
+      <div class="band">
+        <div class="band__head"><span class="band__title">1st Round</span><span class="band__date">Fri 3 Jul</span></div>
+        <div class="band__grid">
+          <div class="m"><div class="m__row m__row--win"><span>E-of-E Co-op</span><span class="m__score">81</span></div><div class="m__row m__row--lose"><span>Kirton &amp; Falkenham</span><span class="m__score">77</span></div><span class="m__tie">Tie F</span></div>
+          <div class="m"><div class="m__row m__row--win"><span>Sproughton</span><span class="m__score">w/o</span></div><div class="m__row m__row--lose"><span>Newton Road BC</span><span class="m__score">–</span></div><span class="m__tie">Tie B</span></div>
+          <div class="m"><div class="m__row m__row--lose"><span>Shotley Rose</span><span class="m__score">–</span></div><div class="m__row m__row--win"><span>Holbrook</span><span class="m__score">*</span></div><span class="m__tie">Tie H · sheet awaited</span></div>
+          <div class="m"><div class="m__row m__row--win"><span>Margaret Catchpole</span><span class="m__score">82</span></div><div class="m__row m__row--lose"><span>California</span><span class="m__score">63</span></div><span class="m__tie">Tie G</span></div>
+          <div class="m"><div class="m__row m__row--win"><span>Kesgrave</span><span class="m__score">75</span></div><div class="m__row m__row--lose"><span>Bealings</span><span class="m__score">68</span></div><span class="m__tie">Tie D</span></div>
+          <div class="m"><div class="m__row m__row--win"><span>Westerfield</span><span class="m__score">96</span></div><div class="m__row m__row--lose"><span>Hospitals Ribbans Pk</span><span class="m__score">58</span></div><span class="m__tie">Tie E</span></div>
+          <div class="m"><div class="m__row m__row--lose"><span>Hadleigh</span><span class="m__score">56</span></div><div class="m__row m__row--win"><span>Felixstowe BC</span><span class="m__score">75</span></div><span class="m__tie">Tie C</span></div>
+          <div class="m"><div class="m__row m__row--lose"><span>Ipswich &amp; District</span><span class="m__score">74</span></div><div class="m__row m__row--win"><span>Stone Lodge</span><span class="m__score">78</span></div><span class="m__tie">Tie A</span></div>
+        </div>
+      </div>
+      <div class="band band--center">
+        <div class="band__head"><span class="band__title">2nd Round</span><span class="band__date">Fri 17 Jul</span></div>
+        <div class="band__grid">
+          <div class="m"><div class="m__row"><span>E-of-E Co-op</span><span class="m__score">–</span></div><div class="m__row"><span>Sproughton</span><span class="m__score">–</span></div><span class="m__tie">Tie 1 · winners F &amp; B</span></div>
+          <div class="m"><div class="m__row"><span>Holbrook</span><span class="m__score">–</span></div><div class="m__row"><span>Margaret Catchpole</span><span class="m__score">–</span></div><span class="m__tie">Tie 2 · winners H &amp; G</span></div>
+          <div class="m"><div class="m__row"><span>Kesgrave</span><span class="m__score">–</span></div><div class="m__row"><span>Westerfield</span><span class="m__score">–</span></div><span class="m__tie">Tie 4 · winners D &amp; E</span></div>
+          <div class="m"><div class="m__row"><span>Felixstowe BC</span><span class="m__score">–</span></div><div class="m__row"><span>Stone Lodge</span><span class="m__score">–</span></div><span class="m__tie">Tie 3 · winners C &amp; A</span></div>
+        </div>
+      </div>
+      <div class="band band--center">
+        <div class="band__head"><span class="band__title">Semi-finals</span><span class="band__date">Fri 7 Aug</span></div>
+        <div class="band__grid band__grid--2">
+          <div class="m m--empty"><div class="m__row"><span>·</span><span class="m__score">–</span></div><div class="m__row"><span>·</span><span class="m__score">–</span></div><span class="m__tie">Semi A · winners 1 &amp; 2</span></div>
+          <div class="m m--empty"><div class="m__row"><span>·</span><span class="m__score">–</span></div><div class="m__row"><span>·</span><span class="m__score">–</span></div><span class="m__tie">Semi B · winners 4 &amp; 3</span></div>
+        </div>
+      </div>
+      <div class="band band--center">
+        <div class="band__head"><span class="band__title">Final</span><span class="band__date">Sat 12 Sept · Margaret Catchpole BC</span></div>
+        <div class="band__grid band__grid--1">
+          <div class="m m--final m--empty"><div class="m__row"><span>·</span><span class="m__score">–</span></div><div class="m__row"><span>·</span><span class="m__score">–</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================ C ============================ -->
+  <div class="opt">
+    <span class="opt__tag">Option C — four columns, winners carry a green &ldquo;through&rdquo; mark</span>
+    <p class="opt__note">Same four-column flow as A but without connector lines — instead every decided tie gets a small green &ldquo;Through: name&rdquo; underneath, so who progressed is spelled out in words. Least visual, most explicit; also the easiest to read for anyone unfamiliar with brackets.</p>
+    <div class="path">
+      <div class="path__col">
+        <div class="path__title">1st Round · 3 Jul</div>
+        <div><div class="m"><div class="m__row m__row--win"><span>E-of-E Co-op</span><span class="m__score">81</span></div><div class="m__row m__row--lose"><span>Kirton &amp; Falkenham</span><span class="m__score">77</span></div></div>
+          <div class="adv"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 5l3 3 5-6"/></svg>Through: E-of-E Co-op</div></div>
+        <div><div class="m"><div class="m__row m__row--win"><span>Sproughton</span><span class="m__score">w/o</span></div><div class="m__row m__row--lose"><span>Newton Road BC</span><span class="m__score">–</span></div></div>
+          <div class="adv"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 5l3 3 5-6"/></svg>Through: Sproughton</div></div>
+        <div><div class="m"><div class="m__row m__row--lose"><span>Shotley Rose</span><span class="m__score">–</span></div><div class="m__row m__row--win"><span>Holbrook</span><span class="m__score">*</span></div></div>
+          <div class="adv"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 5l3 3 5-6"/></svg>Through: Holbrook</div></div>
+        <div><div class="m"><div class="m__row m__row--win"><span>Margaret Catchpole</span><span class="m__score">82</span></div><div class="m__row m__row--lose"><span>California</span><span class="m__score">63</span></div></div>
+          <div class="adv"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 5l3 3 5-6"/></svg>Through: Margaret Catchpole</div></div>
+        <div><div class="m"><div class="m__row m__row--win"><span>Kesgrave</span><span class="m__score">75</span></div><div class="m__row m__row--lose"><span>Bealings</span><span class="m__score">68</span></div></div>
+          <div class="adv"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 5l3 3 5-6"/></svg>Through: Kesgrave</div></div>
+        <div><div class="m"><div class="m__row m__row--win"><span>Westerfield</span><span class="m__score">96</span></div><div class="m__row m__row--lose"><span>Hospitals Ribbans Pk</span><span class="m__score">58</span></div></div>
+          <div class="adv"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 5l3 3 5-6"/></svg>Through: Westerfield</div></div>
+        <div><div class="m"><div class="m__row m__row--lose"><span>Hadleigh</span><span class="m__score">56</span></div><div class="m__row m__row--win"><span>Felixstowe BC</span><span class="m__score">75</span></div></div>
+          <div class="adv"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 5l3 3 5-6"/></svg>Through: Felixstowe BC</div></div>
+        <div><div class="m"><div class="m__row m__row--lose"><span>Ipswich &amp; District</span><span class="m__score">74</span></div><div class="m__row m__row--win"><span>Stone Lodge</span><span class="m__score">78</span></div></div>
+          <div class="adv"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 5l3 3 5-6"/></svg>Through: Stone Lodge</div></div>
+      </div>
+      <div class="path__col">
+        <div class="path__title">2nd Round · 17 Jul</div>
+        <div class="m"><div class="m__row"><span>E-of-E Co-op</span><span class="m__score">–</span></div><div class="m__row"><span>Sproughton</span><span class="m__score">–</span></div><span class="m__tie">Tie 1</span></div>
+        <div class="m"><div class="m__row"><span>Holbrook</span><span class="m__score">–</span></div><div class="m__row"><span>Margaret Catchpole</span><span class="m__score">–</span></div><span class="m__tie">Tie 2</span></div>
+        <div class="m"><div class="m__row"><span>Kesgrave</span><span class="m__score">–</span></div><div class="m__row"><span>Westerfield</span><span class="m__score">–</span></div><span class="m__tie">Tie 4</span></div>
+        <div class="m"><div class="m__row"><span>Felixstowe BC</span><span class="m__score">–</span></div><div class="m__row"><span>Stone Lodge</span><span class="m__score">–</span></div><span class="m__tie">Tie 3</span></div>
+      </div>
+      <div class="path__col">
+        <div class="path__title">Semi-finals · 7 Aug</div>
+        <div class="m m--empty"><div class="m__row"><span>·</span><span class="m__score">–</span></div><div class="m__row"><span>·</span><span class="m__score">–</span></div><span class="m__tie">Semi A</span></div>
+        <div class="m m--empty"><div class="m__row"><span>·</span><span class="m__score">–</span></div><div class="m__row"><span>·</span><span class="m__score">–</span></div><span class="m__tie">Semi B</span></div>
+      </div>
+      <div class="path__col">
+        <div class="path__title">Final · 12 Sept</div>
+        <div>
+          <div class="m m--final m--empty"><div class="m__row"><span>·</span><span class="m__score">–</span></div><div class="m__row"><span>·</span><span class="m__score">–</span></div></div>
+          <div class="bkt__finalmeta">Margaret Catchpole BC</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

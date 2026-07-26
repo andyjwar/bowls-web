@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>v19 &mdash; home hero: title position &amp; logo lockup</title>
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --card: #ffffff;
+    --border: #e3e6ea;
+    --row-hi: #f2f4f6;
+    --text: #3a4048;
+    --text-strong: #14181d;
+    --muted: #8a919b;
+    --muted-2: #6b7280;
+    --green: #256e3d;
+    --navy: #1d3a6e;
+    --oxblood: #7e3040;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  h1 { font-size: 1.4rem; letter-spacing: -0.02em; color: var(--text-strong); margin: 0 0 0.3rem; }
+  .lead { margin: 0 0 1rem; color: var(--muted); font-size: 0.95rem; max-width: 46rem; }
+  .opt { margin: 3rem 0 0; }
+  .opt__tag { display: inline-block; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; background: var(--text-strong); padding: 4px 10px; margin-bottom: 0.4rem; }
+  .opt__note { margin: 0 0 0.9rem; font-size: 0.88rem; color: var(--muted); max-width: 46rem; }
+  .opt__verdict { margin: 0.9rem 0 0; font-size: 0.88rem; color: var(--muted-2); max-width: 46rem; }
+  .opt__verdict strong { color: var(--text-strong); }
+
+  /* ---- logo quality fact box ---- */
+  .fact { background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--green); padding: 1rem 1.2rem; max-width: 46rem; }
+  .fact h2 { margin: 0 0 0.4rem; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-strong); }
+  .fact p { margin: 0 0 0.55rem; font-size: 0.88rem; }
+  .fact .n { font-weight: 800; color: var(--text-strong); font-variant-numeric: tabular-nums; }
+  .sizes { display: flex; align-items: flex-end; gap: 1.6rem; margin: 0.8rem 0 0.4rem; flex-wrap: wrap; }
+  .sizes figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 0.35rem; }
+  .sizes img { border-radius: 50%; display: block; }
+  .sizes figcaption { font-size: 0.7rem; font-weight: 700; color: var(--muted-2); font-variant-numeric: tabular-nums; }
+  .sizes .bad figcaption { color: var(--oxblood); }
+
+  /* ---- mock site frame (header + page) shared by all options ---- */
+  .frame { background: var(--bg); border: 1px solid var(--border); overflow: hidden; }
+  .mhead { background: var(--card); border-bottom: 1px solid var(--border); }
+  .mhead__in { max-width: 940px; margin: 0 auto; padding: 0.6rem 2rem; display: flex; align-items: center; gap: 2rem; }
+  .mhead__logo { width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0; }
+  .mnav { display: flex; gap: 1.5rem; font-size: 0.95rem; color: var(--muted-2); }
+  .mnav b { color: var(--text-strong); font-weight: 600; }
+  .mnav span { font-weight: 500; }
+  .mhead__spacer { margin-left: auto; width: 60px; height: 26px; border: 1px solid var(--border); border-radius: 13px; opacity: 0.55; }
+  .mmain { max-width: 940px; margin: 0 auto; padding: 0 2rem 2rem; }
+
+  /* current spacing (for reference in option A) */
+  .gap-note { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #b6885a; background: rgba(211, 172, 82, 0.14); border: 1px dashed rgba(182, 136, 90, 0.5); padding: 2px 8px; display: inline-block; margin: 0.35rem 0; }
+
+  /* hero pieces */
+  .eyebrow { margin: 0; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.16em; color: var(--muted); }
+  .htitle { margin: 0; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; color: var(--text-strong); font-size: clamp(2rem, 4vw, 2.75rem); max-width: 22ch; }
+  .htitle--md { font-size: clamp(1.7rem, 3.2vw, 2.3rem); max-width: none; }
+  .htitle--sm { font-size: clamp(1.3rem, 2.4vw, 1.7rem); max-width: none; }
+
+  /* B: lockup */
+  .lockup { display: flex; align-items: center; gap: 1.1rem; }
+  .lockup__logo { width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0; }
+  .lockup__text { display: flex; flex-direction: column; gap: 0.25rem; }
+
+  /* C: banner band */
+  .band { background: var(--card); border-bottom: 1px solid var(--border); box-shadow: inset 0 3px 0 var(--green); }
+  .band__in { max-width: 940px; margin: 0 auto; padding: 0.75rem 2rem; display: flex; align-items: center; gap: 0.9rem; }
+  .band__logo { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; }
+  .band__season { margin-left: auto; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: var(--muted); white-space: nowrap; }
+
+  /* D: header wordmark */
+  .mbrand { display: flex; align-items: center; gap: 0.7rem; flex-shrink: 0; }
+  .mbrand__text { display: flex; flex-direction: column; line-height: 1.15; }
+  .mbrand__name { font-size: 0.95rem; font-weight: 800; letter-spacing: -0.01em; color: var(--text-strong); white-space: nowrap; }
+  .mbrand__season { font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); }
+
+  /* leagues sketch */
+  .lg { margin-top: 1.4rem; }
+  .lg--tight { margin-top: 1.1rem; }
+  .lg__head { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: var(--muted); margin: 0 0 0.5rem; }
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .tile { aspect-ratio: 1.45; display: flex; flex-direction: column; padding: 1.2rem 1.3rem; color: #fff; }
+  .tile__name { font-size: clamp(1.2rem, 2.4vw, 1.6rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.08; }
+  .tile__days { margin-top: auto; font-size: 0.9rem; font-weight: 700; opacity: 0.92; }
+  .fold { text-align: center; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding: 0.55rem 0 0.2rem; }
+  @media (max-width: 760px) { .tiles { grid-template-columns: 1fr; } .tile { aspect-ratio: auto; min-height: 6.5rem; } .mnav span:nth-child(n+4) { display: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Home hero &mdash; title position &amp; using the crest</h1>
+  <p class="lead">Four treatments for the top of the homepage. Each one shows the real header bar above it so the gap you are judging is the actual gap. The crest images below are the real <code>public/logo.png</code> at the exact sizes proposed.</p>
+
+  <div class="fact">
+    <h2>Logo quality check &mdash; honest verdict first</h2>
+    <p>The source file is <span class="n">120 &times; 120 px</span>, PNG, <span class="n">no transparency</span> (the round crest sits on a white square &mdash; the site hides the corners with a circular crop, which works on any light background but would show on a dark one). The header already renders it at 52&nbsp;px, which is 104 device pixels on a retina screen &mdash; <span class="n">it is already at ~87% of its native resolution</span>.</p>
+    <p>Judge for yourself at the proposed sizes &mdash; these are the real file, browser-scaled exactly as the site would:</p>
+    <div class="sizes">
+      <figure><img src="../../public/logo.png" width="40" height="40" alt="" /><figcaption>40 px &mdash; band</figcaption></figure>
+      <figure><img src="../../public/logo.png" width="52" height="52" alt="" /><figcaption>52 px &mdash; header today</figcaption></figure>
+      <figure><img src="../../public/logo.png" width="56" height="56" alt="" /><figcaption>56 px &mdash; lockup</figcaption></figure>
+      <figure class="bad"><img src="../../public/logo.png" width="80" height="80" alt="" /><figcaption>80 px &mdash; soft on retina</figcaption></figure>
+      <figure class="bad"><img src="../../public/logo.png" width="120" height="120" alt="" /><figcaption>120 px &mdash; too fuzzy</figcaption></figure>
+    </div>
+    <p style="margin-top:0.6rem"><span class="n">Verdict:</span> clean enough to sit <em>in</em> the title lockup at 52&ndash;56&nbsp;px, but not clean enough to be <em>enlarged</em>. Above ~64&nbsp;px the ring text (&ldquo;Ipswich &amp; District Federation Bowls League&rdquo;) blurs on retina displays and the crest starts to look like a scan. If a big-crest hero is ever wanted, the fix is a higher-resolution export (ideally 512&nbsp;px+ with transparency) from whoever holds the original artwork.</p>
+  </div>
+
+  <!-- ============================================================ A -->
+  <div class="opt">
+    <span class="opt__tag">A &mdash; same hero, tightened</span>
+    <p class="opt__note">No redesign &mdash; just less air. Today the kicker sits below up to <b>40&nbsp;px</b> of page padding plus up to <b>24&nbsp;px</b> of hero padding (<code>.site-main</code> + <code>.page-head--home</code>). This trims that to a flat <b>1rem</b> above the kicker and removes the hero&rsquo;s own top padding, pulling the title ~48&nbsp;px up. One-line CSS change.</p>
+    <div class="frame">
+      <div class="mhead"><div class="mhead__in"><img class="mhead__logo" src="../../public/logo.png" alt="" /><nav class="mnav"><b>Home</b><span>Leagues</span><span>Competitions</span><span>League Officers</span><span>Rules</span><span>Forms</span></nav><div class="mhead__spacer"></div></div></div>
+      <div class="mmain">
+        <div style="height:1rem"></div>
+        <p class="eyebrow">2026 season</p>
+        <h2 class="htitle" style="margin-top:0.4rem">Ipswich &amp; District Federation Bowls</h2>
+        <div class="lg">
+          <p class="lg__head">Leagues</p>
+          <div class="tiles">
+            <div class="tile" style="background:var(--green)"><span class="tile__name">Samford</span><span class="tile__days">Mon &amp; Wed</span></div>
+            <div class="tile" style="background:var(--navy)"><span class="tile__name">Two Wood</span><span class="tile__days">Tue &amp; Thu</span></div>
+            <div class="tile" style="background:var(--oxblood)"><span class="tile__name">Triples</span><span class="tile__days">Wed</span></div>
+          </div>
+        </div>
+        <div class="fold">&darr; competitions &middot; this week &darr;</div>
+      </div>
+    </div>
+    <p class="opt__verdict"><strong>Verdict:</strong> the safest move &mdash; identical look, everything just starts higher. But the two-line title still costs a lot of vertical space before the leagues appear, and it doesn&rsquo;t answer the &ldquo;use the logo&rdquo; question.</p>
+  </div>
+
+  <!-- ============================================================ B -->
+  <div class="opt">
+    <span class="opt__tag">B &mdash; crest lockup</span>
+    <p class="opt__note">The crest at <b>56&nbsp;px</b> sits left of the title; the title drops one size (<code>--xl</code> instead of <code>--xxl</code>) so it holds on one line on desktop, with the kicker tucked above it. The crest is at its safe size here &mdash; compare it against the header logo above it, it should look identical in sharpness. Saves a full line of title height as well as the padding.</p>
+    <div class="frame">
+      <div class="mhead"><div class="mhead__in"><img class="mhead__logo" src="../../public/logo.png" alt="" /><nav class="mnav"><b>Home</b><span>Leagues</span><span>Competitions</span><span>League Officers</span><span>Rules</span><span>Forms</span></nav><div class="mhead__spacer"></div></div></div>
+      <div class="mmain">
+        <div style="height:1.1rem"></div>
+        <div class="lockup">
+          <img class="lockup__logo" src="../../public/logo.png" alt="" />
+          <div class="lockup__text">
+            <p class="eyebrow">2026 season</p>
+            <h2 class="htitle htitle--md">Ipswich &amp; District Federation Bowls</h2>
+          </div>
+        </div>
+        <div class="lg">
+          <p class="lg__head">Leagues</p>
+          <div class="tiles">
+            <div class="tile" style="background:var(--green)"><span class="tile__name">Samford</span><span class="tile__days">Mon &amp; Wed</span></div>
+            <div class="tile" style="background:var(--navy)"><span class="tile__name">Two Wood</span><span class="tile__days">Tue &amp; Thu</span></div>
+            <div class="tile" style="background:var(--oxblood)"><span class="tile__name">Triples</span><span class="tile__days">Wed</span></div>
+          </div>
+        </div>
+        <div class="fold">&darr; competitions &middot; this week &darr;</div>
+      </div>
+    </div>
+    <p class="opt__verdict"><strong>Verdict:</strong> the crest earns its place without being enlarged past what the file can take, and the one-line title is meaningfully shorter than today&rsquo;s two lines. Small quirk: the same crest then appears twice on screen (header + hero) &mdash; pairs naturally with slimming the header logo or with Option&nbsp;D&rsquo;s header treatment on inner pages.</p>
+  </div>
+
+  <!-- ============================================================ C -->
+  <div class="opt">
+    <span class="opt__tag">C &mdash; banner band</span>
+    <p class="opt__note">A slim full-width band directly under the header &mdash; white with a thin green top rule &mdash; carrying crest (40&nbsp;px), name and &ldquo;2026 season&rdquo; in one row. The page body then opens straight with LEAGUES. This is the most compact treatment that still states the identity.</p>
+    <div class="frame">
+      <div class="mhead"><div class="mhead__in"><img class="mhead__logo" src="../../public/logo.png" alt="" /><nav class="mnav"><b>Home</b><span>Leagues</span><span>Competitions</span><span>League Officers</span><span>Rules</span><span>Forms</span></nav><div class="mhead__spacer"></div></div></div>
+      <div class="band"><div class="band__in">
+        <img class="band__logo" src="../../public/logo.png" alt="" />
+        <h2 class="htitle htitle--sm" style="margin:0">Ipswich &amp; District Federation Bowls</h2>
+        <span class="band__season">2026 season</span>
+      </div></div>
+      <div class="mmain">
+        <div class="lg lg--tight" style="margin-top:1.6rem">
+          <p class="lg__head">Leagues</p>
+          <div class="tiles">
+            <div class="tile" style="background:var(--green)"><span class="tile__name">Samford</span><span class="tile__days">Mon &amp; Wed</span></div>
+            <div class="tile" style="background:var(--navy)"><span class="tile__name">Two Wood</span><span class="tile__days">Tue &amp; Thu</span></div>
+            <div class="tile" style="background:var(--oxblood)"><span class="tile__name">Triples</span><span class="tile__days">Wed</span></div>
+          </div>
+        </div>
+        <div class="fold">&darr; competitions &middot; this week &darr;</div>
+      </div>
+    </div>
+    <p class="opt__verdict"><strong>Verdict:</strong> content starts highest of any option that keeps a title, and the band reads nicely as part of the chrome. But two stacked white bars (header + band), each with the same crest, is visibly repetitive &mdash; it really wants the header logo removed or the two bars merged, at which point it becomes Option&nbsp;D with extra steps.</p>
+  </div>
+
+  <!-- ============================================================ D -->
+  <div class="opt">
+    <span class="opt__tag">D &mdash; no hero, wordmark in the header</span>
+    <p class="opt__note">The hero goes entirely. The header brand grows into a crest-plus-wordmark lockup (crest stays 52&nbsp;px, name and &ldquo;2026 season&rdquo; stacked beside it) so the identity never leaves the screen, and the homepage opens straight with LEAGUES. This is what the very first scroll position looks like:</p>
+    <div class="frame">
+      <div class="mhead"><div class="mhead__in">
+        <div class="mbrand">
+          <img class="mhead__logo" src="../../public/logo.png" alt="" />
+          <div class="mbrand__text"><span class="mbrand__name">Ipswich &amp; District Federation Bowls</span><span class="mbrand__season">2026 season</span></div>
+        </div>
+        <nav class="mnav" style="margin-left:auto"><b>Home</b><span>Leagues</span><span>Rules</span><span>Forms</span></nav>
+        <div class="mhead__spacer"></div>
+      </div></div>
+      <div class="mmain">
+        <div class="lg" style="margin-top:1.6rem">
+          <p class="lg__head">Leagues</p>
+          <div class="tiles">
+            <div class="tile" style="background:var(--green)"><span class="tile__name">Samford</span><span class="tile__days">Mon &amp; Wed</span></div>
+            <div class="tile" style="background:var(--navy)"><span class="tile__name">Two Wood</span><span class="tile__days">Tue &amp; Thu</span></div>
+            <div class="tile" style="background:var(--oxblood)"><span class="tile__name">Triples</span><span class="tile__days">Wed</span></div>
+          </div>
+        </div>
+        <div class="lg">
+          <p class="lg__head">Competitions</p>
+          <div class="tiles">
+            <div class="tile" style="background:#4c3585;aspect-ratio:2.6"><span class="tile__name" style="font-size:1.05rem">Federation Cup</span></div>
+            <div class="tile" style="background:#0e6b84;aspect-ratio:2.6"><span class="tile__name" style="font-size:1.05rem">Presidents Shield</span></div>
+            <div class="tile" style="background:#8a5a12;aspect-ratio:2.6"><span class="tile__name" style="font-size:1.05rem">Charity Triples</span></div>
+          </div>
+        </div>
+        <div class="fold">&darr; this week &darr;</div>
+      </div>
+    </div>
+    <p class="opt__verdict"><strong>Verdict:</strong> maximum content above the fold &mdash; even a second section fits before scrolling &mdash; and the long name in the header nicely absorbs the four full nav labels it displaces. Costs the big editorial title, which is the one moment the site says its own name at full volume; the header wordmark at 0.95rem is a much quieter statement.</p>
+  </div>
+</div>
+</body>
+</html>

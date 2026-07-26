@@ -98,7 +98,7 @@ export function buildIcs(fixtureWeeks, context = {}) {
       if (match.isBye) return
       const description = [
         contextLabel,
-        `Week ${week.week}`,
+        week.label ?? `Week ${week.week}`,
         context.teamFilter ? `${context.teamFilter} fixture` : null,
       ]
         .filter(Boolean)
@@ -144,7 +144,7 @@ export function buildCsv(fixtureWeeks, { teamFilter = '' } = {}) {
       const [homeScore, awayScore] = scorePair(match)
       const played = match.played && homeScore != null && awayScore != null
       const row = [
-        week.week,
+        week.label ?? week.week,
         week.date ?? '',
         match.home,
         played ? homeScore : '',

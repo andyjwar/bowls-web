@@ -1,5 +1,7 @@
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useParams, useSearchParams } from 'react-router-dom'
 import { useCompetitions } from '../hooks/useCompetitions'
+import { CupBracket, hasBracket } from '../components/CupBracket'
+import { CupMatches } from '../components/MatchList'
 import { PosterTile } from '../components/LeaguePosterGrid'
 import { colorForLeague } from '../lib/leagueColors'
 import { formatFixtureDate } from '../lib/fixtures'
@@ -11,53 +13,31 @@ function sideLabel(side) {
   return side?.name ?? side?.label ?? 'TBC'
 }
 
-function isPending(side) {
-  return !side?.name
-}
-
-function KnockoutCard({ match }) {
-  const played =
-    typeof match.homeScore === 'number' && typeof match.awayScore === 'number'
-  const homeWon = played ? match.homeScore > match.awayScore : match.walkover === 'home'
-  const awayWon = played ? match.awayScore > match.homeScore : match.walkover === 'away'
-
-  let status = 'Upcoming'
-  if (played) status = 'Final score'
-  else if (match.walkover) status = 'Walkover'
-  else if (match.note) status = match.note
-
-  return (
-    <article className="match-card match-card--knockout">
-      <div className="match-card__teams">
-        <div className={`match-card__row${homeWon ? ' match-card__row--win' : ''}`}>
-          <span
-            className={`match-card__team${isPending(match.home) ? ' match-card__team--pending' : ''}`}
-          >
-            {sideLabel(match.home)}
-          </span>
-          <span className={`match-card__score${played ? '' : ' match-card__score--placeholder'}`}>
-            {played ? match.homeScore : match.walkover === 'home' ? 'w/o' : '–'}
-          </span>
-        </div>
-        <div className={`match-card__row${awayWon ? ' match-card__row--win' : ''}`}>
-          <span
-            className={`match-card__team${isPending(match.away) ? ' match-card__team--pending' : ''}`}
-          >
-            {sideLabel(match.away)}
-          </span>
-          <span className={`match-card__score${played ? '' : ' match-card__score--placeholder'}`}>
-            {played ? match.awayScore : match.walkover === 'away' ? 'w/o' : '–'}
-          </span>
-        </div>
-      </div>
-      <footer className="match-card__foot">
-        <span className="match-card__tie">{match.tie ? `Tie ${match.tie}` : '\u00a0'}</span>
-        <span className={`match-card__status${played ? ' match-card__status--final' : ''}`}>
-          {status}
-        </span>
-      </footer>
-    </article>
-  )
+/**
+ * Cup rounds in the fixtureWeeks shape the match list and exports use:
+ * one "week" per round, with the round name as the tile label.
+ */
+function roundsToWeeks(rounds) {
+  return (rounds ?? []).map((round, index) => ({
+    week: index + 1,
+    label: round.name,
+    date: round.date ?? null,
+    venue: round.venue ?? null,
+    matches: (round.matches ?? []).map((m) => {
+      const played =
+        typeof m.homeScore === 'number' && typeof m.awayScore === 'number'
+      return {
+        home: sideLabel(m.home),
+        away: sideLabel(m.away),
+        homeShots: played ? m.homeScore : null,
+        awayShots: played ? m.awayScore : null,
+        played,
+        walkover: m.walkover,
+        homeWon: played ? m.homeScore > m.awayScore : m.walkover === 'home',
+        awayWon: played ? m.awayScore > m.homeScore : m.walkover === 'away',
+      }
+    }),
+  }))
 }
 
 function CompetitionsHub({ competitions, loading }) {
@@ -91,6 +71,13 @@ function CompetitionsHub({ competitions, loading }) {
 }
 
 function CompetitionDetail({ comp, palette }) {
+  const [searchParams] = useSearchParams()
+  const bracketAvailable = hasBracket(comp.rounds)
+  const view =
+    bracketAvailable && searchParams.get('view') === 'bracket'
+      ? 'bracket'
+      : 'matches'
+
   const finalRound = comp.rounds[comp.rounds.length - 1]
   const bannerMeta = [
     comp.days,
@@ -100,6 +87,13 @@ function CompetitionDetail({ comp, palette }) {
     .filter(Boolean)
     .join(' · ')
 
+  const tabs = [
+    { id: 'matches', label: 'Matches', href: '?view=matches' },
+    ...(bracketAvailable
+      ? [{ id: 'bracket', label: 'Bracket', href: '?view=bracket' }]
+      : []),
+  ]
+
   return (
     <div
       className="page page--competitions"
@@ -108,32 +102,37 @@ function CompetitionDetail({ comp, palette }) {
         '--league-color-soft': palette.soft,
       }}
     >
-      <header className="league-banner">
+      <header className="league-banner league-banner--tabbed">
         <Link to="/competitions" className="league-banner__back">
           ← All competitions
         </Link>
         <h1 className="league-banner__title">{comp.name}</h1>
         {bannerMeta ? <p className="league-banner__meta">{bannerMeta}</p> : null}
+        <nav className="league-banner__tabs" aria-label="View">
+          {tabs.map((t) => {
+            const active = t.id === view
+            return (
+              <Link
+                key={t.id}
+                to={{ search: t.href }}
+                className={`league-banner__tab${active ? ' league-banner__tab--active' : ''}`}
+                aria-current={active ? 'page' : undefined}
+              >
+                {t.label}
+              </Link>
+            )
+          })}
+        </nav>
       </header>
 
-      <div className="rounds">
-        {comp.rounds.map((round) => (
-          <section key={round.name} className="round">
-            <header className="round__head">
-              <h3 className="round__title">{round.name}</h3>
-              <span className="round__date">
-                {round.date ? formatFixtureDate(round.date) : 'Date TBC'}
-                {round.venue ? ` · ${round.venue}` : ''}
-              </span>
-            </header>
-            <div className="matches-grid">
-              {round.matches.map((match, i) => (
-                <KnockoutCard key={match.tie ?? i} match={match} />
-              ))}
-            </div>
-          </section>
-        ))}
-      </div>
+      {view === 'bracket' ? (
+        <CupBracket rounds={comp.rounds} />
+      ) : (
+        <CupMatches
+          weeks={roundsToWeeks(comp.rounds)}
+          context={{ leagueName: comp.name }}
+        />
+      )}
     </div>
   )
 }

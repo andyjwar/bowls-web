@@ -14,18 +14,22 @@ const NAV = [
 export function AppShell() {
   const { pathname } = useLocation()
   const [theme, setTheme] = useTheme()
+  // The homepage hero carries the crest, so the header skips it there.
+  const isHome = pathname === '/'
 
   return (
     <div className="bowls-app" data-theme={theme}>
       <header className="site-header">
         <div className="site-header__inner">
-          <NavLink to="/" className="site-brand" aria-label="Home">
-            <img
-              className="site-brand__logo"
-              src={`${import.meta.env.BASE_URL}logo.png`}
-              alt="Ipswich & District Federation Bowls League"
-            />
-          </NavLink>
+          {!isHome ? (
+            <NavLink to="/" className="site-brand" aria-label="Home">
+              <img
+                className="site-brand__logo"
+                src={`${import.meta.env.BASE_URL}logo.png`}
+                alt="Ipswich & District Federation Bowls League"
+              />
+            </NavLink>
+          ) : null}
           <nav className="site-nav" aria-label="Main">
             {NAV.map(({ to, label, match }) => {
               const active = match(pathname)
