@@ -37,8 +37,11 @@ import { loadRegisteredPlayers, setTeamRegisteredPlayers, seedRosterClubsFromLea
 import { parseRosterFromText, parseRosterUploadBuffer } from './rosterUploadParse.js'
 import { addFormSubmission, loadFormSubmissions } from './formsStore.js'
 import {
+  createCompetition,
   createSeasonCompetitionsFile,
+  deleteCompetition,
   loadCompetitions,
+  replaceCompetitionDraw,
   updateCompetitionRounds,
 } from './competitionsStore.js'
 import { getActiveSeason, setActiveSeason } from './siteConfigStore.js'
@@ -358,11 +361,12 @@ app.put('/api/admin/league/:leagueId/labels', requireAuth, (req, res) => {
 app.post('/api/admin/league/:leagueId/divisions', requireAuth, (req, res) => {
   try {
     const leagueId = String(req.params.leagueId ?? '').trim()
-    const { sectionId, divisionId, label } = req.body ?? {}
+    const { sectionId, divisionId, label, playDay } = req.body ?? {}
     const out = addLeagueDivision(leagueId, {
       sectionId: sectionId != null ? String(sectionId).trim() : '',
       divisionId: divisionId != null ? String(divisionId).trim() : '',
       label,
+      playDay,
     })
     res.json({ ok: true, ...out })
   } catch (e) {
@@ -807,6 +811,19 @@ app.get('/api/admin/competitions', requireAuth, (_req, res) => {
   }
 })
 
+/** Add a knockout cup to the active season (empty draw). */
+app.post('/api/admin/competitions', requireAuth, (req, res) => {
+  try {
+    const competition = createCompetition({
+      name: req.body?.name,
+      days: req.body?.days,
+    })
+    res.json({ ok: true, competition })
+  } catch (e) {
+    res.status(400).json({ error: e.message || 'Could not create the competition' })
+  }
+})
+
 app.put('/api/admin/competition/:compId', requireAuth, (req, res) => {
   try {
     const compId = String(req.params.compId ?? '').trim()
@@ -814,6 +831,27 @@ app.put('/api/admin/competition/:compId', requireAuth, (req, res) => {
     res.json({ ok: true, competition })
   } catch (e) {
     res.status(400).json({ error: e.message || 'Save failed' })
+  }
+})
+
+/** Replace a cup's whole draw (round structure). Refused once results exist. */
+app.put('/api/admin/competition/:compId/draw', requireAuth, (req, res) => {
+  try {
+    const compId = String(req.params.compId ?? '').trim()
+    const competition = replaceCompetitionDraw(compId, req.body?.rounds)
+    res.json({ ok: true, competition })
+  } catch (e) {
+    res.status(400).json({ error: e.message || 'Save failed' })
+  }
+})
+
+/** Remove a cup from the season. Refused once results exist. */
+app.delete('/api/admin/competition/:compId', requireAuth, (req, res) => {
+  try {
+    const out = deleteCompetition(String(req.params.compId ?? '').trim())
+    res.json({ ok: true, ...out })
+  } catch (e) {
+    res.status(400).json({ error: e.message || 'Could not remove the competition' })
   }
 })
 

@@ -11,6 +11,7 @@ import {
   addAdminLeagueDivision,
   addAdminLeagueSection,
   createAdminLeague,
+  deleteAdminLeague,
   fetchAdminRegisteredPlayers,
   saveAdminRegisteredTeam,
   seedAdminRegisteredPlayersFromLeague,
@@ -22,6 +23,9 @@ import {
   saveResults,
   fetchAdminCompetitions,
   saveAdminCompetitionRounds,
+  createAdminCompetition,
+  saveAdminCompetitionDraw,
+  deleteAdminCompetition,
   startAdminSeason,
   setAdminActiveSeason,
 } from '../lib/adminApi'
@@ -262,6 +266,24 @@ export function useAdmin() {
     }
   }, [loadLeagues])
 
+  const removeLeague = useCallback(
+    async (leagueId) => {
+      setBusy(true)
+      setError(null)
+      try {
+        const out = await deleteAdminLeague(leagueId)
+        await loadLeagues()
+        return out
+      } catch (e) {
+        setError(e.message)
+        throw e
+      } finally {
+        setBusy(false)
+      }
+    },
+    [loadLeagues],
+  )
+
   const loadRegisteredPlayersMap = useCallback(async () => {
     setError(null)
     try {
@@ -331,6 +353,45 @@ export function useAdmin() {
     }
   }, [])
 
+  const createCompetition = useCallback(async (payload) => {
+    setBusy(true)
+    setError(null)
+    try {
+      return await createAdminCompetition(payload)
+    } catch (e) {
+      setError(e.message)
+      throw e
+    } finally {
+      setBusy(false)
+    }
+  }, [])
+
+  const saveCompetitionDraw = useCallback(async (compId, rounds) => {
+    setBusy(true)
+    setError(null)
+    try {
+      return await saveAdminCompetitionDraw(compId, rounds)
+    } catch (e) {
+      setError(e.message)
+      throw e
+    } finally {
+      setBusy(false)
+    }
+  }, [])
+
+  const removeCompetition = useCallback(async (compId) => {
+    setBusy(true)
+    setError(null)
+    try {
+      return await deleteAdminCompetition(compId)
+    } catch (e) {
+      setError(e.message)
+      throw e
+    } finally {
+      setBusy(false)
+    }
+  }, [])
+
   const parseRegisteredTeamListFile = useCallback(async (formData) => {
     setBusy(true)
     setError(null)
@@ -369,6 +430,7 @@ export function useAdmin() {
       addLeagueDivision: addLeagueDivisionRequest,
       addLeagueSection: addLeagueSectionRequest,
       createLeague: createLeagueRequest,
+      removeLeague,
       loadRegisteredPlayersMap,
       saveRegisteredTeamSheet,
       seedRegisteredPlayersFromLeague,
@@ -376,6 +438,9 @@ export function useAdmin() {
       parseRegisteredTeamListFile,
       loadCompetitions,
       saveCompetitionRounds,
+      createCompetition,
+      saveCompetitionDraw,
+      removeCompetition,
       setError,
     }),
     [
@@ -402,6 +467,7 @@ export function useAdmin() {
       addLeagueDivisionRequest,
       addLeagueSectionRequest,
       createLeagueRequest,
+      removeLeague,
       loadRegisteredPlayersMap,
       saveRegisteredTeamSheet,
       seedRegisteredPlayersFromLeague,
@@ -409,6 +475,9 @@ export function useAdmin() {
       parseRegisteredTeamListFile,
       loadCompetitions,
       saveCompetitionRounds,
+      createCompetition,
+      saveCompetitionDraw,
+      removeCompetition,
     ],
   )
 }

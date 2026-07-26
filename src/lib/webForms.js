@@ -9,7 +9,7 @@
 export const WEB_FORMS = [
   {
     id: 'player-transfer',
-    enabled: true,
+    enabled: false,
     title: 'Player transfer',
     note: 'Move a registered player to another club. Effective 14 days after application.',
     lead: 'Ask to move a registered player to another club. Fields marked * are required.',
@@ -33,7 +33,7 @@ export const WEB_FORMS = [
   },
   {
     id: 'weekly-results',
-    enabled: true,
+    enabled: false,
     title: 'Weekly results',
     note: 'Send in a league match result instead of posting the card.',
     lead: 'Send in the result of a league match. Fields marked * are required.',
@@ -73,7 +73,7 @@ export const WEB_FORMS = [
   },
   {
     id: 'cup-results',
-    enabled: true,
+    enabled: false,
     title: 'Cup results',
     note: 'Send in a Knockout Cup or Millennium Cup result.',
     lead: 'Send in the result of a cup tie. Fields marked * are required.',
@@ -101,7 +101,7 @@ export const WEB_FORMS = [
   },
   {
     id: 'competitions-entry',
-    enabled: true,
+    enabled: false,
     title: 'Competitions entry',
     note: 'Enter the Samford competitions online.',
     lead: 'Enter the Samford competitions. Fields marked * are required.',
@@ -125,7 +125,7 @@ export const WEB_FORMS = [
   },
   {
     id: 'player-registration',
-    enabled: true,
+    enabled: false,
     title: 'Player registration',
     note: 'Register your club’s players for the season.',
     lead: 'Register your club’s players. Fields marked * are required.',
@@ -156,7 +156,7 @@ export const WEB_FORMS = [
   },
   {
     id: 'league-application',
-    enabled: true,
+    enabled: false,
     title: 'League application',
     note: 'Apply for a team to join the league.',
     lead: 'Apply for a team to join the league. Fields marked * are required.',

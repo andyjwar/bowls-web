@@ -5406,18 +5406,78 @@ a.form-card:hover {
 }
 
 .add-inline {
-  display: inline-flex;
-  align-items: center;
+  display: grid;
   gap: 8px;
+}
+
+.add-inline__fields {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
   flex-wrap: wrap;
+}
+
+.add-inline__field {
+  display: grid;
+  gap: 6px;
+}
+
+.add-inline__label {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fm-muted, #6b7280);
+}
+
+.add-inline__actions {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding-bottom: 2px;
 }
 
 .add-inline__input {
   min-width: 12rem;
 }
 
+.add-inline__note {
+  margin: 0;
+  max-width: 62ch;
+}
+
 .add-day-row {
   margin-top: 4px;
+  display: grid;
+  gap: 14px;
+  justify-items: start;
+}
+
+/* ── Remove league (two-step confirm) ── */
+
+.remove-league {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.remove-league__btn {
+  border: 1px dashed rgba(179, 64, 42, 0.5);
+  background: transparent;
+  color: #b3402a;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.remove-league__btn:hover,
+.remove-league__btn--armed {
+  border-style: solid;
+  border-color: #b3402a;
 }
 
 /* ── New-season guided setup banner ── */
@@ -5518,4 +5578,129 @@ a.form-card:hover {
   font-size: 0.8rem;
   color: var(--fm-muted, #6b7280);
   max-width: 60ch;
+}
+
+/* ── Cup draw builder (AdminCupEntry / CupDrawBuilder) ── */
+
+.cup-draw {
+  margin: 0 0 14px;
+}
+
+.cup-draw__hint {
+  display: block;
+  margin: 0 0 10px;
+  max-width: 62ch;
+}
+
+.cup-draw__entrants {
+  width: 100%;
+  max-width: 26rem;
+  resize: vertical;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.cup-draw__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.cup-draw__shape {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--fm-muted, #6b7280);
+}
+
+.cup-draw__subtitle {
+  margin: 18px 0 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fm-muted, #6b7280);
+}
+
+.cup-draw__slotlist,
+.cup-draw__roundlist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.cup-draw__slottie,
+.cup-draw__round {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cup-draw__tienum {
+  flex: 0 0 3.2rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--fm-muted, #6b7280);
+}
+
+.cup-draw__slotselect {
+  min-width: 11rem;
+}
+
+.cup-draw__roundname {
+  flex: 0 0 9.5rem;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.cup-draw__venue {
+  min-width: 12rem;
+}
+
+.cup-draw__previewwrap .fixture-preview {
+  border-top: none;
+  padding-top: 0;
+}
+
+.cup-draw__previewwrap .fixture-preview__date {
+  flex: 0 0 10.5rem;
+}
+
+.cup-draw__removerow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+/* Round header date/venue: quiet tap-to-edit text, inline inputs when open. */
+.cup-roundmeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cup-roundmeta__venue {
+  font-size: 0.82rem;
+  padding: 4px 8px;
+  min-width: 10rem;
+}
+
+.cup-roundmeta__open {
+  border: none;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+
+.cup-roundmeta__open:hover {
+  color: inherit;
 }

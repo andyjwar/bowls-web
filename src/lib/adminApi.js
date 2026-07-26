@@ -188,6 +188,27 @@ export async function saveAdminCompetitionRounds(compId, rounds) {
   })
 }
 
+/** Add a knockout cup to the active season (empty draw — set it up next). */
+export async function createAdminCompetition(payload) {
+  return api('/competitions', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  })
+}
+
+/** Replace a cup's whole draw structure. The server refuses once results exist. */
+export async function saveAdminCompetitionDraw(compId, rounds) {
+  return api(`/competition/${encodeURIComponent(compId)}/draw`, {
+    method: 'PUT',
+    body: JSON.stringify({ rounds }),
+  })
+}
+
+/** Remove a cup from the season (only while it has no results). */
+export async function deleteAdminCompetition(compId) {
+  return api(`/competition/${encodeURIComponent(compId)}`, { method: 'DELETE' })
+}
+
 export async function importCsv(formData) {
   const res = await fetch(`${API_BASE}/import-csv`, {
     method: 'POST',

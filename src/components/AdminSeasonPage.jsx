@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import { AddInline } from './AddInline'
 import { colorForLeague } from '../lib/leagueColors'
 import { shortLeagueName } from '../lib/leagueSchedule'
 import { buildDivisionFixtures } from '../lib/fixtures'
@@ -409,82 +410,55 @@ function FixturePreview({ template, teams, playDay }) {
 
 /* ────────────────────────── Quiet "+ add" forms ────────────────────────── */
 
-/** Small expandable "+ Add …" control shared by division / day / league adds. */
-function AddInline({ label, fields, submitLabel, onSubmit, hint }) {
-  const [open, setOpen] = useState(false)
-  const [values, setValues] = useState({})
-  const [busy, setBusy] = useState(false)
+/** Two-step "Remove league" — unregisters it; the data file stays on disk. */
+function RemoveLeague({ admin, leagueId, leagueName, onRemoved }) {
+  const [confirming, setConfirming] = useState(false)
   const [error, setError] = useState(null)
 
-  function close() {
-    setOpen(false)
-    setValues({})
-    setError(null)
-  }
-
-  async function submit() {
-    setBusy(true)
-    setError(null)
+  async function handleClick() {
+    if (!confirming) {
+      setConfirming(true)
+      setError(null)
+      return
+    }
+    setConfirming(false)
     try {
-      await onSubmit(values)
-      close()
+      await admin.removeLeague(leagueId)
+      onRemoved?.()
     } catch (err) {
-      setError(err.message || 'Could not add')
-    } finally {
-      setBusy(false)
+      setError(err.message || 'Could not remove the league')
     }
   }
 
-  if (!open) {
-    return (
-      <button type="button" className="add-inline__open" onClick={() => setOpen(true)}>
-        + {label}
-      </button>
-    )
-  }
-
   return (
-    <span className="add-inline">
-      {fields.map((f) =>
-        f.options ? (
-          <select
-            key={f.name}
-            className="admin-input add-inline__input"
-            value={values[f.name] ?? f.options[0]?.value ?? ''}
-            aria-label={f.placeholder}
-            onChange={(ev) => setValues((v) => ({ ...v, [f.name]: ev.target.value }))}
-          >
-            {f.options.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
-              </option>
-            ))}
-          </select>
-        ) : (
-          <input
-            key={f.name}
-            type="text"
-            className="admin-input add-inline__input"
-            placeholder={f.placeholder}
-            value={values[f.name] ?? ''}
-            onChange={(ev) => setValues((v) => ({ ...v, [f.name]: ev.target.value }))}
-          />
-        ),
-      )}
+    <div className="remove-league">
       <button
         type="button"
-        className="entry-rowact entry-rowact--save"
-        disabled={busy}
-        onClick={submit}
+        className={`remove-league__btn${confirming ? ' remove-league__btn--armed' : ''}`}
+        disabled={admin.busy}
+        onClick={handleClick}
       >
-        {busy ? 'Adding…' : submitLabel}
+        {confirming ? `Confirm — remove ${leagueName}?` : `Remove ${leagueName}…`}
       </button>
-      <button type="button" className="entry-rowact entry-rowact--cancel" onClick={close}>
-        Cancel
-      </button>
-      {error ? <span className="team-slots__msg team-slots__msg--error">{error}</span> : null}
-      {!error && hint ? <span className="team-slots__hint">{hint}</span> : null}
-    </span>
+      {confirming ? (
+        <button
+          type="button"
+          className="entry-rowact entry-rowact--cancel"
+          onClick={() => setConfirming(false)}
+        >
+          Cancel
+        </button>
+      ) : null}
+      {error ? (
+        <span className="team-slots__msg team-slots__msg--error">{error}</span>
+      ) : (
+        <span className="team-slots__hint">
+          {confirming
+            ? 'It leaves the site and admin — the data file is kept, so it can be restored.'
+            : ''}
+        </span>
+      )}
+    </div>
   )
 }
 
@@ -735,26 +709,52 @@ export function AdminSeasonPage({ admin }) {
             const template = grp.section ? grp.section.scheduleTemplate : doc.scheduleTemplate
             return (
               <section key={grp.section?.id ?? '_flat'} className="home-section">
-                {grp.section ? (
-                  <div className="home-section__head home-section__head--row">
-                    <h2 className="home-section__title">
-                      {grp.section.label ?? grp.section.id}
-                    </h2>
-                    <AddInline
-                      label="Add division"
-                      submitLabel="Add"
-                      fields={[{ name: 'label', placeholder: 'Division F' }]}
-                      onSubmit={async ({ label }) => {
-                        if (!String(label ?? '').trim()) throw new Error('Give the division a name')
-                        await admin.addLeagueDivision(leagueId, {
-                          sectionId: grp.section.id,
-                          label: label.trim(),
-                        })
-                        setRevision((x) => x + 1)
-                      }}
-                    />
-                  </div>
-                ) : null}
+                {(() => {
+                  /* Two Wood-style flat leagues have Tuesday/Thursday date
+                     columns — a new division must pick which day it plays. */
+                  const playDayOptions = grp.section
+                    ? []
+                    : DATE_COLUMNS.filter(
+                        (c) => c.key !== 'date' && template?.[0]?.[c.key] !== undefined,
+                      ).map((c) => ({
+                        value: c.label.toLowerCase(),
+                        label: c.label,
+                      }))
+                  return (
+                    <div className="home-section__head home-section__head--row">
+                      <h2 className="home-section__title">
+                        {grp.section ? (grp.section.label ?? grp.section.id) : 'Divisions'}
+                      </h2>
+                      <AddInline
+                        label="Add division"
+                        submitLabel="Add division"
+                        hint={
+                          grp.section
+                            ? 'New divisions get the same team slots and weekly schedule as the other divisions on this day. Slots start empty (all byes) until you type team names in.'
+                            : 'New divisions get the same team slots and weekly schedule as the rest of the league. Slots start empty (all byes) until you type team names in.'
+                        }
+                        fields={[
+                          { name: 'label', label: 'Division name', placeholder: 'e.g. Division F' },
+                          ...(playDayOptions.length > 1
+                            ? [{ name: 'playDay', label: 'Plays on', options: playDayOptions }]
+                            : []),
+                        ]}
+                        onSubmit={async ({ label, playDay }) => {
+                          if (!String(label ?? '').trim())
+                            throw new Error('Give the division a name')
+                          await admin.addLeagueDivision(leagueId, {
+                            sectionId: grp.section ? grp.section.id : null,
+                            label: label.trim(),
+                            ...(playDayOptions.length > 1
+                              ? { playDay: playDay || playDayOptions[0].value }
+                              : {}),
+                          })
+                          setRevision((x) => x + 1)
+                        }}
+                      />
+                    </div>
+                  )
+                })()}
 
                 <DatesTile
                   admin={admin}
@@ -868,15 +868,15 @@ export function AdminSeasonPage({ admin }) {
           <AddInline
             label="Add day"
             submitLabel="Add day"
-            hint="copies the schedule grid — set its dates above after adding"
+            hint="Adds another play day to this league (like Monday Evening / Wednesday Afternoon). It starts with one empty division and plays the same number of weeks and the same who-plays-who pattern as the day you pick — then set its own match dates in its Fixture dates panel."
             fields={[
-              { name: 'label', placeholder: 'Thursday Evening' },
+              { name: 'label', label: 'Day name', placeholder: 'e.g. Thursday Evening' },
               {
                 name: 'cloneFrom',
-                placeholder: 'Copy schedule from',
+                label: 'Use the same weekly pattern as',
                 options: doc.sections.map((s) => ({
                   value: s.id,
-                  label: `Schedule like ${s.label ?? s.id}`,
+                  label: s.label ?? s.id,
                 })),
               },
             ]}
@@ -907,15 +907,15 @@ export function AdminSeasonPage({ admin }) {
             <AddInline
               label="New league"
               submitLabel="Create league"
-              hint="copies the fixture structure — teams start empty"
+              hint="Creates another league in the current season. It copies the chosen league's shape — play days, divisions and the weekly fixture pattern — with every team slot empty, ready for names and its own dates."
               fields={[
-                { name: 'name', placeholder: 'League name (e.g. Pairs League)' },
+                { name: 'name', label: 'League name', placeholder: 'e.g. Pairs League' },
                 {
                   name: 'cloneFrom',
-                  placeholder: 'Copy structure from',
+                  label: 'Copy the shape of',
                   options: leagues.map((l) => ({
                     value: l.id,
-                    label: `Structure like ${shortLeagueName(l.name) || l.id}`,
+                    label: shortLeagueName(l.name) || l.id,
                   })),
                 },
               ]}
@@ -932,6 +932,18 @@ export function AdminSeasonPage({ admin }) {
                 if (out?.leagueId) selectLeague(out.leagueId)
               }}
             />
+
+            {doc && leagues.length > 1 ? (
+              <RemoveLeague
+                admin={admin}
+                leagueId={leagueId}
+                leagueName={shortLeagueName(doc.name) || leagueId}
+                onRemoved={() => {
+                  const remaining = leagues.filter((l) => l.id !== leagueId)
+                  selectLeague(remaining[0]?.id ?? '')
+                }}
+              />
+            ) : null}
           </div>
         </>
       ) : null}

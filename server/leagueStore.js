@@ -323,7 +323,7 @@ export function updateLeagueStructureLabels(leagueId, payload = {}) {
   return { ok: true }
 }
 
-export function addLeagueDivision(leagueId, { sectionId, divisionId, label }) {
+export function addLeagueDivision(leagueId, { sectionId, divisionId, label, playDay }) {
   const league = loadLeague(leagueId)
   const lbl = String(label ?? '').trim()
   const rawId = String(divisionId ?? '').trim().toLowerCase()
@@ -352,8 +352,18 @@ export function addLeagueDivision(leagueId, { sectionId, divisionId, label }) {
       teams: Array.from({ length: slots }, () => 'Bye'),
       results: { weeks: {} },
     }
-    const donorPlayDay = league.divisions.find((d) => d.playDay)?.playDay
-    if (donorPlayDay) row.playDay = donorPlayDay
+    const requestedDay = String(playDay ?? '').trim().toLowerCase()
+    if (requestedDay) {
+      /* The play day must have a date column in the schedule grid (e.g.
+         'tuesday' needs tuesdayDate on Two Wood's rows). */
+      if (league.scheduleTemplate?.[0]?.[`${requestedDay}Date`] === undefined) {
+        throw new Error(`This league's schedule has no ${requestedDay} dates`)
+      }
+      row.playDay = requestedDay
+    } else {
+      const donorPlayDay = league.divisions.find((d) => d.playDay)?.playDay
+      if (donorPlayDay) row.playDay = donorPlayDay
+    }
     league.divisions.push(row)
   }
 

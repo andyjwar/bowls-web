@@ -1,8 +1,9 @@
 import { Fragment, useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { colorForLeague } from '../lib/leagueColors'
 import { formatFixtureDate } from '../lib/fixtures'
 import { cupMatchDecided } from '../lib/adminEntryData'
+import { CupDrawBuilder } from './CupDrawBuilder'
 
 /** Cups take the palette slots after the three leagues — same as the public pages. */
 const COMPETITION_COLOR_OFFSET = 3
@@ -39,12 +40,57 @@ function editsMatchSaved(e, m) {
   )
 }
 
+/** Two-step "Remove competition" — only offered while the cup has no results. */
+function RemoveCompetition({ admin, comp, onRemoved }) {
+  const [confirming, setConfirming] = useState(false)
+  const [error, setError] = useState(null)
+
+  async function handleClick() {
+    if (!confirming) {
+      setConfirming(true)
+      setError(null)
+      return
+    }
+    setConfirming(false)
+    try {
+      await admin.removeCompetition(comp.id)
+      onRemoved?.()
+    } catch (err) {
+      setError(err.message || 'Could not remove the competition')
+    }
+  }
+
+  return (
+    <div className="remove-league">
+      <button
+        type="button"
+        className={`remove-league__btn${confirming ? ' remove-league__btn--armed' : ''}`}
+        disabled={admin.busy}
+        onClick={handleClick}
+      >
+        {confirming ? `Confirm — remove ${comp.name}?` : `Remove ${comp.name}…`}
+      </button>
+      {confirming ? (
+        <button
+          type="button"
+          className="entry-rowact entry-rowact--cancel"
+          onClick={() => setConfirming(false)}
+        >
+          Cancel
+        </button>
+      ) : null}
+      {error ? <span className="team-slots__msg team-slots__msg--error">{error}</span> : null}
+    </div>
+  )
+}
+
 /**
  * Round-by-round cup score entry. Saving a round writes the whole competition
  * back; the server fills winners into `from`-linked slots in later rounds.
  */
 export function AdminCupEntry({ admin }) {
   const { compId } = useParams()
+  const navigate = useNavigate()
   const [competitions, setCompetitions] = useState(null)
   const [fetchError, setFetchError] = useState(null)
   const [revision, setRevision] = useState(0)
@@ -53,6 +99,8 @@ export function AdminCupEntry({ admin }) {
   const [savingRound, setSavingRound] = useState(null)
   const [savingTie, setSavingTie] = useState(null) // editKey currently saving
   const [woPicker, setWoPicker] = useState(null) // editKey whose Home/Away walkover choice is open
+  const [drawOpen, setDrawOpen] = useState(false) // redo-the-draw builder toggle
+  const [metaEdit, setMetaEdit] = useState(null) // { round, date, venue } round-header edit
 
   useEffect(() => {
     let cancelled = false
@@ -230,6 +278,35 @@ export function AdminCupEntry({ admin }) {
     }
   }
 
+  /** Save a round's date/venue — a whole-rounds PUT with just those fields changed. */
+  async function saveRoundMeta() {
+    if (!metaEdit) return
+    const rounds = JSON.parse(JSON.stringify(comp.rounds ?? []))
+    const round = rounds[metaEdit.round]
+    if (!round) return
+    if (metaEdit.date) round.date = metaEdit.date
+    else delete round.date
+    if (metaEdit.venue.trim()) round.venue = metaEdit.venue.trim()
+    else delete round.venue
+    setSavingRound(metaEdit.round)
+    setRoundMsg(null)
+    try {
+      await admin.saveCompetitionRounds(compId, rounds)
+      setMetaEdit(null)
+      setRevision((x) => x + 1)
+    } catch (e) {
+      setRoundMsg({ round: metaEdit.round, kind: 'error', text: e.message || 'Save failed' })
+    } finally {
+      setSavingRound(null)
+    }
+  }
+
+  const hasDraw = (comp?.rounds?.length ?? 0) > 0
+  const hasResults = Boolean(
+    comp?.rounds?.some((r) => (r.matches ?? []).some((m) => cupMatchDecided(m))),
+  )
+  const builderOpen = Boolean(comp) && (!hasDraw || drawOpen)
+
   const finalRound = comp?.rounds?.[comp.rounds.length - 1]
   const bannerMeta = comp
     ? [
@@ -263,7 +340,25 @@ export function AdminCupEntry({ admin }) {
         <p className="page-state page-state--error">Unknown competition.</p>
       ) : null}
 
-      {comp ? (
+      {builderOpen ? (
+        <>
+          <CupDrawBuilder
+            key={`${comp.id}:${revision}`}
+            admin={admin}
+            comp={comp}
+            onSaved={() => {
+              setDrawOpen(false)
+              setRevision((x) => x + 1)
+            }}
+            onCancel={hasDraw ? () => setDrawOpen(false) : null}
+          />
+          <div className="cup-draw__removerow">
+            <RemoveCompetition admin={admin} comp={comp} onRemoved={() => navigate('/admin')} />
+          </div>
+        </>
+      ) : null}
+
+      {comp && !builderOpen ? (
         <div className="match-weeks">
           {comp.rounds.map((round, roundIdx) => {
             const dirtyCount = roundDirtyCount(roundIdx, round)
@@ -272,11 +367,61 @@ export function AdminCupEntry({ admin }) {
               <section key={round.name ?? roundIdx} className="match-week">
                 <div className="match-week__head">
                   <h3 className="match-week__title">{round.name}</h3>
-                  <span className="match-week__date">
-                    {[formatFixtureDate(round.date) || null, round.venue || null]
-                      .filter(Boolean)
-                      .join(' · ') || 'Date TBC'}
-                  </span>
+                  {metaEdit?.round === roundIdx ? (
+                    <span className="cup-roundmeta">
+                      <input
+                        type="date"
+                        className="dates-tile__input"
+                        value={metaEdit.date}
+                        aria-label={`${round.name} date`}
+                        onChange={(ev) =>
+                          setMetaEdit((p) => ({ ...p, date: ev.target.value }))
+                        }
+                      />
+                      <input
+                        type="text"
+                        className="admin-input cup-roundmeta__venue"
+                        placeholder="Venue (optional)"
+                        value={metaEdit.venue}
+                        aria-label={`${round.name} venue`}
+                        onChange={(ev) =>
+                          setMetaEdit((p) => ({ ...p, venue: ev.target.value }))
+                        }
+                      />
+                      <button
+                        type="button"
+                        className="entry-rowact entry-rowact--save"
+                        disabled={savingRound === roundIdx}
+                        onClick={saveRoundMeta}
+                      >
+                        {savingRound === roundIdx ? 'Saving…' : '✓ Save'}
+                      </button>
+                      <button
+                        type="button"
+                        className="entry-rowact entry-rowact--cancel"
+                        onClick={() => setMetaEdit(null)}
+                      >
+                        Cancel
+                      </button>
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      className="match-week__date cup-roundmeta__open"
+                      title="Edit this round's date and venue"
+                      onClick={() =>
+                        setMetaEdit({
+                          round: roundIdx,
+                          date: round.date ?? '',
+                          venue: round.venue ?? '',
+                        })
+                      }
+                    >
+                      {[formatFixtureDate(round.date) || null, round.venue || null]
+                        .filter(Boolean)
+                        .join(' · ') || 'Date TBC'}
+                    </button>
+                  )}
                 </div>
 
                 {(round.matches ?? []).map((m, matchIdx) => {
@@ -575,6 +720,19 @@ export function AdminCupEntry({ admin }) {
               </section>
             )
           })}
+        </div>
+      ) : null}
+
+      {comp && !builderOpen && !hasResults ? (
+        <div className="cup-draw__removerow">
+          <button
+            type="button"
+            className="dates-tile__toggle"
+            onClick={() => setDrawOpen(true)}
+          >
+            Redo the draw…
+          </button>
+          <RemoveCompetition admin={admin} comp={comp} onRemoved={() => navigate('/admin')} />
         </div>
       ) : null}
     </div>

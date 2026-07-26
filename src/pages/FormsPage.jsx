@@ -95,22 +95,26 @@ export function FormsPage() {
       <header className="page-head page-head--hub">
         <h1 className="page-head__title page-head__title--xl">Forms</h1>
         <p className="page-head__lead">
-          Fill in league forms online, or download and print them.
+          {ONLINE_FORMS.length > 0
+            ? 'Fill in league forms online, or download and print them.'
+            : 'Download and print league forms.'}
         </p>
       </header>
 
-      <section className="forms-section">
-        <h2 className="section-label">Fill in online</h2>
-        <div className="form-cards">
-          {ONLINE_FORMS.map((f) => (
-            <Link key={f.id} to={`/forms/${f.id}`} className="form-card form-card--action">
-              <span className="form-card__eyebrow">Fill in online</span>
-              <span className="form-card__title">{f.title}</span>
-              <span className="form-card__note">{f.note}</span>
-            </Link>
-          ))}
-        </div>
-      </section>
+      {ONLINE_FORMS.length > 0 ? (
+        <section className="forms-section">
+          <h2 className="section-label">Fill in online</h2>
+          <div className="form-cards">
+            {ONLINE_FORMS.map((f) => (
+              <Link key={f.id} to={`/forms/${f.id}`} className="form-card form-card--action">
+                <span className="form-card__eyebrow">Fill in online</span>
+                <span className="form-card__title">{f.title}</span>
+                <span className="form-card__note">{f.note}</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <section className="forms-section">
         <h2 className="section-label">Weekly results</h2>

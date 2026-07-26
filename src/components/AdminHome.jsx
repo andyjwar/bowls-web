@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { fetchAdminFormSubmissions } from '../lib/adminApi'
+import { Link, useNavigate } from 'react-router-dom'
+import { AddInline } from './AddInline'
 import { colorForLeague } from '../lib/leagueColors'
 import {
   collectLeagueDates,
@@ -12,9 +12,6 @@ import { countOutstandingForLeague, countAwaitedCupTies } from '../lib/adminEntr
 
 /** Cups take the palette slots after the leagues — same rule as the public pages. */
 const COMPETITION_COLOR_OFFSET = 3
-
-/** Submissions from the last 7 days count as "new" on the Forms tile. */
-const NEW_FORMS_WINDOW_MS = 7 * 24 * 60 * 60 * 1000
 
 function TileArrow() {
   return (
@@ -41,7 +38,7 @@ export function AdminHome({ admin }) {
   )
   const [docs, setDocs] = useState({})
   const [competitions, setCompetitions] = useState([])
-  const [newFormsCount, setNewFormsCount] = useState(null)
+  const navigate = useNavigate()
 
   const leagueKey = leagues.map((l) => l.id).join('|')
 
@@ -76,17 +73,6 @@ export function AdminHome({ admin }) {
       .loadCompetitions()
       .then((d) => {
         if (!cancelled) setCompetitions(d.competitions ?? [])
-      })
-      .catch(() => {})
-    fetchAdminFormSubmissions()
-      .then((d) => {
-        if (cancelled) return
-        const cutoff = Date.now() - NEW_FORMS_WINDOW_MS
-        const recent = (d.submissions ?? []).filter((s) => {
-          const t = new Date(s.submittedAt).getTime()
-          return Number.isFinite(t) && t >= cutoff
-        })
-        setNewFormsCount(recent.length)
       })
       .catch(() => {})
     return () => {
@@ -178,20 +164,26 @@ export function AdminHome({ admin }) {
             <TileArrow />
           </Link>
 
-          <Link to="/admin/forms" className="jump-tile jump-tile--link poster--admin">
-            {newFormsCount != null && newFormsCount > 0 ? (
-              <span className="poster__todo poster__todo--charcoal">{newFormsCount} new</span>
-            ) : null}
-            <span className="poster__name">Forms</span>
-            <span className="poster__days">Transfers &amp; registrations</span>
-            <TileArrow />
-          </Link>
+        </div>
+
+        <div className="add-day-row">
+          <AddInline
+            label="New competition"
+            submitLabel="Create competition"
+            hint="Adds a knockout cup to this season. You'll set up its draw next — entrants, rounds and dates."
+            fields={[
+              { name: 'name', label: 'Competition name', placeholder: 'e.g. Presidents Cup' },
+              { name: 'days', label: 'Played on', placeholder: 'e.g. Fridays' },
+            ]}
+            onSubmit={async ({ name, days }) => {
+              const out = await admin.createCompetition({ name, days })
+              if (out?.competition?.id) {
+                navigate(`/admin/cup/${encodeURIComponent(out.competition.id)}`)
+              }
+            }}
+          />
         </div>
       </section>
-
-      <p className="admin-home__footlink">
-        Bulk import: <Link to="/admin/csv">upload a results CSV instead →</Link>
-      </p>
     </div>
   )
 }
