@@ -656,16 +656,7 @@
                   "awayPoints": 1
                 }
               ],
-              "12": [
-                {
-                  "home": "Kirton A",
-                  "away": "Stone Lodge Blues",
-                  "homeShots": 4,
-                  "awayShots": 3,
-                  "homePoints": 2,
-                  "awayPoints": 5
-                }
-              ]
+              "12": []
             }
           },
           "standingsSeed": {
