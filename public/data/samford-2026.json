@@ -578,6 +578,32 @@
                   "awayPoints": 5
                 }
               ],
+              "9": [
+                {
+                  "home": "Marlborough",
+                  "away": "Waldringfield Swans",
+                  "homeShots": 68,
+                  "awayShots": 37,
+                  "homePoints": 5.5,
+                  "awayPoints": 0.5
+                },
+                {
+                  "home": "E-of-E Co-op Reds",
+                  "away": "Kirton A",
+                  "homeShots": 65,
+                  "awayShots": 43,
+                  "homePoints": 6,
+                  "awayPoints": 0
+                },
+                {
+                  "home": "Hollbrook",
+                  "away": "Stone Lodge Blues",
+                  "homeShots": 38,
+                  "awayShots": 71,
+                  "homePoints": 0,
+                  "awayPoints": 6
+                }
+              ],
               "12": [
                 {
                   "home": "Kirton A",
