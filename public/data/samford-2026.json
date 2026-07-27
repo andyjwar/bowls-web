@@ -422,7 +422,32 @@
                   "awayPoints": 5
                 }
               ],
-              "3": [],
+              "3": [
+                {
+                  "home": "Westerfield Yellows",
+                  "away": "Kirton A",
+                  "homeShots": 48,
+                  "awayShots": 49,
+                  "homePoints": 1,
+                  "awayPoints": 5
+                },
+                {
+                  "home": "E-of-E Co-op Reds",
+                  "away": "Waldringfield Swans",
+                  "homeShots": 54,
+                  "awayShots": 62,
+                  "homePoints": 1,
+                  "awayPoints": 5
+                },
+                {
+                  "home": "Marlborough",
+                  "away": "Stone Lodge Blues",
+                  "homeShots": 39,
+                  "awayShots": 88,
+                  "homePoints": 0,
+                  "awayPoints": 6
+                }
+              ],
               "12": [
                 {
                   "home": "Kirton A",
