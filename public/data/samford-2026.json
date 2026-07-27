@@ -396,16 +396,7 @@
                   "awayPoints": 1
                 }
               ],
-              "2": [
-                {
-                  "home": "Hollbrook",
-                  "away": "Marlborough",
-                  "homeShots": 1,
-                  "awayShots": 5,
-                  "homePoints": 51,
-                  "awayPoints": 53
-                }
-              ],
+              "2": [],
               "3": [
                 {
                   "home": "Marlborough",
