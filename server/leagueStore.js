@@ -948,15 +948,33 @@ export function mergeWeekResults(league, { sectionId, divisionId, week, matches 
     const homePoints = Number(incoming.homePoints)
     const awayPoints = Number(incoming.awayPoints)
 
-    const row = {
-      home: incoming.home,
-      away: incoming.away,
-      homeShots,
-      awayShots,
+    const prev = idx >= 0 ? merged[idx] : null
+    // Keep schedule home/away orientation if we already have a result for this pairing
+    // (CSV may list sides either way).
+    let home = incoming.home
+    let away = incoming.away
+    let homeShotsOriented = homeShots
+    let awayShotsOriented = awayShots
+    let homePointsOriented = homePoints
+    let awayPointsOriented = awayPoints
+    if (prev && prev.home === incoming.away && prev.away === incoming.home) {
+      home = prev.home
+      away = prev.away
+      homeShotsOriented = awayShots
+      awayShotsOriented = homeShots
+      homePointsOriented = awayPoints
+      awayPointsOriented = homePoints
     }
-    if (Number.isFinite(homePoints) && Number.isFinite(awayPoints)) {
-      row.homePoints = homePoints
-      row.awayPoints = awayPoints
+
+    const row = {
+      home,
+      away,
+      homeShots: homeShotsOriented,
+      awayShots: awayShotsOriented,
+    }
+    if (Number.isFinite(homePointsOriented) && Number.isFinite(awayPointsOriented)) {
+      row.homePoints = homePointsOriented
+      row.awayPoints = awayPointsOriented
     }
     if (incoming.players && typeof incoming.players === 'object') {
       const h = incoming.players.home ?? []
@@ -964,15 +982,21 @@ export function mergeWeekResults(league, { sectionId, divisionId, week, matches 
       const hasPlayers =
         (Array.isArray(h) && h.length > 0) || (Array.isArray(a) && a.length > 0)
       if (hasPlayers) {
+        const flipped = Boolean(prev && prev.home === incoming.away && prev.away === incoming.home)
         row.players = {
-          home: Array.isArray(h) ? h : [],
-          away: Array.isArray(a) ? a : [],
+          home: Array.isArray(flipped ? a : h) ? (flipped ? a : h) : [],
+          away: Array.isArray(flipped ? h : a) ? (flipped ? h : a) : [],
         }
       }
     }
+    // Preserve richer prior detail when a bulk CSV re-import omits players / rinks.
+    if (!row.players && prev?.players) row.players = prev.players
     if (incoming.matchDate) row.matchDate = incoming.matchDate
+    else if (prev?.matchDate) row.matchDate = prev.matchDate
     if (incoming.rinkShots && Array.isArray(incoming.rinkShots) && incoming.rinkShots.length) {
       row.rinkShots = incoming.rinkShots
+    } else if (prev?.rinkShots?.length) {
+      row.rinkShots = prev.rinkShots
     }
     if (idx >= 0) merged[idx] = row
     else merged.push(row)
