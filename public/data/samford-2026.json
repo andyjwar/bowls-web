@@ -482,6 +482,22 @@
                   "awayShots": 56,
                   "homePoints": 3.5,
                   "awayPoints": 2.5
+                },
+                {
+                  "home": "E-of-E Co-op Reds",
+                  "away": "Hollbrook",
+                  "homeShots": 49,
+                  "awayShots": 52,
+                  "homePoints": 1,
+                  "awayPoints": 5
+                },
+                {
+                  "home": "Kirton A",
+                  "away": "Waldringfield Swans",
+                  "homeShots": 59,
+                  "awayShots": 36,
+                  "homePoints": 5,
+                  "awayPoints": 1
                 }
               ],
               "12": [
