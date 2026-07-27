@@ -638,6 +638,14 @@
                   "awayShots": 65,
                   "homePoints": 0,
                   "awayPoints": 6
+                },
+                {
+                  "home": "Westerfield Yellows",
+                  "away": "Waldringfield Swans",
+                  "homeShots": 65,
+                  "awayShots": 47,
+                  "homePoints": 5,
+                  "awayPoints": 1
                 }
               ],
               "12": [
