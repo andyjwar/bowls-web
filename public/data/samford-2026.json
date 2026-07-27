@@ -508,6 +508,14 @@
                   "awayShots": 44,
                   "homePoints": 5.5,
                   "awayPoints": 0.5
+                },
+                {
+                  "home": "Hollbrook",
+                  "away": "Westerfield Yellows",
+                  "homeShots": 74,
+                  "awayShots": 45,
+                  "homePoints": 5,
+                  "awayPoints": 1
                 }
               ],
               "12": [
