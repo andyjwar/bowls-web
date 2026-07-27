@@ -500,6 +500,16 @@
                   "awayPoints": 1
                 }
               ],
+              "6": [
+                {
+                  "home": "Stone Lodge Blues",
+                  "away": "Kirton A",
+                  "homeShots": 79,
+                  "awayShots": 44,
+                  "homePoints": 5.5,
+                  "awayPoints": 0.5
+                }
+              ],
               "12": [
                 {
                   "home": "Kirton A",
