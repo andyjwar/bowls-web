@@ -560,6 +560,14 @@
                   "awayShots": 57,
                   "homePoints": 5,
                   "awayPoints": 1
+                },
+                {
+                  "home": "E-of-E Co-op Reds",
+                  "away": "Westerfield Yellows",
+                  "homeShots": 36,
+                  "awayShots": 60,
+                  "homePoints": 1,
+                  "awayPoints": 5
                 }
               ],
               "12": [
