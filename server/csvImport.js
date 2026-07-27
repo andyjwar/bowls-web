@@ -142,6 +142,11 @@ function parseNum(s) {
   return Number.isFinite(n) ? { ok: true, val: n } : { ok: false, val: NaN }
 }
 
+/** Sheet markers for postponed / void fixtures (shown as P-P). */
+function isPostponedMarker(s) {
+  return /^(pp|p\/p|postponed|void|cancelled|canceled)$/i.test(String(s ?? '').trim())
+}
+
 /** @returns {string} YYYY-MM-DD or '' */
 export function parseFlexibleDateToIso(s) {
   const t = String(s ?? '').trim()
@@ -615,14 +620,20 @@ export function executeCsvImport(buffer, defaults = {}) {
       raw.total_shots_away,
       raw.shots_away,
     )
+    const postponed =
+      isPostponedMarker(homeShotsCell) ||
+      isPostponedMarker(awayShotsCell) ||
+      isPostponedMarker(firstNonempty(raw.status, raw.result_status, raw.match_status))
     const hs = parseNum(homeShotsCell)
     const as = parseNum(awayShotsCell)
 
     const hpProvided = hpRaw !== ''
     const apProvided = apRaw !== ''
-    if (hpProvided && !hp.ok) issueSet.add('home_points must be numeric')
-    if (apProvided && !ap.ok) issueSet.add('away_points must be numeric')
-    const shotsOk = hs.ok && as.ok
+    if (!postponed) {
+      if (hpProvided && !hp.ok) issueSet.add('home_points must be numeric')
+      if (apProvided && !ap.ok) issueSet.add('away_points must be numeric')
+    }
+    const shotsOk = postponed || (hs.ok && as.ok)
     if (!shotsOk) {
       issueSet.add('total match shots (home_shots and away_shots) must be numeric')
     }
@@ -818,24 +829,29 @@ export function executeCsvImport(buffer, defaults = {}) {
     /** @type {object | null} */
     let builtPartial = null
     if (shotsOk && homeRaw && awayRaw) {
-      builtPartial = {
-        home,
-        away,
-        homeShots: hs.val,
-        awayShots: as.val,
+      if (postponed) {
+        builtPartial = { home, away, postponed: true }
+        if (isoEffective) builtPartial.matchDate = isoEffective
+      } else {
+        builtPartial = {
+          home,
+          away,
+          homeShots: hs.val,
+          awayShots: as.val,
+        }
+        if (isoEffective) builtPartial.matchDate = isoEffective
+        if (Number.isFinite(hp.val) && Number.isFinite(ap.val)) {
+          builtPartial.homePoints = hp.val
+          builtPartial.awayPoints = ap.val
+        }
+        const homePlayers = playersFromRow(raw, 'home', rowIndex, warnings)
+        const awayPlayers = playersFromRow(raw, 'away', rowIndex, warnings)
+        if (homePlayers.length || awayPlayers.length) {
+          builtPartial.players = { home: homePlayers, away: awayPlayers }
+        }
+        const rinks = rinkShotsFromRow(raw, rowIndex, warnings, builtPartial.homeShots, builtPartial.awayShots)
+        if (rinks?.length) builtPartial.rinkShots = rinks
       }
-      if (isoEffective) builtPartial.matchDate = isoEffective
-      if (Number.isFinite(hp.val) && Number.isFinite(ap.val)) {
-        builtPartial.homePoints = hp.val
-        builtPartial.awayPoints = ap.val
-      }
-      const homePlayers = playersFromRow(raw, 'home', rowIndex, warnings)
-      const awayPlayers = playersFromRow(raw, 'away', rowIndex, warnings)
-      if (homePlayers.length || awayPlayers.length) {
-        builtPartial.players = { home: homePlayers, away: awayPlayers }
-      }
-      const rinks = rinkShotsFromRow(raw, rowIndex, warnings, builtPartial.homeShots, builtPartial.awayShots)
-      if (rinks?.length) builtPartial.rinkShots = rinks
     }
 
     let registrationNeedsReview = false
@@ -890,19 +906,28 @@ export function executeCsvImport(buffer, defaults = {}) {
 
     const isoDateEffective = isoEffective
     /** @type {object} — builtPartial validated same refs */
-    const match = {
-      home,
-      away,
-      homeShots: hs.val,
-      awayShots: as.val,
+    const match = postponed
+      ? {
+          home,
+          away,
+          postponed: true,
+          ...(isoDateEffective ? { matchDate: isoDateEffective } : {}),
+        }
+      : {
+          home,
+          away,
+          homeShots: hs.val,
+          awayShots: as.val,
+        }
+    if (!postponed) {
+      if (isoDateEffective) match.matchDate = isoDateEffective
+      if (Number.isFinite(hp.val) && Number.isFinite(ap.val)) {
+        match.homePoints = hp.val
+        match.awayPoints = ap.val
+      }
+      if (builtPartial?.players) match.players = builtPartial.players
+      if (builtPartial?.rinkShots) match.rinkShots = builtPartial.rinkShots
     }
-    if (isoDateEffective) match.matchDate = isoDateEffective
-    if (Number.isFinite(hp.val) && Number.isFinite(ap.val)) {
-      match.homePoints = hp.val
-      match.awayPoints = ap.val
-    }
-    if (builtPartial?.players) match.players = builtPartial.players
-    if (builtPartial?.rinkShots) match.rinkShots = builtPartial.rinkShots
 
     const { scheduleHome, scheduleAway, onSchedule } = resolveScheduleSides(
       league,
@@ -928,17 +953,18 @@ export function executeCsvImport(buffer, defaults = {}) {
       csvRow: rowIndex,
       scheduleHome,
       scheduleAway,
-      homeShots: match.homeShots,
-      awayShots: match.awayShots,
-      homePoints: match.homePoints,
-      awayPoints: match.awayPoints,
+      postponed: Boolean(postponed),
+      homeShots: postponed ? undefined : match.homeShots,
+      awayShots: postponed ? undefined : match.awayShots,
+      homePoints: postponed ? undefined : match.homePoints,
+      awayPoints: postponed ? undefined : match.awayPoints,
       matchDateIso: isoDateEffective || null,
       displayMatchDate:
         isoDateEffective && String(isoDateEffective).trim() !== ''
           ? formatFixtureDate(isoDateEffective) || isoDateEffective
           : '',
-      homePlayersPreview: playersPreview(match.players?.home ?? []),
-      awayPlayersPreview: playersPreview(match.players?.away ?? []),
+      homePlayersPreview: postponed ? '' : playersPreview(match.players?.home ?? []),
+      awayPlayersPreview: postponed ? '' : playersPreview(match.players?.away ?? []),
       registrationNeedsReview,
     }
 

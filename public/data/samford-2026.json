@@ -1615,6 +1615,12 @@
                   "homePoints": 4,
                   "awayPoints": 2,
                   "matchDate": "2026-07-13"
+                },
+                {
+                  "home": "Bredfield",
+                  "away": "Brantham",
+                  "postponed": true,
+                  "matchDate": "2026-07-13"
                 }
               ],
               "11": [
@@ -1634,6 +1640,12 @@
                   "awayShots": 47,
                   "homePoints": 5,
                   "awayPoints": 1,
+                  "matchDate": "2026-07-20"
+                },
+                {
+                  "home": "Shotley Rose",
+                  "away": "Bredfield",
+                  "postponed": true,
                   "matchDate": "2026-07-20"
                 }
               ]
@@ -2538,6 +2550,12 @@
                   "awayShots": 37,
                   "homePoints": 6,
                   "awayPoints": 0,
+                  "matchDate": "2026-06-08"
+                },
+                {
+                  "home": "Ipswich & District",
+                  "away": "E-of-E Co-op Blues",
+                  "postponed": true,
                   "matchDate": "2026-06-08"
                 }
               ],

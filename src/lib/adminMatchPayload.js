@@ -23,6 +23,18 @@ export function serializeAdminMatchRows(rows) {
   const outgoing = []
 
   for (const m of matchRows) {
+    if (m.postponed) {
+      const row = {
+        home: m.home,
+        away: m.away,
+        postponed: true,
+      }
+      const md = String(m.matchDate ?? '').trim()
+      if (md) row.matchDate = md
+      outgoing.push(row)
+      continue
+    }
+
     const homeEmpty = String(m.homeShots ?? '').trim() === ''
     const awayEmpty = String(m.awayShots ?? '').trim() === ''
 
@@ -105,6 +117,7 @@ export function weekResultRowToForm(r) {
     awayPlayersText: r.awayPlayersText ?? '',
     matchDate: r.matchDate ?? '',
     rinkShotsJson: r.rinkShotsJson ?? '',
+    postponed: Boolean(r.postponed),
     players: null,
   }
 }
@@ -173,6 +186,7 @@ export function csvImportEntryDivisionLabel(leagues, e) {
 
 /** Home vs away totals only — no pts line. */
 export function csvImportEntryShotsLine(e) {
+  if (e?.postponed) return 'P-P'
   const hs = Number(e.homeShots)
   const asVal = Number(e.awayShots)
   if (Number.isFinite(hs) && Number.isFinite(asVal)) return `${hs} · ${asVal}`

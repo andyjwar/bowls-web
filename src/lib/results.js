@@ -30,6 +30,15 @@ export function applyResultsToFixtures(fixtureWeeks, resultsByWeek) {
 
       if (!stored) return match
 
+      if (stored.postponed) {
+        return {
+          ...match,
+          postponed: true,
+          played: false,
+          sheetMatchDate: stored.matchDate ?? undefined,
+        }
+      }
+
       const flipped = stored.home === match.away && stored.away === match.home
       const homeShots = flipped ? stored.awayShots : stored.homeShots
       const awayShots = flipped ? stored.homeShots : stored.awayShots
@@ -67,6 +76,7 @@ export function applyResultsToFixtures(fixtureWeeks, resultsByWeek) {
         players,
         rinkShots: stored.rinkShots ?? undefined,
         sheetMatchDate: stored.matchDate ?? undefined,
+        postponed: false,
         played: true,
         homeWon: hasFormPoints ? homePoints > awayPoints : homeShots > awayShots,
         awayWon: hasFormPoints ? awayPoints > homePoints : awayShots > homeShots,
@@ -148,7 +158,7 @@ export function computeStandingsFromResults(
     // Weeks covered by the seed snapshot are already counted in its totals.
     if (seed?.throughWeek != null && Number(weekKey) <= seed.throughWeek) continue
     for (const m of weekMatches ?? []) {
-      if (!m || m.isBye) continue
+      if (!m || m.isBye || m.postponed) continue
       const { home, away, homeShots, awayShots, homePoints, awayPoints } = m
       if (!stats[home] || !stats[away]) continue
       if (!Number.isFinite(homeShots) || !Number.isFinite(awayShots)) continue
@@ -207,6 +217,7 @@ export function computeStandingsFromResults(
 }
 
 export function formatMatchScore(match) {
+  if (match?.postponed) return 'P-P'
   if (!match?.played) return null
   if (Number.isFinite(match.homePoints) && Number.isFinite(match.awayPoints)) {
     return `${match.homePoints}–${match.awayPoints} (${match.homeShots}–${match.awayShots})`
@@ -216,6 +227,7 @@ export function formatMatchScore(match) {
 
 /** Headline score for a played match: form points (5–1) when present, else shots. */
 export function formatResultHeadlineScore(match) {
+  if (match?.postponed) return 'P-P'
   if (!match?.played) return null
   if (Number.isFinite(match.homePoints) && Number.isFinite(match.awayPoints)) {
     return `${match.homePoints}–${match.awayPoints}`

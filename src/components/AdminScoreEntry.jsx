@@ -137,7 +137,7 @@ export function AdminScoreEntry({ admin }) {
     const cutoff = endOfTodayMs()
     return fixtures.map((w) => {
       const playable = w.matches.filter((m) => !m.isBye && m.away)
-      const missing = playable.filter((m) => !m.played).length
+      const missing = playable.filter((m) => !m.played && !m.postponed).length
       const t = w.date ? new Date(`${w.date}T12:00:00`).getTime() : NaN
       const due = Number.isFinite(t) && t <= cutoff
       return {
@@ -163,7 +163,7 @@ export function AdminScoreEntry({ admin }) {
         const t = week.date ? new Date(`${week.date}T12:00:00`).getTime() : NaN
         if (!Number.isFinite(t) || t > cutoff) continue
         for (const m of week.matches ?? []) {
-          if (m.isBye || !m.away || m.played) continue
+          if (m.isBye || !m.away || m.played || m.postponed) continue
           n += 1
         }
       }
@@ -350,10 +350,25 @@ export function AdminScoreEntry({ admin }) {
 
     const fr = matchToFormRow(match)
     if (e) {
-      fr.homeShots = e.homeShots
-      fr.awayShots = e.awayShots
-      fr.homePoints = e.homePoints
-      fr.awayPoints = e.awayPoints
+      if (e.clear) {
+        fr.homeShots = ''
+        fr.awayShots = ''
+        fr.homePoints = ''
+        fr.awayPoints = ''
+        fr.postponed = false
+      } else if (e.postponed) {
+        fr.postponed = true
+        fr.homeShots = ''
+        fr.awayShots = ''
+        fr.homePoints = ''
+        fr.awayPoints = ''
+      } else {
+        fr.homeShots = e.homeShots
+        fr.awayShots = e.awayShots
+        fr.homePoints = e.homePoints
+        fr.awayPoints = e.awayPoints
+        fr.postponed = false
+      }
     }
 
     let outgoing
@@ -379,9 +394,11 @@ export function AdminScoreEntry({ admin }) {
       setWeekMsg({
         week: weekNum,
         kind: 'success',
-        text: override
-          ? `Removed ${match.home} v ${match.away} — the fixture is back to “to enter”.`
-          : `Saved ${match.home} v ${match.away} — public tables update straight away.`,
+        text: e?.postponed
+          ? `Marked ${match.home} v ${match.away} postponed (P-P).`
+          : e?.clear
+            ? `Removed ${match.home} v ${match.away} — the fixture is back to “to enter”.`
+            : `Saved ${match.home} v ${match.away} — public tables update straight away.`,
       })
     } catch (err) {
       setWeekMsg({ week: weekNum, kind: 'error', text: err.message || 'Save failed' })
@@ -412,6 +429,7 @@ export function AdminScoreEntry({ admin }) {
         fr.awayShots = e.awayShots
         fr.homePoints = e.homePoints
         fr.awayPoints = e.awayPoints
+        fr.postponed = false
       }
       return fr
     })
@@ -747,7 +765,8 @@ export function AdminScoreEntry({ admin }) {
                       Number.isFinite(match.awayShots)
                         ? `${match.homeShots}–${match.awayShots} shots`
                         : null
-                    const tappable = !match.played && !open
+                    const resolved = match.played || match.postponed
+                    const tappable = !resolved && !open
 
                     const homeCls = `match-row__home${
                       match.played && match.homeWon
@@ -769,7 +788,9 @@ export function AdminScoreEntry({ admin }) {
                         <div
                           className={`match-row match-row--entry${
                             tappable ? ' match-row--tap' : ''
-                          }${open ? ' match-row--editing' : ''}`}
+                          }${open ? ' match-row--editing' : ''}${
+                            match.postponed && !open ? ' match-row--postponed' : ''
+                          }`}
                           onClick={
                             tappable
                               ? (ev) => {
@@ -792,6 +813,17 @@ export function AdminScoreEntry({ admin }) {
 
                           {open ? (
                             <span className="match-row__mid match-row__mid--vs">v</span>
+                          ) : match.postponed ? (
+                            <span className="match-row__mid entry-result">
+                              <button
+                                type="button"
+                                className="match-row__mid--postponed entry-score-btn"
+                                title="Click to edit"
+                                onClick={() => seedEdit(weekFx.week, match)}
+                              >
+                                P-P
+                              </button>
+                            </span>
                           ) : match.played ? (
                             <span className="match-row__mid entry-result">
                               <button
@@ -833,7 +865,7 @@ export function AdminScoreEntry({ admin }) {
                             className={`match-row__state${
                               dirty
                                 ? ' match-row__state--dirty'
-                                : match.played
+                                : resolved
                                   ? ' match-row__state--saved'
                                   : ''
                             }`}
@@ -841,12 +873,12 @@ export function AdminScoreEntry({ admin }) {
                             {open ? (
                               dirty ? (
                                 'Not saved'
-                              ) : match.played ? (
+                              ) : resolved ? (
                                 'Editing…'
                               ) : (
                                 'Entering…'
                               )
-                            ) : match.played ? (
+                            ) : resolved ? (
                               <button
                                 type="button"
                                 className="entry-rowact entry-rowact--edit"
@@ -933,11 +965,30 @@ export function AdminScoreEntry({ admin }) {
                                   {rowSaving ? 'Saving…' : '✓ Save'}
                                 </button>
                               ) : null}
-                              {match.played ? (
+                              {!match.postponed ? (
+                                <button
+                                  type="button"
+                                  className="entry-rowact entry-rowact--postpone"
+                                  title="Mark this fixture postponed (shows as P-P)"
+                                  disabled={rowSaving || savingWeek === weekNum}
+                                  onClick={() =>
+                                    saveRow(weekFx, match, {
+                                      postponed: true,
+                                      homeShots: '',
+                                      awayShots: '',
+                                      homePoints: '',
+                                      awayPoints: '',
+                                    })
+                                  }
+                                >
+                                  P-P
+                                </button>
+                              ) : null}
+                              {match.played || match.postponed ? (
                                 <button
                                   type="button"
                                   className="entry-rowact entry-rowact--clear"
-                                  aria-label={`Clear the saved score for ${match.home} v ${match.away}`}
+                                  aria-label={`Clear the saved result for ${match.home} v ${match.away}`}
                                   title="Remove this saved result"
                                   disabled={rowSaving || savingWeek === weekNum}
                                   onClick={() =>
@@ -946,10 +997,12 @@ export function AdminScoreEntry({ admin }) {
                                       awayShots: '',
                                       homePoints: '',
                                       awayPoints: '',
+                                      postponed: false,
+                                      clear: true,
                                     })
                                   }
                                 >
-                                  Clear score
+                                  {match.postponed ? 'Clear P-P' : 'Clear score'}
                                 </button>
                               ) : null}
                               <button

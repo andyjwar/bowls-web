@@ -869,8 +869,10 @@ export function getWeekEditableMatchRows(league, { sectionId, divisionId, week }
     let awayPlayersText = ''
     let matchDate = ''
     let rinkShotsJson = ''
+    let postponed = false
 
     if (saved) {
+      postponed = Boolean(saved.postponed)
       const flipped = saved.home === m.away && saved.away === m.home
       const hs = flipped ? saved.awayShots : saved.homeShots
       const asVal = flipped ? saved.homeShots : saved.awayShots
@@ -908,6 +910,7 @@ export function getWeekEditableMatchRows(league, { sectionId, divisionId, week }
       awayPlayersText,
       matchDate,
       rinkShotsJson,
+      postponed,
     })
   }
 
@@ -940,6 +943,29 @@ export function mergeWeekResults(league, { sectionId, divisionId, week, matches 
       continue
     }
 
+    const prev = idx >= 0 ? merged[idx] : null
+    // Keep schedule home/away orientation if we already have a result for this pairing
+    // (CSV may list sides either way).
+    let home = incoming.home
+    let away = incoming.away
+    if (prev && prev.home === incoming.away && prev.away === incoming.home) {
+      home = prev.home
+      away = prev.away
+    }
+
+    if (incoming.postponed) {
+      const row = {
+        home,
+        away,
+        postponed: true,
+      }
+      if (incoming.matchDate) row.matchDate = incoming.matchDate
+      else if (prev?.matchDate) row.matchDate = prev.matchDate
+      if (idx >= 0) merged[idx] = row
+      else merged.push(row)
+      continue
+    }
+
     const homeShots = Number(incoming.homeShots)
     const awayShots = Number(incoming.awayShots)
 
@@ -948,18 +974,11 @@ export function mergeWeekResults(league, { sectionId, divisionId, week, matches 
     const homePoints = Number(incoming.homePoints)
     const awayPoints = Number(incoming.awayPoints)
 
-    const prev = idx >= 0 ? merged[idx] : null
-    // Keep schedule home/away orientation if we already have a result for this pairing
-    // (CSV may list sides either way).
-    let home = incoming.home
-    let away = incoming.away
     let homeShotsOriented = homeShots
     let awayShotsOriented = awayShots
     let homePointsOriented = homePoints
     let awayPointsOriented = awayPoints
     if (prev && prev.home === incoming.away && prev.away === incoming.home) {
-      home = prev.home
-      away = prev.away
       homeShotsOriented = awayShots
       awayShotsOriented = homeShots
       homePointsOriented = awayPoints

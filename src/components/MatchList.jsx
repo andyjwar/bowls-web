@@ -107,6 +107,7 @@ function MatchRow({
     Number.isFinite(match.homeShots) && Number.isFinite(match.awayShots)
   const homeBig = hasPoints ? match.homePoints : hasShots ? match.homeShots : null
   const awayBig = hasPoints ? match.awayPoints : hasShots ? match.awayShots : null
+  const postponed = Boolean(match.postponed)
   const played = match.played && homeBig != null && awayBig != null
   /* Cup ties can be decided without a score (walkover) */
   const walkover = match.walkover === 'home' || match.walkover === 'away'
@@ -124,7 +125,7 @@ function MatchRow({
     : null
 
   return (
-    <div className={`match-row${rowMods}`}>
+    <div className={`match-row${postponed ? ' match-row--postponed' : ''}${rowMods}`}>
       {dateCell}
       {venueCell}
       {single ? null : (
@@ -139,7 +140,11 @@ function MatchRow({
       >
         {linkTeams ? <TeamLink name={match.home} /> : match.home}
       </span>
-      {played ? (
+      {postponed ? (
+        <span className="match-row__mid match-row__mid--postponed" title="Postponed">
+          P-P
+        </span>
+      ) : played ? (
         <span
           className={`match-row__mid match-row__mid--score${draw ? ' match-row__mid--draw' : ''}`}
           title={shotsTitle}
