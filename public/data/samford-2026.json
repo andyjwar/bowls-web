@@ -456,6 +456,14 @@
                   "awayShots": 63,
                   "homePoints": 1,
                   "awayPoints": 5
+                },
+                {
+                  "home": "Kirton A",
+                  "away": "E-of-E Co-op Reds",
+                  "homeShots": 70,
+                  "awayShots": 47,
+                  "homePoints": 6,
+                  "awayPoints": 0
                 }
               ],
               "12": [
