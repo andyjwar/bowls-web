@@ -568,6 +568,14 @@
                   "awayShots": 60,
                   "homePoints": 1,
                   "awayPoints": 5
+                },
+                {
+                  "home": "Hollbrook",
+                  "away": "Waldringfield Swans",
+                  "homeShots": 50,
+                  "awayShots": 56,
+                  "homePoints": 1,
+                  "awayPoints": 5
                 }
               ],
               "12": [
