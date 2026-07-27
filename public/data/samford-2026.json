@@ -396,7 +396,32 @@
                   "awayPoints": 1
                 }
               ],
-              "2": [],
+              "2": [
+                {
+                  "home": "Stone Lodge Blues",
+                  "away": "E-of-E Co-op Reds",
+                  "homeShots": 80,
+                  "awayShots": 35,
+                  "homePoints": 6,
+                  "awayPoints": 0
+                },
+                {
+                  "home": "Waldringfield Swans",
+                  "away": "Westerfield Yellows",
+                  "homeShots": 64,
+                  "awayShots": 48,
+                  "homePoints": 5,
+                  "awayPoints": 1
+                },
+                {
+                  "home": "Hollbrook",
+                  "away": "Marlborough",
+                  "homeShots": 51,
+                  "awayShots": 53,
+                  "homePoints": 1,
+                  "awayPoints": 5
+                }
+              ],
               "3": [
                 {
                   "home": "Marlborough",
