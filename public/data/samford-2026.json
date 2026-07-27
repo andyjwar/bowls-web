@@ -630,6 +630,16 @@
                   "awayPoints": 1
                 }
               ],
+              "11": [
+                {
+                  "home": "E-of-E Co-op Reds",
+                  "away": "Stone Lodge Blues",
+                  "homeShots": 51,
+                  "awayShots": 65,
+                  "homePoints": 0,
+                  "awayPoints": 6
+                }
+              ],
               "12": [
                 {
                   "home": "Kirton A",
