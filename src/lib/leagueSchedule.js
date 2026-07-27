@@ -7,16 +7,20 @@
 const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 const WEEK_ORDER = { Mon: 0, Tue: 1, Wed: 2, Thu: 3, Fri: 4, Sat: 5, Sun: 6 }
 
-const DATE_KEYS = ['date', 'tuesdayDate', 'thursdayDate']
-
 function datesFromTemplate(rows) {
   const out = []
   for (const row of rows ?? []) {
-    for (const key of DATE_KEYS) {
-      if (row[key]) out.push(row[key])
+    for (const [key, value] of Object.entries(row)) {
+      if ((key === 'date' || key.endsWith('Date')) && value) out.push(value)
     }
   }
   return out
+}
+
+export function dateForPlayDay(row, playDay) {
+  if (!row) return undefined
+  if (playDay) return row[`${playDay}Date`] ?? row.date
+  return row.date
 }
 
 /** All scheduled ISO dates for a league document (deduped, sorted). */

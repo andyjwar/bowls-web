@@ -371,6 +371,28 @@ export function addLeagueDivision(leagueId, { sectionId, divisionId, label, play
   return { ok: true, divisionId: did }
 }
 
+export function deleteLeagueDivision(leagueId, { sectionId, divisionId }) {
+  const league = loadLeague(leagueId)
+  const sid = String(sectionId ?? '').trim()
+  const did = String(divisionId ?? '').trim().toLowerCase()
+  const divisions = league.sections?.length
+    ? league.sections.find((s) => s.id === sid)?.divisions
+    : league.divisions
+  if (!Array.isArray(divisions)) throw new Error('Playing day not found')
+  const index = divisions.findIndex((d) => d.id === did)
+  if (index < 0) throw new Error('Division not found')
+  if (divisions.length === 1) {
+    throw new Error('A playing day must keep at least one division')
+  }
+  const weeks = divisions[index]?.results?.weeks
+  if (weeks && Object.values(weeks).some((rows) => Array.isArray(rows) && rows.length)) {
+    throw new Error('This division has results entered and cannot be removed')
+  }
+  divisions.splice(index, 1)
+  saveLeague(leagueId, league)
+  return { ok: true, divisionId: did }
+}
+
 export function addLeagueSection(leagueId, { sectionId, label, cloneScheduleFromSectionId }) {
   const league = loadLeague(leagueId)
 
@@ -523,7 +545,16 @@ export function removeSeason(yearRaw) {
   return { removedLeagues: ids, activeSeason }
 }
 
-const SEASON_DATE_KEYS = ['date', 'thursdayDate', 'tuesdayDate']
+const SEASON_DATE_KEYS = [
+  'date',
+  'mondayDate',
+  'tuesdayDate',
+  'wednesdayDate',
+  'thursdayDate',
+  'fridayDate',
+  'saturdayDate',
+  'sundayDate',
+]
 
 /**
  * Edit fixture dates on a schedule grid. `rows` is a partial update keyed by
@@ -577,10 +608,129 @@ function shiftIsoDateByWeeks(iso, weeks) {
 
 function shiftScheduleTemplateDates(tmpl, weeks) {
   for (const row of tmpl ?? []) {
-    for (const key of SEASON_DATE_KEYS) {
-      if (row[key]) row[key] = shiftIsoDateByWeeks(row[key], weeks)
+    for (const [key, value] of Object.entries(row)) {
+      if ((key === 'date' || key.endsWith('Date')) && value) {
+        row[key] = shiftIsoDateByWeeks(value, weeks)
+      }
     }
   }
+}
+
+function addWeeksIso(iso, weeks) {
+  return shiftIsoDateByWeeks(iso, weeks)
+}
+
+function evenSlotCount(teamCount) {
+  const n = Math.max(2, Math.min(30, Number(teamCount) || 8))
+  return n % 2 === 0 ? n : n + 1
+}
+
+/** Standard double round-robin (second half reverses home/away). */
+function generatePairingWeeks(teamCount) {
+  const slots = evenSlotCount(teamCount)
+  let rotation = Array.from({ length: slots }, (_, i) => i + 1)
+  const firstLeg = []
+  for (let round = 0; round < slots - 1; round += 1) {
+    const pairings = []
+    for (let i = 0; i < slots / 2; i += 1) {
+      let home = rotation[i]
+      let away = rotation[slots - 1 - i]
+      if ((round + i) % 2 === 1) [home, away] = [away, home]
+      pairings.push({ home, away })
+    }
+    firstLeg.push(pairings)
+    rotation = [rotation[0], rotation[slots - 1], ...rotation.slice(1, -1)]
+  }
+  return [
+    ...firstLeg,
+    ...firstLeg.map((round) => round.map(({ home, away }) => ({ home: away, away: home }))),
+  ]
+}
+
+function generatedSchedule(teamCount, dateStarts) {
+  return generatePairingWeeks(teamCount).map((pairings, i) => {
+    const row = { week: i + 1 }
+    for (const [key, start] of Object.entries(dateStarts)) {
+      if (/^\d{4}-\d{2}-\d{2}$/.test(String(start ?? ''))) {
+        row[key] = addWeeksIso(start, i)
+      }
+    }
+    row.pairings = pairings
+    return row
+  })
+}
+
+function divisionId(index) {
+  return index < 26 ? String.fromCharCode(97 + index) : String(index + 1)
+}
+
+function blankDivision(index, slots, playDay = null) {
+  const id = divisionId(index)
+  return {
+    id,
+    label: `Division ${id.toUpperCase()}`,
+    ...(playDay ? { playDay } : {}),
+    teams: Array.from({ length: slots }, () => 'Bye'),
+    results: { weeks: {} },
+  }
+}
+
+function structureLeague(copy, plan) {
+  const days = (plan?.days ?? []).filter((d) => d && Number(d.divisionCount) > 0)
+  if (!days.length) throw new Error(`${copy.name}: choose at least one playing day`)
+
+  if (copy.sections?.length) {
+    let divisionIndex = 0
+    const donorSections = copy.sections
+    copy.sections = days.map((day, dayIndex) => {
+      const donor =
+        donorSections.find((s) => s.id === String(day.id ?? '')) ??
+        donorSections[dayIndex] ??
+        donorSections[0]
+      const slots = evenSlotCount(day.teamCount)
+      const divisions = Array.from({ length: Number(day.divisionCount) }, () => {
+        const row = blankDivision(divisionIndex, slots)
+        divisionIndex += 1
+        return row
+      })
+      return {
+        ...JSON.parse(JSON.stringify(donor ?? {})),
+        id: slugifyLeagueKey(day.id || day.label || `day-${dayIndex + 1}`),
+        label: String(day.label || `Playing day ${dayIndex + 1}`).trim(),
+        scheduleTemplate: generatedSchedule(slots, { date: day.startDate }),
+        divisions,
+      }
+    })
+    delete copy.divisions
+    delete copy.scheduleTemplate
+    return
+  }
+
+  const hasMultiplePlayDays = days.length > 1 || copy.divisions?.some((d) => d.playDay)
+  const maxSlots = Math.max(...days.map((d) => evenSlotCount(d.teamCount)))
+  const dateStarts = {}
+  if (hasMultiplePlayDays) {
+    for (const day of days) {
+      const playDay = slugifyLeagueKey(day.playDay || day.label)
+      dateStarts[`${playDay}Date`] = day.startDate
+    }
+  } else {
+    dateStarts.date = days[0].startDate
+  }
+  copy.scheduleTemplate = generatedSchedule(maxSlots, dateStarts)
+
+  let divisionIndex = 0
+  copy.divisions = days.flatMap((day) => {
+    const playDay = hasMultiplePlayDays
+      ? slugifyLeagueKey(day.playDay || day.label)
+      : null
+    return Array.from({ length: Number(day.divisionCount) }, () => {
+      const row = blankDivision(divisionIndex, maxSlots, playDay)
+      divisionIndex += 1
+      return row
+    })
+  })
+  delete copy.sections
 }
 
 /**
@@ -589,7 +739,7 @@ function shiftScheduleTemplateDates(tmpl, weeks) {
  * play days), results emptied, standings seeds dropped. Old season files stay
  * on disk and in the registry, so past seasons remain browsable.
  */
-export function startNewSeason(yearRaw) {
+export function startNewSeason(yearRaw, structure = null) {
   const year = Number(yearRaw)
   if (!Number.isInteger(year) || year < 2000 || year > 2100) {
     throw new Error('Season must be a 4-digit year (e.g. 2027)')
@@ -610,16 +760,20 @@ export function startNewSeason(yearRaw) {
   const weeksToShift = yearsAhead * 52
 
   /* Validate all target ids before writing anything. */
-  const plans = sourceIds.map((id) => {
+  const requested = Array.isArray(structure) ? structure : null
+  const plans = sourceIds
+    .filter((id) => !requested || requested.find((p) => p.sourceLeagueId === id)?.enabled !== false)
+    .map((id) => {
     const newId = /-\d{4}$/.test(id)
       ? id.replace(/-\d{4}$/, `-${year}`)
       : `${id}-${year}`
     if (LEAGUE_FILES[newId]) throw new Error(`League ${newId} already exists`)
-    return { id, newId }
-  })
+      return { id, newId, structure: requested?.find((p) => p.sourceLeagueId === id) ?? null }
+    })
+  if (!plans.length) throw new Error('Keep at least one league in the new season')
 
   const created = []
-  for (const { id, newId } of plans) {
+  for (const { id, newId, structure: leaguePlan } of plans) {
     const donor = loadLeague(id)
     const copy = JSON.parse(JSON.stringify(donor))
     copy.id = newId
@@ -628,7 +782,9 @@ export function startNewSeason(yearRaw) {
       ? String(copy.name).replaceAll(String(fromSeason), String(year))
       : `${String(copy.name ?? newId).trim()} ${year}`
 
-    if (copy.sections?.length) {
+    if (leaguePlan) {
+      structureLeague(copy, leaguePlan)
+    } else if (copy.sections?.length) {
       for (const sec of copy.sections) {
         shiftScheduleTemplateDates(sec.scheduleTemplate, weeksToShift)
         for (const div of sec.divisions ?? []) {

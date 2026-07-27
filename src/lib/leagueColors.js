@@ -1,24 +1,32 @@
 /**
  * League accent colours (poster tiles, day carousel tags, list dots).
- * Assigned by position in the leagues nav when an index is provided, so the
- * first three leagues always get green / blue / coral; falls back to a
- * deterministic hash when only an id is known.
+ * The three standing leagues are keyed by identity so their colour remains
+ * stable when leagues are added, removed, or reordered. Other competitions
+ * use the fallback palette.
  */
 
-/*
- * "Deep crest" palette — crest hues darkened and softened (forest, navy, oxblood).
- *
- * Saved for later (owner liked it, v9-gold.html option 2): "true crest gold"
- * tile — background #d3ac52 with dark navy text #1d3a6e instead of white.
- * Needs a per-league foreground colour if adopted.
- */
 const PALETTE = [
-  { color: '#256e3d', soft: 'rgba(37, 110, 61, 0.12)' }, // forest green
-  { color: '#1d3a6e', soft: 'rgba(29, 58, 110, 0.12)' }, // deep navy
-  { color: '#7e3040', soft: 'rgba(126, 48, 64, 0.12)' }, // oxblood
-  { color: '#4c3585', soft: 'rgba(76, 53, 133, 0.13)' }, // deep violet
-  { color: '#0e6b84', soft: 'rgba(14, 107, 132, 0.13)' }, // deep teal
-  { color: '#8a5a12', soft: 'rgba(138, 90, 18, 0.14)' }, // bronze
+  { color: '#256e3d', soft: 'rgba(37, 110, 61, 0.12)', foreground: '#fff' },
+  { color: '#1d3a6e', soft: 'rgba(29, 58, 110, 0.12)', foreground: '#fff' },
+  { color: '#a74652', soft: 'rgba(167, 70, 82, 0.13)', foreground: '#fff' },
+  { color: '#4c3585', soft: 'rgba(76, 53, 133, 0.13)', foreground: '#fff' },
+  { color: '#0e6b84', soft: 'rgba(14, 107, 132, 0.13)', foreground: '#fff' },
+  { color: '#8a5a12', soft: 'rgba(138, 90, 18, 0.14)', foreground: '#fff' },
+]
+
+const LEAGUE_PALETTE = [
+  {
+    test: (id) => String(id).startsWith('samford'),
+    value: { color: '#8FC79E', soft: '#E9F4EC', foreground: '#102A56' },
+  },
+  {
+    test: (id) => String(id).startsWith('two-wood'),
+    value: { color: '#8FC6E8', soft: '#E8F4FB', foreground: '#102A56' },
+  },
+  {
+    test: (id) => String(id).startsWith('triples'),
+    value: { color: '#DDBA3D', soft: '#F8F0D8', foreground: '#102A56' },
+  },
 ]
 
 function hashString(input) {
@@ -35,6 +43,8 @@ function hashString(input) {
  * @param {number} [index] position in the leagues nav (preferred — stable, collision-free)
  */
 export function colorForLeague(id, index) {
+  const fixed = LEAGUE_PALETTE.find((entry) => entry.test(id))
+  if (fixed) return fixed.value
   if (Number.isInteger(index) && index >= 0) {
     return PALETTE[index % PALETTE.length]
   }

@@ -24,6 +24,7 @@ import {
   updateScheduleDates,
   updateLeagueStructureLabels,
   addLeagueDivision,
+  deleteLeagueDivision,
   addLeagueSection,
   createLeagueFromClone,
 } from './leagueStore.js'
@@ -241,16 +242,19 @@ app.get('/api/admin/leagues', requireAuth, (_req, res) => {
   })
 })
 
-/** Start a new season: clone active leagues (+dates shifted), fresh cups file, switch over. */
+/**
+ * Create a draft season: clone active leagues (+dates shifted) and a fresh
+ * cups file. It remains private until the setup walkthrough explicitly
+ * publishes it by switching the active season.
+ */
 app.post('/api/admin/season', requireAuth, (req, res) => {
   try {
     const year = Number(req.body?.year)
     const fromSeason = getActiveSeason()
-    const out = startNewSeason(year)
+    const out = startNewSeason(year, req.body?.structure)
     const cups = createSeasonCompetitionsFile(fromSeason, year)
-    setActiveSeason(year)
     persistLeaguesNav()
-    res.json({ ok: true, ...out, cups, activeSeason: year })
+    res.json({ ok: true, ...out, cups, activeSeason: fromSeason, draftSeason: year })
   } catch (e) {
     res.status(400).json({ error: e.message || 'Could not start the season' })
   }
@@ -392,6 +396,18 @@ app.post('/api/admin/league/:leagueId/divisions', requireAuth, (req, res) => {
     res.json({ ok: true, ...out })
   } catch (e) {
     res.status(400).json({ error: e.message || 'Could not add division' })
+  }
+})
+
+app.delete('/api/admin/league/:leagueId/divisions/:divisionId', requireAuth, (req, res) => {
+  try {
+    const out = deleteLeagueDivision(String(req.params.leagueId ?? '').trim(), {
+      sectionId: req.query.sectionId ? String(req.query.sectionId).trim() : null,
+      divisionId: String(req.params.divisionId ?? '').trim(),
+    })
+    res.json({ ok: true, ...out })
+  } catch (e) {
+    res.status(400).json({ error: e.message || 'Could not remove the division' })
   }
 })
 

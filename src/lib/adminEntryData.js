@@ -6,6 +6,7 @@
 
 import { buildDivisionFixtures } from './fixtures.js'
 import { applyResultsToFixtures } from './results.js'
+import { dateForPlayDay } from './leagueSchedule.js'
 
 /** End of today (local) as a ms timestamp — fixtures dated today count as due. */
 export function endOfTodayMs() {
@@ -53,11 +54,7 @@ export function leagueDivisionViews(leagueDoc) {
   }
 
   for (const d of leagueDoc.divisions ?? []) {
-    const getDate = (row) => {
-      if (d.playDay === 'thursday') return row.thursdayDate
-      if (d.playDay === 'tuesday') return row.tuesdayDate
-      return row.date
-    }
+    const getDate = (row) => dateForPlayDay(row, d.playDay)
     out.push({
       sectionId: null,
       sectionLabel: null,

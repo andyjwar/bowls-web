@@ -80,16 +80,20 @@ export function HomePage() {
           <h2 className="home-section__title poster-grid__label poster-grid__label--teams">
             Teams
           </h2>
-          {competitions.map((comp, index) => (
-            <PosterTile
-              key={comp.id}
-              to={`/competitions/${encodeURIComponent(comp.id)}`}
-              color={colorForLeague(comp.id, COMPETITION_COLOR_OFFSET + index).color}
-              name={comp.name}
-              days={comp.days}
-              sub={comp.sub}
-            />
-          ))}
+          {competitions.map((comp, index) => {
+            const palette = colorForLeague(comp.id, COMPETITION_COLOR_OFFSET + index)
+            return (
+              <PosterTile
+                key={comp.id}
+                to={`/competitions/${encodeURIComponent(comp.id)}`}
+                color={palette.color}
+                foreground={palette.foreground}
+                name={comp.name}
+                days={comp.days}
+                sub={comp.sub}
+              />
+            )
+          })}
           <JumpToTeam leagues={activeLeagues} />
         </div>
       </section>

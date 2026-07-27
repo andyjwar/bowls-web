@@ -324,6 +324,7 @@ export function AdminCupEntry({ admin }) {
       style={{
         '--league-color': palette.color,
         '--league-color-soft': palette.soft,
+        '--league-foreground': palette.foreground,
       }}
     >
       <header className="league-banner">

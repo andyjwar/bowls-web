@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from 'react'
 import { buildDivisionFixtures } from '../lib/fixtures'
 import { applyResultsToFixtures, computeStandingsFromResults } from '../lib/results'
+import { dateForPlayDay } from '../lib/leagueSchedule'
 
 /** Fallback before `/data/leagues-nav.json` loads (and if fetch fails). */
 export const LEAGUES = [
@@ -124,11 +125,7 @@ export function useDivisionView(leagueData, sectionId, divisionId) {
     const division = leagueData.divisions?.find((d) => d.id === divisionId)
     if (!division) return { division: null, fixtures: [], standings: [], playableTeams: [] }
 
-    const getDate = (row) => {
-      if (division.playDay === 'thursday') return row.thursdayDate
-      if (division.playDay === 'tuesday') return row.tuesdayDate
-      return row.date
-    }
+    const getDate = (row) => dateForPlayDay(row, division.playDay)
 
     const bareFixtureWeeks = buildDivisionFixtures(
       leagueData.scheduleTemplate,

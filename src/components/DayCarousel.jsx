@@ -16,10 +16,12 @@ export function DayCarousel({ items, summaries }) {
     items.forEach((league, index) => {
       const summary = summaries[league.id]
       if (!summary?.dates?.length) return
+      const palette = colorForLeague(league.id, index)
       const tag = {
         id: league.id,
         name: shortLeagueName(league.label),
-        color: colorForLeague(league.id, index).color,
+        color: palette.color,
+        foreground: palette.foreground,
       }
       for (const iso of summary.dates) {
         if (!byDate.has(iso)) byDate.set(iso, [])
@@ -86,7 +88,10 @@ export function DayCarousel({ items, summaries }) {
                   key={tag.id}
                   to={`/leagues/${encodeURIComponent(tag.id)}`}
                   className="day-caro__tag"
-                  style={{ '--tag-color': tag.color }}
+                  style={{
+                    '--tag-color': tag.color,
+                    '--tag-foreground': tag.foreground,
+                  }}
                 >
                   {tag.name}
                 </Link>

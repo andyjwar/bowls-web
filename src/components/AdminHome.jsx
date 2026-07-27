@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { AddInline } from './AddInline'
+import { Link } from 'react-router-dom'
 import { colorForLeague } from '../lib/leagueColors'
 import {
   collectLeagueDates,
@@ -38,7 +37,6 @@ export function AdminHome({ admin }) {
   )
   const [docs, setDocs] = useState({})
   const [competitions, setCompetitions] = useState([])
-  const navigate = useNavigate()
 
   const leagueKey = leagues.map((l) => l.id).join('|')
 
@@ -96,18 +94,23 @@ export function AdminHome({ admin }) {
       </header>
 
       <section className="home-section">
+        <h2 className="home-section__title">League results</h2>
         <div className="poster-grid">
           {leagues.map((league, index) => {
             const doc = docs[league.id]
             const stats = doc ? countOutstandingForLeague(doc) : null
             const dates = doc ? collectLeagueDates(doc) : []
             const days = formatPlayDaysFull(playDayLabels(dates))
+            const palette = colorForLeague(league.id, index)
             return (
               <Link
                 key={league.id}
                 to={`/admin/league/${encodeURIComponent(league.id)}`}
                 className="poster poster--admin"
-                style={{ '--poster-color': colorForLeague(league.id, index).color }}
+                style={{
+                  '--poster-color': palette.color,
+                  '--poster-foreground': palette.foreground,
+                }}
               >
                 {stats ? (
                   stats.toEnter > 0 ? (
@@ -129,18 +132,19 @@ export function AdminHome({ admin }) {
       </section>
 
       <section className="home-section">
-        <h2 className="home-section__title">Competitions &amp; more</h2>
+        <h2 className="home-section__title">Cup results</h2>
         <div className="poster-grid">
           {competitions.map((comp, index) => {
             const awaited = countAwaitedCupTies(comp)
+            const palette = colorForLeague(comp.id, COMPETITION_COLOR_OFFSET + index)
             return (
               <Link
                 key={comp.id}
                 to={`/admin/cup/${encodeURIComponent(comp.id)}`}
                 className="poster poster--admin"
                 style={{
-                  '--poster-color': colorForLeague(comp.id, COMPETITION_COLOR_OFFSET + index)
-                    .color,
+                  '--poster-color': palette.color,
+                  '--poster-foreground': palette.foreground,
                 }}
               >
                 {awaited > 0 ? (
@@ -158,30 +162,30 @@ export function AdminHome({ admin }) {
             )
           })}
 
-          <Link to="/admin/season" className="jump-tile jump-tile--link poster--admin">
-            <span className="poster__name">Season &amp; leagues</span>
-            <span className="poster__days">Teams · fixture dates · new seasons</span>
+        </div>
+      </section>
+
+      <section className="home-section">
+        <h2 className="home-section__title">Manage season</h2>
+        <div className="poster-grid">
+          <Link
+            to="/admin/season?mode=edit"
+            className="jump-tile jump-tile--link poster--admin admin-manage-tile"
+          >
+            <span className="poster__name">Edit current season</span>
+            <span className="poster__sub">{admin.activeSeason}</span>
+            <span className="poster__days">Leagues · teams · fixture dates · cups</span>
             <TileArrow />
           </Link>
-
-        </div>
-
-        <div className="add-day-row">
-          <AddInline
-            label="New competition"
-            submitLabel="Create competition"
-            hint="Adds a knockout cup to this season. You'll set up its draw next — entrants, rounds and dates."
-            fields={[
-              { name: 'name', label: 'Competition name', placeholder: 'e.g. Presidents Cup' },
-              { name: 'days', label: 'Played on', placeholder: 'e.g. Fridays' },
-            ]}
-            onSubmit={async ({ name, days }) => {
-              const out = await admin.createCompetition({ name, days })
-              if (out?.competition?.id) {
-                navigate(`/admin/cup/${encodeURIComponent(out.competition.id)}`)
-              }
-            }}
-          />
+          <Link
+            to="/admin/season?mode=create"
+            className="jump-tile jump-tile--link poster--admin admin-manage-tile admin-manage-tile--create"
+          >
+            <span className="poster__name">Create new season</span>
+            <span className="poster__sub">Guided setup</span>
+            <span className="poster__days">Copy · review · publish</span>
+            <TileArrow />
+          </Link>
         </div>
       </section>
     </div>

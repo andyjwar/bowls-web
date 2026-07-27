@@ -354,7 +354,7 @@
   flex-direction: column;
   padding: clamp(1.1rem, 2.4vw, 1.5rem);
   background: var(--poster-color, var(--fm-pitch));
-  color: #fff;
+  color: var(--poster-foreground, #fff);
   text-decoration: none;
   position: relative;
   transition: filter 0.12s ease, transform 0.15s ease;
@@ -606,7 +606,7 @@
   white-space: nowrap;
   font-size: 0.66rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--tag-foreground, #fff);
   background: var(--tag-color, var(--fm-pitch));
   padding: 2px 8px;
   text-decoration: none;
@@ -692,7 +692,7 @@
   flex-direction: column;
   gap: 0.3rem;
   background: var(--league-color, var(--fm-pitch));
-  color: #fff;
+  color: var(--league-foreground, #fff);
   padding: clamp(1.15rem, 3vw, 1.65rem) clamp(1.15rem, 3vw, 1.65rem);
 }
 
@@ -701,7 +701,7 @@
   align-items: center;
   gap: 0.4rem;
   width: fit-content;
-  background: #fff;
+  background: var(--league-foreground, #fff);
   color: var(--league-color, var(--fm-pitch));
   font-size: 0.85rem;
   font-weight: 700;
@@ -721,7 +721,7 @@
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1.08;
-  color: #fff;
+  color: var(--league-foreground, #fff);
 }
 
 .league-banner__meta {
@@ -753,21 +753,24 @@
   padding: 0.55rem 0.95rem 0.65rem;
   font-size: 0.92rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--league-foreground, #fff);
+  opacity: 0.75;
   text-decoration: none;
   white-space: nowrap;
   transition: color 0.12s ease;
 }
 
 .league-banner__tab:hover {
-  color: #fff;
+  color: var(--league-foreground, #fff);
+  opacity: 1;
 }
 
 .league-banner__tab--active,
 .league-banner__tab--active:hover {
-  background: var(--fm-bg);
+  background: var(--league-foreground, #fff);
   color: var(--league-color, var(--fm-pitch));
   font-weight: 750;
+  opacity: 1;
 }
 
 .bowls-app[data-theme='dark'] .league-banner__tab--active,
@@ -818,7 +821,7 @@
 .div-letters__item--active,
 .div-letters__item--active:hover {
   background: var(--league-color, var(--fm-pitch));
-  color: #fff;
+  color: var(--league-foreground, #fff);
   box-shadow: none;
 }
 
@@ -1243,7 +1246,7 @@
 
 .match-row__chip--w {
   background: var(--league-color, var(--fm-pitch));
-  color: #fff;
+  color: var(--league-foreground, #fff);
 }
 
 .match-row__chip--l {
@@ -2247,6 +2250,20 @@ button.pill-nav__btn {
   min-height: 0;
 }
 
+.standings-export__toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 0.65rem;
+}
+
+.standings-actions {
+  margin-left: auto;
+}
+
+.standings-print-head {
+  display: none;
+}
+
 .table-scroll {
   overflow-x: auto;
   margin: 0 -0.25rem;
@@ -2674,16 +2691,16 @@ a.form-card:hover {
 }
 
 .officer-card__chip--open {
-  color: #fff;
+  color: var(--officer-foreground, #fff);
   background: var(--officer-accent, var(--fm-pitch));
 }
 
 .officer-card__chip--open svg {
-  color: #fff;
+  color: var(--officer-foreground, #fff);
 }
 
 .officer-card__chip--open:hover {
-  color: #fff;
+  color: var(--officer-foreground, #fff);
   box-shadow: none;
 }
 
@@ -4028,9 +4045,12 @@ a.form-card:hover {
    ------------------------------------------------------------------------ */
 @media print {
   .site-header,
+  .site-footer,
   .league-banner,
   .league-toolbar,
   .match-toolbar,
+  .standings-export__toolbar,
+  .table-next,
   .theme-toggle {
     display: none !important;
   }
@@ -4116,6 +4136,42 @@ a.form-card:hover {
   .match-row__venue--away {
     border: 1px solid #000 !important;
   }
+
+  .standings-print-head {
+    display: flex !important;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 18px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #000;
+  }
+
+  .standings-print-head img {
+    width: 58px;
+    height: 58px;
+  }
+
+  .standings-print-head h1 {
+    margin: 0;
+    color: #000 !important;
+    font-size: 18pt;
+  }
+
+  .standings-print-head p {
+    margin: 4px 0 0;
+    color: #333 !important;
+    font-size: 9pt;
+  }
+
+  .standings-panel,
+  .standings-table {
+    width: 100% !important;
+  }
+
+  .standings-table__team-link {
+    color: #000 !important;
+    text-decoration: none !important;
+  }
 }
 
 /* ─── Admin: tiled home + inline score entry (v23) ─────────────────── */
@@ -4145,7 +4201,7 @@ a.form-card:hover {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--poster-foreground, #fff);
   color: var(--poster-color, var(--fm-pitch));
   font-size: 0.72rem;
   font-weight: 800;
@@ -4154,9 +4210,72 @@ a.form-card:hover {
   white-space: nowrap;
 }
 
+.admin-manage-tile {
+  --poster-color: #334155;
+}
+
+.admin-manage-tile--create {
+  --poster-color: #397f50;
+}
+
+.season-panel--create {
+  border-left: 4px solid var(--league-color, #397f50);
+}
+
+.season-panel__drafts {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.season-structure-actions__tile {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.league-name-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.season-competition-list {
+  display: grid;
+  gap: 8px;
+}
+
+.season-competition-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.season-competition-row:hover {
+  border-color: var(--league-color, var(--fm-pitch));
+}
+
+.season-competition-row span:first-child {
+  display: grid;
+  gap: 3px;
+}
+
+.season-competition-row small {
+  color: var(--fm-muted);
+}
+
 .poster__todo--zero {
   background: rgba(255, 255, 255, 0.25);
-  color: #fff;
+  color: var(--poster-foreground, #fff);
 }
 
 .poster__todo--charcoal {
@@ -4382,7 +4501,7 @@ a.form-card:hover {
   padding: 0.5rem 1.1rem;
   border: 0;
   background: var(--league-color, var(--fm-pitch));
-  color: #fff;
+  color: var(--league-foreground, #fff);
   cursor: pointer;
 }
 
@@ -4458,7 +4577,7 @@ a.form-card:hover {
 
 .entry-rowact--save {
   background: var(--league-color, var(--fm-pitch));
-  color: #fff;
+  color: var(--league-foreground, #fff);
 }
 
 .entry-rowact--cancel {
@@ -4736,6 +4855,21 @@ a.form-card:hover {
   font-weight: 700;
   color: var(--fm-muted);
   white-space: nowrap;
+}
+
+.entry-weektools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 8px 14px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.07);
+}
+
+.entry-weektools__all--open {
+  color: var(--league-color, var(--fm-pitch));
+  border-color: currentColor;
+  background: var(--league-color-soft, var(--fm-pitch-soft));
 }
 
 /* "Back to one week" link in the toolbar (All-weeks view) */
@@ -5713,4 +5847,175 @@ a.form-card:hover {
 
 .cup-roundmeta__open:hover {
   color: inherit;
+}
+
+/* ── Structure-first new-season wizard ── */
+
+.season-wizard {
+  max-width: 1040px;
+}
+
+.season-wizard__step {
+  margin: 0 0 5px;
+  color: var(--league-color, var(--fm-pitch));
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.season-wizard__title {
+  margin: 0;
+  font-size: clamp(1.35rem, 3vw, 1.8rem);
+}
+
+.season-wizard__lead {
+  margin: 6px 0 18px;
+  color: var(--fm-muted);
+}
+
+.season-wizard__year {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.season-wizard__year label {
+  display: grid;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--fm-muted);
+}
+
+.season-wizard__drafts {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.season-wizard__leagues {
+  display: grid;
+  gap: 14px;
+}
+
+.season-plan {
+  margin: 0;
+}
+
+.season-plan--off {
+  opacity: 0.62;
+}
+
+.season-plan__head,
+.season-plan__keep {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.season-plan__head {
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.season-plan__head > span {
+  color: var(--fm-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.season-plan__keep strong {
+  font-size: 1.02rem;
+}
+
+.season-plan__labels,
+.season-plan__day {
+  display: grid;
+  grid-template-columns: minmax(12rem, 1.4fr) minmax(9rem, 1fr) 5.5rem 7.5rem auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.season-plan__labels {
+  margin-bottom: 5px;
+  color: var(--fm-muted);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.season-plan__days {
+  display: grid;
+  gap: 7px;
+  margin-bottom: 12px;
+}
+
+.season-plan__dayname,
+.season-plan__teams {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.season-plan__dayname .admin-input {
+  min-width: 0;
+  width: 100%;
+}
+
+.season-plan__number {
+  width: 5.25rem;
+}
+
+.season-plan__teams small {
+  color: var(--fm-muted);
+  font-size: 0.68rem;
+  line-height: 1.1;
+}
+
+.season-wizard__foot {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 12px;
+  border: 1px solid var(--fm-border);
+  background: color-mix(in srgb, var(--fm-bg) 94%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.season-wizard__foot span {
+  margin-right: auto;
+  color: var(--fm-muted);
+  font-size: 0.78rem;
+}
+
+@media (max-width: 760px) {
+  .season-plan__labels {
+    display: none;
+  }
+
+  .season-plan__day {
+    grid-template-columns: 1fr 1fr;
+    padding: 10px 0;
+    border-top: 1px solid var(--fm-border);
+  }
+
+  .season-plan__dayname {
+    grid-column: 1 / -1;
+  }
+
+  .season-wizard__foot {
+    flex-wrap: wrap;
+  }
 }

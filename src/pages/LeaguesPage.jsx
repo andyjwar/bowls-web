@@ -280,6 +280,7 @@ export function LeaguesPage() {
       style={{
         '--league-color': palette.color,
         '--league-color-soft': palette.soft,
+        '--league-foreground': palette.foreground,
       }}
     >
       <header
@@ -323,7 +324,16 @@ export function LeaguesPage() {
               <div className="tab-panel">
                 {tab === 'table' ? (
                   <>
-                    <StandingsTable rows={standings} />
+                    <StandingsTable
+                      rows={standings}
+                      context={{
+                        leagueName: shortLeagueName(data?.name),
+                        sectionLabel: structured
+                          ? data.sections.find((s) => s.id === selection.sectionId)?.label
+                          : undefined,
+                        divisionLabel: division.label,
+                      }}
+                    />
                     <div className="table-next">
                       <NextMatches fixtureWeeks={fixtures} />
                     </div>

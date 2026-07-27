@@ -66,6 +66,14 @@ export async function addAdminLeagueDivision(leagueId, payload) {
   })
 }
 
+export async function deleteAdminLeagueDivision(leagueId, { sectionId, divisionId }) {
+  const query = sectionId ? `?sectionId=${encodeURIComponent(sectionId)}` : ''
+  return api(
+    `/league/${encodeURIComponent(leagueId)}/divisions/${encodeURIComponent(divisionId)}${query}`,
+    { method: 'DELETE' },
+  )
+}
+
 export async function addAdminLeagueSection(leagueId, payload) {
   return api(`/league/${encodeURIComponent(leagueId)}/sections`, {
     method: 'POST',
@@ -85,9 +93,9 @@ export async function deleteAdminLeague(leagueId) {
   return api(`/league/${encodeURIComponent(leagueId)}`, { method: 'DELETE' })
 }
 
-/** Clone every active league into a new season and make it the active one. */
-export async function startAdminSeason(year) {
-  return api('/season', { method: 'POST', body: JSON.stringify({ year }) })
+/** Build a draft season from a reviewed league/day/division structure. */
+export async function startAdminSeason(year, structure) {
+  return api('/season', { method: 'POST', body: JSON.stringify({ year, structure }) })
 }
 
 /** Point the public site at another existing season (reversible switch). */

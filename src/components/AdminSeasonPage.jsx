@@ -1,15 +1,21 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { AddInline } from './AddInline'
+import { SeasonStructureWizard } from './SeasonStructureWizard'
 import { colorForLeague } from '../lib/leagueColors'
-import { shortLeagueName } from '../lib/leagueSchedule'
+import { dateForPlayDay, shortLeagueName } from '../lib/leagueSchedule'
 import { buildDivisionFixtures } from '../lib/fixtures'
 
 const BYE = 'Bye'
 const DATE_COLUMNS = [
   { key: 'date', label: 'Date' },
+  { key: 'mondayDate', label: 'Monday' },
   { key: 'tuesdayDate', label: 'Tuesday' },
+  { key: 'wednesdayDate', label: 'Wednesday' },
   { key: 'thursdayDate', label: 'Thursday' },
+  { key: 'fridayDate', label: 'Friday' },
+  { key: 'saturdayDate', label: 'Saturday' },
+  { key: 'sundayDate', label: 'Sunday' },
 ]
 
 /** "Pairs League" → "pairs-league" (league/section ids). */
@@ -61,11 +67,10 @@ function divisionKey(sectionId, divisionId) {
 /* ────────────────────────── Season panel ────────────────────────── */
 
 /**
- * Season controls: switch which season the public site shows, and start the
- * next season. Starting hands off to the guided setup (league-by-league
- * teams + dates walkthrough) via `onSeasonStarted`.
+ * Season controls shown in one of two deliberately separate jobs:
+ * editing/publishing existing seasons, or creating a draft season.
  */
-function SeasonPanel({ admin, onSeasonStarted, onSeasonRemoved }) {
+function SeasonPanel({ admin, mode, onSeasonStarted, onSeasonRemoved, onContinueDraft }) {
   const seasons = admin.seasons ?? []
   const active = admin.activeSeason
   const [newYear, setNewYear] = useState('')
@@ -76,6 +81,8 @@ function SeasonPanel({ admin, onSeasonStarted, onSeasonRemoved }) {
 
   const suggestedYear = active != null ? active + 1 : new Date().getFullYear() + 1
   const startYear = Number(newYear || suggestedYear)
+  const draftSeasons = seasons.filter((s) => s !== active && s > active)
+  const publishedSeasons = seasons.filter((s) => s <= active)
 
   /* Default removal target: the newest season that isn't the active one. */
   const removeTarget = seasons.includes(Number(removeYear))
@@ -131,71 +138,88 @@ function SeasonPanel({ admin, onSeasonStarted, onSeasonRemoved }) {
   }
 
   return (
-    <section className="home-section">
-      <h2 className="home-section__title">Season</h2>
-      <div className="tile season-panel">
+    <section className={`home-section${mode === 'create' ? ' season-create' : ''}`}>
+      <h2 className="home-section__title">
+        {mode === 'create' ? 'Step 1 · Choose the year' : 'Current season'}
+      </h2>
+      <div className={`tile season-panel${mode === 'create' ? ' season-panel--create' : ''}`}>
         <div className="season-panel__row">
-          <label className="season-panel__field">
-            <span className="season-panel__label">Active season</span>
-            <select
-              className="admin-input season-panel__select"
-              value={active ?? ''}
-              disabled={admin.busy || seasons.length < 2}
-              onChange={(ev) => handleSwitch(ev.target.value)}
-            >
-              {(seasons.length ? seasons : [active]).map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <span className="season-panel__divider" aria-hidden="true" />
-
-          <label className="season-panel__field">
-            <span className="season-panel__label">Start new season</span>
-            <span className="season-panel__start">
-              <input
-                type="text"
-                inputMode="numeric"
-                className="admin-input season-panel__year"
-                placeholder={String(suggestedYear)}
-                value={newYear}
-                onChange={(ev) => {
-                  setNewYear(ev.target.value)
-                  setConfirming(false)
-                }}
-              />
-              <button
-                type="button"
-                className="entry-rowact entry-rowact--save"
-                disabled={admin.busy}
-                onClick={handleStart}
+          {mode === 'edit' ? (
+            <label className="season-panel__field">
+              <span className="season-panel__label">Public site is showing</span>
+              <select
+                className="admin-input season-panel__select"
+                value={active ?? ''}
+                disabled={admin.busy || publishedSeasons.length < 2}
+                onChange={(ev) => handleSwitch(ev.target.value)}
               >
-                {confirming ? `Confirm — start ${startYear}?` : `Start ${startYear}`}
-              </button>
-              {confirming ? (
+                {(publishedSeasons.length ? publishedSeasons : [active]).map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
+            </label>
+          ) : (
+            <label className="season-panel__field">
+              <span className="season-panel__label">New season year</span>
+              <span className="season-panel__start">
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  className="admin-input season-panel__year"
+                  placeholder={String(suggestedYear)}
+                  value={newYear}
+                  onChange={(ev) => {
+                    setNewYear(ev.target.value)
+                    setConfirming(false)
+                  }}
+                />
                 <button
                   type="button"
-                  className="entry-rowact entry-rowact--cancel"
-                  onClick={() => setConfirming(false)}
+                  className="entry-rowact entry-rowact--save"
+                  disabled={admin.busy}
+                  onClick={handleStart}
                 >
-                  Cancel
+                  {confirming ? `Confirm — create ${startYear}?` : `Create draft ${startYear} →`}
                 </button>
-              ) : null}
-            </span>
-          </label>
+                {confirming ? (
+                  <button
+                    type="button"
+                    className="entry-rowact entry-rowact--cancel"
+                    onClick={() => setConfirming(false)}
+                  >
+                    Cancel
+                  </button>
+                ) : null}
+              </span>
+            </label>
+          )}
         </div>
 
         <p className="season-panel__hint">
-          Starting a season copies every league (divisions, team slots, weekly schedule
-          moved forward a year) with no results, then walks you through each league to
-          check team names and fixture dates. The old season is kept and stays viewable
-          under past seasons.
+          {mode === 'create'
+            ? `This copies the ${active} leagues, divisions and weekly pattern with no results. It is not shown as the current season while you review teams and dates, and only becomes current when you finish the walkthrough.`
+            : 'Use this only when you need to view or manage another existing season.'}
         </p>
 
-        {seasons.length > 1 ? (
+        {mode === 'create' && draftSeasons.length ? (
+          <div className="season-panel__drafts">
+            <span className="season-panel__label">Draft already started</span>
+            {draftSeasons.map((year) => (
+              <button
+                key={year}
+                type="button"
+                className="dates-tile__toggle"
+                onClick={() => onContinueDraft?.(year)}
+              >
+                Continue setting up {year} →
+              </button>
+            ))}
+          </div>
+        ) : null}
+
+        {mode === 'edit' && seasons.length > 1 ? (
           <div className="season-panel__removerow">
             <select
               className="admin-input season-panel__select"
@@ -441,11 +465,7 @@ function DatesTile({ admin, leagueId, section, template, onSaved }) {
 function FixturePreview({ template, teams, playDay }) {
   const weeks = useMemo(() => {
     if (!template?.length) return []
-    const getDate = (row) => {
-      if (playDay === 'thursday') return row.thursdayDate
-      if (playDay === 'tuesday') return row.tuesdayDate
-      return row.date
-    }
+    const getDate = (row) => dateForPlayDay(row, playDay)
     return buildDivisionFixtures(template, teams, getDate)
   }, [template, teams, playDay])
 
@@ -534,6 +554,112 @@ function RemoveLeague({ admin, leagueId, leagueName, onRemoved }) {
   )
 }
 
+function RemoveDivision({ admin, leagueId, sectionId, division, disabled, onRemoved }) {
+  const [confirming, setConfirming] = useState(false)
+  const [error, setError] = useState(null)
+
+  async function remove() {
+    if (!confirming) {
+      setConfirming(true)
+      setError(null)
+      return
+    }
+    try {
+      await admin.removeLeagueDivision(leagueId, {
+        sectionId,
+        divisionId: division.id,
+      })
+      onRemoved?.()
+    } catch (err) {
+      setError(err.message || 'Could not remove the division')
+      setConfirming(false)
+    }
+  }
+
+  return (
+    <>
+      <button
+        type="button"
+        className={`entry-rowact entry-rowact--clear${confirming ? ' remove-league__btn--armed' : ''}`}
+        disabled={disabled || admin.busy}
+        title={disabled ? 'A playing day must keep at least one division' : undefined}
+        onClick={remove}
+      >
+        {confirming ? `Confirm remove ${division.label}?` : 'Remove division'}
+      </button>
+      {confirming ? (
+        <button
+          type="button"
+          className="entry-rowact entry-rowact--cancel"
+          onClick={() => setConfirming(false)}
+        >
+          Cancel
+        </button>
+      ) : null}
+      {error ? <span className="team-slots__msg team-slots__msg--error">{error}</span> : null}
+    </>
+  )
+}
+
+function LeagueNameEditor({ admin, leagueId, name, onSaved }) {
+  const [open, setOpen] = useState(false)
+  const [value, setValue] = useState(name)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState(null)
+
+  useEffect(() => setValue(name), [name])
+
+  if (!open) {
+    return (
+      <button type="button" className="dates-tile__toggle" onClick={() => setOpen(true)}>
+        Rename league
+      </button>
+    )
+  }
+
+  return (
+    <span className="league-name-edit">
+      <input
+        type="text"
+        className="admin-input"
+        value={value}
+        aria-label="League name"
+        onChange={(ev) => setValue(ev.target.value)}
+      />
+      <button
+        type="button"
+        className="entry-rowact entry-rowact--save"
+        disabled={saving}
+        onClick={async () => {
+          const next = value.trim()
+          if (!next) {
+            setError('Give the league a name')
+            return
+          }
+          setSaving(true)
+          setError(null)
+          try {
+            await admin.saveLeagueStructureLabels(leagueId, { leagueName: next })
+            await admin.loadLeagues()
+            setOpen(false)
+            onSaved?.()
+          } catch (err) {
+            setError(err.message || 'Could not rename the league')
+          } finally {
+            setSaving(false)
+          }
+        }}
+      >
+        {saving ? 'Saving…' : '✓ Save name'}
+      </button>
+      <button type="button" className="entry-rowact entry-rowact--cancel" onClick={() => setOpen(false)}>
+        Cancel
+      </button>
+      {error ? <span className="team-slots__msg team-slots__msg--error">{error}</span> : null}
+    </span>
+  )
+}
+
 /* ────────────────────────── Setup wizard banner ────────────────────────── */
 
 function SetupBanner({ year, stepIndex, leagues, onStep, onFinish }) {
@@ -549,7 +675,7 @@ function SetupBanner({ year, stepIndex, leagues, onStep, onFinish }) {
         <p className="setup-banner__hint">
           Check the team names in each slot, open <em>Fixture dates</em> to set when each
           week is played, then use <em>Fixtures</em> on any division to preview who plays
-          who. Everything stays editable after setup.
+          who. This draft does not become the current public season until the final step.
         </p>
       </div>
       <div className="setup-banner__actions">
@@ -571,7 +697,7 @@ function SetupBanner({ year, stepIndex, leagues, onStep, onFinish }) {
           </button>
         ) : (
           <button type="button" className="entry-rowact entry-rowact--save" onClick={onFinish}>
-            ✓ Finish setup
+            ✓ Publish {year} season
           </button>
         )}
       </div>
@@ -588,22 +714,31 @@ function SetupBanner({ year, stepIndex, leagues, onStep, onFinish }) {
  * start-new-season flow with a league-by-league guided setup.
  */
 export function AdminSeasonPage({ admin }) {
-  const leagues = (admin.leagues ?? []).filter(
-    (l) => l.season == null || admin.activeSeason == null || l.season === admin.activeSeason,
-  )
   const [searchParams, setSearchParams] = useSearchParams()
+  const navigate = useNavigate()
+  const mode = searchParams.get('mode') === 'create' ? 'create' : 'edit'
+  const setupYear = searchParams.get('setup')
+  const leagues = (admin.leagues ?? []).filter(
+    (l) =>
+      l.season == null ||
+      (setupYear
+        ? l.season === Number(setupYear)
+        : admin.activeSeason == null || l.season === admin.activeSeason),
+  )
 
   /* Guided setup mode (?setup=2027&step=0) — steps through the leagues. */
-  const setupYear = searchParams.get('setup')
   const setupStep = Math.min(
     Math.max(0, Number(searchParams.get('step')) || 0),
     Math.max(0, leagues.length - 1),
   )
   const inSetup = Boolean(setupYear) && leagues.length > 0
 
-  const leagueId = inSetup
-    ? leagues[setupStep].id
-    : searchParams.get('league') || leagues[0]?.id || ''
+  const leagueId =
+    mode === 'create' && !inSetup
+      ? ''
+      : inSetup
+        ? leagues[setupStep].id
+        : searchParams.get('league') || leagues[0]?.id || ''
   const leagueIndex = Math.max(
     0,
     leagues.findIndex((l) => l.id === leagueId),
@@ -614,6 +749,9 @@ export function AdminSeasonPage({ admin }) {
   const [loading, setLoading] = useState(false)
   const [fetchError, setFetchError] = useState(null)
   const [revision, setRevision] = useState(0)
+  const [competitions, setCompetitions] = useState([])
+  const [competitionRevision, setCompetitionRevision] = useState(0)
+  const [publishError, setPublishError] = useState(null)
 
   /** Draft slot values per division: key → string[] (display values, '' = bye). */
   const [drafts, setDrafts] = useState({})
@@ -622,7 +760,10 @@ export function AdminSeasonPage({ admin }) {
   const [previewKey, setPreviewKey] = useState(null)
 
   useEffect(() => {
-    if (!leagueId) return
+    if (!leagueId) {
+      setDoc(null)
+      return
+    }
     let cancelled = false
     setLoading(true)
     setFetchError(null)
@@ -642,6 +783,20 @@ export function AdminSeasonPage({ admin }) {
       cancelled = true
     }
   }, [leagueId, revision, admin])
+
+  useEffect(() => {
+    if (mode !== 'edit' || inSetup) return
+    let cancelled = false
+    admin
+      .loadCompetitions()
+      .then((data) => {
+        if (!cancelled) setCompetitions(data.competitions ?? [])
+      })
+      .catch(() => {})
+    return () => {
+      cancelled = true
+    }
+  }, [admin, mode, inSetup, competitionRevision])
 
   /* Selecting another league drops unsaved slot edits. */
   useEffect(() => {
@@ -720,16 +875,24 @@ export function AdminSeasonPage({ admin }) {
   }
 
   function selectLeague(id) {
-    setSearchParams({ league: id }, { replace: true })
+    setSearchParams({ mode: 'edit', league: id }, { replace: true })
   }
 
   function setStep(step) {
     setSearchParams({ setup: setupYear, step: String(step) }, { replace: true })
   }
 
-  function finishSetup() {
-    setSearchParams({ league: leagueId }, { replace: true })
+  async function finishSetup() {
+    setPublishError(null)
+    try {
+      await admin.switchActiveSeason(Number(setupYear))
+      setSearchParams({ mode: 'edit', league: leagueId }, { replace: true })
+    } catch (err) {
+      setPublishError(err.message || 'Could not publish the season')
+    }
   }
+
+  const showEditor = inSetup || mode === 'edit'
 
   return (
     <div
@@ -737,14 +900,25 @@ export function AdminSeasonPage({ admin }) {
       style={{
         '--league-color': palette.color,
         '--league-color-soft': palette.soft,
+        '--league-foreground': palette.foreground,
       }}
     >
-      <header className={`league-banner${leagues.length > 1 ? ' league-banner--tabbed' : ''}`}>
+      <header
+        className={`league-banner${
+          leagues.length > 1 && showEditor ? ' league-banner--tabbed' : ''
+        }`}
+      >
         <Link to="/admin" className="league-banner__back">
           ← Admin
         </Link>
-        <h1 className="league-banner__title">Season &amp; leagues</h1>
-        {leagues.length > 1 && !inSetup ? (
+        <h1 className="league-banner__title">
+          {inSetup
+            ? `Set up ${setupYear}`
+            : mode === 'create'
+              ? 'Create new season'
+              : `Edit ${admin.activeSeason} season`}
+        </h1>
+        {leagues.length > 1 && mode === 'edit' && !inSetup ? (
           <nav className="league-banner__tabs" aria-label="League">
             {leagues.map((l) => (
               <button
@@ -772,11 +946,14 @@ export function AdminSeasonPage({ admin }) {
           onFinish={finishSetup}
         />
       ) : null}
+      {publishError ? <p className="page-state page-state--error">{publishError}</p> : null}
 
-      {loading && !doc ? <p className="page-state">Loading…</p> : null}
-      {fetchError ? <p className="page-state page-state--error">{fetchError}</p> : null}
+      {showEditor && loading && !doc ? <p className="page-state">Loading…</p> : null}
+      {showEditor && fetchError ? (
+        <p className="page-state page-state--error">{fetchError}</p>
+      ) : null}
 
-      {doc
+      {showEditor && doc
         ? groups.map((grp) => {
             const template = grp.section ? grp.section.scheduleTemplate : doc.scheduleTemplate
             return (
@@ -917,6 +1094,16 @@ export function AdminSeasonPage({ admin }) {
                           ) : !dirty ? (
                             <span className="team-slots__hint">blank slot = bye</span>
                           ) : null}
+                          {!dirty ? (
+                            <RemoveDivision
+                              admin={admin}
+                              leagueId={leagueId}
+                              sectionId={grp.section?.id ?? null}
+                              division={division}
+                              disabled={grp.divisions.length === 1}
+                              onRemoved={() => setRevision((x) => x + 1)}
+                            />
+                          ) : null}
                         </div>
 
                         {previewOpen ? (
@@ -966,58 +1153,119 @@ export function AdminSeasonPage({ admin }) {
         </div>
       ) : null}
 
-      {!inSetup ? (
+      {mode === 'create' && !inSetup ? (
+        <SeasonStructureWizard
+          admin={admin}
+          onCreated={(year) =>
+            setSearchParams({ setup: String(year), step: '0' }, { replace: true })
+          }
+          onContinueDraft={(year) =>
+            setSearchParams({ setup: String(year), step: '0' }, { replace: true })
+          }
+        />
+      ) : null}
+
+      {mode === 'edit' && !inSetup ? (
         <>
-          <SeasonPanel
-            admin={admin}
-            onSeasonStarted={(year) =>
-              setSearchParams({ setup: String(year), step: '0' }, { replace: true })
-            }
-            onSeasonRemoved={() => setSearchParams({}, { replace: true })}
-          />
-
-          <div className="home-section add-day-row">
-            <AddInline
-              label="New league"
-              submitLabel="Create league"
-              hint="Creates another league in the current season. It copies the chosen league's shape — play days, divisions and the weekly fixture pattern — with every team slot empty, ready for names and its own dates."
-              fields={[
-                { name: 'name', label: 'League name', placeholder: 'e.g. Pairs League' },
-                {
-                  name: 'cloneFrom',
-                  label: 'Copy the shape of',
-                  options: leagues.map((l) => ({
-                    value: l.id,
-                    label: shortLeagueName(l.name) || l.id,
-                  })),
-                },
-              ]}
-              onSubmit={async ({ name, cloneFrom }) => {
-                const nm = String(name ?? '').trim()
-                if (!nm) throw new Error('Give the league a name')
-                const year = admin.activeSeason
-                const withYear = /\b\d{4}\b/.test(nm) ? nm : `${nm} ${year ?? ''}`.trim()
-                const out = await admin.createLeague({
-                  leagueId: `${slugify(nm)}${year ? `-${year}` : ''}`,
-                  name: withYear,
-                  cloneFromLeagueId: cloneFrom || leagues[0]?.id,
-                })
-                if (out?.leagueId) selectLeague(out.leagueId)
-              }}
-            />
-
-            {doc && leagues.length > 1 ? (
-              <RemoveLeague
+          <section className="home-section season-structure-actions">
+            <h2 className="home-section__title">League settings</h2>
+            <div className="tile season-structure-actions__tile">
+              <LeagueNameEditor
                 admin={admin}
                 leagueId={leagueId}
-                leagueName={shortLeagueName(doc.name) || leagueId}
-                onRemoved={() => {
-                  const remaining = leagues.filter((l) => l.id !== leagueId)
-                  selectLeague(remaining[0]?.id ?? '')
+                name={doc?.name ?? ''}
+                onSaved={() => setRevision((x) => x + 1)}
+              />
+              <AddInline
+                label="New league"
+                submitLabel="Create league"
+                hint="Copies an existing league's play days and fixture pattern, with empty team slots."
+                fields={[
+                  { name: 'name', label: 'League name', placeholder: 'e.g. Pairs League' },
+                  {
+                    name: 'cloneFrom',
+                    label: 'Copy the shape of',
+                    options: leagues.map((l) => ({
+                      value: l.id,
+                      label: shortLeagueName(l.name) || l.id,
+                    })),
+                  },
+                ]}
+                onSubmit={async ({ name, cloneFrom }) => {
+                  const nm = String(name ?? '').trim()
+                  if (!nm) throw new Error('Give the league a name')
+                  const year = admin.activeSeason
+                  const withYear = /\b\d{4}\b/.test(nm) ? nm : `${nm} ${year ?? ''}`.trim()
+                  const out = await admin.createLeague({
+                    leagueId: `${slugify(nm)}${year ? `-${year}` : ''}`,
+                    name: withYear,
+                    cloneFromLeagueId: cloneFrom || leagues[0]?.id,
+                  })
+                  if (out?.leagueId) selectLeague(out.leagueId)
                 }}
               />
-            ) : null}
-          </div>
+              {doc && leagues.length > 1 ? (
+                <RemoveLeague
+                  admin={admin}
+                  leagueId={leagueId}
+                  leagueName={shortLeagueName(doc.name) || leagueId}
+                  onRemoved={() => {
+                    const remaining = leagues.filter((l) => l.id !== leagueId)
+                    selectLeague(remaining[0]?.id ?? '')
+                  }}
+                />
+              ) : null}
+            </div>
+          </section>
+
+          <section className="home-section">
+            <h2 className="home-section__title">Cup competitions</h2>
+            <div className="season-competition-list">
+              {competitions.map((comp) => (
+                <Link
+                  key={comp.id}
+                  to={`/admin/cup/${encodeURIComponent(comp.id)}`}
+                  className="tile season-competition-row"
+                >
+                  <span>
+                    <strong>{comp.name}</strong>
+                    <small>{comp.days || 'Playing day not set'}</small>
+                  </span>
+                  <span aria-hidden="true">→</span>
+                </Link>
+              ))}
+            </div>
+            <div className="add-day-row">
+              <AddInline
+                label="New competition"
+                submitLabel="Create competition"
+                hint="Adds a knockout cup, then opens its guided draw setup."
+                fields={[
+                  {
+                    name: 'name',
+                    label: 'Competition name',
+                    placeholder: 'e.g. Presidents Cup',
+                  },
+                  { name: 'days', label: 'Played on', placeholder: 'e.g. Fridays' },
+                ]}
+                onSubmit={async ({ name, days }) => {
+                  const out = await admin.createCompetition({ name, days })
+                  setCompetitionRevision((x) => x + 1)
+                  if (out?.competition?.id) {
+                    navigate(`/admin/cup/${encodeURIComponent(out.competition.id)}`)
+                  }
+                }}
+              />
+            </div>
+          </section>
+
+          <SeasonPanel
+            admin={admin}
+            mode="edit"
+            onSeasonRemoved={() =>
+              setSearchParams({ mode: 'edit' }, { replace: true })
+            }
+          />
         </>
       ) : null}
     </div>

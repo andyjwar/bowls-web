@@ -38,7 +38,7 @@ export function splitLeaguesBySeason(items, activeSeason) {
     const season = Number(item.season)
     if (!Number.isInteger(season) || season === Number(activeSeason)) {
       active.push(item)
-    } else {
+    } else if (season < Number(activeSeason)) {
       if (!pastBySeason.has(season)) pastBySeason.set(season, [])
       pastBySeason.get(season).push(item)
     }

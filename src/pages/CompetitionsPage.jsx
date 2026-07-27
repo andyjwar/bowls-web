@@ -55,16 +55,20 @@ function CompetitionsHub({ competitions, loading, season }) {
         <p className="page-state">Loading…</p>
       ) : (
         <div className="poster-grid">
-          {competitions.map((comp, index) => (
-            <PosterTile
-              key={comp.id}
-              to={`/competitions/${encodeURIComponent(comp.id)}`}
-              color={colorForLeague(comp.id, COMPETITION_COLOR_OFFSET + index).color}
-              name={comp.name}
-              days={comp.days}
-              sub={comp.sub}
-            />
-          ))}
+          {competitions.map((comp, index) => {
+            const palette = colorForLeague(comp.id, COMPETITION_COLOR_OFFSET + index)
+            return (
+              <PosterTile
+                key={comp.id}
+                to={`/competitions/${encodeURIComponent(comp.id)}`}
+                color={palette.color}
+                foreground={palette.foreground}
+                name={comp.name}
+                days={comp.days}
+                sub={comp.sub}
+              />
+            )
+          })}
         </div>
       )}
     </div>
@@ -101,6 +105,7 @@ function CompetitionDetail({ comp, palette }) {
       style={{
         '--league-color': palette.color,
         '--league-color-soft': palette.soft,
+        '--league-foreground': palette.foreground,
       }}
     >
       <header className="league-banner league-banner--tabbed">

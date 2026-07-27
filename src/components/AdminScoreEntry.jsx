@@ -44,6 +44,7 @@ export function AdminScoreEntry({ admin }) {
   const [savingWeek, setSavingWeek] = useState(null)
   const [savingRow, setSavingRow] = useState(null) // rowKey currently saving
   const [editorEntry, setEditorEntry] = useState(null)
+  const [bulkWeeks, setBulkWeeks] = useState(() => new Set())
 
   useEffect(() => {
     let cancelled = false
@@ -207,6 +208,7 @@ export function AdminScoreEntry({ admin }) {
   useEffect(() => {
     setEdits({})
     setWeekMsg(null)
+    setBulkWeeks(new Set())
   }, [leagueId, currentSectionId, currentDivisionId])
 
   const navIndex = (admin.leagues ?? []).findIndex((l) => l.id === leagueId)
@@ -246,6 +248,53 @@ export function AdminScoreEntry({ admin }) {
             },
           },
     )
+  }
+
+  function toggleWholeWeek(weekFx) {
+    const weekNum = Number(weekFx.week)
+    const opening = !bulkWeeks.has(weekNum)
+    if (opening) {
+      for (const match of weekFx.matches) {
+        if (!match.isBye && match.away) seedEdit(weekFx.week, match)
+      }
+    } else {
+      /* Close untouched rows, but never throw away something already typed. */
+      setEdits((prev) => {
+        const next = { ...prev }
+        for (const match of weekFx.matches) {
+          if (!match.isBye && match.away && !rowIsDirty(weekFx.week, match)) {
+            delete next[rowKey(weekFx.week, match)]
+          }
+        }
+        return next
+      })
+    }
+    setBulkWeeks((prev) => {
+      const next = new Set(prev)
+      if (opening) next.add(weekNum)
+      else next.delete(weekNum)
+      return next
+    })
+  }
+
+  /** Spreadsheet-like movement through the four score boxes in each open row. */
+  function moveScoreFocus(ev) {
+    const direction = {
+      ArrowLeft: -1,
+      ArrowRight: 1,
+      ArrowUp: -4,
+      ArrowDown: 4,
+      Enter: 1,
+    }[ev.key]
+    if (direction == null) return
+    const week = ev.currentTarget.closest('.match-week')
+    const fields = [...(week?.querySelectorAll('[data-score-field]') ?? [])]
+    const current = fields.indexOf(ev.currentTarget)
+    const target = fields[current + direction]
+    if (!target) return
+    ev.preventDefault()
+    target.focus()
+    target.select()
   }
 
   function updateEdit(week, match, field, value) {
@@ -426,6 +475,7 @@ export function AdminScoreEntry({ admin }) {
       style={{
         '--league-color': palette.color,
         '--league-color-soft': palette.soft,
+        '--league-foreground': palette.foreground,
       }}
     >
       {editorEntry ? (
@@ -522,6 +572,7 @@ export function AdminScoreEntry({ admin }) {
               const weekComplete = Boolean(
                 weekStats.find((s) => s.week === weekNum)?.complete,
               )
+              const bulkOpen = bulkWeeks.has(weekNum)
               return (
                 <section key={weekFx.week} className="match-week">
                   {selectedWeek === 'all' ? (
@@ -638,6 +689,22 @@ export function AdminScoreEntry({ admin }) {
                       ) : null}
                     </div>
                   )}
+
+                  <div className="entry-weektools">
+                    <button
+                      type="button"
+                      className={`dates-tile__toggle${bulkOpen ? ' entry-weektools__all--open' : ''}`}
+                      aria-expanded={bulkOpen}
+                      onClick={() => toggleWholeWeek(weekFx)}
+                    >
+                      {bulkOpen ? 'Close untouched fixtures' : 'Enter all results'}
+                    </button>
+                    {bulkOpen ? (
+                      <span className="team-slots__hint">
+                        Arrow keys move between boxes · Enter moves forward
+                      </span>
+                    ) : null}
+                  </div>
 
                   {selectedWeek !== 'all' && earlierMissing > 0 && oldestGapWeek != null ? (
                     <button
@@ -804,10 +871,12 @@ export function AdminScoreEntry({ admin }) {
                                 <input
                                   className="entry-strip__box entry-strip__box--pts"
                                   inputMode="numeric"
-                                  autoFocus
+                                  autoFocus={!bulkOpen}
+                                  data-score-field="0"
                                   aria-label={`${match.home} points`}
                                   title="Points (optional)"
                                   value={e.homePoints}
+                                  onKeyDown={moveScoreFocus}
                                   onChange={(ev) =>
                                     updateEdit(weekFx.week, match, 'homePoints', ev.target.value)
                                   }
@@ -816,9 +885,11 @@ export function AdminScoreEntry({ admin }) {
                                 <input
                                   className="entry-strip__box entry-strip__box--pts"
                                   inputMode="numeric"
+                                  data-score-field="1"
                                   aria-label={`${match.away} points`}
                                   title="Points (optional)"
                                   value={e.awayPoints}
+                                  onKeyDown={moveScoreFocus}
                                   onChange={(ev) =>
                                     updateEdit(weekFx.week, match, 'awayPoints', ev.target.value)
                                   }
@@ -829,8 +900,10 @@ export function AdminScoreEntry({ admin }) {
                                 <input
                                   className="entry-strip__box entry-strip__box--shots"
                                   inputMode="numeric"
+                                  data-score-field="2"
                                   aria-label={`${match.home} shots`}
                                   value={e.homeShots}
+                                  onKeyDown={moveScoreFocus}
                                   onChange={(ev) =>
                                     updateEdit(weekFx.week, match, 'homeShots', ev.target.value)
                                   }
@@ -839,8 +912,10 @@ export function AdminScoreEntry({ admin }) {
                                 <input
                                   className="entry-strip__box entry-strip__box--shots"
                                   inputMode="numeric"
+                                  data-score-field="3"
                                   aria-label={`${match.away} shots`}
                                   value={e.awayShots}
+                                  onKeyDown={moveScoreFocus}
                                   onChange={(ev) =>
                                     updateEdit(weekFx.week, match, 'awayShots', ev.target.value)
                                   }

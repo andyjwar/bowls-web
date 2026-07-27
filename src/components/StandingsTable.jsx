@@ -1,15 +1,32 @@
 import { Link } from 'react-router-dom'
 import { displayStat } from '../lib/standings'
+import { StandingsActions } from './StandingsActions'
 
 function shotsCell(value, played) {
   return played === 0 ? '—' : String(value)
 }
 
-export function StandingsTable({ rows }) {
+export function StandingsTable({ rows, context }) {
+  const printedAt = new Date().toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
   return (
-    <div className="standings-panel">
-      <div className="table-scroll">
-        <table className="standings-table">
+    <div className="standings-export">
+      <div className="standings-export__toolbar">
+        <StandingsActions rows={rows} context={context} />
+      </div>
+      <header className="standings-print-head">
+        <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" />
+        <div>
+          <h1>{[context.leagueName, context.sectionLabel, context.divisionLabel].filter(Boolean).join(' · ')}</h1>
+          <p>League table as at {printedAt}</p>
+        </div>
+      </header>
+      <div className="standings-panel">
+        <div className="table-scroll">
+          <table className="standings-table">
           <thead>
             <tr>
               <th scope="col" className="standings-table__pos">
@@ -59,7 +76,8 @@ export function StandingsTable({ rows }) {
               </tr>
             ))}
           </tbody>
-        </table>
+          </table>
+        </div>
       </div>
     </div>
   )

@@ -155,6 +155,7 @@ function OfficerCard({ role, name, address, phones = [], emails = [], palette })
       style={{
         '--officer-accent': palette.color,
         '--officer-soft': palette.soft,
+        '--officer-foreground': palette.foreground,
       }}
     >
       <span className="officer-card__role">{role}</span>

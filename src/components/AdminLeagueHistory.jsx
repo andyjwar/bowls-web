@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { buildDivisionFixtures, formatFixtureDate } from '../lib/fixtures'
 import { applyResultsToFixtures, formatMatchScore } from '../lib/results'
+import { dateForPlayDay } from '../lib/leagueSchedule'
 
 /** Every registered league serves its JSON at `/data/<id>.json`. */
 function leagueDataPath(leagueId) {
@@ -35,11 +36,7 @@ function fixturesMergedForDivision(leagueData, sectionId, divisionId) {
   const division = leagueData.divisions?.find((d) => d.id === divisionId)
   if (!division) return { division: null, fixtures: [] }
 
-  const getDate = (row) => {
-    if (division.playDay === 'thursday') return row.thursdayDate
-    if (division.playDay === 'tuesday') return row.tuesdayDate
-    return row.date
-  }
+  const getDate = (row) => dateForPlayDay(row, division.playDay)
 
   const fixtures = applyResultsToFixtures(
     buildDivisionFixtures(leagueData.scheduleTemplate, division.teams, getDate),

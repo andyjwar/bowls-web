@@ -9,6 +9,7 @@ import {
   saveAdminScheduleDates,
   saveAdminLeagueLabels,
   addAdminLeagueDivision,
+  deleteAdminLeagueDivision,
   addAdminLeagueSection,
   createAdminLeague,
   deleteAdminLeague,
@@ -82,11 +83,11 @@ export function useAdmin() {
   }, [applyLeaguesResponse])
 
   const startSeason = useCallback(
-    async (year) => {
+    async (year, structure) => {
       setBusy(true)
       setError(null)
       try {
-        const out = await startAdminSeason(year)
+        const out = await startAdminSeason(year, structure)
         await loadLeagues()
         return out
       } catch (e) {
@@ -249,6 +250,19 @@ export function useAdmin() {
     setError(null)
     try {
       return await addAdminLeagueDivision(leagueId, payload)
+    } catch (e) {
+      setError(e.message)
+      throw e
+    } finally {
+      setBusy(false)
+    }
+  }, [])
+
+  const removeLeagueDivisionRequest = useCallback(async (leagueId, payload) => {
+    setBusy(true)
+    setError(null)
+    try {
+      return await deleteAdminLeagueDivision(leagueId, payload)
     } catch (e) {
       setError(e.message)
       throw e
@@ -448,6 +462,7 @@ export function useAdmin() {
       saveScheduleDates,
       saveLeagueStructureLabels,
       addLeagueDivision: addLeagueDivisionRequest,
+      removeLeagueDivision: removeLeagueDivisionRequest,
       addLeagueSection: addLeagueSectionRequest,
       createLeague: createLeagueRequest,
       removeLeague,
@@ -486,6 +501,7 @@ export function useAdmin() {
       saveScheduleDates,
       saveLeagueStructureLabels,
       addLeagueDivisionRequest,
+      removeLeagueDivisionRequest,
       addLeagueSectionRequest,
       createLeagueRequest,
       removeLeague,
