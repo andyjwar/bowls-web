@@ -534,6 +534,14 @@
                   "awayShots": 64,
                   "homePoints": 0,
                   "awayPoints": 6
+                },
+                {
+                  "home": "Westerfield Yellows",
+                  "away": "Marlborough",
+                  "homeShots": 43,
+                  "awayShots": 56,
+                  "homePoints": 1,
+                  "awayPoints": 5
                 }
               ],
               "12": [
