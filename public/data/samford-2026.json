@@ -526,6 +526,16 @@
                   "awayPoints": 1
                 }
               ],
+              "7": [
+                {
+                  "home": "Waldringfield Swans",
+                  "away": "Stone Lodge Blues",
+                  "homeShots": 39,
+                  "awayShots": 64,
+                  "homePoints": 0,
+                  "awayPoints": 6
+                }
+              ],
               "12": [
                 {
                   "home": "Kirton A",
