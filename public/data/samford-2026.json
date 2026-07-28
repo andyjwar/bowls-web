@@ -2922,6 +2922,14 @@
                   "awayShots": 50,
                   "homePoints": 5,
                   "awayPoints": 1
+                },
+                {
+                  "home": "St John's URC",
+                  "away": "Norbridge",
+                  "homeShots": 40,
+                  "awayShots": 78,
+                  "homePoints": 0,
+                  "awayPoints": 6
                 }
               ]
             }
