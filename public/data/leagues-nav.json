@@ -13,5 +13,20 @@
     "id": "triples-2026",
     "label": "Triples League 2026",
     "season": 2026
+  },
+  {
+    "id": "samford-2027",
+    "label": "Samford League 2027",
+    "season": 2027
+  },
+  {
+    "id": "two-wood-2027",
+    "label": "Two Wood League 2027",
+    "season": 2027
+  },
+  {
+    "id": "triples-2027",
+    "label": "Triples League 2027",
+    "season": 2027
   }
 ]

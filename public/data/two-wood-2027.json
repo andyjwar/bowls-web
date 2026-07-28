@@ -1,0 +1,457 @@
+{
+  "id": "two-wood-2027",
+  "name": "Two Wood League 2027",
+  "scheduleTemplate": [
+    {
+      "week": 1,
+      "tuesdayDate": "2027-04-27",
+      "thursdayDate": "2027-04-29",
+      "pairings": [
+        {
+          "home": 1,
+          "away": 8
+        },
+        {
+          "home": 7,
+          "away": 2
+        },
+        {
+          "home": 3,
+          "away": 6
+        },
+        {
+          "home": 5,
+          "away": 4
+        }
+      ]
+    },
+    {
+      "week": 2,
+      "tuesdayDate": "2027-05-04",
+      "thursdayDate": "2027-05-06",
+      "pairings": [
+        {
+          "home": 7,
+          "away": 1
+        },
+        {
+          "home": 8,
+          "away": 6
+        },
+        {
+          "home": 5,
+          "away": 2
+        },
+        {
+          "home": 3,
+          "away": 4
+        }
+      ]
+    },
+    {
+      "week": 3,
+      "tuesdayDate": "2027-05-11",
+      "thursdayDate": "2027-05-13",
+      "pairings": [
+        {
+          "home": 1,
+          "away": 6
+        },
+        {
+          "home": 5,
+          "away": 7
+        },
+        {
+          "home": 8,
+          "away": 4
+        },
+        {
+          "home": 3,
+          "away": 2
+        }
+      ]
+    },
+    {
+      "week": 4,
+      "tuesdayDate": "2027-05-18",
+      "thursdayDate": "2027-05-20",
+      "pairings": [
+        {
+          "home": 5,
+          "away": 1
+        },
+        {
+          "home": 6,
+          "away": 4
+        },
+        {
+          "home": 3,
+          "away": 7
+        },
+        {
+          "home": 8,
+          "away": 2
+        }
+      ]
+    },
+    {
+      "week": 5,
+      "tuesdayDate": "2027-05-25",
+      "thursdayDate": "2027-05-27",
+      "pairings": [
+        {
+          "home": 1,
+          "away": 4
+        },
+        {
+          "home": 3,
+          "away": 5
+        },
+        {
+          "home": 6,
+          "away": 2
+        },
+        {
+          "home": 8,
+          "away": 7
+        }
+      ]
+    },
+    {
+      "week": 6,
+      "tuesdayDate": "2027-06-01",
+      "thursdayDate": "2027-06-03",
+      "pairings": [
+        {
+          "home": 3,
+          "away": 1
+        },
+        {
+          "home": 4,
+          "away": 2
+        },
+        {
+          "home": 8,
+          "away": 5
+        },
+        {
+          "home": 6,
+          "away": 7
+        }
+      ]
+    },
+    {
+      "week": 7,
+      "tuesdayDate": "2027-06-08",
+      "thursdayDate": "2027-06-10",
+      "pairings": [
+        {
+          "home": 1,
+          "away": 2
+        },
+        {
+          "home": 8,
+          "away": 3
+        },
+        {
+          "home": 4,
+          "away": 7
+        },
+        {
+          "home": 6,
+          "away": 5
+        }
+      ]
+    },
+    {
+      "week": 8,
+      "tuesdayDate": "2027-06-15",
+      "thursdayDate": "2027-06-17",
+      "pairings": [
+        {
+          "home": 8,
+          "away": 1
+        },
+        {
+          "home": 2,
+          "away": 7
+        },
+        {
+          "home": 6,
+          "away": 3
+        },
+        {
+          "home": 4,
+          "away": 5
+        }
+      ]
+    },
+    {
+      "week": 9,
+      "tuesdayDate": "2027-06-22",
+      "thursdayDate": "2027-06-24",
+      "pairings": [
+        {
+          "home": 1,
+          "away": 7
+        },
+        {
+          "home": 6,
+          "away": 8
+        },
+        {
+          "home": 2,
+          "away": 5
+        },
+        {
+          "home": 4,
+          "away": 3
+        }
+      ]
+    },
+    {
+      "week": 10,
+      "tuesdayDate": "2027-06-29",
+      "thursdayDate": "2027-07-01",
+      "pairings": [
+        {
+          "home": 6,
+          "away": 1
+        },
+        {
+          "home": 7,
+          "away": 5
+        },
+        {
+          "home": 4,
+          "away": 8
+        },
+        {
+          "home": 2,
+          "away": 3
+        }
+      ]
+    },
+    {
+      "week": 11,
+      "tuesdayDate": "2027-07-06",
+      "thursdayDate": "2027-07-08",
+      "pairings": [
+        {
+          "home": 1,
+          "away": 5
+        },
+        {
+          "home": 4,
+          "away": 6
+        },
+        {
+          "home": 7,
+          "away": 3
+        },
+        {
+          "home": 2,
+          "away": 8
+        }
+      ]
+    },
+    {
+      "week": 12,
+      "tuesdayDate": "2027-07-13",
+      "thursdayDate": "2027-07-15",
+      "pairings": [
+        {
+          "home": 4,
+          "away": 1
+        },
+        {
+          "home": 5,
+          "away": 3
+        },
+        {
+          "home": 2,
+          "away": 6
+        },
+        {
+          "home": 7,
+          "away": 8
+        }
+      ]
+    },
+    {
+      "week": 13,
+      "tuesdayDate": "2027-07-20",
+      "thursdayDate": "2027-07-22",
+      "pairings": [
+        {
+          "home": 1,
+          "away": 3
+        },
+        {
+          "home": 2,
+          "away": 4
+        },
+        {
+          "home": 5,
+          "away": 8
+        },
+        {
+          "home": 7,
+          "away": 6
+        }
+      ]
+    },
+    {
+      "week": 14,
+      "tuesdayDate": "2027-07-27",
+      "thursdayDate": "2027-07-29",
+      "pairings": [
+        {
+          "home": 2,
+          "away": 1
+        },
+        {
+          "home": 3,
+          "away": 8
+        },
+        {
+          "home": 7,
+          "away": 4
+        },
+        {
+          "home": 5,
+          "away": 6
+        }
+      ]
+    }
+  ],
+  "divisions": [
+    {
+      "id": "a",
+      "label": "Division A",
+      "playDay": "tuesday",
+      "teams": [
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye"
+      ],
+      "results": {
+        "weeks": {}
+      }
+    },
+    {
+      "id": "b",
+      "label": "Division B",
+      "playDay": "tuesday",
+      "teams": [
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye"
+      ],
+      "results": {
+        "weeks": {}
+      }
+    },
+    {
+      "id": "c",
+      "label": "Division C",
+      "playDay": "tuesday",
+      "teams": [
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye"
+      ],
+      "results": {
+        "weeks": {}
+      }
+    },
+    {
+      "id": "d",
+      "label": "Division D",
+      "playDay": "tuesday",
+      "teams": [
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye"
+      ],
+      "results": {
+        "weeks": {}
+      }
+    },
+    {
+      "id": "e",
+      "label": "Division E",
+      "playDay": "thursday",
+      "teams": [
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye"
+      ],
+      "results": {
+        "weeks": {}
+      }
+    },
+    {
+      "id": "f",
+      "label": "Division F",
+      "playDay": "thursday",
+      "teams": [
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye"
+      ],
+      "results": {
+        "weeks": {}
+      }
+    },
+    {
+      "id": "g",
+      "label": "Division G",
+      "playDay": "thursday",
+      "teams": [
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye",
+        "Bye"
+      ],
+      "results": {
+        "weeks": {}
+      }
+    }
+  ],
+  "season": 2027
+}
