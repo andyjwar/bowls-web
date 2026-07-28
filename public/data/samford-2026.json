@@ -2301,6 +2301,14 @@
                   "awayShots": 41,
                   "homePoints": 5,
                   "awayPoints": 1
+                },
+                {
+                  "home": "Copdock & Washbrook",
+                  "away": "Margaret Catchpole Reds",
+                  "homeShots": 52,
+                  "awayShots": 58,
+                  "homePoints": 1,
+                  "awayPoints": 5
                 }
               ]
             }
