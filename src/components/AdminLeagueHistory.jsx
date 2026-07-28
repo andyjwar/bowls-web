@@ -248,7 +248,7 @@ export function AdminLeagueHistory({
   }, [panelResetKey, defaultOpenWeek])
 
   async function removeSavedFixture(weekNum, m) {
-    if (!m.played || m.isBye || !m.away) return
+    if ((!m.played && !m.postponed) || m.isBye || !m.away) return
     const ok = window.confirm(
       `Remove this saved result from league data?\n\n${m.home} v ${m.away}\n\nYou can upload or edit again later.`,
     )
@@ -417,9 +417,11 @@ export function AdminLeagueHistory({
                                 <span className="admin-history-fixture__away">{m.away}</span>
                               </span>
                               <span
-                                className={`admin-history-fixture__score${m.played ? '' : ' admin-history-fixture__score--pending'}`}
+                                className={`admin-history-fixture__score${
+                                  m.played || m.postponed ? '' : ' admin-history-fixture__score--pending'
+                                }`}
                               >
-                                {m.played ? formatMatchScore(m) : ''}
+                                {m.postponed ? 'P-P' : m.played ? formatMatchScore(m) : ''}
                               </span>
                             </div>
                             <div className="admin-history-fixture__actions">
@@ -445,9 +447,9 @@ export function AdminLeagueHistory({
                               <button
                                 type="button"
                                 className="admin-btn admin-btn--ghost admin-history-fixture-btn admin-history-fixture-btn--danger"
-                                disabled={!m.played || admin.busy}
+                                disabled={(!m.played && !m.postponed) || admin.busy}
                                 title={
-                                  m.played
+                                  m.played || m.postponed
                                     ? 'Remove this saved result from league data'
                                     : 'Nothing saved yet for this fixture'
                                 }

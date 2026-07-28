@@ -8,6 +8,7 @@
 
 /** Big score shown elsewhere in the app: league points if finite, else shots. */
 function scorePair(match) {
+  if (match?.postponed) return ['P', 'P']
   const hasPoints =
     Number.isFinite(match.homePoints) && Number.isFinite(match.awayPoints)
   const hasShots =
@@ -142,13 +143,14 @@ export function buildCsv(fixtureWeeks, { teamFilter = '' } = {}) {
     for (const match of week.matches) {
       if (match.isBye) continue
       const [homeScore, awayScore] = scorePair(match)
+      const postponed = Boolean(match.postponed)
       const played = match.played && homeScore != null && awayScore != null
       const row = [
         week.label ?? week.week,
         week.date ?? '',
         match.home,
-        played ? homeScore : '',
-        played ? awayScore : '',
+        postponed || played ? homeScore : '',
+        postponed || played ? awayScore : '',
         match.away,
       ]
       if (single) {
@@ -156,7 +158,7 @@ export function buildCsv(fixtureWeeks, { teamFilter = '' } = {}) {
         const won = isHome ? match.homeWon : match.awayWon
         const draw = played && !match.homeWon && !match.awayWon
         row.push(isHome ? 'Home' : 'Away')
-        row.push(!played ? '' : draw ? 'D' : won ? 'W' : 'L')
+        row.push(postponed ? 'P' : !played ? '' : draw ? 'D' : won ? 'W' : 'L')
       }
       rows.push(row)
     }

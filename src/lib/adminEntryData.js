@@ -96,7 +96,7 @@ export function countOutstandingForLeague(leagueDoc) {
 
       if (t > cutoff) continue
       for (const m of week.matches ?? []) {
-        if (m.isBye || m.played) continue
+        if (m.isBye || m.played || m.postponed) continue
         if (isPlaceholderTeam(m.home) || isPlaceholderTeam(m.away)) continue
         toEnter += 1
       }
@@ -198,6 +198,7 @@ export function matchToFormRow(match) {
       Array.isArray(match.rinkShots) && match.rinkShots.length
         ? JSON.stringify(match.rinkShots)
         : '',
+    postponed: Boolean(match.postponed),
     players: null,
   }
 }
