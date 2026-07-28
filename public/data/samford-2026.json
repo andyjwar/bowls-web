@@ -1716,6 +1716,14 @@
                   "awayShots": 67,
                   "homePoints": 1,
                   "awayPoints": 5
+                },
+                {
+                  "home": "Shotley Rose",
+                  "away": "Kesgrave Greens",
+                  "homeShots": 55,
+                  "awayShots": 49,
+                  "homePoints": 4,
+                  "awayPoints": 2
                 }
               ]
             }
