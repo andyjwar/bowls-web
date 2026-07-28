@@ -25,7 +25,9 @@ export function useLeagueHubSummaries(items) {
 
     Promise.all(
       leagueIds.map((id) =>
-        fetch(`${import.meta.env.BASE_URL}data/${encodeURIComponent(id)}.json`).then((r) => (r.ok ? r.json() : null)),
+        fetch(`${import.meta.env.BASE_URL}data/${encodeURIComponent(id)}.json`, {
+          cache: 'no-store',
+        }).then((r) => (r.ok ? r.json() : null)),
       ),
     )
       .then((jsons) => {

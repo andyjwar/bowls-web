@@ -10,7 +10,9 @@ export function useCompetitions() {
   useEffect(() => {
     if (!ready) return
     let cancelled = false
-    fetch(`${import.meta.env.BASE_URL}data/competitions-${activeSeason}.json`)
+    fetch(`${import.meta.env.BASE_URL}data/competitions-${activeSeason}.json`, {
+      cache: 'no-store',
+    })
       .then((r) => (r.ok ? r.json() : null))
       .then((json) => {
         if (cancelled) return

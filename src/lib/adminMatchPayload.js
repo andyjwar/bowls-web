@@ -39,6 +39,16 @@ export function serializeAdminMatchRows(rows) {
     const awayEmpty = String(m.awayShots ?? '').trim() === ''
 
     if (homeEmpty && awayEmpty) {
+      // Two blank shot boxes mean "remove any saved result", so a row that has
+      // points typed into it must not take this path — standings need shots, so
+      // clearing would throw away what was just entered and still report a save.
+      const pointsTyped =
+        String(m.homePoints ?? '').trim() !== '' || String(m.awayPoints ?? '').trim() !== ''
+      if (pointsTyped) {
+        throw new Error(
+          `"${m.home}" v "${m.away}": enter both shot totals as well as the points, or clear the points too to remove a saved result.`,
+        )
+      }
       outgoing.push({ home: m.home, away: m.away, clear: true })
       continue
     }

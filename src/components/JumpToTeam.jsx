@@ -70,7 +70,9 @@ export function JumpToTeam({ leagues }) {
     let cancelled = false
     Promise.all(
       leagues.map((l) =>
-        fetch(`${import.meta.env.BASE_URL}data/${encodeURIComponent(l.id)}.json`)
+        fetch(`${import.meta.env.BASE_URL}data/${encodeURIComponent(l.id)}.json`, {
+          cache: 'no-store',
+        })
           .then((r) => (r.ok ? r.json() : null))
           .catch(() => null),
       ),

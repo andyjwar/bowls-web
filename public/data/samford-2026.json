@@ -3326,67 +3326,406 @@
             "Stone Lodge",
             "Westerfield"
           ],
-          "standingsSeed": {
-            "throughWeek": 11,
-            "note": "Official Samford Wednesday tables, Week 11 (updated 24 July 2026)",
-            "rows": [
-              {
-                "team": "Melton Purples",
-                "played": 8,
-                "shotsFor": 334,
-                "shotsAgainst": 201,
-                "points": 34
-              },
-              {
-                "team": "Westerfield",
-                "played": 10,
-                "shotsFor": 338,
-                "shotsAgainst": 342,
-                "points": 30.5
-              },
-              {
-                "team": "Woodbridge",
-                "played": 10,
-                "shotsFor": 381,
-                "shotsAgainst": 315,
-                "points": 30
-              },
-              {
-                "team": "Kirton & Falkenham",
-                "played": 9,
-                "shotsFor": 344,
-                "shotsAgainst": 287,
-                "points": 28
-              },
-              {
-                "team": "Holbrook",
-                "played": 10,
-                "shotsFor": 314,
-                "shotsAgainst": 441,
-                "points": 21
-              },
-              {
-                "team": "Stone Lodge",
-                "played": 10,
-                "shotsFor": 312,
-                "shotsAgainst": 339,
-                "points": 18.5
-              },
-              {
-                "team": "Felixstowe BC",
-                "played": 8,
-                "shotsFor": 286,
-                "shotsAgainst": 304,
-                "points": 15
-              },
-              {
-                "team": "Kesgrave",
-                "played": 9,
-                "shotsFor": 284,
-                "shotsAgainst": 364,
-                "points": 14
-              }
-            ]
+          "results": {
+            "weeks": {
+              "1": [
+                {
+                  "home": "Westerfield",
+                  "away": "Melton Purples",
+                  "postponed": true,
+                  "matchDate": "2026-05-13"
+                },
+                {
+                  "home": "Kirton & Falkenham",
+                  "away": "Woodbridge",
+                  "homeShots": 30,
+                  "awayShots": 41,
+                  "homePoints": 0,
+                  "awayPoints": 5,
+                  "matchDate": "2026-05-13"
+                },
+                {
+                  "home": "Kesgrave",
+                  "away": "Felixstowe BC",
+                  "homeShots": 46,
+                  "awayShots": 32,
+                  "homePoints": 5,
+                  "awayPoints": 0,
+                  "matchDate": "2026-05-13"
+                },
+                {
+                  "home": "Stone Lodge",
+                  "away": "Holbrook",
+                  "homeShots": 25,
+                  "awayShots": 42,
+                  "homePoints": 0,
+                  "awayPoints": 5,
+                  "matchDate": "2026-05-13"
+                }
+              ],
+              "2": [
+                {
+                  "home": "Felixstowe BC",
+                  "away": "Westerfield",
+                  "homeShots": 37,
+                  "awayShots": 30,
+                  "homePoints": 5,
+                  "awayPoints": 0,
+                  "matchDate": "2026-05-20"
+                },
+                {
+                  "home": "Holbrook",
+                  "away": "Kirton & Falkenham",
+                  "homeShots": 41,
+                  "awayShots": 33,
+                  "homePoints": 4,
+                  "awayPoints": 1,
+                  "matchDate": "2026-05-20"
+                },
+                {
+                  "home": "Woodbridge",
+                  "away": "Kesgrave",
+                  "homeShots": 55,
+                  "awayShots": 25,
+                  "homePoints": 5,
+                  "awayPoints": 0,
+                  "matchDate": "2026-05-20"
+                },
+                {
+                  "home": "Melton Purples",
+                  "away": "Stone Lodge",
+                  "homeShots": 45,
+                  "awayShots": 29,
+                  "homePoints": 5,
+                  "awayPoints": 0,
+                  "matchDate": "2026-05-20"
+                }
+              ],
+              "3": [
+                {
+                  "home": "Stone Lodge",
+                  "away": "Westerfield",
+                  "homeShots": 33,
+                  "awayShots": 36,
+                  "homePoints": 1,
+                  "awayPoints": 4,
+                  "matchDate": "2026-05-27"
+                },
+                {
+                  "home": "Kirton & Falkenham",
+                  "away": "Melton Purples",
+                  "homeShots": 35,
+                  "awayShots": 34,
+                  "homePoints": 4,
+                  "awayPoints": 1,
+                  "matchDate": "2026-05-27"
+                },
+                {
+                  "home": "Kesgrave",
+                  "away": "Holbrook",
+                  "homeShots": 52,
+                  "awayShots": 24,
+                  "homePoints": 5,
+                  "awayPoints": 0,
+                  "matchDate": "2026-05-27"
+                },
+                {
+                  "home": "Felixstowe BC",
+                  "away": "Woodbridge",
+                  "homeShots": 46,
+                  "awayShots": 19,
+                  "homePoints": 5,
+                  "awayPoints": 0,
+                  "matchDate": "2026-05-27"
+                }
+              ],
+              "4": [
+                {
+                  "home": "Westerfield",
+                  "away": "Woodbridge",
+                  "homeShots": 37,
+                  "awayShots": 32,
+                  "homePoints": 4,
+                  "awayPoints": 1,
+                  "matchDate": "2026-06-03"
+                },
+                {
+                  "home": "Melton Purples",
+                  "away": "Kesgrave",
+                  "postponed": true,
+                  "matchDate": "2026-06-03"
+                },
+                {
+                  "home": "Holbrook",
+                  "away": "Felixstowe BC",
+                  "postponed": true,
+                  "matchDate": "2026-06-03"
+                },
+                {
+                  "home": "Stone Lodge",
+                  "away": "Kirton & Falkenham",
+                  "homeShots": 42,
+                  "awayShots": 14,
+                  "homePoints": 5,
+                  "awayPoints": 0,
+                  "matchDate": "2026-06-03"
+                }
+              ],
+              "5": [
+                {
+                  "home": "Westerfield",
+                  "away": "Holbrook",
+                  "homeShots": 40,
+                  "awayShots": 27,
+                  "homePoints": 5,
+                  "awayPoints": 0,
+                  "matchDate": "2026-06-10"
+                },
+                {
+                  "home": "Melton Purples",
+                  "away": "Woodbridge",
+                  "homeShots": 39,
+                  "awayShots": 22,
+                  "homePoints": 5,
+                  "awayPoints": 0,
+                  "matchDate": "2026-06-10"
+                },
+                {
+                  "home": "Stone Lodge",
+                  "away": "Felixstowe BC",
+                  "postponed": true,
+                  "matchDate": "2026-06-10"
+                },
+                {
+                  "home": "Kirton & Falkenham",
+                  "away": "Kesgrave",
+                  "homeShots": 53,
+                  "awayShots": 17,
+                  "homePoints": 5,
+                  "awayPoints": 0,
+                  "matchDate": "2026-06-10"
+                }
+              ],
+              "6": [
+                {
+                  "home": "Kesgrave",
+                  "away": "Westerfield",
+                  "homeShots": 41,
+                  "awayShots": 37,
+                  "homePoints": 4,
+                  "awayPoints": 1,
+                  "matchDate": "2026-06-17"
+                },
+                {
+                  "home": "Holbrook",
+                  "away": "Melton Purples",
+                  "homeShots": 27,
+                  "awayShots": 48,
+                  "homePoints": 1,
+                  "awayPoints": 4,
+                  "matchDate": "2026-06-17"
+                },
+                {
+                  "home": "Felixstowe BC",
+                  "away": "Kirton & Falkenham",
+                  "homeShots": 26,
+                  "awayShots": 49,
+                  "homePoints": 0,
+                  "awayPoints": 5,
+                  "matchDate": "2026-06-17"
+                },
+                {
+                  "home": "Woodbridge",
+                  "away": "Stone Lodge",
+                  "homeShots": 45,
+                  "awayShots": 34,
+                  "homePoints": 4,
+                  "awayPoints": 1,
+                  "matchDate": "2026-06-17"
+                }
+              ],
+              "7": [
+                {
+                  "home": "Melton Purples",
+                  "away": "Westerfield",
+                  "homeShots": 40,
+                  "awayShots": 24,
+                  "homePoints": 5,
+                  "awayPoints": 0,
+                  "matchDate": "2026-06-24"
+                },
+                {
+                  "home": "Woodbridge",
+                  "away": "Kirton & Falkenham",
+                  "postponed": true,
+                  "matchDate": "2026-06-24"
+                },
+                {
+                  "home": "Felixstowe BC",
+                  "away": "Kesgrave",
+                  "postponed": true,
+                  "matchDate": "2026-06-24"
+                },
+                {
+                  "home": "Holbrook",
+                  "away": "Stone Lodge",
+                  "homeShots": 42,
+                  "awayShots": 33,
+                  "homePoints": 5,
+                  "awayPoints": 0,
+                  "matchDate": "2026-06-24"
+                }
+              ],
+              "8": [
+                {
+                  "home": "Westerfield",
+                  "away": "Felixstowe BC",
+                  "homeShots": 43,
+                  "awayShots": 30,
+                  "homePoints": 5,
+                  "awayPoints": 0,
+                  "matchDate": "2026-07-01"
+                },
+                {
+                  "home": "Kirton & Falkenham",
+                  "away": "Holbrook",
+                  "homeShots": 45,
+                  "awayShots": 30,
+                  "homePoints": 4,
+                  "awayPoints": 1,
+                  "matchDate": "2026-07-01"
+                },
+                {
+                  "home": "Kesgrave",
+                  "away": "Woodbridge",
+                  "homeShots": 26,
+                  "awayShots": 39,
+                  "homePoints": 0,
+                  "awayPoints": 5,
+                  "matchDate": "2026-07-01"
+                },
+                {
+                  "home": "Stone Lodge",
+                  "away": "Melton Purples",
+                  "homeShots": 24,
+                  "awayShots": 30,
+                  "homePoints": 1,
+                  "awayPoints": 4,
+                  "matchDate": "2026-07-01"
+                }
+              ],
+              "9": [
+                {
+                  "home": "Westerfield",
+                  "away": "Stone Lodge",
+                  "homeShots": 24,
+                  "awayShots": 31,
+                  "homePoints": 0.5,
+                  "awayPoints": 4.5,
+                  "matchDate": "2026-07-08"
+                },
+                {
+                  "home": "Melton Purples",
+                  "away": "Kirton & Falkenham",
+                  "postponed": true,
+                  "matchDate": "2026-07-08"
+                },
+                {
+                  "home": "Holbrook",
+                  "away": "Kesgrave",
+                  "homeShots": 43,
+                  "awayShots": 33,
+                  "homePoints": 5,
+                  "awayPoints": 0,
+                  "matchDate": "2026-07-08"
+                },
+                {
+                  "home": "Woodbridge",
+                  "away": "Felixstowe BC",
+                  "homeShots": 45,
+                  "awayShots": 23,
+                  "homePoints": 5,
+                  "awayPoints": 0,
+                  "matchDate": "2026-07-08"
+                }
+              ],
+              "10": [
+                {
+                  "home": "Woodbridge",
+                  "away": "Westerfield",
+                  "homeShots": 25,
+                  "awayShots": 29,
+                  "homePoints": 0,
+                  "awayPoints": 5,
+                  "matchDate": "2026-07-15"
+                },
+                {
+                  "home": "Kesgrave",
+                  "away": "Melton Purples",
+                  "homeShots": 22,
+                  "awayShots": 38,
+                  "homePoints": 0,
+                  "awayPoints": 5,
+                  "matchDate": "2026-07-15"
+                },
+                {
+                  "home": "Felixstowe BC",
+                  "away": "Holbrook",
+                  "homeShots": 74,
+                  "awayShots": 12,
+                  "homePoints": 5,
+                  "awayPoints": 0,
+                  "matchDate": "2026-07-15"
+                },
+                {
+                  "home": "Kirton & Falkenham",
+                  "away": "Stone Lodge",
+                  "homeShots": 39,
+                  "awayShots": 18,
+                  "homePoints": 5,
+                  "awayPoints": 0,
+                  "matchDate": "2026-07-15"
+                }
+              ],
+              "11": [
+                {
+                  "home": "Westerfield",
+                  "away": "Kirton & Falkenham",
+                  "homeShots": 38,
+                  "awayShots": 46,
+                  "homePoints": 1,
+                  "awayPoints": 4,
+                  "matchDate": "2026-07-22"
+                },
+                {
+                  "home": "Melton Purples",
+                  "away": "Felixstowe BC",
+                  "homeShots": 60,
+                  "awayShots": 18,
+                  "homePoints": 5,
+                  "awayPoints": 0,
+                  "matchDate": "2026-07-22"
+                },
+                {
+                  "home": "Holbrook",
+                  "away": "Woodbridge",
+                  "homeShots": 26,
+                  "awayShots": 58,
+                  "homePoints": 0,
+                  "awayPoints": 5,
+                  "matchDate": "2026-07-22"
+                },
+                {
+                  "home": "Stone Lodge",
+                  "away": "Kesgrave",
+                  "homeShots": 43,
+                  "awayShots": 22,
+                  "homePoints": 5,
+                  "awayPoints": 0,
+                  "matchDate": "2026-07-22"
+                }
+              ]
+            }
           }
         }
       ]

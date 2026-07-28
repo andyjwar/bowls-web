@@ -21,7 +21,7 @@ export function useLeaguesNav() {
 
   useEffect(() => {
     let cancelled = false
-    fetch(`${import.meta.env.BASE_URL}data/leagues-nav.json`)
+    fetch(`${import.meta.env.BASE_URL}data/leagues-nav.json`, { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : null))
       .then((json) => {
         if (
@@ -66,7 +66,9 @@ export function useBowlsLeague(leagueId) {
 
     const path = leagueDocumentPath(leagueId)
 
-    fetch(path)
+    // `no-store` (as the admin entry page already uses): admin saves rewrite these
+    // JSON files in place, so a cached copy shows stale tables straight after a save.
+    fetch(path, { cache: 'no-store' })
       .then((r) => {
         if (!r.ok) throw new Error(`Failed to load league data (${path})`)
         return r.json()
