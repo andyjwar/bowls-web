@@ -3332,7 +3332,10 @@
                 {
                   "home": "Westerfield",
                   "away": "Melton Purples",
-                  "postponed": true,
+                  "homeShots": 24,
+                  "awayShots": 40,
+                  "homePoints": 0,
+                  "awayPoints": 5,
                   "matchDate": "2026-05-13"
                 },
                 {
