@@ -2365,6 +2365,153 @@ button.pill-nav__btn {
   text-underline-offset: 3px;
 }
 
+/* Portrait layout: keep the public site readable without side-scrolling. */
+@media (max-width: 640px) {
+  .site-header__inner {
+    min-height: 0;
+    padding: 0.5rem 1rem 0.6rem;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 0.45rem 0.75rem;
+  }
+
+  .site-brand {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .site-brand__logo {
+    width: 42px;
+    height: 42px;
+  }
+
+  .site-header__actions {
+    grid-column: 3;
+    grid-row: 1;
+    align-self: center;
+  }
+
+  .site-nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    overflow: visible;
+  }
+
+  .site-nav__link {
+    min-width: 0;
+    min-height: 2rem;
+    margin: 0;
+    padding: 0.35rem 0.2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.78rem;
+    line-height: 1.15;
+    white-space: normal;
+  }
+
+  .site-main {
+    padding-inline: 1rem;
+  }
+
+  .league-banner__tabs {
+    flex-wrap: wrap;
+    overflow: visible;
+  }
+
+  .day-caro {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: visible;
+  }
+
+  .day-caro__cell {
+    width: auto;
+    border-bottom: 1px solid var(--fm-border);
+  }
+
+  .day-caro__cell:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  .table-scroll {
+    overflow-x: visible;
+    margin-inline: 0;
+  }
+
+  .standings-table {
+    table-layout: fixed;
+    font-size: 0.88rem;
+  }
+
+  .standings-table__shots {
+    display: none;
+  }
+
+  .standings-table th,
+  .standings-table td {
+    padding: 0.72rem 0.35rem;
+  }
+
+  .standings-table__pos {
+    width: 2.25rem;
+  }
+
+  .standings-table__played {
+    width: 2.6rem;
+  }
+
+  .standings-table__pts {
+    width: 3.7rem;
+  }
+
+  .standings-table__team {
+    line-height: 1.2;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .match-row__mid--score {
+    padding-inline: 0;
+    font-size: 0.82rem;
+  }
+
+  /* The bracket becomes a round-by-round stack on phones. */
+  .cup-bkt-scroll {
+    overflow-x: visible;
+  }
+
+  .cup-bkt {
+    min-width: 0;
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .cup-bkt__round {
+    min-width: 0;
+    display: block;
+  }
+
+  .cup-bkt__cell,
+  .cup-bkt__round:not(:first-child) .cup-bkt__cell {
+    padding: 0.25rem 0;
+  }
+
+  .cup-bkt__cell::before,
+  .cup-bkt__cell::after,
+  .cup-bkt__in {
+    display: none;
+  }
+
+  .cup-bkt__team {
+    overflow-wrap: anywhere;
+  }
+}
+
 /* Static pages */
 .placeholder-list {
   margin: 1rem 0 0;
