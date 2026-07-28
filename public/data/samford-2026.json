@@ -1291,6 +1291,14 @@
                   "awayShots": 45,
                   "homePoints": 5,
                   "awayPoints": 1
+                },
+                {
+                  "home": "Sproughton Reds",
+                  "away": "Westerfield Blues",
+                  "homeShots": 75,
+                  "awayShots": 35,
+                  "homePoints": 5,
+                  "awayPoints": 1
                 }
               ]
             }
