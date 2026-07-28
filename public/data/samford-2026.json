@@ -4,7 +4,7 @@
   "sections": [
     {
       "id": "monday-evening",
-      "label": "Monday Evening",
+      "label": "Monday",
       "scheduleTemplate": [
         {
           "week": 1,
@@ -3001,7 +3001,7 @@
     },
     {
       "id": "wednesday-afternoon",
-      "label": "Wednesday Afternoon",
+      "label": "Wednesday",
       "scheduleTemplate": [
         {
           "week": 1,
