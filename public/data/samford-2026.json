@@ -2309,6 +2309,14 @@
                   "awayShots": 58,
                   "homePoints": 1,
                   "awayPoints": 5
+                },
+                {
+                  "home": "Gipping EE Wrens",
+                  "away": "Sproughton Blues",
+                  "homeShots": 74,
+                  "awayShots": 57,
+                  "homePoints": 5,
+                  "awayPoints": 1
                 }
               ]
             }
