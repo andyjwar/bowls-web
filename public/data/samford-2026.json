@@ -688,7 +688,16 @@
                   "matchDate": "2026-07-20"
                 }
               ],
-              "12": []
+              "12": [
+                {
+                  "home": "Kirton A",
+                  "away": "Stone Lodge Blues",
+                  "homeShots": 43,
+                  "awayShots": 55,
+                  "homePoints": 1,
+                  "awayPoints": 5
+                }
+              ]
             }
           },
           "standingsSeed": {
