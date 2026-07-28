@@ -33,13 +33,13 @@ export function StandingsTable({ rows, context }) {
                 #
               </th>
               <th scope="col">Team</th>
-              <th scope="col" className="standings-table__num">
+              <th scope="col" className="standings-table__num standings-table__played">
                 P
               </th>
-              <th scope="col" className="standings-table__num">
+              <th scope="col" className="standings-table__num standings-table__shots">
                 For
               </th>
-              <th scope="col" className="standings-table__num">
+              <th scope="col" className="standings-table__num standings-table__shots">
                 Against
               </th>
               <th scope="col" className="standings-table__num standings-table__pts">
@@ -61,13 +61,13 @@ export function StandingsTable({ rows, context }) {
                     {row.team}
                   </Link>
                 </td>
-                <td className="standings-table__num">
+                <td className="standings-table__num standings-table__played">
                   {displayStat(row.played, row.played)}
                 </td>
-                <td className="standings-table__num">
+                <td className="standings-table__num standings-table__shots">
                   {shotsCell(row.shotsFor ?? 0, row.played)}
                 </td>
-                <td className="standings-table__num">
+                <td className="standings-table__num standings-table__shots">
                   {shotsCell(row.shotsAgainst ?? 0, row.played)}
                 </td>
                 <td className="standings-table__num standings-table__pts">
