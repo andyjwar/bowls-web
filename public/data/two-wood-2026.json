@@ -340,67 +340,494 @@
         "Kirton & Falkenham A",
         "Felixstowe & Suffolk"
       ],
-      "standingsSeed": {
-        "throughWeek": 12,
-        "note": "Official 2-Wood tables, Week 12 (updated 23 July 2026)",
-        "rows": [
-          {
-            "team": "Marlborough Greens",
-            "played": 11,
-            "shotsFor": 778,
-            "shotsAgainst": 453,
-            "points": 55.5
-          },
-          {
-            "team": "Norbridge A",
-            "played": 12,
-            "shotsFor": 701,
-            "shotsAgainst": 618,
-            "points": 47.5
-          },
-          {
-            "team": "Felixstowe & Suffolk",
-            "played": 10,
-            "shotsFor": 569,
-            "shotsAgainst": 526,
-            "points": 41.5
-          },
-          {
-            "team": "Stone Lodge A",
-            "played": 10,
-            "shotsFor": 563,
-            "shotsAgainst": 522,
-            "points": 33
-          },
-          {
-            "team": "Kirton & Falkenham A",
-            "played": 12,
-            "shotsFor": 615,
-            "shotsAgainst": 733,
-            "points": 29
-          },
-          {
-            "team": "Bramford A",
-            "played": 11,
-            "shotsFor": 532,
-            "shotsAgainst": 657,
-            "points": 21.5
-          },
-          {
-            "team": "Thorndon",
-            "played": 11,
-            "shotsFor": 583,
-            "shotsAgainst": 671,
-            "points": 19.5
-          },
-          {
-            "team": "California A",
-            "played": 11,
-            "shotsFor": 532,
-            "shotsAgainst": 693,
-            "points": 16.5
-          }
-        ]
+      "results": {
+        "weeks": {
+          "1": [
+            {
+              "home": "Felixstowe & Suffolk",
+              "away": "Bramford A",
+              "homeShots": 62,
+              "awayShots": 51,
+              "homePoints": 5.5,
+              "awayPoints": 0.5,
+              "matchDate": "2026-04-28"
+            },
+            {
+              "home": "Kirton & Falkenham A",
+              "away": "California A",
+              "homeShots": 71,
+              "awayShots": 47,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-04-28"
+            },
+            {
+              "home": "Thorndon",
+              "away": "Norbridge A",
+              "homeShots": 55,
+              "awayShots": 58,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-04-28"
+            },
+            {
+              "home": "Marlborough Greens",
+              "away": "Stone Lodge A",
+              "postponed": true,
+              "matchDate": "2026-04-28"
+            }
+          ],
+          "2": [
+            {
+              "home": "Bramford A",
+              "away": "Kirton & Falkenham A",
+              "homeShots": 33,
+              "awayShots": 60,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-05-05"
+            },
+            {
+              "home": "California A",
+              "away": "Thorndon",
+              "homeShots": 66,
+              "awayShots": 49,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-05-05"
+            },
+            {
+              "home": "Norbridge A",
+              "away": "Marlborough Greens",
+              "homeShots": 60,
+              "awayShots": 52,
+              "homePoints": 5.5,
+              "awayPoints": 0.5,
+              "matchDate": "2026-05-05"
+            },
+            {
+              "home": "Stone Lodge A",
+              "away": "Felixstowe & Suffolk",
+              "postponed": true,
+              "matchDate": "2026-05-05"
+            }
+          ],
+          "3": [
+            {
+              "home": "Thorndon",
+              "away": "Bramford A",
+              "homeShots": 43,
+              "awayShots": 59,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-05-12"
+            },
+            {
+              "home": "Marlborough Greens",
+              "away": "California A",
+              "homeShots": 84,
+              "awayShots": 44,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-05-12"
+            },
+            {
+              "home": "Stone Lodge A",
+              "away": "Norbridge A",
+              "homeShots": 54,
+              "awayShots": 50,
+              "homePoints": 4,
+              "awayPoints": 2,
+              "matchDate": "2026-05-12"
+            },
+            {
+              "home": "Kirton & Falkenham A",
+              "away": "Felixstowe & Suffolk",
+              "homeShots": 51,
+              "awayShots": 56,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-05-12"
+            }
+          ],
+          "4": [
+            {
+              "home": "Bramford A",
+              "away": "Marlborough Greens",
+              "homeShots": 27,
+              "awayShots": 94,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-05-19"
+            },
+            {
+              "home": "California A",
+              "away": "Stone Lodge A",
+              "homeShots": 46,
+              "awayShots": 66,
+              "homePoints": 0.5,
+              "awayPoints": 5.5,
+              "matchDate": "2026-05-19"
+            },
+            {
+              "home": "Felixstowe & Suffolk",
+              "away": "Norbridge A",
+              "homeShots": 58,
+              "awayShots": 58,
+              "homePoints": 3.5,
+              "awayPoints": 2.5,
+              "matchDate": "2026-05-19"
+            },
+            {
+              "home": "Kirton & Falkenham A",
+              "away": "Thorndon",
+              "homeShots": 68,
+              "awayShots": 54,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-05-19"
+            }
+          ],
+          "5": [
+            {
+              "home": "Stone Lodge A",
+              "away": "Bramford A",
+              "homeShots": 71,
+              "awayShots": 42,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-05-26"
+            },
+            {
+              "home": "Norbridge A",
+              "away": "California A",
+              "homeShots": 61,
+              "awayShots": 43,
+              "homePoints": 4,
+              "awayPoints": 2,
+              "matchDate": "2026-05-26"
+            },
+            {
+              "home": "Marlborough Greens",
+              "away": "Kirton & Falkenham A",
+              "homeShots": 65,
+              "awayShots": 40,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-05-26"
+            },
+            {
+              "home": "Thorndon",
+              "away": "Felixstowe & Suffolk",
+              "homeShots": 56,
+              "awayShots": 48,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-05-26"
+            }
+          ],
+          "6": [
+            {
+              "home": "Bramford A",
+              "away": "Norbridge A",
+              "homeShots": 40,
+              "awayShots": 70,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-06-02"
+            },
+            {
+              "home": "Felixstowe & Suffolk",
+              "away": "California A",
+              "homeShots": 59,
+              "awayShots": 49,
+              "homePoints": 4.5,
+              "awayPoints": 1.5,
+              "matchDate": "2026-06-02"
+            },
+            {
+              "home": "Kirton & Falkenham A",
+              "away": "Stone Lodge A",
+              "homeShots": 50,
+              "awayShots": 70,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-06-02"
+            },
+            {
+              "home": "Thorndon",
+              "away": "Marlborough Greens",
+              "homeShots": 48,
+              "awayShots": 75,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-06-02"
+            }
+          ],
+          "7": [
+            {
+              "home": "California A",
+              "away": "Bramford A",
+              "homeShots": 61,
+              "awayShots": 43,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-06-09"
+            },
+            {
+              "home": "Norbridge A",
+              "away": "Kirton & Falkenham A",
+              "homeShots": 50,
+              "awayShots": 59,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-06-09"
+            },
+            {
+              "home": "Stone Lodge A",
+              "away": "Thorndon",
+              "homeShots": 67,
+              "awayShots": 43,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-06-09"
+            },
+            {
+              "home": "Marlborough Greens",
+              "away": "Felixstowe & Suffolk",
+              "homeShots": 52,
+              "awayShots": 55,
+              "homePoints": 2,
+              "awayPoints": 4,
+              "matchDate": "2026-06-09"
+            }
+          ],
+          "8": [
+            {
+              "home": "Bramford A",
+              "away": "Felixstowe & Suffolk",
+              "postponed": true,
+              "matchDate": "2026-06-16"
+            },
+            {
+              "home": "California A",
+              "away": "Kirton & Falkenham A",
+              "homeShots": 49,
+              "awayShots": 59,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-06-16"
+            },
+            {
+              "home": "Norbridge A",
+              "away": "Thorndon",
+              "homeShots": 65,
+              "awayShots": 50,
+              "homePoints": 4.5,
+              "awayPoints": 1.5,
+              "matchDate": "2026-06-16"
+            },
+            {
+              "home": "Stone Lodge A",
+              "away": "Marlborough Greens",
+              "homeShots": 47,
+              "awayShots": 66,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-06-16"
+            }
+          ],
+          "9": [
+            {
+              "home": "Kirton & Falkenham A",
+              "away": "Bramford A",
+              "homeShots": 34,
+              "awayShots": 75,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-06-23"
+            },
+            {
+              "home": "Thorndon",
+              "away": "California A",
+              "homeShots": 46,
+              "awayShots": 67,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-06-23"
+            },
+            {
+              "home": "Marlborough Greens",
+              "away": "Norbridge A",
+              "homeShots": 74,
+              "awayShots": 33,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-06-23"
+            },
+            {
+              "home": "Felixstowe & Suffolk",
+              "away": "Stone Lodge A",
+              "homeShots": 48,
+              "awayShots": 39,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-06-23"
+            }
+          ],
+          "10": [
+            {
+              "home": "Bramford A",
+              "away": "Thorndon",
+              "homeShots": 54,
+              "awayShots": 49,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-06-30"
+            },
+            {
+              "home": "California A",
+              "away": "Marlborough Greens",
+              "homeShots": 27,
+              "awayShots": 68,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-06-30"
+            },
+            {
+              "home": "Norbridge A",
+              "away": "Stone Lodge A",
+              "homeShots": 64,
+              "awayShots": 39,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-06-30"
+            },
+            {
+              "home": "Felixstowe & Suffolk",
+              "away": "Kirton & Falkenham A",
+              "homeShots": 69,
+              "awayShots": 55,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-06-30"
+            }
+          ],
+          "11": [
+            {
+              "home": "Marlborough Greens",
+              "away": "Bramford A",
+              "homeShots": 70,
+              "awayShots": 46,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-07-07"
+            },
+            {
+              "home": "Stone Lodge A",
+              "away": "California A",
+              "homeShots": 67,
+              "awayShots": 51,
+              "homePoints": 5.5,
+              "awayPoints": 0.5,
+              "matchDate": "2026-07-07"
+            },
+            {
+              "home": "Norbridge A",
+              "away": "Felixstowe & Suffolk",
+              "homeShots": 66,
+              "awayShots": 45,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-07-07"
+            },
+            {
+              "home": "Thorndon",
+              "away": "Kirton & Falkenham A",
+              "homeShots": 87,
+              "awayShots": 42,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-07-07"
+            }
+          ],
+          "12": [
+            {
+              "home": "Bramford A",
+              "away": "Stone Lodge A",
+              "homeShots": 62,
+              "awayShots": 43,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-07-14"
+            },
+            {
+              "home": "California A",
+              "away": "Norbridge A",
+              "homeShots": 49,
+              "awayShots": 66,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-07-14"
+            },
+            {
+              "home": "Kirton & Falkenham A",
+              "away": "Marlborough Greens",
+              "homeShots": 26,
+              "awayShots": 78,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-07-14"
+            },
+            {
+              "home": "Felixstowe & Suffolk",
+              "away": "Thorndon",
+              "homeShots": 69,
+              "awayShots": 49,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-07-14"
+            }
+          ],
+          "13": [
+            {
+              "home": "Norbridge A",
+              "away": "Bramford A",
+              "homeShots": 74,
+              "awayShots": 52,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-07-21"
+            },
+            {
+              "home": "California A",
+              "away": "Felixstowe & Suffolk",
+              "homeShots": 73,
+              "awayShots": 45,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-07-21"
+            },
+            {
+              "home": "Stone Lodge A",
+              "away": "Kirton & Falkenham A",
+              "homeShots": 56,
+              "awayShots": 57,
+              "homePoints": 1.5,
+              "awayPoints": 4.5,
+              "matchDate": "2026-07-21"
+            },
+            {
+              "home": "Marlborough Greens",
+              "away": "Thorndon",
+              "homeShots": 80,
+              "awayShots": 33,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-07-21"
+            }
+          ]
+        }
       }
     },
     {
@@ -417,67 +844,488 @@
         "Norbridge B",
         "IBC Graham Road A"
       ],
-      "standingsSeed": {
-        "throughWeek": 12,
-        "note": "Official 2-Wood tables, Week 12 (updated 23 July 2026)",
-        "rows": [
-          {
-            "team": "IBC Graham Road A",
-            "played": 10,
-            "shotsFor": 679,
-            "shotsAgainst": 418,
-            "points": 55
-          },
-          {
-            "team": "Ipswich & District A",
-            "played": 11,
-            "shotsFor": 602,
-            "shotsAgainst": 579,
-            "points": 42
-          },
-          {
-            "team": "Combs Ford",
-            "played": 10,
-            "shotsFor": 602,
-            "shotsAgainst": 494,
-            "points": 41.5
-          },
-          {
-            "team": "Capel Kites",
-            "played": 12,
-            "shotsFor": 602,
-            "shotsAgainst": 638,
-            "points": 32
-          },
-          {
-            "team": "Kesgrave Blues",
-            "played": 11,
-            "shotsFor": 550,
-            "shotsAgainst": 577,
-            "points": 27.5
-          },
-          {
-            "team": "Westerfield Blues",
-            "played": 11,
-            "shotsFor": 604,
-            "shotsAgainst": 634,
-            "points": 27
-          },
-          {
-            "team": "Norbridge B",
-            "played": 12,
-            "shotsFor": 588,
-            "shotsAgainst": 731,
-            "points": 23
-          },
-          {
-            "team": "Margaret Catchpole A",
-            "played": 9,
-            "shotsFor": 427,
-            "shotsAgainst": 583,
-            "points": 10
-          }
-        ]
+      "results": {
+        "weeks": {
+          "1": [
+            {
+              "home": "IBC Graham Road A",
+              "away": "Kesgrave Blues",
+              "homeShots": 54,
+              "awayShots": 36,
+              "homePoints": 5.5,
+              "awayPoints": 0.5,
+              "matchDate": "2026-04-28"
+            },
+            {
+              "home": "Norbridge B",
+              "away": "Combs Ford",
+              "homeShots": 52,
+              "awayShots": 58,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-04-28"
+            },
+            {
+              "home": "Margaret Catchpole A",
+              "away": "Westerfield Blues",
+              "homeShots": 37,
+              "awayShots": 77,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-04-28"
+            },
+            {
+              "home": "Ipswich & District A",
+              "away": "Capel Kites",
+              "homeShots": 60,
+              "awayShots": 46,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-04-28"
+            }
+          ],
+          "2": [
+            {
+              "home": "Kesgrave Blues",
+              "away": "Norbridge B",
+              "homeShots": 46,
+              "awayShots": 47,
+              "homePoints": 2,
+              "awayPoints": 4,
+              "matchDate": "2026-05-05"
+            },
+            {
+              "home": "Combs Ford",
+              "away": "Margaret Catchpole A",
+              "homeShots": 60,
+              "awayShots": 52,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-05-05"
+            },
+            {
+              "home": "Westerfield Blues",
+              "away": "Ipswich & District A",
+              "homeShots": 51,
+              "awayShots": 54,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-05-05"
+            },
+            {
+              "home": "Capel Kites",
+              "away": "IBC Graham Road A",
+              "homeShots": 55,
+              "awayShots": 62,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-05-05"
+            }
+          ],
+          "3": [
+            {
+              "home": "Margaret Catchpole A",
+              "away": "Kesgrave Blues",
+              "homeShots": 41,
+              "awayShots": 68,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-05-12"
+            },
+            {
+              "home": "Ipswich & District A",
+              "away": "Combs Ford",
+              "homeShots": 55,
+              "awayShots": 61,
+              "homePoints": 0.5,
+              "awayPoints": 5.5,
+              "matchDate": "2026-05-12"
+            },
+            {
+              "home": "Capel Kites",
+              "away": "Westerfield Blues",
+              "homeShots": 60,
+              "awayShots": 39,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-05-12"
+            },
+            {
+              "home": "Norbridge B",
+              "away": "IBC Graham Road A",
+              "homeShots": 49,
+              "awayShots": 64,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-05-12"
+            }
+          ],
+          "4": [
+            {
+              "home": "Kesgrave Blues",
+              "away": "Ipswich & District A",
+              "homeShots": 49,
+              "awayShots": 56,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-05-19"
+            },
+            {
+              "home": "Combs Ford",
+              "away": "Capel Kites",
+              "homeShots": 46,
+              "awayShots": 49,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-05-19"
+            },
+            {
+              "home": "IBC Graham Road A",
+              "away": "Westerfield Blues",
+              "homeShots": 86,
+              "awayShots": 34,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-05-19"
+            },
+            {
+              "home": "Norbridge B",
+              "away": "Margaret Catchpole A",
+              "homeShots": 61,
+              "awayShots": 53,
+              "homePoints": 4,
+              "awayPoints": 2,
+              "matchDate": "2026-05-19"
+            }
+          ],
+          "5": [
+            {
+              "home": "Capel Kites",
+              "away": "Kesgrave Blues",
+              "homeShots": 46,
+              "awayShots": 55,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-05-26"
+            },
+            {
+              "home": "Westerfield Blues",
+              "away": "Combs Ford",
+              "homeShots": 56,
+              "awayShots": 53,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-05-26"
+            },
+            {
+              "home": "Ipswich & District A",
+              "away": "Norbridge B",
+              "homeShots": 60,
+              "awayShots": 40,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-05-26"
+            },
+            {
+              "home": "Margaret Catchpole A",
+              "away": "IBC Graham Road A",
+              "postponed": true,
+              "matchDate": "2026-05-26"
+            }
+          ],
+          "6": [
+            {
+              "home": "Kesgrave Blues",
+              "away": "Westerfield Blues",
+              "postponed": true,
+              "matchDate": "2026-06-02"
+            },
+            {
+              "home": "IBC Graham Road A",
+              "away": "Combs Ford",
+              "postponed": true,
+              "matchDate": "2026-06-02"
+            },
+            {
+              "home": "Norbridge B",
+              "away": "Capel Kites",
+              "homeShots": 66,
+              "awayShots": 37,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-06-02"
+            },
+            {
+              "home": "Margaret Catchpole A",
+              "away": "Ipswich & District A",
+              "postponed": true,
+              "matchDate": "2026-06-02"
+            }
+          ],
+          "7": [
+            {
+              "home": "Combs Ford",
+              "away": "Kesgrave Blues",
+              "homeShots": 63,
+              "awayShots": 40,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-06-09"
+            },
+            {
+              "home": "Westerfield Blues",
+              "away": "Norbridge B",
+              "homeShots": 93,
+              "awayShots": 35,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-06-09"
+            },
+            {
+              "home": "Capel Kites",
+              "away": "Margaret Catchpole A",
+              "homeShots": 64,
+              "awayShots": 40,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-06-09"
+            },
+            {
+              "home": "Ipswich & District A",
+              "away": "IBC Graham Road A",
+              "homeShots": 42,
+              "awayShots": 72,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-06-09"
+            }
+          ],
+          "8": [
+            {
+              "home": "Kesgrave Blues",
+              "away": "IBC Graham Road A",
+              "homeShots": 46,
+              "awayShots": 69,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-06-16"
+            },
+            {
+              "home": "Combs Ford",
+              "away": "Norbridge B",
+              "homeShots": 78,
+              "awayShots": 42,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-06-16"
+            },
+            {
+              "home": "Westerfield Blues",
+              "away": "Margaret Catchpole A",
+              "homeShots": 65,
+              "awayShots": 49,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-06-16"
+            },
+            {
+              "home": "Capel Kites",
+              "away": "Ipswich & District A",
+              "homeShots": 44,
+              "awayShots": 65,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-06-16"
+            }
+          ],
+          "9": [
+            {
+              "home": "Norbridge B",
+              "away": "Kesgrave Blues",
+              "homeShots": 38,
+              "awayShots": 55,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-06-23"
+            },
+            {
+              "home": "Margaret Catchpole A",
+              "away": "Combs Ford",
+              "postponed": true,
+              "matchDate": "2026-06-23"
+            },
+            {
+              "home": "Ipswich & District A",
+              "away": "Westerfield Blues",
+              "homeShots": 57,
+              "awayShots": 56,
+              "homePoints": 4,
+              "awayPoints": 2,
+              "matchDate": "2026-06-23"
+            },
+            {
+              "home": "IBC Graham Road A",
+              "away": "Capel Kites",
+              "homeShots": 66,
+              "awayShots": 32,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-06-23"
+            }
+          ],
+          "10": [
+            {
+              "home": "Kesgrave Blues",
+              "away": "Margaret Catchpole A",
+              "homeShots": 52,
+              "awayShots": 58,
+              "homePoints": 2,
+              "awayPoints": 4,
+              "matchDate": "2026-06-30"
+            },
+            {
+              "home": "Combs Ford",
+              "away": "Ipswich & District A",
+              "homeShots": 64,
+              "awayShots": 43,
+              "homePoints": 5.5,
+              "awayPoints": 0.5,
+              "matchDate": "2026-06-30"
+            },
+            {
+              "home": "Westerfield Blues",
+              "away": "Capel Kites",
+              "homeShots": 36,
+              "awayShots": 64,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-06-30"
+            },
+            {
+              "home": "IBC Graham Road A",
+              "away": "Norbridge B",
+              "homeShots": 79,
+              "awayShots": 33,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-06-30"
+            }
+          ],
+          "11": [
+            {
+              "home": "Ipswich & District A",
+              "away": "Kesgrave Blues",
+              "homeShots": 52,
+              "awayShots": 48,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-07-07"
+            },
+            {
+              "home": "Capel Kites",
+              "away": "Combs Ford",
+              "homeShots": 52,
+              "awayShots": 48,
+              "homePoints": 4,
+              "awayPoints": 2,
+              "matchDate": "2026-07-07"
+            },
+            {
+              "home": "Westerfield Blues",
+              "away": "IBC Graham Road A",
+              "homeShots": 44,
+              "awayShots": 68,
+              "homePoints": 0.5,
+              "awayPoints": 5.5,
+              "matchDate": "2026-07-07"
+            },
+            {
+              "home": "Margaret Catchpole A",
+              "away": "Norbridge B",
+              "homeShots": 50,
+              "awayShots": 77,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-07-07"
+            }
+          ],
+          "12": [
+            {
+              "home": "Kesgrave Blues",
+              "away": "Capel Kites",
+              "homeShots": 55,
+              "awayShots": 53,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-07-14"
+            },
+            {
+              "home": "Combs Ford",
+              "away": "Westerfield Blues",
+              "homeShots": 71,
+              "awayShots": 53,
+              "homePoints": 4.5,
+              "awayPoints": 1.5,
+              "matchDate": "2026-07-14"
+            },
+            {
+              "home": "Norbridge B",
+              "away": "Ipswich & District A",
+              "homeShots": 48,
+              "awayShots": 58,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-07-14"
+            },
+            {
+              "home": "IBC Graham Road A",
+              "away": "Margaret Catchpole A",
+              "homeShots": 59,
+              "awayShots": 47,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-07-14"
+            }
+          ],
+          "13": [
+            {
+              "home": "Westerfield Blues",
+              "away": "Kesgrave Blues",
+              "homeShots": 54,
+              "awayShots": 66,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-07-21"
+            },
+            {
+              "home": "Combs Ford",
+              "away": "IBC Graham Road A",
+              "homeShots": 40,
+              "awayShots": 73,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-07-21"
+            },
+            {
+              "home": "Capel Kites",
+              "away": "Norbridge B",
+              "homeShots": 48,
+              "awayShots": 56,
+              "homePoints": 0.5,
+              "awayPoints": 5.5,
+              "matchDate": "2026-07-21"
+            },
+            {
+              "home": "Ipswich & District A",
+              "away": "Margaret Catchpole A",
+              "homeShots": 79,
+              "awayShots": 33,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-07-21"
+            }
+          ]
+        }
       }
     },
     {
@@ -492,62 +1340,388 @@
         "Bramford B",
         "California B",
         "East Bergholt Herons",
-        "Stone Lodge B"
+        "Bye"
       ],
-      "standingsSeed": {
-        "throughWeek": 12,
-        "note": "Official 2-Wood tables, Week 12 (updated 23 July 2026)",
-        "rows": [
-          {
-            "team": "Holbrook A",
-            "played": 10,
-            "shotsFor": 645,
-            "shotsAgainst": 496,
-            "points": 45.5
-          },
-          {
-            "team": "Sproughton A",
-            "played": 11,
-            "shotsFor": 665,
-            "shotsAgainst": 529,
-            "points": 39.5
-          },
-          {
-            "team": "East-of-England Co-op Reds",
-            "played": 10,
-            "shotsFor": 574,
-            "shotsAgainst": 536,
-            "points": 36.5
-          },
-          {
-            "team": "East Bergholt Herons",
-            "played": 10,
-            "shotsFor": 535,
-            "shotsAgainst": 560,
-            "points": 34
-          },
-          {
-            "team": "Gipping EE Black Birds",
-            "played": 10,
-            "shotsFor": 518,
-            "shotsAgainst": 592,
-            "points": 24.5
-          },
-          {
-            "team": "Bramford B",
-            "played": 11,
-            "shotsFor": 555,
-            "shotsAgainst": 670,
-            "points": 19.5
-          },
-          {
-            "team": "California B",
-            "played": 10,
-            "shotsFor": 501,
-            "shotsAgainst": 610,
-            "points": 16.5
-          }
-        ]
+      "results": {
+        "weeks": {
+          "1": [
+            {
+              "home": "East Bergholt Herons",
+              "away": "Sproughton A",
+              "homeShots": 58,
+              "awayShots": 56,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-04-28"
+            },
+            {
+              "home": "California B",
+              "away": "Gipping EE Black Birds",
+              "homeShots": 82,
+              "awayShots": 29,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-04-28"
+            },
+            {
+              "home": "Bramford B",
+              "away": "East-of-England Co-op Reds",
+              "homeShots": 48,
+              "awayShots": 60,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-04-28"
+            }
+          ],
+          "2": [
+            {
+              "home": "Holbrook A",
+              "away": "East Bergholt Herons",
+              "homeShots": 82,
+              "awayShots": 31,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-05-05"
+            },
+            {
+              "home": "Sproughton A",
+              "away": "California B",
+              "homeShots": 71,
+              "awayShots": 37,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-05-05"
+            },
+            {
+              "home": "Gipping EE Black Birds",
+              "away": "Bramford B",
+              "homeShots": 69,
+              "awayShots": 54,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-05-05"
+            }
+          ],
+          "3": [
+            {
+              "home": "California B",
+              "away": "Holbrook A",
+              "homeShots": 44,
+              "awayShots": 73,
+              "homePoints": 0.5,
+              "awayPoints": 5.5,
+              "matchDate": "2026-05-12"
+            },
+            {
+              "home": "Bramford B",
+              "away": "Sproughton A",
+              "homeShots": 37,
+              "awayShots": 91,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-05-12"
+            },
+            {
+              "home": "East-of-England Co-op Reds",
+              "away": "Gipping EE Black Birds",
+              "homeShots": 59,
+              "awayShots": 55,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-05-12"
+            }
+          ],
+          "4": [
+            {
+              "home": "Holbrook A",
+              "away": "Bramford B",
+              "homeShots": 63,
+              "awayShots": 51,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-05-19"
+            },
+            {
+              "home": "Sproughton A",
+              "away": "East-of-England Co-op Reds",
+              "homeShots": 70,
+              "awayShots": 35,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-05-19"
+            },
+            {
+              "home": "East Bergholt Herons",
+              "away": "California B",
+              "homeShots": 65,
+              "awayShots": 47,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-05-19"
+            }
+          ],
+          "5": [
+            {
+              "home": "East-of-England Co-op Reds",
+              "away": "Holbrook A",
+              "homeShots": 67,
+              "awayShots": 55,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-05-26"
+            },
+            {
+              "home": "Gipping EE Black Birds",
+              "away": "Sproughton A",
+              "homeShots": 56,
+              "awayShots": 54,
+              "homePoints": 4,
+              "awayPoints": 2,
+              "matchDate": "2026-05-26"
+            },
+            {
+              "home": "Bramford B",
+              "away": "East Bergholt Herons",
+              "homeShots": 39,
+              "awayShots": 67,
+              "homePoints": 0.5,
+              "awayPoints": 5.5,
+              "matchDate": "2026-05-26"
+            }
+          ],
+          "6": [
+            {
+              "home": "Holbrook A",
+              "away": "Gipping EE Black Birds",
+              "homeShots": 70,
+              "awayShots": 43,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-06-02"
+            },
+            {
+              "home": "East Bergholt Herons",
+              "away": "East-of-England Co-op Reds",
+              "homeShots": 56,
+              "awayShots": 56,
+              "homePoints": 2.5,
+              "awayPoints": 3.5,
+              "matchDate": "2026-06-02"
+            },
+            {
+              "home": "California B",
+              "away": "Bramford B",
+              "homeShots": 52,
+              "awayShots": 64,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-06-02"
+            }
+          ],
+          "7": [
+            {
+              "home": "Sproughton A",
+              "away": "Holbrook A",
+              "homeShots": 51,
+              "awayShots": 61,
+              "homePoints": 0.5,
+              "awayPoints": 5.5,
+              "matchDate": "2026-06-09"
+            },
+            {
+              "home": "Gipping EE Black Birds",
+              "away": "East Bergholt Herons",
+              "homeShots": 38,
+              "awayShots": 63,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-06-09"
+            },
+            {
+              "home": "East-of-England Co-op Reds",
+              "away": "California B",
+              "homeShots": 82,
+              "awayShots": 37,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-06-09"
+            }
+          ],
+          "8": [
+            {
+              "home": "Sproughton A",
+              "away": "East Bergholt Herons",
+              "homeShots": 70,
+              "awayShots": 38,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-06-16"
+            },
+            {
+              "home": "Gipping EE Black Birds",
+              "away": "California B",
+              "homeShots": 63,
+              "awayShots": 49,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-06-16"
+            },
+            {
+              "home": "East-of-England Co-op Reds",
+              "away": "Bramford B",
+              "homeShots": 56,
+              "awayShots": 51,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-06-16"
+            }
+          ],
+          "9": [
+            {
+              "home": "East Bergholt Herons",
+              "away": "Holbrook A",
+              "homeShots": 42,
+              "awayShots": 73,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-06-23"
+            },
+            {
+              "home": "California B",
+              "away": "Sproughton A",
+              "homeShots": 42,
+              "awayShots": 49,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-06-23"
+            },
+            {
+              "home": "Bramford B",
+              "away": "Gipping EE Black Birds",
+              "homeShots": 54,
+              "awayShots": 54,
+              "homePoints": 3.5,
+              "awayPoints": 2.5,
+              "matchDate": "2026-06-23"
+            }
+          ],
+          "10": [
+            {
+              "home": "Holbrook A",
+              "away": "California B",
+              "homeShots": 50,
+              "awayShots": 59,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-06-30"
+            },
+            {
+              "home": "Sproughton A",
+              "away": "Bramford B",
+              "homeShots": 47,
+              "awayShots": 58,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-06-30"
+            },
+            {
+              "home": "Gipping EE Black Birds",
+              "away": "East-of-England Co-op Reds",
+              "homeShots": 53,
+              "awayShots": 54,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-06-30"
+            }
+          ],
+          "11": [
+            {
+              "home": "Bramford B",
+              "away": "Holbrook A",
+              "homeShots": 52,
+              "awayShots": 60,
+              "homePoints": 0.5,
+              "awayPoints": 5.5,
+              "matchDate": "2026-07-07"
+            },
+            {
+              "home": "East-of-England Co-op Reds",
+              "away": "Sproughton A",
+              "homeShots": 49,
+              "awayShots": 53,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-07-07"
+            },
+            {
+              "home": "California B",
+              "away": "East Bergholt Herons",
+              "homeShots": 52,
+              "awayShots": 64,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-07-07"
+            }
+          ],
+          "12": [
+            {
+              "home": "Holbrook A",
+              "away": "East-of-England Co-op Reds",
+              "homeShots": 58,
+              "awayShots": 56,
+              "homePoints": 4,
+              "awayPoints": 2,
+              "matchDate": "2026-07-14"
+            },
+            {
+              "home": "Sproughton A",
+              "away": "Gipping EE Black Birds",
+              "homeShots": 53,
+              "awayShots": 58,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-07-14"
+            },
+            {
+              "home": "East Bergholt Herons",
+              "away": "Bramford B",
+              "homeShots": 51,
+              "awayShots": 47,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-07-14"
+            }
+          ],
+          "13": [
+            {
+              "home": "Gipping EE Black Birds",
+              "away": "Holbrook A",
+              "homeShots": 57,
+              "awayShots": 53,
+              "homePoints": 4,
+              "awayPoints": 2,
+              "matchDate": "2026-07-21"
+            },
+            {
+              "home": "East-of-England Co-op Reds",
+              "away": "East Bergholt Herons",
+              "homeShots": 68,
+              "awayShots": 49,
+              "homePoints": 5.5,
+              "awayPoints": 0.5,
+              "matchDate": "2026-07-21"
+            },
+            {
+              "home": "Bramford B",
+              "away": "California B",
+              "homeShots": 53,
+              "awayShots": 54,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-07-21"
+            }
+          ]
+        }
       }
     },
     {
@@ -564,53 +1738,287 @@
         "Bye",
         "Bye"
       ],
-      "standingsSeed": {
-        "throughWeek": 12,
-        "note": "Official 2-Wood tables, Week 12 (updated 23 July 2026)",
-        "rows": [
-          {
-            "team": "Hadleigh Shearers",
-            "played": 8,
-            "shotsFor": 488,
-            "shotsAgainst": 387,
-            "points": 37
-          },
-          {
-            "team": "IBC Graham Road B",
-            "played": 9,
-            "shotsFor": 503,
-            "shotsAgainst": 469,
-            "points": 35
-          },
-          {
-            "team": "Bealings Blues",
-            "played": 9,
-            "shotsFor": 503,
-            "shotsAgainst": 477,
-            "points": 23
-          },
-          {
-            "team": "Sproughton B",
-            "played": 8,
-            "shotsFor": 416,
-            "shotsAgainst": 490,
-            "points": 22
-          },
-          {
-            "team": "Kesgrave Greens",
-            "played": 9,
-            "shotsFor": 495,
-            "shotsAgainst": 503,
-            "points": 21
-          },
-          {
-            "team": "Roundwood",
-            "played": 9,
-            "shotsFor": 443,
-            "shotsAgainst": 522,
-            "points": 18
-          }
-        ]
+      "results": {
+        "weeks": {
+          "1": [
+            {
+              "home": "Sproughton B",
+              "away": "Roundwood",
+              "homeShots": 58,
+              "awayShots": 53,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-04-28"
+            },
+            {
+              "home": "Kesgrave Greens",
+              "away": "IBC Graham Road B",
+              "homeShots": 58,
+              "awayShots": 48,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-04-28"
+            }
+          ],
+          "2": [
+            {
+              "home": "Bealings Blues",
+              "away": "Sproughton B",
+              "homeShots": 82,
+              "awayShots": 33,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-05-05"
+            },
+            {
+              "home": "Roundwood",
+              "away": "Kesgrave Greens",
+              "homeShots": 58,
+              "awayShots": 52,
+              "homePoints": 5.5,
+              "awayPoints": 0.5,
+              "matchDate": "2026-05-05"
+            }
+          ],
+          "3": [
+            {
+              "home": "Sproughton B",
+              "away": "Hadleigh Shearers",
+              "homeShots": 52,
+              "awayShots": 61,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-05-12"
+            },
+            {
+              "home": "Kesgrave Greens",
+              "away": "Bealings Blues",
+              "homeShots": 81,
+              "awayShots": 35,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-05-12"
+            },
+            {
+              "home": "IBC Graham Road B",
+              "away": "Roundwood",
+              "homeShots": 64,
+              "awayShots": 45,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-05-12"
+            }
+          ],
+          "4": [
+            {
+              "home": "Hadleigh Shearers",
+              "away": "Kesgrave Greens",
+              "homeShots": 71,
+              "awayShots": 41,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-05-19"
+            },
+            {
+              "home": "Bealings Blues",
+              "away": "IBC Graham Road B",
+              "homeShots": 46,
+              "awayShots": 52,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-05-19"
+            }
+          ],
+          "5": [
+            {
+              "home": "IBC Graham Road B",
+              "away": "Hadleigh Shearers",
+              "homeShots": 31,
+              "awayShots": 72,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-05-26"
+            },
+            {
+              "home": "Roundwood",
+              "away": "Bealings Blues",
+              "homeShots": 39,
+              "awayShots": 73,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-05-26"
+            }
+          ],
+          "6": [
+            {
+              "home": "Hadleigh Shearers",
+              "away": "Roundwood",
+              "homeShots": 55,
+              "awayShots": 43,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-06-02"
+            },
+            {
+              "home": "Sproughton B",
+              "away": "Kesgrave Greens",
+              "homeShots": 46,
+              "awayShots": 58,
+              "homePoints": 2,
+              "awayPoints": 4,
+              "matchDate": "2026-06-02"
+            }
+          ],
+          "7": [
+            {
+              "home": "Bealings Blues",
+              "away": "Hadleigh Shearers",
+              "homeShots": 73,
+              "awayShots": 37,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-06-09"
+            },
+            {
+              "home": "IBC Graham Road B",
+              "away": "Sproughton B",
+              "homeShots": 73,
+              "awayShots": 45,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-06-09"
+            }
+          ],
+          "8": [
+            {
+              "home": "Roundwood",
+              "away": "Sproughton B",
+              "homeShots": 46,
+              "awayShots": 64,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-06-16"
+            },
+            {
+              "home": "IBC Graham Road B",
+              "away": "Kesgrave Greens",
+              "homeShots": 70,
+              "awayShots": 47,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-06-16"
+            }
+          ],
+          "9": [
+            {
+              "home": "Sproughton B",
+              "away": "Bealings Blues",
+              "homeShots": 65,
+              "awayShots": 55,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-06-23"
+            },
+            {
+              "home": "Kesgrave Greens",
+              "away": "Roundwood",
+              "homeShots": 55,
+              "awayShots": 61,
+              "homePoints": 1.5,
+              "awayPoints": 4.5,
+              "matchDate": "2026-06-23"
+            }
+          ],
+          "10": [
+            {
+              "home": "Hadleigh Shearers",
+              "away": "Sproughton B",
+              "homeShots": 62,
+              "awayShots": 53,
+              "homePoints": 4,
+              "awayPoints": 2,
+              "matchDate": "2026-06-30"
+            },
+            {
+              "home": "Bealings Blues",
+              "away": "Kesgrave Greens",
+              "homeShots": 50,
+              "awayShots": 56,
+              "homePoints": 2,
+              "awayPoints": 4,
+              "matchDate": "2026-06-30"
+            },
+            {
+              "home": "Roundwood",
+              "away": "IBC Graham Road B",
+              "homeShots": 48,
+              "awayShots": 54,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-06-30"
+            }
+          ],
+          "11": [
+            {
+              "home": "Kesgrave Greens",
+              "away": "Hadleigh Shearers",
+              "homeShots": 47,
+              "awayShots": 64,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-07-07"
+            },
+            {
+              "home": "IBC Graham Road B",
+              "away": "Bealings Blues",
+              "homeShots": 64,
+              "awayShots": 42,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-07-07"
+            }
+          ],
+          "12": [
+            {
+              "home": "Hadleigh Shearers",
+              "away": "IBC Graham Road B",
+              "homeShots": 66,
+              "awayShots": 47,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-07-14"
+            },
+            {
+              "home": "Bealings Blues",
+              "away": "Roundwood",
+              "homeShots": 47,
+              "awayShots": 50,
+              "homePoints": 2,
+              "awayPoints": 4,
+              "matchDate": "2026-07-14"
+            }
+          ],
+          "13": [
+            {
+              "home": "Roundwood",
+              "away": "Hadleigh Shearers",
+              "homeShots": 42,
+              "awayShots": 59,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-07-21"
+            },
+            {
+              "home": "Kesgrave Greens",
+              "away": "Sproughton B",
+              "homeShots": 47,
+              "awayShots": 61,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-07-21"
+            }
+          ]
+        }
       }
     },
     {
@@ -627,53 +2035,272 @@
         "Bye",
         "Bye"
       ],
-      "standingsSeed": {
-        "throughWeek": 12,
-        "note": "Official 2-Wood tables, Week 12 (updated 23 July 2026)",
-        "rows": [
-          {
-            "team": "Holywells",
-            "played": 8,
-            "shotsFor": 457,
-            "shotsAgainst": 419,
-            "points": 35.5
-          },
-          {
-            "team": "Bramford Greens",
-            "played": 7,
-            "shotsFor": 369,
-            "shotsAgainst": 389,
-            "points": 23.5
-          },
-          {
-            "team": "Hospitals at Ribbans Park",
-            "played": 7,
-            "shotsFor": 418,
-            "shotsAgainst": 359,
-            "points": 23
-          },
-          {
-            "team": "Copdock & Washbrook",
-            "played": 5,
-            "shotsFor": 285,
-            "shotsAgainst": 255,
-            "points": 20.5
-          },
-          {
-            "team": "Capel Kingfishers",
-            "played": 6,
-            "shotsFor": 304,
-            "shotsAgainst": 339,
-            "points": 11.5
-          },
-          {
-            "team": "East of Eng'd Coop Blues",
-            "played": 7,
-            "shotsFor": 342,
-            "shotsAgainst": 414,
-            "points": 6
-          }
-        ]
+      "results": {
+        "weeks": {
+          "1": [
+            {
+              "home": "Copdock & Washbrook",
+              "away": "Bramford Greens",
+              "homeShots": 46,
+              "awayShots": 63,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-04-30"
+            },
+            {
+              "home": "Hospitals at Ribbans Park",
+              "away": "Holywells",
+              "homeShots": 75,
+              "awayShots": 37,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-04-30"
+            }
+          ],
+          "2": [
+            {
+              "home": "East of Eng'd Coop Blues",
+              "away": "Copdock & Washbrook",
+              "homeShots": 56,
+              "awayShots": 65,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-05-07"
+            },
+            {
+              "home": "Bramford Greens",
+              "away": "Hospitals at Ribbans Park",
+              "homeShots": 33,
+              "awayShots": 73,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-05-07"
+            }
+          ],
+          "3": [
+            {
+              "home": "Copdock & Washbrook",
+              "away": "Capel Kingfishers",
+              "homeShots": 43,
+              "awayShots": 58,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-05-14"
+            },
+            {
+              "home": "Hospitals at Ribbans Park",
+              "away": "East of Eng'd Coop Blues",
+              "homeShots": 49,
+              "awayShots": 42,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-05-14"
+            },
+            {
+              "home": "Holywells",
+              "away": "Bramford Greens",
+              "homeShots": 51,
+              "awayShots": 55,
+              "homePoints": 1.5,
+              "awayPoints": 4.5,
+              "matchDate": "2026-05-14"
+            }
+          ],
+          "4": [
+            {
+              "home": "Capel Kingfishers",
+              "away": "Hospitals at Ribbans Park",
+              "postponed": true,
+              "matchDate": "2026-05-21"
+            },
+            {
+              "home": "East of Eng'd Coop Blues",
+              "away": "Holywells",
+              "homeShots": 47,
+              "awayShots": 53,
+              "homePoints": 2,
+              "awayPoints": 4,
+              "matchDate": "2026-05-21"
+            }
+          ],
+          "5": [
+            {
+              "home": "Holywells",
+              "away": "Capel Kingfishers",
+              "homeShots": 73,
+              "awayShots": 42,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-05-28"
+            },
+            {
+              "home": "Bramford Greens",
+              "away": "East of Eng'd Coop Blues",
+              "homeShots": 66,
+              "awayShots": 49,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-05-28"
+            }
+          ],
+          "6": [
+            {
+              "home": "Capel Kingfishers",
+              "away": "Bramford Greens",
+              "homeShots": 49,
+              "awayShots": 54,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-06-04"
+            },
+            {
+              "home": "Copdock & Washbrook",
+              "away": "Hospitals at Ribbans Park",
+              "homeShots": 67,
+              "awayShots": 41,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-06-04"
+            }
+          ],
+          "7": [
+            {
+              "home": "East of Eng'd Coop Blues",
+              "away": "Capel Kingfishers",
+              "postponed": true,
+              "matchDate": "2026-06-11"
+            },
+            {
+              "home": "Holywells",
+              "away": "Copdock & Washbrook",
+              "postponed": true,
+              "matchDate": "2026-06-11"
+            }
+          ],
+          "8": [
+            {
+              "home": "Bramford Greens",
+              "away": "Copdock & Washbrook",
+              "homeShots": 50,
+              "awayShots": 55,
+              "homePoints": 2,
+              "awayPoints": 4,
+              "matchDate": "2026-06-18"
+            },
+            {
+              "home": "Holywells",
+              "away": "Hospitals at Ribbans Park",
+              "homeShots": 63,
+              "awayShots": 59,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-06-18"
+            }
+          ],
+          "9": [
+            {
+              "home": "Copdock & Washbrook",
+              "away": "East of Eng'd Coop Blues",
+              "postponed": true,
+              "matchDate": "2026-06-25"
+            },
+            {
+              "home": "Hospitals at Ribbans Park",
+              "away": "Bramford Greens",
+              "postponed": true,
+              "matchDate": "2026-06-25"
+            }
+          ],
+          "10": [
+            {
+              "home": "Capel Kingfishers",
+              "away": "Copdock & Washbrook",
+              "homeShots": 50,
+              "awayShots": 55,
+              "homePoints": 0.5,
+              "awayPoints": 5.5,
+              "matchDate": "2026-07-02"
+            },
+            {
+              "home": "East of Eng'd Coop Blues",
+              "away": "Hospitals at Ribbans Park",
+              "homeShots": 61,
+              "awayShots": 67,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-07-02"
+            },
+            {
+              "home": "Bramford Greens",
+              "away": "Holywells",
+              "homeShots": 55,
+              "awayShots": 62,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-07-02"
+            }
+          ],
+          "11": [
+            {
+              "home": "Hospitals at Ribbans Park",
+              "away": "Capel Kingfishers",
+              "homeShots": 54,
+              "awayShots": 56,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-07-09"
+            },
+            {
+              "home": "Holywells",
+              "away": "East of Eng'd Coop Blues",
+              "homeShots": 58,
+              "awayShots": 37,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-07-09"
+            }
+          ],
+          "12": [
+            {
+              "home": "Capel Kingfishers",
+              "away": "Holywells",
+              "homeShots": 49,
+              "awayShots": 60,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-07-16"
+            },
+            {
+              "home": "East of Eng'd Coop Blues",
+              "away": "Bramford Greens",
+              "homeShots": 50,
+              "awayShots": 56,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-07-16"
+            }
+          ],
+          "13": [
+            {
+              "home": "Bramford Greens",
+              "away": "Capel Kingfishers",
+              "homeShots": 47,
+              "awayShots": 71,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-07-23"
+            },
+            {
+              "home": "Hospitals at Ribbans Park",
+              "away": "Copdock & Washbrook",
+              "homeShots": 69,
+              "awayShots": 46,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-07-23"
+            }
+          ]
+        }
       }
     },
     {
@@ -690,53 +2317,281 @@
         "Bye",
         "Bye"
       ],
-      "standingsSeed": {
-        "throughWeek": 12,
-        "note": "Official 2-Wood tables, Week 12 (updated 23 July 2026)",
-        "rows": [
-          {
-            "team": "Kirton & Falkenham B",
-            "played": 9,
-            "shotsFor": 586,
-            "shotsAgainst": 464,
-            "points": 42
-          },
-          {
-            "team": "Holbrook B",
-            "played": 7,
-            "shotsFor": 387,
-            "shotsAgainst": 341,
-            "points": 32
-          },
-          {
-            "team": "Gipping EE Foxes",
-            "played": 8,
-            "shotsFor": 484,
-            "shotsAgainst": 459,
-            "points": 27.5
-          },
-          {
-            "team": "Capel Kestrels",
-            "played": 8,
-            "shotsFor": 471,
-            "shotsAgainst": 456,
-            "points": 22.5
-          },
-          {
-            "team": "Westerfield Swans",
-            "played": 8,
-            "shotsFor": 408,
-            "shotsAgainst": 458,
-            "points": 14.5
-          },
-          {
-            "team": "Ipswich & District B",
-            "played": 8,
-            "shotsFor": 357,
-            "shotsAgainst": 515,
-            "points": 5.5
-          }
-        ]
+      "results": {
+        "weeks": {
+          "1": [
+            {
+              "home": "Holbrook B",
+              "away": "Kirton & Falkenham B",
+              "homeShots": 60,
+              "awayShots": 53,
+              "homePoints": 5.5,
+              "awayPoints": 0.5,
+              "matchDate": "2026-04-30"
+            },
+            {
+              "home": "Capel Kestrels",
+              "away": "Gipping EE Foxes",
+              "homeShots": 57,
+              "awayShots": 51,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-04-30"
+            }
+          ],
+          "2": [
+            {
+              "home": "Westerfield Swans",
+              "away": "Holbrook B",
+              "homeShots": 41,
+              "awayShots": 53,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-05-07"
+            },
+            {
+              "home": "Kirton & Falkenham B",
+              "away": "Capel Kestrels",
+              "homeShots": 72,
+              "awayShots": 44,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-05-07"
+            }
+          ],
+          "3": [
+            {
+              "home": "Holbrook B",
+              "away": "Ipswich & District B",
+              "homeShots": 51,
+              "awayShots": 50,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-05-14"
+            },
+            {
+              "home": "Capel Kestrels",
+              "away": "Westerfield Swans",
+              "postponed": true,
+              "matchDate": "2026-05-14"
+            },
+            {
+              "home": "Gipping EE Foxes",
+              "away": "Kirton & Falkenham B",
+              "homeShots": 54,
+              "awayShots": 63,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-05-14"
+            }
+          ],
+          "4": [
+            {
+              "home": "Ipswich & District B",
+              "away": "Capel Kestrels",
+              "homeShots": 39,
+              "awayShots": 76,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-05-21"
+            },
+            {
+              "home": "Westerfield Swans",
+              "away": "Gipping EE Foxes",
+              "homeShots": 55,
+              "awayShots": 63,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-05-21"
+            }
+          ],
+          "5": [
+            {
+              "home": "Gipping EE Foxes",
+              "away": "Ipswich & District B",
+              "homeShots": 55,
+              "awayShots": 55,
+              "homePoints": 3.5,
+              "awayPoints": 2.5,
+              "matchDate": "2026-05-28"
+            },
+            {
+              "home": "Kirton & Falkenham B",
+              "away": "Westerfield Swans",
+              "homeShots": 65,
+              "awayShots": 38,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-05-28"
+            }
+          ],
+          "6": [
+            {
+              "home": "Ipswich & District B",
+              "away": "Kirton & Falkenham B",
+              "homeShots": 41,
+              "awayShots": 68,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-06-04"
+            },
+            {
+              "home": "Holbrook B",
+              "away": "Capel Kestrels",
+              "homeShots": 53,
+              "awayShots": 52,
+              "homePoints": 4.5,
+              "awayPoints": 1.5,
+              "matchDate": "2026-06-04"
+            }
+          ],
+          "7": [
+            {
+              "home": "Westerfield Swans",
+              "away": "Ipswich & District B",
+              "homeShots": 57,
+              "awayShots": 42,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-06-11"
+            },
+            {
+              "home": "Gipping EE Foxes",
+              "away": "Holbrook B",
+              "postponed": true,
+              "matchDate": "2026-06-11"
+            }
+          ],
+          "8": [
+            {
+              "home": "Kirton & Falkenham B",
+              "away": "Holbrook B",
+              "homeShots": 59,
+              "awayShots": 49,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-06-18"
+            },
+            {
+              "home": "Gipping EE Foxes",
+              "away": "Capel Kestrels",
+              "homeShots": 75,
+              "awayShots": 55,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-06-18"
+            }
+          ],
+          "9": [
+            {
+              "home": "Holbrook B",
+              "away": "Westerfield Swans",
+              "homeShots": 47,
+              "awayShots": 42,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-06-25"
+            },
+            {
+              "home": "Capel Kestrels",
+              "away": "Kirton & Falkenham B",
+              "homeShots": 64,
+              "awayShots": 67,
+              "homePoints": 0.5,
+              "awayPoints": 5.5,
+              "matchDate": "2026-06-25"
+            }
+          ],
+          "10": [
+            {
+              "home": "Ipswich & District B",
+              "away": "Holbrook B",
+              "homeShots": 44,
+              "awayShots": 74,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-07-02"
+            },
+            {
+              "home": "Westerfield Swans",
+              "away": "Capel Kestrels",
+              "homeShots": 66,
+              "awayShots": 53,
+              "homePoints": 4.5,
+              "awayPoints": 1.5,
+              "matchDate": "2026-07-02"
+            },
+            {
+              "home": "Kirton & Falkenham B",
+              "away": "Gipping EE Foxes",
+              "homeShots": 64,
+              "awayShots": 62,
+              "homePoints": 4,
+              "awayPoints": 2,
+              "matchDate": "2026-07-02"
+            }
+          ],
+          "11": [
+            {
+              "home": "Capel Kestrels",
+              "away": "Ipswich & District B",
+              "homeShots": 70,
+              "awayShots": 33,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-07-09"
+            },
+            {
+              "home": "Gipping EE Foxes",
+              "away": "Westerfield Swans",
+              "homeShots": 60,
+              "awayShots": 57,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-07-09"
+            }
+          ],
+          "12": [
+            {
+              "home": "Ipswich & District B",
+              "away": "Gipping EE Foxes",
+              "homeShots": 53,
+              "awayShots": 64,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-07-16"
+            },
+            {
+              "home": "Westerfield Swans",
+              "away": "Kirton & Falkenham B",
+              "homeShots": 52,
+              "awayShots": 75,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-07-16"
+            }
+          ],
+          "13": [
+            {
+              "home": "Kirton & Falkenham B",
+              "away": "Ipswich & District B",
+              "homeShots": 85,
+              "awayShots": 40,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-07-23"
+            },
+            {
+              "home": "Capel Kestrels",
+              "away": "Holbrook B",
+              "homeShots": 40,
+              "awayShots": 72,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-07-23"
+            }
+          ]
+        }
       }
     },
     {
@@ -753,53 +2608,278 @@
         "Bye",
         "Bye"
       ],
-      "standingsSeed": {
-        "throughWeek": 12,
-        "note": "Official 2-Wood tables, Week 12 (updated 23 July 2026)",
-        "rows": [
-          {
-            "team": "Westerfield Whites",
-            "played": 7,
-            "shotsFor": 482,
-            "shotsAgainst": 320,
-            "points": 34.5
-          },
-          {
-            "team": "Sproughton C",
-            "played": 9,
-            "shotsFor": 525,
-            "shotsAgainst": 465,
-            "points": 30
-          },
-          {
-            "team": "Newton Road Whites",
-            "played": 7,
-            "shotsFor": 430,
-            "shotsAgainst": 378,
-            "points": 28
-          },
-          {
-            "team": "Hadleigh Carders",
-            "played": 7,
-            "shotsFor": 386,
-            "shotsAgainst": 397,
-            "points": 21
-          },
-          {
-            "team": "St Johns URC",
-            "played": 7,
-            "shotsFor": 356,
-            "shotsAgainst": 414,
-            "points": 18
-          },
-          {
-            "team": "Margaret Catchpole B",
-            "played": 9,
-            "shotsFor": 407,
-            "shotsAgainst": 612,
-            "points": 6.5
-          }
-        ]
+      "results": {
+        "weeks": {
+          "1": [
+            {
+              "home": "Westerfield Whites",
+              "away": "Margaret Catchpole B",
+              "homeShots": 85,
+              "awayShots": 32,
+              "homePoints": 6,
+              "awayPoints": 0,
+              "matchDate": "2026-04-30"
+            },
+            {
+              "home": "Sproughton C",
+              "away": "Newton Road Whites",
+              "homeShots": 52,
+              "awayShots": 60,
+              "homePoints": 0.5,
+              "awayPoints": 5.5,
+              "matchDate": "2026-04-30"
+            }
+          ],
+          "2": [
+            {
+              "home": "St Johns URC",
+              "away": "Westerfield Whites",
+              "homeShots": 35,
+              "awayShots": 75,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-05-07"
+            },
+            {
+              "home": "Margaret Catchpole B",
+              "away": "Sproughton C",
+              "homeShots": 48,
+              "awayShots": 52,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-05-07"
+            }
+          ],
+          "3": [
+            {
+              "home": "Westerfield Whites",
+              "away": "Hadleigh Carders",
+              "homeShots": 72,
+              "awayShots": 52,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-05-14"
+            },
+            {
+              "home": "Sproughton C",
+              "away": "St Johns URC",
+              "homeShots": 69,
+              "awayShots": 37,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-05-14"
+            },
+            {
+              "home": "Newton Road Whites",
+              "away": "Margaret Catchpole B",
+              "homeShots": 70,
+              "awayShots": 48,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-05-14"
+            }
+          ],
+          "4": [
+            {
+              "home": "Hadleigh Carders",
+              "away": "Sproughton C",
+              "homeShots": 62,
+              "awayShots": 53,
+              "homePoints": 4,
+              "awayPoints": 2,
+              "matchDate": "2026-05-21"
+            },
+            {
+              "home": "St Johns URC",
+              "away": "Newton Road Whites",
+              "homeShots": 47,
+              "awayShots": 62,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-05-21"
+            }
+          ],
+          "5": [
+            {
+              "home": "Newton Road Whites",
+              "away": "Hadleigh Carders",
+              "homeShots": 52,
+              "awayShots": 56,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-05-28"
+            },
+            {
+              "home": "Margaret Catchpole B",
+              "away": "St Johns URC",
+              "homeShots": 46,
+              "awayShots": 65,
+              "homePoints": 0.5,
+              "awayPoints": 5.5,
+              "matchDate": "2026-05-28"
+            }
+          ],
+          "6": [
+            {
+              "home": "Hadleigh Carders",
+              "away": "Margaret Catchpole B",
+              "homeShots": 57,
+              "awayShots": 56,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-06-04"
+            },
+            {
+              "home": "Westerfield Whites",
+              "away": "Sproughton C",
+              "homeShots": 62,
+              "awayShots": 59,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-06-04"
+            }
+          ],
+          "7": [
+            {
+              "home": "St Johns URC",
+              "away": "Hadleigh Carders",
+              "postponed": true,
+              "matchDate": "2026-06-11"
+            },
+            {
+              "home": "Newton Road Whites",
+              "away": "Westerfield Whites",
+              "postponed": true,
+              "matchDate": "2026-06-11"
+            }
+          ],
+          "8": [
+            {
+              "home": "Margaret Catchpole B",
+              "away": "Westerfield Whites",
+              "homeShots": 38,
+              "awayShots": 72,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-06-18"
+            },
+            {
+              "home": "Newton Road Whites",
+              "away": "Sproughton C",
+              "homeShots": 59,
+              "awayShots": 56,
+              "homePoints": 4.5,
+              "awayPoints": 1.5,
+              "matchDate": "2026-06-18"
+            }
+          ],
+          "9": [
+            {
+              "home": "Westerfield Whites",
+              "away": "St Johns URC",
+              "homeShots": 50,
+              "awayShots": 52,
+              "homePoints": 1.5,
+              "awayPoints": 4.5,
+              "matchDate": "2026-06-25"
+            },
+            {
+              "home": "Sproughton C",
+              "away": "Margaret Catchpole B",
+              "homeShots": 76,
+              "awayShots": 50,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-06-25"
+            }
+          ],
+          "10": [
+            {
+              "home": "Hadleigh Carders",
+              "away": "Westerfield Whites",
+              "homeShots": 52,
+              "awayShots": 66,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-07-02"
+            },
+            {
+              "home": "St Johns URC",
+              "away": "Sproughton C",
+              "homeShots": 52,
+              "awayShots": 70,
+              "homePoints": 1,
+              "awayPoints": 5,
+              "matchDate": "2026-07-02"
+            },
+            {
+              "home": "Margaret Catchpole B",
+              "away": "Newton Road Whites",
+              "homeShots": 47,
+              "awayShots": 67,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-07-02"
+            }
+          ],
+          "11": [
+            {
+              "home": "Sproughton C",
+              "away": "Hadleigh Carders",
+              "homeShots": 38,
+              "awayShots": 35,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-07-09"
+            },
+            {
+              "home": "Newton Road Whites",
+              "away": "St Johns URC",
+              "postponed": true,
+              "matchDate": "2026-07-09"
+            }
+          ],
+          "12": [
+            {
+              "home": "Hadleigh Carders",
+              "away": "Newton Road Whites",
+              "homeShots": 72,
+              "awayShots": 60,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-07-16"
+            },
+            {
+              "home": "St Johns URC",
+              "away": "Margaret Catchpole B",
+              "homeShots": 68,
+              "awayShots": 42,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-07-16"
+            }
+          ],
+          "13": [
+            {
+              "home": "Margaret Catchpole B",
+              "away": "Hadleigh Carders",
+              "homeShots": 49,
+              "awayShots": 55,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-07-23"
+            },
+            {
+              "home": "Sproughton C",
+              "away": "Westerfield Whites",
+              "homeShots": 56,
+              "awayShots": 50,
+              "homePoints": 5,
+              "awayPoints": 1,
+              "matchDate": "2026-07-23"
+            }
+          ]
+        }
       }
     }
   ]
