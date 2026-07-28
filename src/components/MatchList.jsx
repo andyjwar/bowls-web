@@ -18,26 +18,6 @@ function isSameDay(isoDate, ref) {
   )
 }
 
-function ResultChip({ won, draw, played }) {
-  if (!played) return <span className="match-row__chip" aria-hidden="true" />
-  if (draw) {
-    return (
-      <span className="match-row__chip match-row__chip--d" title="Draw">
-        D
-      </span>
-    )
-  }
-  return won ? (
-    <span className="match-row__chip match-row__chip--w" title="Won">
-      W
-    </span>
-  ) : (
-    <span className="match-row__chip match-row__chip--l" title="Lost">
-      L
-    </span>
-  )
-}
-
 /* Team name as a link to the Matches view filtered to that team, same
    behaviour as the standings table. Inherits the row's weight/colour. */
 function TeamLink({ name }) {
@@ -92,11 +72,9 @@ function MatchRow({
       <div className={`match-row match-row--bye${rowMods}`}>
         {dateCell}
         {venueCell}
-        {single ? null : <span className="match-row__chip" aria-hidden="true" />}
         <span className="match-row__home">{match.home}</span>
         <span className="match-row__mid match-row__mid--bye">Bye</span>
         <span className="match-row__away" />
-        <span className="match-row__chip" aria-hidden="true" />
       </div>
     )
   }
@@ -116,21 +94,10 @@ function MatchRow({
   const shotsTitle =
     hasPoints && hasShots ? `${match.homeShots}–${match.awayShots} shots` : undefined
 
-  /* Single-team view: one Result column on the far right, from that
-     team's point of view. */
-  const perspectiveWon = single
-    ? match.home === perspectiveTeam
-      ? match.homeWon
-      : match.awayWon
-    : null
-
   return (
     <div className={`match-row${postponed ? ' match-row--postponed' : ''}${rowMods}`}>
       {dateCell}
       {venueCell}
-      {single ? null : (
-        <ResultChip won={match.homeWon} draw={draw} played={decided} />
-      )}
       <span
         className={teamClass('match-row__home', {
           played: decided,
@@ -165,11 +132,6 @@ function MatchRow({
       >
         {linkTeams ? <TeamLink name={match.away} /> : match.away}
       </span>
-      <ResultChip
-        won={single ? perspectiveWon : match.awayWon}
-        draw={draw}
-        played={decided}
-      />
     </div>
   )
 }
@@ -462,7 +424,6 @@ export function MatchList({
           <div className="match-list">
             <div className="match-list__head">
               <span className="match-list__head-label">Venue</span>
-              <span className="match-list__head-label">Result</span>
             </div>
             {fixtureWeeks.map((week) =>
               week.matches.map((match, i) => (

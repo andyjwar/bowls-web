@@ -1171,7 +1171,7 @@
 
 .match-row {
   display: grid;
-  grid-template-columns: 6.2rem 20px 1fr auto 1fr 20px;
+  grid-template-columns: 6.2rem 1fr auto 1fr;
   align-items: center;
   gap: 0.75rem;
   padding: 0.85rem 1rem;
@@ -1182,17 +1182,17 @@
 }
 
 .match-row--nodate {
-  grid-template-columns: 20px 1fr auto 1fr 20px;
+  grid-template-columns: 1fr auto 1fr;
 }
 
-/* Single-team view: date | venue | teams | one Result column on the right */
+/* Single-team view: date | venue | teams */
 .match-row--single {
-  grid-template-columns: 6.2rem 3.4rem 1fr auto 1fr 20px;
+  grid-template-columns: 6.2rem 3.4rem 1fr auto 1fr;
   padding-top: 0.95rem;
   padding-bottom: 0.95rem;
 }
 
-/* Home/Away venue tag, same square aesthetic as the W/L chips */
+/* Home/Away venue tag */
 .match-row__venue {
   display: inline-grid;
   place-items: center;
@@ -1220,7 +1220,6 @@
 
 .match-list__head {
   display: flex;
-  justify-content: space-between;
   padding: 0.55rem 1rem;
   background: var(--fm-row-hi);
   border-bottom: 1px solid var(--fm-border);
@@ -1232,31 +1231,6 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--fm-muted);
-}
-
-/* W / L / D chips on the outer edges */
-.match-row__chip {
-  width: 20px;
-  height: 20px;
-  display: inline-grid;
-  place-items: center;
-  font-size: 0.68rem;
-  font-weight: 800;
-}
-
-.match-row__chip--w {
-  background: var(--league-color, var(--fm-pitch));
-  color: var(--league-foreground, #fff);
-}
-
-.match-row__chip--l {
-  background: var(--fm-row-hi);
-  color: var(--fm-muted);
-}
-
-.match-row__chip--d {
-  background: var(--fm-row-hi);
-  color: var(--fm-muted-strong);
 }
 
 /* "Next matches" tile under the standings table */
@@ -1336,6 +1310,11 @@
 
 .match-row__home {
   text-align: right;
+  justify-self: end;
+}
+
+.match-row__away {
+  justify-self: start;
 }
 
 /* Team names link to the Matches view filtered to that team */
@@ -1352,7 +1331,15 @@
 }
 
 .match-row__team--win {
+  padding: 0.25rem 0.55rem;
+  border-radius: 4px;
+  background: var(--league-color-soft, var(--fm-pitch-soft));
+  color: var(--league-color, var(--fm-pitch));
   font-weight: 800;
+}
+
+.bowls-app[data-theme='dark'] .match-row__team--win {
+  color: var(--fm-text-strong);
 }
 
 .match-row__team--lose {
@@ -1367,19 +1354,13 @@
 }
 
 .match-row__mid--score {
-  padding: 0.25rem 0.6rem;
-  background: var(--league-color-soft, var(--fm-pitch-soft));
-  color: var(--league-color, var(--fm-pitch));
+  padding: 0.25rem 0.35rem;
+  color: var(--fm-text-strong);
   font-size: 0.95rem;
   font-weight: 800;
 }
 
-.bowls-app[data-theme='dark'] .match-row__mid--score {
-  color: var(--fm-text-strong);
-}
-
 .match-row__mid--draw {
-  background: var(--fm-row-hi);
   color: var(--fm-text-strong);
 }
 
@@ -1418,17 +1399,17 @@
 
 @media (max-width: 560px) {
   .match-row {
-    grid-template-columns: 4.4rem 17px 1fr auto 1fr 17px;
+    grid-template-columns: 4.4rem 1fr auto 1fr;
     gap: 0.5rem;
     padding: 0.75rem 0.7rem;
   }
 
   .match-row--nodate {
-    grid-template-columns: 17px 1fr auto 1fr 17px;
+    grid-template-columns: 1fr auto 1fr;
   }
 
   .match-row--single {
-    grid-template-columns: 4.4rem 2.9rem 1fr auto 1fr 17px;
+    grid-template-columns: 4.4rem 2.9rem 1fr auto 1fr;
   }
 
   .match-row__venue {
@@ -1442,12 +1423,6 @@
 
   .team-record__num {
     font-size: 1.25rem;
-  }
-
-  .match-row__chip {
-    width: 17px;
-    height: 17px;
-    font-size: 0.62rem;
   }
 
   .match-row__date {
@@ -1607,8 +1582,15 @@
   font-weight: 800;
 }
 
-.cup-bkt__row--win .cup-bkt__score {
+.cup-bkt__row--win .cup-bkt__team {
+  padding: 0.12rem 0.35rem;
+  border-radius: 4px;
+  background: var(--league-color-soft, var(--fm-pitch-soft));
   color: var(--league-color, var(--fm-pitch));
+}
+
+.bowls-app[data-theme='dark'] .cup-bkt__row--win .cup-bkt__team {
+  color: var(--fm-text-strong);
 }
 
 .cup-bkt__row--lose {
@@ -4135,15 +4117,6 @@ a.form-card:hover {
 
   .match-row__mid--score {
     font-weight: 800 !important;
-  }
-
-  /* W/L/D chips and venue tags print as outlined greyscale boxes */
-  .match-row__chip--w,
-  .match-row__chip--l,
-  .match-row__chip--d {
-    background: #fff !important;
-    color: #000 !important;
-    border: 1px solid #000 !important;
   }
 
   .match-row__venue--home,
