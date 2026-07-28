@@ -704,6 +704,14 @@
                   "awayShots": 59,
                   "homePoints": 1,
                   "awayPoints": 5
+                },
+                {
+                  "home": "E-of-E Co-op Reds",
+                  "away": "Marlborough",
+                  "homeShots": 50,
+                  "awayShots": 63,
+                  "homePoints": 0,
+                  "awayPoints": 6
                 }
               ]
             }
