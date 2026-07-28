@@ -2914,6 +2914,14 @@
                   "awayShots": 71,
                   "homePoints": 1,
                   "awayPoints": 5
+                },
+                {
+                  "home": "Capel Kestrels",
+                  "away": "Felixstowe BC",
+                  "homeShots": 57,
+                  "awayShots": 50,
+                  "homePoints": 5,
+                  "awayPoints": 1
                 }
               ]
             }
