@@ -2897,6 +2897,24 @@
                   "awayPoints": 6,
                   "matchDate": "2026-07-20"
                 }
+              ],
+              "12": [
+                {
+                  "home": "Hospitals Ribbans Park",
+                  "away": "E-of-E Co-op Blues",
+                  "homeShots": 61,
+                  "awayShots": 46,
+                  "homePoints": 5.5,
+                  "awayPoints": 0.5
+                },
+                {
+                  "home": "Ipswich & District",
+                  "away": "Kirton B",
+                  "homeShots": 38,
+                  "awayShots": 71,
+                  "homePoints": 1,
+                  "awayPoints": 5
+                }
               ]
             }
           },
