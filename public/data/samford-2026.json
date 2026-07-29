@@ -715,61 +715,6 @@
                 }
               ]
             }
-          },
-          "standingsSeed": {
-            "throughWeek": 11,
-            "note": "Official Samford Monday tables, Week 11 (updated 24 July 2026)",
-            "rows": [
-              {
-                "team": "Marlborough",
-                "played": 10,
-                "shotsFor": 603,
-                "shotsAgainst": 553,
-                "points": 42.5
-              },
-              {
-                "team": "Stone Lodge Blues",
-                "played": 9,
-                "shotsFor": 605,
-                "shotsAgainst": 430,
-                "points": 39.5
-              },
-              {
-                "team": "Waldringfield Swans",
-                "played": 10,
-                "shotsFor": 530,
-                "shotsAgainst": 572,
-                "points": 29.5
-              },
-              {
-                "team": "Kirton A",
-                "played": 9,
-                "shotsFor": 520,
-                "shotsAgainst": 490,
-                "points": 29
-              },
-              {
-                "team": "Westerfield Yellows",
-                "played": 9,
-                "shotsFor": 483,
-                "shotsAgainst": 501,
-                "points": 24.5
-              },
-              {
-                "team": "Hollbrook",
-                "played": 9,
-                "shotsFor": 472,
-                "shotsAgainst": 509,
-                "points": 23
-              },
-              {
-                "team": "E-of-E Co-op Reds",
-                "played": 10,
-                "shotsFor": 484,
-                "shotsAgainst": 642,
-                "points": 10
-              }
-            ]
           }
         },
         {
@@ -785,68 +730,6 @@
             "Bentley",
             "Westerfield Blues"
           ],
-          "standingsSeed": {
-            "throughWeek": 11,
-            "note": "Official Samford Monday tables, Week 11 (updated 24 July 2026)",
-            "rows": [
-              {
-                "team": "Kesgrave Blues",
-                "played": 11,
-                "shotsFor": 684,
-                "shotsAgainst": 506,
-                "points": 51
-              },
-              {
-                "team": "Capel Kites",
-                "played": 10,
-                "shotsFor": 581,
-                "shotsAgainst": 479,
-                "points": 41
-              },
-              {
-                "team": "Bentley",
-                "played": 11,
-                "shotsFor": 623,
-                "shotsAgainst": 559,
-                "points": 39.5
-              },
-              {
-                "team": "California",
-                "played": 11,
-                "shotsFor": 576,
-                "shotsAgainst": 621,
-                "points": 33
-              },
-              {
-                "team": "Sproughton Reds",
-                "played": 11,
-                "shotsFor": 582,
-                "shotsAgainst": 572,
-                "points": 28.5
-              },
-              {
-                "team": "Westerfield Blues",
-                "played": 10,
-                "shotsFor": 529,
-                "shotsAgainst": 557,
-                "points": 26.5
-              },
-              {
-                "team": "Bealings",
-                "played": 11,
-                "shotsFor": 528,
-                "shotsAgainst": 681,
-                "points": 20
-              },
-              {
-                "team": "Stone Lodge Reds",
-                "played": 11,
-                "shotsFor": 536,
-                "shotsAgainst": 664,
-                "points": 18.5
-              }
-            ]
-          },
           "results": {
             "weeks": {
               "1": [
@@ -1727,61 +1610,6 @@
                 }
               ]
             }
-          },
-          "standingsSeed": {
-            "throughWeek": 11,
-            "note": "Official Samford Monday tables, Week 11 (updated 24 July 2026)",
-            "rows": [
-              {
-                "team": "Waldringfield Ducks",
-                "played": 10,
-                "shotsFor": 619,
-                "shotsAgainst": 481,
-                "points": 40.5
-              },
-              {
-                "team": "Gipping EE Wolves",
-                "played": 9,
-                "shotsFor": 517,
-                "shotsAgainst": 479,
-                "points": 35.5
-              },
-              {
-                "team": "Kesgrave Greens",
-                "played": 9,
-                "shotsFor": 486,
-                "shotsAgainst": 505,
-                "points": 27.5
-              },
-              {
-                "team": "Bredfield",
-                "played": 8,
-                "shotsFor": 456,
-                "shotsAgainst": 402,
-                "points": 27
-              },
-              {
-                "team": "Margaret Catchpole Blues",
-                "played": 9,
-                "shotsFor": 510,
-                "shotsAgainst": 523,
-                "points": 23.5
-              },
-              {
-                "team": "Shotley Rose",
-                "played": 8,
-                "shotsFor": 428,
-                "shotsAgainst": 432,
-                "points": 23
-              },
-              {
-                "team": "Brantham",
-                "played": 9,
-                "shotsFor": 438,
-                "shotsAgainst": 632,
-                "points": 9
-              }
-            ]
           }
         },
         {
@@ -2328,68 +2156,6 @@
                 }
               ]
             }
-          },
-          "standingsSeed": {
-            "throughWeek": 11,
-            "note": "Official Samford Monday tables, Week 11 (updated 24 July 2026)",
-            "rows": [
-              {
-                "team": "East Bergholt",
-                "played": 11,
-                "shotsFor": 731,
-                "shotsAgainst": 477,
-                "points": 56
-              },
-              {
-                "team": "Margaret Catchpole Reds",
-                "played": 11,
-                "shotsFor": 580,
-                "shotsAgainst": 602,
-                "points": 40
-              },
-              {
-                "team": "Newton Road",
-                "played": 11,
-                "shotsFor": 609,
-                "shotsAgainst": 569,
-                "points": 37.5
-              },
-              {
-                "team": "Sproughton Blues",
-                "played": 11,
-                "shotsFor": 580,
-                "shotsAgainst": 607,
-                "points": 31.5
-              },
-              {
-                "team": "Copdock & Washbrook",
-                "played": 11,
-                "shotsFor": 620,
-                "shotsAgainst": 604,
-                "points": 29
-              },
-              {
-                "team": "Gipping EE Wrens",
-                "played": 11,
-                "shotsFor": 583,
-                "shotsAgainst": 624,
-                "points": 28.5
-              },
-              {
-                "team": "Martlesham",
-                "played": 11,
-                "shotsFor": 584,
-                "shotsAgainst": 637,
-                "points": 25
-              },
-              {
-                "team": "Roundwood",
-                "played": 11,
-                "shotsFor": 519,
-                "shotsAgainst": 686,
-                "points": 16.5
-              }
-            ]
           }
         },
         {
@@ -2933,68 +2699,6 @@
                 }
               ]
             }
-          },
-          "standingsSeed": {
-            "throughWeek": 11,
-            "note": "Official Samford Monday tables, Week 11 (updated 24 July 2026)",
-            "rows": [
-              {
-                "team": "Felixstowe BC",
-                "played": 11,
-                "shotsFor": 891,
-                "shotsAgainst": 444,
-                "points": 53
-              },
-              {
-                "team": "Norbridge",
-                "played": 11,
-                "shotsFor": 646,
-                "shotsAgainst": 531,
-                "points": 47.5
-              },
-              {
-                "team": "Kirton B",
-                "played": 11,
-                "shotsFor": 600,
-                "shotsAgainst": 566,
-                "points": 39
-              },
-              {
-                "team": "Hospitals Ribbans Park",
-                "played": 11,
-                "shotsFor": 573,
-                "shotsAgainst": 621,
-                "points": 36
-              },
-              {
-                "team": "Capel Kestrels",
-                "played": 11,
-                "shotsFor": 552,
-                "shotsAgainst": 647,
-                "points": 26
-              },
-              {
-                "team": "Ipswich & District",
-                "played": 10,
-                "shotsFor": 537,
-                "shotsAgainst": 561,
-                "points": 24.5
-              },
-              {
-                "team": "E-of-E Co-op Blues",
-                "played": 10,
-                "shotsFor": 494,
-                "shotsAgainst": 606,
-                "points": 22
-              },
-              {
-                "team": "St John's URC",
-                "played": 11,
-                "shotsFor": 463,
-                "shotsAgainst": 780,
-                "points": 8
-              }
-            ]
           }
         }
       ]
