@@ -288,6 +288,10 @@ export function updateDivisionTeamNames(leagueId, { sectionId, divisionId, teams
     const newName = next[i] ?? ''
     if (oldName && newName && oldName !== newName) {
       replaceClubNameInDivisionResults(division, oldName, newName)
+      if (division.pointsAdjustments && oldName in division.pointsAdjustments) {
+        division.pointsAdjustments[newName] = division.pointsAdjustments[oldName]
+        delete division.pointsAdjustments[oldName]
+      }
     }
   }
 
@@ -458,6 +462,7 @@ export function createLeagueFromClone({ leagueId, name, cloneFromLeagueId }) {
     div.teams = Array.from({ length: slots }, () => 'Bye')
     div.results = { weeks: {} }
     delete div.standingsSeed
+    delete div.pointsAdjustments
   }
 
   if (copy.sections?.length) {
@@ -790,6 +795,7 @@ export function startNewSeason(yearRaw, structure = null) {
         for (const div of sec.divisions ?? []) {
           div.results = { weeks: {} }
           delete div.standingsSeed
+          delete div.pointsAdjustments
         }
       }
     } else {
@@ -797,6 +803,7 @@ export function startNewSeason(yearRaw, structure = null) {
       for (const div of copy.divisions ?? []) {
         div.results = { weeks: {} }
         delete div.standingsSeed
+        delete div.pointsAdjustments
       }
     }
 
@@ -1038,7 +1045,56 @@ export function mergeWeekResults(league, { sectionId, divisionId, week, matches 
     division.results.weeks,
     scheduledWeekKeys,
     division.standingsSeed ?? null,
+    division.pointsAdjustments ?? null,
   )
 
   return { league, fixtures, standings, savedWeek: weekKey, matchCount: merged.length }
+}
+
+/**
+ * Set a team's displayed league points by storing the delta vs match totals.
+ * `points` is the total that should appear on the table (e.g. 38 after a −4 deduction).
+ */
+export function setDivisionTeamDisplayedPoints(leagueId, { sectionId, divisionId, team, points }) {
+  const league = loadLeague(leagueId)
+  const { division } = getDivision(league, { sectionId: sectionId || null, divisionId })
+  if (!division) throw new Error('Division not found')
+
+  const teamName = String(team ?? '').trim()
+  if (!teamName || teamName === 'Bye') throw new Error('Team is required')
+  if (!division.teams?.includes(teamName)) throw new Error(`Team "${teamName}" is not in this division`)
+
+  const desired = Number(points)
+  if (!Number.isFinite(desired)) throw new Error('Points must be a number')
+
+  const fxWeeks = getDivisionFixtures(league, { sectionId: sectionId || null, divisionId })
+  const scheduledWeekKeys = new Set(fxWeeks.map((w) => String(w.week)))
+  const baseRows = computeStandingsFromResults(
+    division.teams,
+    division.results?.weeks ?? {},
+    scheduledWeekKeys,
+    division.standingsSeed ?? null,
+    null,
+  )
+  const base = baseRows.find((r) => r.team === teamName)
+  const matchPoints = Number(base?.matchPoints ?? base?.points ?? 0)
+  const delta = desired - matchPoints
+
+  if (!division.pointsAdjustments || typeof division.pointsAdjustments !== 'object') {
+    division.pointsAdjustments = {}
+  }
+  if (delta === 0) delete division.pointsAdjustments[teamName]
+  else division.pointsAdjustments[teamName] = delta
+  if (Object.keys(division.pointsAdjustments).length === 0) delete division.pointsAdjustments
+
+  saveLeague(leagueId, league)
+
+  const standings = computeStandingsFromResults(
+    division.teams,
+    division.results?.weeks ?? {},
+    scheduledWeekKeys,
+    division.standingsSeed ?? null,
+    division.pointsAdjustments ?? null,
+  )
+  return { ok: true, team: teamName, points: desired, delta, standings }
 }

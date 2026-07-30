@@ -1,8 +1,9 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { AdminFixtureEditorPanel } from './AdminFixtureEditorPanel'
+import { AdminDivisionStandings } from './AdminDivisionStandings'
 import { colorForLeague } from '../lib/leagueColors'
-import { shortLeagueName } from '../lib/leagueSchedule'
+import { dateForPlayDay, shortLeagueName } from '../lib/leagueSchedule'
 import { formatFixtureDate } from '../lib/fixtures'
 import { formatResultHeadlineScore } from '../lib/results'
 import { serializeAdminMatchRows } from '../lib/adminMatchPayload'
@@ -1061,6 +1062,24 @@ export function AdminScoreEntry({ admin }) {
               )
             })}
           </div>
+
+          {view?.division ? (
+            <AdminDivisionStandings
+              leagueId={leagueId}
+              sectionId={structured ? currentSectionId : null}
+              scheduleTemplate={
+                structured
+                  ? doc.sections.find((s) => s.id === currentSectionId)?.scheduleTemplate
+                  : doc.scheduleTemplate
+              }
+              division={view.division}
+              getDate={
+                structured ? undefined : (row) => dateForPlayDay(row, view.division.playDay)
+              }
+              admin={admin}
+              onSaved={() => setRevision((x) => x + 1)}
+            />
+          ) : null}
         </>
       ) : null}
 

@@ -16,6 +16,7 @@ import {
   listLeagues,
   loadLeague,
   mergeWeekResults,
+  setDivisionTeamDisplayedPoints,
   persistLeaguesNav,
   removeSeason,
   saveLeague,
@@ -889,6 +890,26 @@ app.delete('/api/admin/competition/:compId', requireAuth, (req, res) => {
     res.json({ ok: true, ...out })
   } catch (e) {
     res.status(400).json({ error: e.message || 'Could not remove the competition' })
+  }
+})
+
+app.put('/api/admin/league/:leagueId/points-adjustment', requireAuth, (req, res) => {
+  try {
+    const leagueId = req.params.leagueId
+    const { sectionId, divisionId, team, points } = req.body ?? {}
+    if (!leagueId || !divisionId || !team || points == null || points === '') {
+      res.status(400).json({ error: 'divisionId, team and points are required' })
+      return
+    }
+    const result = setDivisionTeamDisplayedPoints(leagueId, {
+      sectionId: sectionId || null,
+      divisionId,
+      team,
+      points,
+    })
+    res.json(result)
+  } catch (e) {
+    res.status(400).json({ error: e.message || 'Could not save points' })
   }
 })
 

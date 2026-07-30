@@ -118,6 +118,7 @@ export function useDivisionView(leagueData, sectionId, divisionId) {
         division.results?.weeks ?? {},
         scheduledWeekKeys,
         division.standingsSeed ?? null,
+        division.pointsAdjustments ?? null,
       )
       const playableTeams = division.teams.filter((t) => t !== 'Bye')
 
@@ -141,6 +142,7 @@ export function useDivisionView(leagueData, sectionId, divisionId) {
       division.results?.weeks ?? {},
       scheduledWeekKeys,
       division.standingsSeed ?? null,
+      division.pointsAdjustments ?? null,
     )
     const playableTeams = division.teams.filter((t) => t !== 'Bye')
 
