@@ -354,6 +354,14 @@
               "homePoints": 5,
               "awayPoints": 1,
               "matchDate": "2026-05-06"
+            },
+            {
+              "home": "Bealings",
+              "away": "Stone Lodge",
+              "homeShots": 81,
+              "awayShots": 33,
+              "homePoints": 6,
+              "awayPoints": 0
             }
           ],
           "2": [
