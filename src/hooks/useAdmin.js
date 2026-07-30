@@ -21,6 +21,7 @@ import {
   fetchWeekResults,
   importCsv,
   importScoreSheet,
+  saveAdminTeamPoints,
   saveResults,
   fetchAdminCompetitions,
   saveAdminCompetitionRounds,
@@ -211,6 +212,19 @@ export function useAdmin() {
     setError(null)
     try {
       return await saveAdminDivisionTeams(leagueId, payload)
+    } catch (e) {
+      setError(e.message)
+      throw e
+    } finally {
+      setBusy(false)
+    }
+  }, [])
+
+  const saveTeamPoints = useCallback(async (leagueId, payload) => {
+    setBusy(true)
+    setError(null)
+    try {
+      return await saveAdminTeamPoints(leagueId, payload)
     } catch (e) {
       setError(e.message)
       throw e
@@ -459,6 +473,7 @@ export function useAdmin() {
       loadLeagues,
       loadLeagueDocument,
       saveDivisionTeams,
+      saveTeamPoints,
       saveScheduleDates,
       saveLeagueStructureLabels,
       addLeagueDivision: addLeagueDivisionRequest,
@@ -498,6 +513,7 @@ export function useAdmin() {
       loadLeagues,
       loadLeagueDocument,
       saveDivisionTeams,
+      saveTeamPoints,
       saveScheduleDates,
       saveLeagueStructureLabels,
       addLeagueDivisionRequest,

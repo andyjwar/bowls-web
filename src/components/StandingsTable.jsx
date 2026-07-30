@@ -72,6 +72,16 @@ export function StandingsTable({ rows, context }) {
                 </td>
                 <td className="standings-table__num standings-table__pts">
                   {displayStat(row.points, row.played)}
+                  {row.pointsAdjustment ? (
+                    <span
+                      className="standings-table__adj"
+                      title={`Results ${row.matchPoints}, adjustment ${row.pointsAdjustment}`}
+                    >
+                      {' '}
+                      ({row.pointsAdjustment > 0 ? '+' : ''}
+                      {row.pointsAdjustment})
+                    </span>
+                  ) : null}
                 </td>
               </tr>
             ))}

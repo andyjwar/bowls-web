@@ -118,18 +118,41 @@ function seedNum(v) {
 }
 
 /**
+ * Per-team points deltas applied after match totals (e.g. end-of-season −4).
+ * Accepts `{ "Team": -4 }` or `{ "Team": { delta: -4 } }`.
+ * @param {Record<string, number | { delta?: number }> | null | undefined} raw
+ * @returns {Record<string, number>}
+ */
+export function normalizePointsAdjustments(raw) {
+  /** @type {Record<string, number>} */
+  const out = {}
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return out
+  for (const [team, v] of Object.entries(raw)) {
+    const name = String(team ?? '').trim()
+    if (!name || name === 'Bye') continue
+    const delta = typeof v === 'number' ? v : Number(v?.delta)
+    if (!Number.isFinite(delta) || delta === 0) continue
+    out[name] = delta
+  }
+  return out
+}
+
+/**
  * Compute standings from all week results (form points when present; else shots).
  * @param {Set<string> | string[] | null | undefined} scheduledWeekKeys — when set and non-empty, only count results whose week key appears on the division fixture list (excludes orphan buckets like "0").
  * @param {object[] | { throughWeek?: number, rows: object[] } | null} standingsSeed — optional aggregate baseline (see normalizeStandingsSeed); per-match results are added on top.
+ * @param {Record<string, number | { delta?: number }> | null | undefined} pointsAdjustments — end-of-season deductions / bonuses.
  */
 export function computeStandingsFromResults(
   teams,
   resultsByWeek,
   scheduledWeekKeys = null,
   standingsSeed = null,
+  pointsAdjustments = null,
 ) {
   const byWeek = normalizeResultsMap(resultsByWeek) ?? {}
   const seed = normalizeStandingsSeed(standingsSeed)
+  const adjustments = normalizePointsAdjustments(pointsAdjustments)
   const allowSet =
     scheduledWeekKeys instanceof Set
       ? scheduledWeekKeys
@@ -203,10 +226,17 @@ export function computeStandingsFromResults(
     }
   }
 
-  const rows = Object.values(stats).map((row) => ({
-    ...row,
-    shotDiff: row.shotsFor - row.shotsAgainst,
-  }))
+  const rows = Object.values(stats).map((row) => {
+    const pointsAdjustment = adjustments[row.team] ?? 0
+    const matchPoints = row.points
+    return {
+      ...row,
+      matchPoints,
+      pointsAdjustment,
+      points: matchPoints + pointsAdjustment,
+      shotDiff: row.shotsFor - row.shotsAgainst,
+    }
+  })
 
   return rows.sort((a, b) => {
     if (b.points !== a.points) return b.points - a.points

@@ -2346,6 +2346,12 @@ button.pill-nav__btn {
   color: var(--fm-text-strong);
 }
 
+.standings-table__adj {
+  font-weight: 600;
+  font-size: 0.78rem;
+  color: var(--fm-muted);
+}
+
 .standings-table__team {
   font-weight: 600;
   color: var(--fm-text-strong);
@@ -3132,6 +3138,77 @@ a.form-card:hover {
   background: transparent;
   border: 1px solid var(--fm-border);
   color: var(--fm-text);
+}
+
+.admin-standings {
+  margin: 1.5rem 0 2rem;
+  padding: 1rem 1rem 1.15rem;
+  border: 1px solid var(--fm-border);
+  border-radius: 12px;
+  background: var(--fm-panel, var(--fm-row-hi));
+}
+
+.admin-standings__head {
+  margin-bottom: 0.75rem;
+}
+
+.admin-standings__title {
+  margin: 0 0 0.25rem;
+  font-size: 1.05rem;
+}
+
+.admin-standings__hint {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--fm-muted);
+}
+
+.admin-standings__table {
+  width: 100%;
+}
+
+.admin-standings__actions,
+.admin-standings__actions-col {
+  text-align: right;
+  white-space: nowrap;
+  width: 1%;
+}
+
+.admin-standings__actions .admin-btn + .admin-btn {
+  margin-left: 0.35rem;
+}
+
+.admin-standings__edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.admin-standings__input {
+  width: 4.5rem;
+  padding: 0.25rem 0.35rem;
+  font: inherit;
+  font-weight: 700;
+  text-align: center;
+  border: 1px solid var(--fm-border);
+  border-radius: 6px;
+  background: var(--fm-bg, #fff);
+  color: inherit;
+}
+
+.admin-standings__mini {
+  padding: 0.2rem 0.45rem;
+  font-size: 0.8rem;
+}
+
+.admin-standings__msg {
+  margin: 0.65rem 0 0;
+  font-size: 0.88rem;
+  color: var(--fm-text);
+}
+
+.admin-standings__msg--error {
+  color: #b42318;
 }
 
 .admin-upload {

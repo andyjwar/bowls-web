@@ -52,6 +52,14 @@ export async function saveAdminScheduleDates(leagueId, { sectionId, rows }) {
 }
 
 /** Display labels only — league title, section/day title, division title */
+/** Set displayed league-table points for one team (stores delta vs match totals). */
+export async function saveAdminTeamPoints(leagueId, { sectionId, divisionId, team, points }) {
+  return api(`/league/${encodeURIComponent(leagueId)}/points-adjustment`, {
+    method: 'PUT',
+    body: JSON.stringify({ sectionId, divisionId, team, points }),
+  })
+}
+
 export async function saveAdminLeagueLabels(leagueId, payload) {
   return api(`/league/${encodeURIComponent(leagueId)}/labels`, {
     method: 'PUT',
