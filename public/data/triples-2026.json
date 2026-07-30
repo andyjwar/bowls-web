@@ -358,10 +358,11 @@
             {
               "home": "Bealings",
               "away": "Stone Lodge",
-              "homeShots": 81,
-              "awayShots": 33,
-              "homePoints": 6,
-              "awayPoints": 0
+              "homeShots": 33,
+              "awayShots": 81,
+              "homePoints": 0,
+              "awayPoints": 6,
+              "matchDate": "2026-05-06"
             }
           ],
           "2": [
