@@ -1023,6 +1023,13 @@ export function mergeWeekResults(league, { sectionId, divisionId, week, matches 
 
   division.results.weeks[weekKey] = merged
 
+  // Admin / CSV results inside a seed window become the source of truth.
+  // Leaving the seed in place would silently ignore those saved weeks.
+  const seedThrough = Number(division.standingsSeed?.throughWeek)
+  if (division.standingsSeed && Number.isFinite(seedThrough) && Number(week) <= seedThrough) {
+    delete division.standingsSeed
+  }
+
   const fxWeeks = getDivisionFixtures(league, { sectionId, divisionId })
   const fixtures = applyResultsToFixtures(fxWeeks, division.results.weeks)
   const scheduledWeekKeys = new Set(fxWeeks.map((w) => String(w.week)))
