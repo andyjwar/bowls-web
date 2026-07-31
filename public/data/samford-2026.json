@@ -3159,7 +3159,10 @@
                 {
                   "home": "Melton Purples",
                   "away": "Kesgrave",
-                  "postponed": true,
+                  "homeShots": 50,
+                  "awayShots": 21,
+                  "homePoints": 5,
+                  "awayPoints": 1,
                   "matchDate": "2026-06-03"
                 },
                 {
