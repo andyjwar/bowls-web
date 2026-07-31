@@ -263,3 +263,30 @@ export const RULES_SECTIONS = [
     ],
   },
 ]
+
+/** Match procedures §3 — unscheduled postponement / four-point deduction. */
+export const RULE_3_POSTPONEMENT = {
+  sectionId: 'match-procedures',
+  ruleN: 3,
+  hash: 'match-procedures-3',
+  path: '/rules#match-procedures-3',
+}
+
+export function rulesItemDomId(sectionId, n) {
+  return `${sectionId}-${n}`
+}
+
+export function parseRulesHash(hash) {
+  const raw = decodeURIComponent(String(hash ?? '').replace(/^#/, '')).trim()
+  if (!raw) return null
+  const section = [...RULES_SECTIONS]
+    .sort((a, b) => b.id.length - a.id.length)
+    .find((s) => raw === s.id || raw.startsWith(`${s.id}-`))
+  if (!section) return null
+  const rest = raw.slice(section.id.length)
+  const n = rest.startsWith('-') ? Number(rest.slice(1)) : NaN
+  return {
+    sectionId: section.id,
+    ruleN: Number.isFinite(n) ? n : null,
+  }
+}

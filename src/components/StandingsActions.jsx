@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { displayStat } from '../lib/standings'
+import { displayStat, hasFourPointDeduction, isFourPointDeduction } from '../lib/standings'
+import { FOUR_POINT_DEDUCTION_NOTE } from './StandingsDeductionNote'
 
 function safeFilePart(text) {
   return String(text ?? '')
@@ -66,7 +67,7 @@ export function StandingsActions({ rows, context }) {
         }
         const values = [
           String(index + 1),
-          row.team,
+          isFourPointDeduction(row) ? `${row.team}*` : row.team,
           displayStat(row.played, row.played),
           row.played ? String(row.shotsFor ?? 0) : '—',
           row.played ? String(row.shotsAgainst ?? 0) : '—',
@@ -74,6 +75,18 @@ export function StandingsActions({ rows, context }) {
         ]
         columns.forEach((c, i) => doc.text(values[i], c.x, y, { align: c.align }))
       })
+
+      if (hasFourPointDeduction(rows)) {
+        y += 12
+        if (y > 282) {
+          doc.addPage()
+          y = 18
+        }
+        doc.setFontSize(8)
+        doc.setTextColor(70)
+        doc.text(`* ${FOUR_POINT_DEDUCTION_NOTE}`, 15, y, { maxWidth: 180 })
+        doc.setTextColor(0)
+      }
 
       const name = safeFilePart(
         `${context.leagueName}-${context.sectionLabel ?? ''}-${context.divisionLabel}-table`,

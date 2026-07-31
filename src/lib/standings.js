@@ -78,3 +78,12 @@ export function displayStat(value, played) {
   if (played === 0 && value === 0) return '—'
   return String(value)
 }
+
+/** Admin −4 deduction for an unscheduled postponement (Match procedures, Rule 3). */
+export function isFourPointDeduction(row) {
+  return Number(row?.pointsAdjustment) === -4
+}
+
+export function hasFourPointDeduction(rows) {
+  return (rows ?? []).some(isFourPointDeduction)
+}

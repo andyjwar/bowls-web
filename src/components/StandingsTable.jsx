@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
-import { displayStat } from '../lib/standings'
+import { displayStat, hasFourPointDeduction, isFourPointDeduction } from '../lib/standings'
 import { StandingsActions } from './StandingsActions'
+import { StandingsDeductionNote } from './StandingsDeductionNote'
 
 function shotsCell(value, played) {
   return played === 0 ? '—' : String(value)
@@ -60,6 +61,11 @@ export function StandingsTable({ rows, context }) {
                   >
                     {row.team}
                   </Link>
+                  {isFourPointDeduction(row) ? (
+                    <span className="standings-table__star" aria-label="Four points deducted">
+                      *
+                    </span>
+                  ) : null}
                 </td>
                 <td className="standings-table__num standings-table__played">
                   {displayStat(row.played, row.played)}
@@ -72,22 +78,13 @@ export function StandingsTable({ rows, context }) {
                 </td>
                 <td className="standings-table__num standings-table__pts">
                   {displayStat(row.points, row.played)}
-                  {row.pointsAdjustment ? (
-                    <span
-                      className="standings-table__adj"
-                      title={`Results ${row.matchPoints}, adjustment ${row.pointsAdjustment}`}
-                    >
-                      {' '}
-                      ({row.pointsAdjustment > 0 ? '+' : ''}
-                      {row.pointsAdjustment})
-                    </span>
-                  ) : null}
                 </td>
               </tr>
             ))}
           </tbody>
           </table>
         </div>
+        {hasFourPointDeduction(rows) ? <StandingsDeductionNote /> : null}
       </div>
     </div>
   )
