@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { computeStandingsFromResults } from '../lib/results'
-import { displayStat } from '../lib/standings'
+import { displayStat, hasFourPointDeduction, isFourPointDeduction } from '../lib/standings'
+import { StandingsDeductionNote } from './StandingsDeductionNote'
 import { buildDivisionFixtures } from '../lib/fixtures'
 
 function formatAdj(delta) {
@@ -112,7 +113,14 @@ export function AdminDivisionStandings({
                   <td className="standings-table__pos">
                     <span className="standings-table__pos-badge">{index + 1}</span>
                   </td>
-                  <td className="standings-table__team">{row.team}</td>
+                  <td className="standings-table__team">
+                    {row.team}
+                    {isFourPointDeduction(row) ? (
+                      <span className="standings-table__star" aria-label="Four points deducted">
+                        *
+                      </span>
+                    ) : null}
+                  </td>
                   <td className="standings-table__num">{displayStat(row.played, row.played)}</td>
                   <td className="standings-table__num">
                     {row.played === 0 ? '—' : row.shotsFor}
@@ -189,6 +197,9 @@ export function AdminDivisionStandings({
           </tbody>
         </table>
       </div>
+      {hasFourPointDeduction(standings) ? (
+        <StandingsDeductionNote className="admin-standings__note" />
+      ) : null}
       {msg ? (
         <p
           className={

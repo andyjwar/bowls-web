@@ -2352,6 +2352,31 @@ button.pill-nav__btn {
   color: var(--fm-muted);
 }
 
+.standings-table__star {
+  margin-left: 0.12em;
+  font-weight: 800;
+  color: var(--fm-text-strong);
+}
+
+.standings-table__note {
+  margin: 0.75rem 0.15rem 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--fm-muted);
+}
+
+.standings-table__note-link {
+  color: var(--league-color, var(--fm-pitch));
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.standings-table__note-link:hover,
+.standings-table__note-link:focus-visible {
+  text-decoration-thickness: 2px;
+}
+
 .standings-table__team {
   font-weight: 600;
   color: var(--fm-text-strong);
@@ -3004,6 +3029,16 @@ a.form-card:hover {
   color: var(--fm-pitch);
 }
 
+.rules-content__item--target {
+  margin-left: -0.55rem;
+  padding: 0.45rem 0.55rem 0.45rem 0.7rem;
+  border-radius: 8px;
+  background: var(--fm-row-hi);
+  color: var(--fm-text-strong);
+  outline: 2px solid var(--fm-pitch);
+  outline-offset: 1px;
+}
+
 /* Theme toggle */
 .theme-toggle {
   display: inline-flex;
@@ -3209,6 +3244,10 @@ a.form-card:hover {
 
 .admin-standings__msg--error {
   color: #b42318;
+}
+
+.admin-standings__note {
+  margin-top: 0.75rem;
 }
 
 .admin-upload {
@@ -4382,6 +4421,15 @@ a.form-card:hover {
   .standings-table__team-link {
     color: #000 !important;
     text-decoration: none !important;
+  }
+
+  .standings-table__note {
+    color: #333 !important;
+    font-size: 9pt;
+  }
+
+  .standings-table__note-link {
+    color: #000 !important;
   }
 }
 
