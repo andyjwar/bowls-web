@@ -7,6 +7,7 @@ const NAV = [
   { to: '/leagues', label: 'Leagues', match: (p) => p.startsWith('/leagues') },
   { to: '/competitions', label: 'Competitions', match: (p) => p.startsWith('/competitions') },
   { to: '/officers', label: 'League Officers', match: (p) => p.startsWith('/officers') },
+  { to: '/locations', label: 'Locations', match: (p) => p.startsWith('/locations') },
   { to: '/rules', label: 'Rules', match: (p) => p.startsWith('/rules') },
   { to: '/forms', label: 'Forms', match: (p) => p.startsWith('/forms') },
 ]

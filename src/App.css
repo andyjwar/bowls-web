@@ -3039,6 +3039,283 @@ a.form-card:hover {
   outline-offset: 1px;
 }
 
+/* Club locations page */
+.locations-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 1.3rem;
+}
+
+.locations-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 250px;
+  padding: 0 12px;
+  background: var(--fm-card);
+  border: 1px solid var(--fm-border-strong);
+  color: var(--fm-muted);
+}
+
+.locations-search input {
+  flex: 1;
+  padding: 9px 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 0.88rem;
+  color: var(--fm-text);
+  outline: none;
+}
+
+.locations-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 13px;
+  background: var(--fm-card);
+  border: 1px solid var(--fm-border-strong);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 650;
+  color: var(--fm-text);
+  cursor: pointer;
+  transition: border-color 0.12s ease;
+}
+
+.locations-chip:hover {
+  border-color: var(--fm-pitch);
+}
+
+.locations-chip--on {
+  background: var(--fm-pitch);
+  border-color: var(--fm-pitch);
+  color: #fff;
+}
+
+.locations-chip__n {
+  font-size: 0.72rem;
+  font-weight: 800;
+  opacity: 0.65;
+}
+
+.locations-status {
+  margin: 1.5rem 0;
+  color: var(--fm-muted);
+  font-size: 0.92rem;
+}
+
+.locations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.location-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--fm-card);
+  border: 1px solid var(--fm-border);
+  transition: border-color 0.12s ease;
+}
+
+.location-card:hover {
+  border-color: var(--fm-pitch);
+}
+
+.location-card__map {
+  position: relative;
+  height: 128px;
+  overflow: hidden;
+  background: var(--fm-row-hi);
+}
+
+.location-card__map-anchor {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
+
+.location-card__map-anchor img {
+  position: absolute;
+  width: 256px;
+  height: 256px;
+  max-width: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+.bowls-app[data-theme='dark'] .location-card__map-anchor img {
+  filter: brightness(0.82) saturate(0.9);
+}
+
+.location-card__pin {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -100%);
+}
+
+.location-card__pin svg {
+  display: block;
+  width: 26px;
+  height: 32px;
+  filter: drop-shadow(0 2px 2px rgba(11, 20, 24, 0.35));
+}
+
+.location-card__map--tbc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fm-muted);
+  font-size: 0.82rem;
+  font-weight: 650;
+}
+
+.location-card__body {
+  padding: 0.75rem 0.9rem 0.85rem;
+}
+
+.location-card__club {
+  margin: 0 0 2px;
+  font-size: 0.98rem;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+  color: var(--fm-text-strong);
+}
+
+.location-card__aka {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--fm-muted);
+}
+
+.location-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.location-card__pc {
+  font-size: 0.82rem;
+  font-weight: 650;
+  color: var(--fm-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.location-card__directions {
+  font-size: 0.78rem;
+  font-weight: 750;
+  color: var(--fm-pitch);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.location-card__directions:hover,
+.location-card__directions:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.location-card__summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  margin: 8px 0 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--fm-muted);
+  cursor: pointer;
+  text-align: left;
+}
+
+.location-card__summary .location-card__league-pill b {
+  font-weight: 800;
+  opacity: 0.75;
+}
+
+.location-card__chevron {
+  margin-left: auto;
+  flex: none;
+  transition: transform 0.15s ease;
+}
+
+.location-card__chevron--open {
+  transform: rotate(180deg);
+}
+
+.location-card__teams {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.location-card__league-row {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.location-card__league-pill {
+  flex: none;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.location-card__team-names {
+  color: var(--fm-text);
+  font-weight: 550;
+}
+
+.location-card__shared {
+  margin: 8px 0 0;
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--fm-muted);
+}
+
+.locations-attribution {
+  margin: 1.6rem 0 0;
+  font-size: 0.72rem;
+  color: var(--fm-muted);
+}
+
+.locations-attribution a {
+  color: inherit;
+}
+
+@media (max-width: 900px) {
+  .locations-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .locations-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .locations-search {
+    width: 100%;
+  }
+}
+
 /* Theme toggle */
 .theme-toggle {
   display: inline-flex;

@@ -8,3 +8,6 @@ server/data/
 
 # Tesseract downloads lang data into cwd during OCR
 *.traineddata
+
+# Agent scratch space (imports, screenshots, headless-Chrome profiles)
+.tmp-*/
