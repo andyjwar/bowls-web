@@ -287,14 +287,15 @@
     {
       "id": "hollesley",
       "name": "Hollesley",
-      "postcode": null,
-      "lat": null,
-      "lon": null,
+      "postcode": "IP12 3QR",
+      "lat": 52.0537151,
+      "lon": 1.4302968,
       "leagues": {
         "triples": [
           "Hollesley"
         ]
-      }
+      },
+      "pinned": "club"
     },
     {
       "id": "holywells",
@@ -541,9 +542,9 @@
     {
       "id": "roundwood",
       "name": "Roundwood",
-      "postcode": null,
-      "lat": null,
-      "lon": null,
+      "postcode": "IP4 4HL",
+      "lat": 52.0609937,
+      "lon": 1.1814341,
       "leagues": {
         "samford": [
           "Roundwood"
@@ -554,7 +555,8 @@
         "two-wood": [
           "Roundwood"
         ]
-      }
+      },
+      "pinned": "club"
     },
     {
       "id": "shotley-rose",
