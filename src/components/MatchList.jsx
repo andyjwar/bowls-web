@@ -2,6 +2,7 @@ import { useId, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { formatFixtureDate } from '../lib/fixtures'
 import { buildCsv, buildIcs, downloadFile, exportFileName } from '../lib/exportMatches'
+import { directionsHref, useClubLocationIndex } from '../lib/clubLocations'
 
 function shortDate(isoDate) {
   if (!isoDate) return 'TBC'
@@ -38,6 +39,56 @@ function teamClass(base, { played, draw, won }) {
   return base
 }
 
+/* Whether the fixture already has an outcome (score or walkover) — decided
+   rows are results, so they don't get a directions pin. */
+function isDecided(match) {
+  const played =
+    match.played &&
+    ((Number.isFinite(match.homePoints) && Number.isFinite(match.awayPoints)) ||
+      (Number.isFinite(match.homeShots) && Number.isFinite(match.awayShots)))
+  return played || match.walkover === 'home' || match.walkover === 'away'
+}
+
+/**
+ * Directions link for an unplayed fixture: the home team's green, from the
+ * club-locations data. Results, byes and unknown venues return null.
+ */
+function pinFor(match, locationIndex) {
+  if (match.isBye || isDecided(match)) return null
+  const club = locationIndex.get(match.home)
+  const href = directionsHref(club)
+  if (!href) return null
+  return {
+    href,
+    title: `Directions to ${club.name}${club.postcode ? ` · ${club.postcode}` : ''}`,
+  }
+}
+
+/* Slim pin button at the row edge (Option C). `pin` may be null when the
+   week has pins but this row is a result/bye — an empty cell keeps the
+   grid columns aligned across the tile. */
+function PinCell({ pin }) {
+  if (!pin) return <span className="match-row__mapbtn match-row__mapbtn--none" aria-hidden="true" />
+  return (
+    <a
+      className="match-row__mapbtn"
+      href={pin.href}
+      target="_blank"
+      rel="noreferrer"
+      title={pin.title}
+      aria-label={pin.title}
+    >
+      <svg width="12" height="15" viewBox="0 0 24 30" fill="none" aria-hidden="true">
+        <path
+          d="M12 0C5.4 0 0 5.2 0 11.7 0 20.4 12 30 12 30s12-9.6 12-18.3C24 5.2 18.6 0 12 0z"
+          fill="currentColor"
+        />
+        <circle cx="12" cy="11.5" r="4.5" fill="var(--fm-card, #fff)" />
+      </svg>
+    </a>
+  )
+}
+
 function MatchRow({
   match,
   weekDate,
@@ -45,11 +96,13 @@ function MatchRow({
   showDate = true,
   perspectiveTeam,
   linkTeams = true,
+  pin = null,
+  pinColumn = false,
 }) {
   const single = Boolean(perspectiveTeam)
   const rowMods = `${isToday ? ' match-row--today' : ''}${
     showDate ? '' : ' match-row--nodate'
-  }${single ? ' match-row--single' : ''}`
+  }${single ? ' match-row--single' : ''}${pinColumn ? ' match-row--pins' : ''}`
 
   const dateCell = showDate ? (
     <span className="match-row__date">{shortDate(weekDate)}</span>
@@ -75,6 +128,7 @@ function MatchRow({
         <span className="match-row__home">{match.home}</span>
         <span className="match-row__mid match-row__mid--bye">Bye</span>
         <span className="match-row__away" />
+        {pinColumn ? <PinCell pin={null} /> : null}
       </div>
     )
   }
@@ -132,6 +186,7 @@ function MatchRow({
       >
         {linkTeams ? <TeamLink name={match.away} /> : match.away}
       </span>
+      {pinColumn ? <PinCell pin={pin} /> : null}
     </div>
   )
 }
@@ -144,6 +199,7 @@ function MatchRow({
  */
 export function NextMatches({ fixtureWeeks }) {
   const today = useMemo(() => new Date(), [])
+  const locationIndex = useClubLocationIndex()
   const nextWeek = useMemo(() => {
     const startOfToday = new Date(
       today.getFullYear(),
@@ -160,6 +216,8 @@ export function NextMatches({ fixtureWeeks }) {
   if (!nextWeek) return null
 
   const today_ = isSameDay(nextWeek.date, today)
+  const pins = nextWeek.matches.map((match) => pinFor(match, locationIndex))
+  const pinColumn = pins.some(Boolean)
   return (
     <section className={`match-week${today_ ? ' match-week--today' : ''}`}>
       <header className="match-week__head">
@@ -175,6 +233,8 @@ export function NextMatches({ fixtureWeeks }) {
           weekDate={nextWeek.date}
           isToday={today_}
           showDate={false}
+          pin={pins[i]}
+          pinColumn={pinColumn}
         />
       ))}
     </section>
@@ -333,6 +393,7 @@ export function MatchList({
 }) {
   const teamSelectId = useId()
   const today = useMemo(() => new Date(), [])
+  const locationIndex = useClubLocationIndex()
 
   /* Season record for the selected team, from its played (non-bye) matches:
      Played, shots For/Against, and league Points, matching the standings. */
@@ -425,17 +486,24 @@ export function MatchList({
             <div className="match-list__head">
               <span className="match-list__head-label">Venue</span>
             </div>
-            {fixtureWeeks.map((week) =>
-              week.matches.map((match, i) => (
-                <MatchRow
-                  key={`${week.week}-${i}`}
-                  match={match}
-                  weekDate={week.date}
-                  isToday={isSameDay(week.date, today)}
-                  perspectiveTeam={teamFilter}
-                />
-              )),
-            )}
+            {(() => {
+              const pinColumn = fixtureWeeks.some((week) =>
+                week.matches.some((match) => pinFor(match, locationIndex)),
+              )
+              return fixtureWeeks.map((week) =>
+                week.matches.map((match, i) => (
+                  <MatchRow
+                    key={`${week.week}-${i}`}
+                    match={match}
+                    weekDate={week.date}
+                    isToday={isSameDay(week.date, today)}
+                    perspectiveTeam={teamFilter}
+                    pin={pinFor(match, locationIndex)}
+                    pinColumn={pinColumn}
+                  />
+                )),
+              )
+            })()}
           </div>
         </div>
       ) : (
@@ -443,6 +511,8 @@ export function MatchList({
         <div className="match-weeks">
           {fixtureWeeks.map((week) => {
             const today_ = isSameDay(week.date, today)
+            const pins = week.matches.map((match) => pinFor(match, locationIndex))
+            const pinColumn = pins.some(Boolean)
             return (
               <section
                 key={week.week}
@@ -461,6 +531,8 @@ export function MatchList({
                     weekDate={week.date}
                     isToday={today_}
                     showDate={false}
+                    pin={pins[i]}
+                    pinColumn={pinColumn}
                   />
                 ))}
               </section>

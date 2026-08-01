@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { colorForLeague } from '../lib/leagueColors'
+import { directionsHref, fetchClubLocations } from '../lib/clubLocations'
 
 const LEAGUES = [
   { key: 'samford', label: 'Samford' },
@@ -68,16 +69,6 @@ function MapThumb({ lat, lon, name }) {
       </span>
     </div>
   )
-}
-
-function directionsHref(club) {
-  if (club.pinned === 'club' && club.lat != null) {
-    return `https://www.google.com/maps/search/?api=1&query=${club.lat},${club.lon}`
-  }
-  if (club.postcode) {
-    return `https://www.google.co.uk/maps/place/${encodeURIComponent(club.postcode)}`
-  }
-  return null
 }
 
 function LeaguePill({ leagueKey, label }) {
@@ -207,13 +198,9 @@ export function LocationsPage() {
 
   useEffect(() => {
     let cancelled = false
-    fetch(`${import.meta.env.BASE_URL}data/club-locations.json`, { cache: 'no-store' })
-      .then((r) => {
-        if (!r.ok) throw new Error(`HTTP ${r.status}`)
-        return r.json()
-      })
-      .then((json) => {
-        if (!cancelled) setClubs(json.clubs ?? [])
+    fetchClubLocations()
+      .then((list) => {
+        if (!cancelled) setClubs(list)
       })
       .catch((e) => {
         if (!cancelled) setError(e.message || 'Could not load club locations')

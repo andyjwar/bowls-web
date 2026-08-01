@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>v28 — locations in the fixture list</title>
+<style>
+  :root {
+    --bg: #f6f7f8;
+    --card: #ffffff;
+    --border: #eceef0;
+    --border-strong: #dde0e3;
+    --row-hi: #f4f5f7;
+    --text: #1f2937;
+    --text-strong: #0b1418;
+    --muted: #6b7280;
+    --pitch: #256e3d;
+    --pitch-soft: rgba(37, 110, 61, 0.1);
+    --map-land: #eef0eb;
+    --map-park: #d9e7d5;
+    --map-road: #ffffff;
+    --map-road2: #f7e9c4;
+    --map-water: #cfe3ee;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 2.5rem 1.5rem 6rem; }
+  h1 { font-size: 1.4rem; letter-spacing: -0.02em; color: var(--text-strong); margin: 0 0 0.3rem; }
+  .lead { margin: 0 0 1rem; color: var(--muted); font-size: 0.95rem; }
+  .opt { margin: 3.4rem 0 0; }
+  .opt__tag { display: inline-block; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; background: var(--text-strong); padding: 4px 10px; margin-bottom: 0.4rem; }
+  .opt__note { margin: 0 0 1.1rem; font-size: 0.88rem; color: var(--muted); max-width: 46rem; }
+
+  /* ---------- real site fixture anatomy ---------- */
+  .match-week { background: var(--card); border: 1px solid var(--border); }
+  .match-week__head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); background: var(--row-hi); }
+  .match-week__title { margin: 0; font-size: 0.85rem; font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase; color: var(--text-strong); }
+  .match-week__date { font-size: 0.82rem; font-weight: 600; color: var(--muted); }
+
+  .match-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; }
+  .match-row + .match-row { border-top: 1px solid var(--border); }
+  .match-row__home, .match-row__away { min-width: 0; font-weight: 600; color: var(--text-strong); font-size: 0.95rem; }
+  .match-row__home { text-align: right; }
+  .match-row__mid { font-size: 0.82rem; font-weight: 700; color: var(--muted); }
+  .match-row__mid--vs { text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.72rem; }
+
+  .pin-ico { display: inline-block; vertical-align: -2px; }
+
+  /* ============ A: postcode chip on the home side ============ */
+  .a-chip { display: inline-flex; align-items: center; gap: 4px; margin-left: 8px; padding: 3px 8px; background: var(--pitch-soft); color: var(--pitch); font-size: 0.72rem; font-weight: 750; text-decoration: none; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .a-chip:hover { background: var(--pitch); color: #fff; }
+  .a-chip:hover .pin-ico path { fill: #fff; }
+  .a-chip:hover .pin-ico circle { fill: var(--pitch); }
+
+  /* ============ B: venue subline per fixture ============ */
+  .b-row { display: block; padding: 0.75rem 1rem; }
+  .b-row + .b-row { border-top: 1px solid var(--border); }
+  .b-main { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 0.75rem; }
+  .b-sub { display: flex; justify-content: center; margin-top: 5px; }
+  .b-venue { display: inline-flex; align-items: center; gap: 5px; font-size: 0.75rem; font-weight: 600; color: var(--muted); text-decoration: none; }
+  .b-venue b { color: var(--text); font-weight: 700; }
+  .b-venue:hover b, .b-venue:hover { color: var(--pitch); }
+  .b-venue .arrow { font-weight: 800; }
+
+  /* ============ C: directions icon at the row edge ============ */
+  .c-row { display: grid; grid-template-columns: 1fr auto 1fr 2.1rem; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; }
+  .c-row + .c-row { border-top: 1px solid var(--border); }
+  .c-btn { display: inline-grid; place-items: center; width: 30px; height: 30px; border: 1px solid var(--border-strong); background: var(--card); text-decoration: none; }
+  .c-btn:hover { border-color: var(--pitch); background: var(--pitch-soft); }
+  .c-btn[aria-disabled="true"] { opacity: 0; pointer-events: none; }
+
+  /* ============ D: tap row to expand map preview ============ */
+  .d-expanded { border-top: 1px solid var(--border); background: var(--row-hi); }
+  .d-inner { display: flex; gap: 14px; align-items: stretch; padding: 0.8rem 1rem; }
+  .d-map { position: relative; flex: none; width: 190px; height: 96px; background: var(--map-land); overflow: hidden; }
+  .d-map svg.base { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .d-pin { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -100%); }
+  .d-info { display: flex; flex-direction: column; justify-content: center; gap: 3px; min-width: 0; }
+  .d-info b { font-size: 0.92rem; font-weight: 750; color: var(--text-strong); }
+  .d-info small { font-size: 0.8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .d-links { margin-top: 5px; display: flex; gap: 6px; }
+  .d-link { font-size: 0.75rem; font-weight: 750; color: var(--pitch); text-decoration: none; border: 1px solid var(--border-strong); padding: 4px 9px; background: var(--card); }
+  .d-link:hover { border-color: var(--pitch); }
+  .d-caret { color: var(--muted); font-size: 0.7rem; margin-left: 6px; }
+
+  /* ============ E: week header groups by venue ============ */
+  .e-venuehead { display: flex; align-items: center; gap: 7px; padding: 0.5rem 1rem; background: var(--row-hi); border-top: 1px solid var(--border); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .e-venuehead a { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; font-size: 0.72rem; font-weight: 750; letter-spacing: 0; text-transform: none; color: var(--pitch); text-decoration: none; font-variant-numeric: tabular-nums; }
+  .e-venuehead a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Locations in the fixture list</h1>
+  <p class="lead">Upcoming fixtures are played at the <b>home team's green</b>, so every row already implies a location. Five ways to surface it — all clickable through to directions, all reusing the club-locations data just shipped.</p>
+
+  <!-- ============================ A ============================ -->
+  <div class="opt" id="opt-a">
+    <span class="opt__tag">Option A — postcode chip beside the home team</span>
+    <p class="opt__note">A small pin + postcode chip sits after the home team's name (home side only — that's where the match is). Tap opens directions. Byes and played results show no chip.</p>
+
+    <div class="match-week">
+      <div class="match-week__head"><h3 class="match-week__title">Week 13</h3><span class="match-week__date">Mon, 10 Aug</span></div>
+      <div class="match-row">
+        <span class="match-row__home">Kirton A
+          <a class="a-chip" href="#"><svg class="pin-ico" width="9" height="11" viewBox="0 0 24 30" fill="none"><path d="M12 0C5.4 0 0 5.2 0 11.7 0 20.4 12 30 12 30s12-9.6 12-18.3C24 5.2 18.6 0 12 0z" fill="var(--pitch)"/><circle cx="12" cy="11.5" r="4.5" fill="#fff"/></svg>IP10 0QW</a>
+        </span>
+        <span class="match-row__mid match-row__mid--vs">v</span>
+        <span class="match-row__away">Marlborough</span>
+      </div>
+      <div class="match-row">
+        <span class="match-row__home">Westerfield Yellows
+          <a class="a-chip" href="#"><svg class="pin-ico" width="9" height="11" viewBox="0 0 24 30" fill="none"><path d="M12 0C5.4 0 0 5.2 0 11.7 0 20.4 12 30 12 30s12-9.6 12-18.3C24 5.2 18.6 0 12 0z" fill="var(--pitch)"/><circle cx="12" cy="11.5" r="4.5" fill="#fff"/></svg>IP6 9BE</a>
+        </span>
+        <span class="match-row__mid match-row__mid--vs">v</span>
+        <span class="match-row__away">E-of-E Co-op Reds</span>
+      </div>
+      <div class="match-row">
+        <span class="match-row__home">Waldringfield Swans
+          <a class="a-chip" href="#"><svg class="pin-ico" width="9" height="11" viewBox="0 0 24 30" fill="none"><path d="M12 0C5.4 0 0 5.2 0 11.7 0 20.4 12 30 12 30s12-9.6 12-18.3C24 5.2 18.6 0 12 0z" fill="var(--pitch)"/><circle cx="12" cy="11.5" r="4.5" fill="#fff"/></svg>IP4 4JJ</a>
+        </span>
+        <span class="match-row__mid match-row__mid--vs">v</span>
+        <span class="match-row__away">Holbrook</span>
+      </div>
+      <div class="match-row">
+        <span class="match-row__home" style="color: var(--muted); font-weight: 500">Stone Lodge Blues</span>
+        <span class="match-row__mid" style="letter-spacing: 0.12em; font-size: 0.68rem">BYE</span>
+        <span class="match-row__away"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================ B ============================ -->
+  <div class="opt" id="opt-b">
+    <span class="opt__tag">Option B — venue subline under each fixture</span>
+    <p class="opt__note">A quiet centred line under the teams: green name, postcode, and an arrow — the whole line is the link. Reads like FotMob's stadium line. Roomier, but nothing competes with the team names.</p>
+
+    <div class="match-week">
+      <div class="match-week__head"><h3 class="match-week__title">Week 13</h3><span class="match-week__date">Mon, 10 Aug</span></div>
+      <div class="b-row">
+        <div class="b-main">
+          <span class="match-row__home">Kirton A</span>
+          <span class="match-row__mid match-row__mid--vs">v</span>
+          <span class="match-row__away">Marlborough</span>
+        </div>
+        <div class="b-sub">
+          <a class="b-venue" href="#"><svg class="pin-ico" width="9" height="11" viewBox="0 0 24 30" fill="none"><path d="M12 0C5.4 0 0 5.2 0 11.7 0 20.4 12 30 12 30s12-9.6 12-18.3C24 5.2 18.6 0 12 0z" fill="#6b7280"/><circle cx="12" cy="11.5" r="4.5" fill="#fff"/></svg><b>Kirton &amp; Falkenham</b>&nbsp;· IP10 0QW <span class="arrow">↗</span></a>
+        </div>
+      </div>
+      <div class="b-row">
+        <div class="b-main">
+          <span class="match-row__home">Westerfield Yellows</span>
+          <span class="match-row__mid match-row__mid--vs">v</span>
+          <span class="match-row__away">E-of-E Co-op Reds</span>
+        </div>
+        <div class="b-sub">
+          <a class="b-venue" href="#"><svg class="pin-ico" width="9" height="11" viewBox="0 0 24 30" fill="none"><path d="M12 0C5.4 0 0 5.2 0 11.7 0 20.4 12 30 12 30s12-9.6 12-18.3C24 5.2 18.6 0 12 0z" fill="#6b7280"/><circle cx="12" cy="11.5" r="4.5" fill="#fff"/></svg><b>Westerfield</b>&nbsp;· IP6 9BE <span class="arrow">↗</span></a>
+        </div>
+      </div>
+      <div class="b-row">
+        <div class="b-main">
+          <span class="match-row__home" style="color: var(--muted); font-weight: 500">Stone Lodge Blues</span>
+          <span class="match-row__mid" style="letter-spacing: 0.12em; font-size: 0.68rem">BYE</span>
+          <span class="match-row__away"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================ C ============================ -->
+  <div class="opt" id="opt-c">
+    <span class="opt__tag">Option C — directions button at the row edge</span>
+    <p class="opt__note">The grid gains a slim fourth column: a bordered pin button that opens directions to the home green. Zero extra text — the tidiest option — with the postcode shown on hover/long-press.</p>
+
+    <div class="match-week">
+      <div class="match-week__head"><h3 class="match-week__title">Week 13</h3><span class="match-week__date">Mon, 10 Aug</span></div>
+      <div class="c-row">
+        <span class="match-row__home">Kirton A</span>
+        <span class="match-row__mid match-row__mid--vs">v</span>
+        <span class="match-row__away">Marlborough</span>
+        <a class="c-btn" href="#" title="Directions to Kirton & Falkenham · IP10 0QW"><svg width="13" height="16" viewBox="0 0 24 30" fill="none"><path d="M12 0C5.4 0 0 5.2 0 11.7 0 20.4 12 30 12 30s12-9.6 12-18.3C24 5.2 18.6 0 12 0z" fill="var(--pitch)"/><circle cx="12" cy="11.5" r="4.5" fill="#fff"/></svg></a>
+      </div>
+      <div class="c-row">
+        <span class="match-row__home">Westerfield Yellows</span>
+        <span class="match-row__mid match-row__mid--vs">v</span>
+        <span class="match-row__away">E-of-E Co-op Reds</span>
+        <a class="c-btn" href="#" title="Directions to Westerfield · IP6 9BE"><svg width="13" height="16" viewBox="0 0 24 30" fill="none"><path d="M12 0C5.4 0 0 5.2 0 11.7 0 20.4 12 30 12 30s12-9.6 12-18.3C24 5.2 18.6 0 12 0z" fill="var(--pitch)"/><circle cx="12" cy="11.5" r="4.5" fill="#fff"/></svg></a>
+      </div>
+      <div class="c-row">
+        <span class="match-row__home">Waldringfield Swans</span>
+        <span class="match-row__mid match-row__mid--vs">v</span>
+        <span class="match-row__away">Holbrook</span>
+        <a class="c-btn" href="#" title="Directions to Waldringfield · IP4 4JJ"><svg width="13" height="16" viewBox="0 0 24 30" fill="none"><path d="M12 0C5.4 0 0 5.2 0 11.7 0 20.4 12 30 12 30s12-9.6 12-18.3C24 5.2 18.6 0 12 0z" fill="var(--pitch)"/><circle cx="12" cy="11.5" r="4.5" fill="#fff"/></svg></a>
+      </div>
+      <div class="c-row">
+        <span class="match-row__home" style="color: var(--muted); font-weight: 500">Stone Lodge Blues</span>
+        <span class="match-row__mid" style="letter-spacing: 0.12em; font-size: 0.68rem">BYE</span>
+        <span class="match-row__away"></span>
+        <a class="c-btn" aria-disabled="true"></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================ D ============================ -->
+  <div class="opt" id="opt-d">
+    <span class="opt__tag">Option D — tap a fixture to reveal the map</span>
+    <p class="opt__note">Rows stay exactly as they are today, plus a small caret. Tapping expands a panel with the Locations-page map thumbnail, green name, postcode, and Directions / Locations-page links. Most informative without permanent clutter.</p>
+
+    <div class="match-week">
+      <div class="match-week__head"><h3 class="match-week__title">Week 13</h3><span class="match-week__date">Mon, 10 Aug</span></div>
+      <div class="match-row">
+        <span class="match-row__home">Kirton A</span>
+        <span class="match-row__mid match-row__mid--vs">v</span>
+        <span class="match-row__away">Marlborough <span class="d-caret">▸</span></span>
+      </div>
+      <div class="match-row" style="background: var(--row-hi)">
+        <span class="match-row__home">Westerfield Yellows</span>
+        <span class="match-row__mid match-row__mid--vs">v</span>
+        <span class="match-row__away">E-of-E Co-op Reds <span class="d-caret">▾</span></span>
+      </div>
+      <div class="d-expanded">
+        <div class="d-inner">
+          <span class="d-map">
+            <svg class="base" viewBox="0 0 190 96" preserveAspectRatio="none">
+              <rect width="190" height="96" fill="var(--map-land)"/>
+              <path d="M0 52 Q60 42 120 50 T190 44" stroke="var(--map-road2)" stroke-width="8" fill="none"/>
+              <path d="M0 54 Q60 44 120 52 T190 46" stroke="var(--map-road)" stroke-width="4" fill="none"/>
+              <path d="M70 0 L80 96" stroke="var(--map-road)" stroke-width="3.5"/>
+              <circle cx="150" cy="24" r="20" fill="var(--map-park)"/>
+              <rect x="24" y="16" width="18" height="12" fill="#e2e4e0"/>
+            </svg>
+            <span class="d-pin"><svg width="22" height="27" viewBox="0 0 24 30" fill="none"><path d="M12 0C5.4 0 0 5.2 0 11.7 0 20.4 12 30 12 30s12-9.6 12-18.3C24 5.2 18.6 0 12 0z" fill="var(--pitch)"/><circle cx="12" cy="11.5" r="4.5" fill="#fff"/></svg></span>
+          </span>
+          <span class="d-info">
+            <b>Westerfield Bowls Club</b>
+            <small>Home green · IP6 9BE</small>
+            <span class="d-links">
+              <a class="d-link" href="#">Directions</a>
+              <a class="d-link" href="#">View on Locations</a>
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="match-row">
+        <span class="match-row__home">Waldringfield Swans</span>
+        <span class="match-row__mid match-row__mid--vs">v</span>
+        <span class="match-row__away">Holbrook <span class="d-caret">▸</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================ E ============================ -->
+  <div class="opt" id="opt-e">
+    <span class="opt__tag">Option E — fixtures grouped by green within the week</span>
+    <p class="opt__note">The week tile gains slim venue headers, so everyone playing at the same green sits together — handy when a club hosts two matches the same evening. The postcode on the right is the directions link.</p>
+
+    <div class="match-week">
+      <div class="match-week__head"><h3 class="match-week__title">Week 13</h3><span class="match-week__date">Mon, 10 Aug</span></div>
+      <div class="e-venuehead">
+        <svg class="pin-ico" width="9" height="11" viewBox="0 0 24 30" fill="none"><path d="M12 0C5.4 0 0 5.2 0 11.7 0 20.4 12 30 12 30s12-9.6 12-18.3C24 5.2 18.6 0 12 0z" fill="#6b7280"/><circle cx="12" cy="11.5" r="4.5" fill="#fff"/></svg>
+        Kirton &amp; Falkenham
+        <a href="#">IP10 0QW ↗</a>
+      </div>
+      <div class="match-row">
+        <span class="match-row__home">Kirton A</span>
+        <span class="match-row__mid match-row__mid--vs">v</span>
+        <span class="match-row__away">Marlborough</span>
+      </div>
+      <div class="match-row">
+        <span class="match-row__home">Kirton B</span>
+        <span class="match-row__mid match-row__mid--vs">v</span>
+        <span class="match-row__away">Bealings</span>
+      </div>
+      <div class="e-venuehead">
+        <svg class="pin-ico" width="9" height="11" viewBox="0 0 24 30" fill="none"><path d="M12 0C5.4 0 0 5.2 0 11.7 0 20.4 12 30 12 30s12-9.6 12-18.3C24 5.2 18.6 0 12 0z" fill="#6b7280"/><circle cx="12" cy="11.5" r="4.5" fill="#fff"/></svg>
+        Westerfield
+        <a href="#">IP6 9BE ↗</a>
+      </div>
+      <div class="match-row">
+        <span class="match-row__home">Westerfield Yellows</span>
+        <span class="match-row__mid match-row__mid--vs">v</span>
+        <span class="match-row__away">E-of-E Co-op Reds</span>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  // Screenshot helper: #opt-x isolates one option section.
+  (function () {
+    var m = /^#(opt-[a-e])$/.exec(location.hash)
+    if (!m) return
+    document.querySelectorAll('.opt').forEach(function (el) {
+      if (el.id !== m[1]) el.style.display = 'none'
+    })
+    var intro = document.querySelector('h1')
+    if (intro) intro.style.display = 'none'
+    var lead = document.querySelector('.lead')
+    if (lead) lead.style.display = 'none'
+    document.querySelector('#' + m[1]).style.marginTop = '0'
+    window.scrollTo(0, 0)
+  })()
+</script>
+</body>
+</html>
