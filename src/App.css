@@ -1376,13 +1376,12 @@
   text-align: left;
 }
 
-/* Inner name chip: wraps within the team column; win pill stays content-sized. */
+/* Inner name chip: wraps on word boundaries; win pill stays content-sized. */
 .match-row__name {
   display: inline-block;
   max-width: 100%;
   box-sizing: border-box;
-  overflow-wrap: anywhere;
-  hyphens: auto;
+  overflow-wrap: break-word;
 }
 
 /* Team names link to the Matches view filtered to that team */
@@ -1477,8 +1476,14 @@
     grid-template-columns: minmax(0, 1fr) 3.2rem minmax(0, 1fr);
   }
 
+  /* Single-team mobile: date + venue on a meta row, then full-width
+     home | score | away so longer club names wrap on spaces, not mid-word. */
   .match-row--single {
-    grid-template-columns: 4.4rem 2.9rem minmax(0, 1fr) 3.2rem minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) 3.2rem minmax(0, 1fr);
+    column-gap: 0.5rem;
+    row-gap: 0.35rem;
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
   }
 
   .match-row--pins {
@@ -1490,17 +1495,46 @@
   }
 
   .match-row--single.match-row--pins {
-    grid-template-columns: 4.4rem 2.9rem minmax(0, 1fr) 3.2rem minmax(0, 1fr) 1.5rem;
+    grid-template-columns: minmax(0, 1fr) 3.2rem minmax(0, 1fr) 1.5rem;
+  }
+
+  .match-row--single .match-row__date {
+    grid-column: 1;
+    grid-row: 1;
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+
+  .match-row--single .match-row__venue {
+    grid-column: 2 / -1;
+    grid-row: 1;
+    justify-self: start;
+    min-width: 2.7rem;
+    font-size: 0.62rem;
+  }
+
+  .match-row--single .match-row__home {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .match-row--single .match-row__mid {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .match-row--single .match-row__away {
+    grid-column: 3;
+    grid-row: 2;
+  }
+
+  .match-row--single.match-row--pins .match-row__mapbtn {
+    grid-column: 4;
+    grid-row: 2;
   }
 
   .match-list__head {
-    grid-template-columns: 4.4rem 2.9rem minmax(0, 1fr) 3.2rem minmax(0, 1fr);
-    gap: 0.5rem;
-    padding: 0.55rem 0.7rem;
-  }
-
-  .match-list--pins .match-list__head {
-    grid-template-columns: 4.4rem 2.9rem minmax(0, 1fr) 3.2rem minmax(0, 1fr) 1.5rem;
+    display: none;
   }
 
   .match-row__mapbtn {
