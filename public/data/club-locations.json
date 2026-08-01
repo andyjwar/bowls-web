@@ -1,0 +1,720 @@
+{
+  "updated": "2026-08-01",
+  "clubs": [
+    {
+      "id": "bealings",
+      "name": "Bealings",
+      "postcode": "IP13 6LT",
+      "lat": 52.081555,
+      "lon": 1.253651,
+      "leagues": {
+        "samford": [
+          "Bealings"
+        ],
+        "triples": [
+          "Bealings"
+        ],
+        "two-wood": [
+          "Bealings Blues"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "bentley",
+      "name": "Bentley",
+      "postcode": "IP9 2DD",
+      "lat": 51.989006,
+      "lon": 1.074931,
+      "leagues": {
+        "samford": [
+          "Bentley"
+        ],
+        "triples": [
+          "Bentley"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "bramford",
+      "name": "Bramford",
+      "postcode": "IP8 4HU",
+      "lat": 52.080844,
+      "lon": 1.098248,
+      "leagues": {
+        "triples": [
+          "Bramford"
+        ],
+        "two-wood": [
+          "Bramford A",
+          "Bramford B",
+          "Bramford Greens"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "brantham-athletic",
+      "name": "Brantham Athletic",
+      "postcode": "CO11 1RZ",
+      "lat": 51.958965,
+      "lon": 1.059466,
+      "leagues": {
+        "samford": [
+          "Brantham"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "bredfield",
+      "name": "Bredfield",
+      "postcode": "IP13 6AX",
+      "lat": 52.1297651,
+      "lon": 1.3139202,
+      "leagues": {
+        "samford": [
+          "Bredfield"
+        ],
+        "triples": [
+          "Bredfield"
+        ]
+      },
+      "pinned": "club"
+    },
+    {
+      "id": "california",
+      "name": "California",
+      "postcode": "IP3 8LB",
+      "lat": 52.052883,
+      "lon": 1.179862,
+      "leagues": {
+        "samford": [
+          "California"
+        ],
+        "triples": [
+          "California"
+        ],
+        "two-wood": [
+          "California A",
+          "California B"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "capel-st-mary",
+      "name": "Capel St Mary",
+      "postcode": "IP9 2JR",
+      "lat": 52.00157,
+      "lon": 1.055276,
+      "leagues": {
+        "samford": [
+          "Capel Kestrels",
+          "Capel Kites"
+        ],
+        "triples": [
+          "Capel Kestrels",
+          "Capel St Mary Kites"
+        ],
+        "two-wood": [
+          "Capel Kestrels",
+          "Capel Kingfishers",
+          "Capel Kites"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "combs-ford",
+      "name": "Combs Ford",
+      "postcode": "IP14 2BL",
+      "lat": 52.1787212,
+      "lon": 0.9995547,
+      "leagues": {
+        "two-wood": [
+          "Combs Ford"
+        ]
+      },
+      "pinned": "club"
+    },
+    {
+      "id": "copdock-washbrook",
+      "name": "Copdock & Washbrook",
+      "postcode": "IP8 3JN",
+      "lat": 52.027018,
+      "lon": 1.079974,
+      "leagues": {
+        "samford": [
+          "Copdock & Washbrook"
+        ],
+        "triples": [
+          "Copdock & Washbrook"
+        ],
+        "two-wood": [
+          "Copdock & Washbrook"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "east-bergholt",
+      "name": "East Bergholt",
+      "postcode": "CO7 6TP",
+      "lat": 51.969909,
+      "lon": 1.024711,
+      "leagues": {
+        "samford": [
+          "East Bergholt"
+        ],
+        "two-wood": [
+          "East Bergholt Herons"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "east-of-england-co-op",
+      "name": "East-of-England Co-op",
+      "postcode": "IP4 5AZ",
+      "lat": 52.055226,
+      "lon": 1.178701,
+      "leagues": {
+        "samford": [
+          "E-of-E Co-op Blues",
+          "E-of-E Co-op Reds"
+        ],
+        "triples": [
+          "E-of-E Co-op A",
+          "E-of-E Co-op B"
+        ],
+        "two-wood": [
+          "East of Eng'd Coop Blues",
+          "East-of-England Co-op Reds"
+        ]
+      },
+      "sharesGreenWith": [
+        "Marlborough"
+      ],
+      "pinned": "postcode"
+    },
+    {
+      "id": "felixstowe",
+      "name": "Felixstowe",
+      "postcode": "IP11 7PB",
+      "lat": 51.9626133,
+      "lon": 1.3485431,
+      "leagues": {
+        "samford": [
+          "Felixstowe BC"
+        ],
+        "triples": [
+          "Felixstowe BC"
+        ]
+      },
+      "pinned": "club"
+    },
+    {
+      "id": "felixstowe-suffolk",
+      "name": "Felixstowe & Suffolk",
+      "postcode": "IP11 8DJ",
+      "lat": 51.953988,
+      "lon": 1.338454,
+      "leagues": {
+        "two-wood": [
+          "Felixstowe & Suffolk"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "gipping-valley",
+      "name": "Gipping Valley",
+      "postcode": "IP6 0LB",
+      "lat": 52.105639,
+      "lon": 1.098318,
+      "leagues": {
+        "samford": [
+          "Gipping EE Wolves",
+          "Gipping EE Wrens"
+        ],
+        "two-wood": [
+          "Gipping EE Black Birds",
+          "Gipping EE Foxes"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "hadleigh",
+      "name": "Hadleigh",
+      "postcode": "IP7 6DN",
+      "lat": 52.05549,
+      "lon": 0.940756,
+      "leagues": {
+        "triples": [
+          "Hadleigh"
+        ],
+        "two-wood": [
+          "Hadleigh Carders",
+          "Hadleigh Shearers"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "holbrook",
+      "name": "Holbrook",
+      "postcode": "IP9 2PZ",
+      "lat": 51.9859182,
+      "lon": 1.1573896,
+      "leagues": {
+        "samford": [
+          "Holbrook",
+          "Hollbrook"
+        ],
+        "triples": [
+          "Holbrook"
+        ],
+        "two-wood": [
+          "Holbrook A",
+          "Holbrook B"
+        ]
+      },
+      "pinned": "club"
+    },
+    {
+      "id": "hollesley",
+      "name": "Hollesley",
+      "postcode": null,
+      "lat": null,
+      "lon": null,
+      "leagues": {
+        "triples": [
+          "Hollesley"
+        ]
+      }
+    },
+    {
+      "id": "holywells",
+      "name": "Holywells",
+      "postcode": "IP3 0PG",
+      "lat": 52.045649,
+      "lon": 1.172624,
+      "leagues": {
+        "two-wood": [
+          "Holywells"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "ipswich-bc",
+      "name": "Ipswich BC",
+      "aka": "Graham Road",
+      "postcode": "IP1 3QE",
+      "lat": 52.065733,
+      "lon": 1.14244,
+      "leagues": {
+        "triples": [
+          "IBC Graham Road"
+        ],
+        "two-wood": [
+          "IBC Graham Road A",
+          "IBC Graham Road B"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "ipswich-district",
+      "name": "Ipswich & District",
+      "postcode": "IP4 4JU",
+      "lat": 52.063472,
+      "lon": 1.191399,
+      "leagues": {
+        "samford": [
+          "Ipswich & District"
+        ],
+        "triples": [
+          "Ipswich & District"
+        ],
+        "two-wood": [
+          "Ipswich & District A",
+          "Ipswich & District B"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "ipswich-hospitals",
+      "name": "Ipswich Hospitals",
+      "aka": "Ribbans Park",
+      "postcode": "IP3 8LS",
+      "lat": 52.050631,
+      "lon": 1.192627,
+      "leagues": {
+        "samford": [
+          "Hospitals Ribbans Park"
+        ],
+        "triples": [
+          "Hospitals Ribbans Park"
+        ],
+        "two-wood": [
+          "Hospitals at Ribbans Park"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "kesgrave",
+      "name": "Kesgrave",
+      "aka": "also Rushmere",
+      "postcode": "IP5 2HJ",
+      "lat": 52.060618,
+      "lon": 1.237931,
+      "leagues": {
+        "samford": [
+          "Kesgrave",
+          "Kesgrave Blues",
+          "Kesgrave Greens"
+        ],
+        "triples": [
+          "Kesgrave Blues",
+          "Kesgrave Greens"
+        ],
+        "two-wood": [
+          "Kesgrave Blues",
+          "Kesgrave Greens"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "kirton-falkenham",
+      "name": "Kirton & Falkenham",
+      "postcode": "IP10 0QW",
+      "lat": 52.0055928,
+      "lon": 1.3233794,
+      "leagues": {
+        "samford": [
+          "Kirton & Falkenham",
+          "Kirton A",
+          "Kirton B"
+        ],
+        "triples": [
+          "Kirton & Falkenham"
+        ],
+        "two-wood": [
+          "Kirton & Falkenham A",
+          "Kirton & Falkenham B"
+        ]
+      },
+      "pinned": "club"
+    },
+    {
+      "id": "margaret-catchpole",
+      "name": "Margaret Catchpole",
+      "postcode": "IP3 0PQ",
+      "lat": 52.045193,
+      "lon": 1.1716356,
+      "leagues": {
+        "samford": [
+          "Margaret Catchpole Blues",
+          "Margaret Catchpole Reds"
+        ],
+        "triples": [
+          "Margaret Catchpole"
+        ],
+        "two-wood": [
+          "Margaret Catchpole A",
+          "Margaret Catchpole B"
+        ]
+      },
+      "pinned": "club"
+    },
+    {
+      "id": "marlborough",
+      "name": "Marlborough",
+      "postcode": "IP4 5AZ",
+      "lat": 52.055226,
+      "lon": 1.178701,
+      "leagues": {
+        "samford": [
+          "Marlborough"
+        ],
+        "two-wood": [
+          "Marlborough Greens"
+        ]
+      },
+      "sharesGreenWith": [
+        "East-of-England Co-op"
+      ],
+      "pinned": "postcode"
+    },
+    {
+      "id": "martlesham",
+      "name": "Martlesham",
+      "postcode": "IP12 4RG",
+      "lat": 52.0788429,
+      "lon": 1.289164,
+      "leagues": {
+        "samford": [
+          "Martlesham"
+        ],
+        "triples": [
+          "Martlesham"
+        ]
+      },
+      "pinned": "club"
+    },
+    {
+      "id": "melton",
+      "name": "Melton",
+      "postcode": "IP12 1PE",
+      "lat": 52.102939,
+      "lon": 1.331377,
+      "leagues": {
+        "samford": [
+          "Melton Purples"
+        ],
+        "triples": [
+          "Melton"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "needham-market",
+      "name": "Needham Market",
+      "postcode": "IP6 8BX",
+      "lat": 52.154436,
+      "lon": 1.046702,
+      "leagues": {
+        "triples": [
+          "Needham Market"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "newton-road",
+      "name": "Newton Road",
+      "postcode": "IP3 8HQ",
+      "lat": 52.049543,
+      "lon": 1.178983,
+      "leagues": {
+        "samford": [
+          "Newton Road"
+        ],
+        "triples": [
+          "Newton Road A",
+          "Newton Road B"
+        ],
+        "two-wood": [
+          "Newton Road Whites"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "norbridge",
+      "name": "Norbridge",
+      "postcode": "IP1 4HA",
+      "lat": 52.069816,
+      "lon": 1.134321,
+      "leagues": {
+        "samford": [
+          "Norbridge"
+        ],
+        "triples": [
+          "Norbridge"
+        ],
+        "two-wood": [
+          "Norbridge A",
+          "Norbridge B"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "roundwood",
+      "name": "Roundwood",
+      "postcode": null,
+      "lat": null,
+      "lon": null,
+      "leagues": {
+        "samford": [
+          "Roundwood"
+        ],
+        "triples": [
+          "Roundwood"
+        ],
+        "two-wood": [
+          "Roundwood"
+        ]
+      }
+    },
+    {
+      "id": "shotley-rose",
+      "name": "Shotley Rose",
+      "postcode": "IP9 1NL",
+      "lat": 51.969198,
+      "lon": 1.251704,
+      "leagues": {
+        "samford": [
+          "Shotley Rose"
+        ],
+        "triples": [
+          "Shotley Rose"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "sproughton",
+      "name": "Sproughton",
+      "postcode": "IP8 3BB",
+      "lat": 52.060709,
+      "lon": 1.100239,
+      "leagues": {
+        "samford": [
+          "Sproughton Blues",
+          "Sproughton Reds"
+        ],
+        "triples": [
+          "Sproughton"
+        ],
+        "two-wood": [
+          "Sproughton A",
+          "Sproughton B",
+          "Sproughton C"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "st-john-s-urc",
+      "name": "St John's URC",
+      "postcode": "IP4 4RH",
+      "lat": 52.06402,
+      "lon": 1.187761,
+      "leagues": {
+        "samford": [
+          "St John's URC"
+        ],
+        "two-wood": [
+          "St Johns URC"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "stone-lodge",
+      "name": "Stone Lodge",
+      "aka": "also Delta",
+      "postcode": "IP2 9BA",
+      "lat": 52.0457598,
+      "lon": 1.1400247,
+      "leagues": {
+        "samford": [
+          "Stone Lodge",
+          "Stone Lodge Blues",
+          "Stone Lodge Reds"
+        ],
+        "triples": [
+          "Stone Lodge",
+          "Stone Lodge B"
+        ],
+        "two-wood": [
+          "Stone Lodge A"
+        ]
+      },
+      "pinned": "club"
+    },
+    {
+      "id": "thorndon",
+      "name": "Thorndon",
+      "postcode": "IP23 7JJ",
+      "lat": 52.284472,
+      "lon": 1.123882,
+      "leagues": {
+        "two-wood": [
+          "Thorndon"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "waldringfield",
+      "name": "Waldringfield",
+      "postcode": "IP4 4JJ",
+      "lat": 52.067276,
+      "lon": 1.182754,
+      "leagues": {
+        "samford": [
+          "Waldringfield Ducks",
+          "Waldringfield Swans"
+        ],
+        "triples": [
+          "Waldringfield"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "westerfield",
+      "name": "Westerfield",
+      "postcode": "IP6 9BE",
+      "lat": 52.084429,
+      "lon": 1.174369,
+      "leagues": {
+        "samford": [
+          "Westerfield",
+          "Westerfield Blues",
+          "Westerfield Yellows"
+        ],
+        "triples": [
+          "Westerfield Greens",
+          "Westerfield Oranges"
+        ],
+        "two-wood": [
+          "Westerfield Blues",
+          "Westerfield Swans",
+          "Westerfield Whites"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "wickham-market",
+      "name": "Wickham Market",
+      "postcode": "IP13 0HE",
+      "lat": 52.15079,
+      "lon": 1.363024,
+      "leagues": {
+        "triples": [
+          "Wickham Market"
+        ]
+      },
+      "pinned": "postcode"
+    },
+    {
+      "id": "woodbridge",
+      "name": "Woodbridge",
+      "postcode": "IP12 1DB",
+      "lat": 52.0940098,
+      "lon": 1.3218511,
+      "leagues": {
+        "samford": [
+          "Woodbridge"
+        ],
+        "triples": [
+          "Woodbridge"
+        ]
+      },
+      "pinned": "club"
+    }
+  ]
+}
