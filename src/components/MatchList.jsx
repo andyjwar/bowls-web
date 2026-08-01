@@ -32,11 +32,13 @@ function TeamLink({ name }) {
   )
 }
 
-function teamClass(base, { played, draw, won }) {
-  if (!played) return base
-  if (won) return `${base} match-row__team--win`
-  if (!draw) return `${base} match-row__team--lose`
-  return base
+/* Result styling goes on an inner name span so win-pill padding cannot
+   inflate the grid column's min-content and shove the score column around. */
+function teamNameClass({ played, draw, won }) {
+  if (!played) return 'match-row__name'
+  if (won) return 'match-row__name match-row__team--win'
+  if (!draw) return 'match-row__name match-row__team--lose'
+  return 'match-row__name'
 }
 
 /* Whether the fixture already has an outcome (score or walkover) — decided
@@ -125,7 +127,9 @@ function MatchRow({
       <div className={`match-row match-row--bye${rowMods}`}>
         {dateCell}
         {venueCell}
-        <span className="match-row__home">{match.home}</span>
+        <span className="match-row__home">
+          <span className="match-row__name">{match.home}</span>
+        </span>
         <span className="match-row__mid match-row__mid--bye">Bye</span>
         <span className="match-row__away" />
         {pinColumn ? <PinCell pin={null} /> : null}
@@ -152,14 +156,16 @@ function MatchRow({
     <div className={`match-row${postponed ? ' match-row--postponed' : ''}${rowMods}`}>
       {dateCell}
       {venueCell}
-      <span
-        className={teamClass('match-row__home', {
-          played: decided,
-          draw,
-          won: match.homeWon,
-        })}
-      >
-        {linkTeams ? <TeamLink name={match.home} /> : match.home}
+      <span className="match-row__home">
+        <span
+          className={teamNameClass({
+            played: decided,
+            draw,
+            won: match.homeWon,
+          })}
+        >
+          {linkTeams ? <TeamLink name={match.home} /> : match.home}
+        </span>
       </span>
       {postponed ? (
         <span className="match-row__mid match-row__mid--postponed" title="Postponed">
@@ -177,14 +183,16 @@ function MatchRow({
       ) : (
         <span className="match-row__mid match-row__mid--vs">v</span>
       )}
-      <span
-        className={teamClass('match-row__away', {
-          played: decided,
-          draw,
-          won: match.awayWon,
-        })}
-      >
-        {linkTeams ? <TeamLink name={match.away} /> : match.away}
+      <span className="match-row__away">
+        <span
+          className={teamNameClass({
+            played: decided,
+            draw,
+            won: match.awayWon,
+          })}
+        >
+          {linkTeams ? <TeamLink name={match.away} /> : match.away}
+        </span>
       </span>
       {pinColumn ? <PinCell pin={pin} /> : null}
     </div>
@@ -482,29 +490,32 @@ export function MatchList({
               <span className="team-record__label">Points</span>
             </div>
           </div>
-          <div className="match-list">
-            <div className="match-list__head">
-              <span className="match-list__head-label">Venue</span>
-            </div>
-            {(() => {
-              const pinColumn = fixtureWeeks.some((week) =>
-                week.matches.some((match) => pinFor(match, locationIndex)),
-              )
-              return fixtureWeeks.map((week) =>
-                week.matches.map((match, i) => (
-                  <MatchRow
-                    key={`${week.week}-${i}`}
-                    match={match}
-                    weekDate={week.date}
-                    isToday={isSameDay(week.date, today)}
-                    perspectiveTeam={teamFilter}
-                    pin={pinFor(match, locationIndex)}
-                    pinColumn={pinColumn}
-                  />
-                )),
-              )
-            })()}
-          </div>
+          {(() => {
+            const pinColumn = fixtureWeeks.some((week) =>
+              week.matches.some((match) => pinFor(match, locationIndex)),
+            )
+            return (
+              <div className={`match-list${pinColumn ? ' match-list--pins' : ''}`}>
+                <div className="match-list__head">
+                  <span className="match-list__head-spacer" aria-hidden="true" />
+                  <span className="match-list__head-label">Venue</span>
+                </div>
+                {fixtureWeeks.map((week) =>
+                  week.matches.map((match, i) => (
+                    <MatchRow
+                      key={`${week.week}-${i}`}
+                      match={match}
+                      weekDate={week.date}
+                      isToday={isSameDay(week.date, today)}
+                      perspectiveTeam={teamFilter}
+                      pin={pinFor(match, locationIndex)}
+                      pinColumn={pinColumn}
+                    />
+                  )),
+                )}
+              </div>
+            )
+          })()}
         </div>
       ) : (
         /* All teams: one tile per week. */

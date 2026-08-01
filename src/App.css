@@ -1171,7 +1171,9 @@
 
 .match-row {
   display: grid;
-  grid-template-columns: 6.2rem 1fr auto 1fr;
+  /* minmax(0, 1fr) lets team names wrap instead of widening columns;
+     fixed mid column keeps scores lined up across independent row grids. */
+  grid-template-columns: 6.2rem minmax(0, 1fr) 3.6rem minmax(0, 1fr);
   align-items: center;
   gap: 0.75rem;
   padding: 0.85rem 1rem;
@@ -1182,12 +1184,12 @@
 }
 
 .match-row--nodate {
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: minmax(0, 1fr) 3.6rem minmax(0, 1fr);
 }
 
 /* Single-team view: date | venue | teams */
 .match-row--single {
-  grid-template-columns: 6.2rem 3.4rem 1fr auto 1fr;
+  grid-template-columns: 6.2rem 3.4rem minmax(0, 1fr) 3.6rem minmax(0, 1fr);
   padding-top: 0.95rem;
   padding-bottom: 0.95rem;
 }
@@ -1195,15 +1197,15 @@
 /* Rows in a tile with directions pins gain a slim trailing column so the
    team columns stay aligned whether or not this row has a pin. */
 .match-row--pins {
-  grid-template-columns: 6.2rem 1fr auto 1fr 1.6rem;
+  grid-template-columns: 6.2rem minmax(0, 1fr) 3.6rem minmax(0, 1fr) 1.6rem;
 }
 
 .match-row--nodate.match-row--pins {
-  grid-template-columns: 1fr auto 1fr 1.6rem;
+  grid-template-columns: minmax(0, 1fr) 3.6rem minmax(0, 1fr) 1.6rem;
 }
 
 .match-row--single.match-row--pins {
-  grid-template-columns: 6.2rem 3.4rem 1fr auto 1fr 1.6rem;
+  grid-template-columns: 6.2rem 3.4rem minmax(0, 1fr) 3.6rem minmax(0, 1fr) 1.6rem;
 }
 
 /* Directions pin (Option C): quiet bordered button at the row edge that
@@ -1258,11 +1260,23 @@
   color: var(--fm-text-strong);
 }
 
+/* Mirror the single-team row grid so "Venue" sits over the Home/Away column. */
 .match-list__head {
-  display: flex;
+  display: grid;
+  grid-template-columns: 6.2rem 3.4rem minmax(0, 1fr) 3.6rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
   padding: 0.55rem 1rem;
   background: var(--fm-row-hi);
   border-bottom: 1px solid var(--fm-border);
+}
+
+.match-list--pins .match-list__head {
+  grid-template-columns: 6.2rem 3.4rem minmax(0, 1fr) 3.6rem minmax(0, 1fr) 1.6rem;
+}
+
+.match-list__head-spacer {
+  display: block;
 }
 
 .match-list__head-label {
@@ -1271,6 +1285,7 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--fm-muted);
+  text-align: center;
 }
 
 /* "Next matches" tile under the standings table */
@@ -1342,6 +1357,9 @@
 
 .match-row__home,
 .match-row__away {
+  min-width: 0;
+  display: flex;
+  align-items: center;
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--fm-text-strong);
@@ -1349,12 +1367,21 @@
 }
 
 .match-row__home {
+  justify-content: flex-end;
   text-align: right;
-  justify-self: end;
 }
 
 .match-row__away {
-  justify-self: start;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+/* Inner name chip: wraps on word boundaries; win pill stays content-sized. */
+.match-row__name {
+  display: inline-block;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
 }
 
 /* Team names link to the Matches view filtered to that team */
@@ -1387,10 +1414,11 @@
 }
 
 .match-row__mid {
-  min-width: 3.9rem;
+  width: 100%;
   text-align: center;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+  justify-self: center;
 }
 
 .match-row__mid--score {
@@ -1439,29 +1467,74 @@
 
 @media (max-width: 560px) {
   .match-row {
-    grid-template-columns: 4.4rem 1fr auto 1fr;
+    grid-template-columns: 4.4rem minmax(0, 1fr) 3.2rem minmax(0, 1fr);
     gap: 0.5rem;
     padding: 0.75rem 0.7rem;
   }
 
   .match-row--nodate {
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: minmax(0, 1fr) 3.2rem minmax(0, 1fr);
   }
 
+  /* Single-team mobile: date + venue on a meta row, then full-width
+     home | score | away so longer club names wrap on spaces, not mid-word. */
   .match-row--single {
-    grid-template-columns: 4.4rem 2.9rem 1fr auto 1fr;
+    grid-template-columns: minmax(0, 1fr) 3.2rem minmax(0, 1fr);
+    column-gap: 0.5rem;
+    row-gap: 0.35rem;
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
   }
 
   .match-row--pins {
-    grid-template-columns: 4.4rem 1fr auto 1fr 1.5rem;
+    grid-template-columns: 4.4rem minmax(0, 1fr) 3.2rem minmax(0, 1fr) 1.5rem;
   }
 
   .match-row--nodate.match-row--pins {
-    grid-template-columns: 1fr auto 1fr 1.5rem;
+    grid-template-columns: minmax(0, 1fr) 3.2rem minmax(0, 1fr) 1.5rem;
   }
 
   .match-row--single.match-row--pins {
-    grid-template-columns: 4.4rem 2.9rem 1fr auto 1fr 1.5rem;
+    grid-template-columns: minmax(0, 1fr) 3.2rem minmax(0, 1fr) 1.5rem;
+  }
+
+  .match-row--single .match-row__date {
+    grid-column: 1;
+    grid-row: 1;
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+
+  .match-row--single .match-row__venue {
+    grid-column: 2 / -1;
+    grid-row: 1;
+    justify-self: start;
+    min-width: 2.7rem;
+    font-size: 0.62rem;
+  }
+
+  .match-row--single .match-row__home {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .match-row--single .match-row__mid {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .match-row--single .match-row__away {
+    grid-column: 3;
+    grid-row: 2;
+  }
+
+  .match-row--single.match-row--pins .match-row__mapbtn {
+    grid-column: 4;
+    grid-row: 2;
+  }
+
+  .match-list__head {
+    display: none;
   }
 
   .match-row__mapbtn {
@@ -1490,6 +1563,10 @@
   .match-row__home,
   .match-row__away {
     font-size: 0.88rem;
+  }
+
+  .match-row__team--win {
+    padding: 0.2rem 0.4rem;
   }
 }
 
