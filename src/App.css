@@ -111,10 +111,6 @@
   display: none;
 }
 
-.site-more {
-  display: none;
-}
-
 .site-nav {
   display: flex;
   flex-wrap: wrap;
@@ -576,6 +572,16 @@
   overflow-x: auto;
 }
 
+/* Mon–Fri strip — five equal columns, no horizontal scroll. */
+.day-caro--weekdays {
+  overflow: visible;
+}
+
+.day-caro--weekdays .day-caro__cell {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
 .day-caro__cell {
   flex: 1 0 90px;
   display: flex;
@@ -644,6 +650,73 @@
 
 .day-caro__none {
   font-size: 0.75rem;
+  color: var(--fm-muted);
+}
+
+/* Mobile home explore blocks — soft tints (option B).
+   Hidden from 901px up (desktop keeps the poster hub + top nav). */
+@media (min-width: 901px) {
+  .home-explore {
+    display: none !important;
+  }
+}
+
+.home-explore__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.home-explore__block {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 5.25rem;
+  padding: 0.95rem 1rem;
+  border-radius: 14px;
+  text-decoration: none;
+  color: var(--fm-text-strong);
+  transition: filter 0.12s ease;
+}
+
+.home-explore__block:hover {
+  filter: brightness(0.97);
+}
+
+.home-explore__block--navy {
+  background: #e8ecf4;
+}
+
+.home-explore__block--green {
+  background: #e6f0ea;
+}
+
+.home-explore__block--sand {
+  background: #f2efe6;
+}
+
+.bowls-app[data-theme='dark'] .home-explore__block--navy {
+  background: rgba(96, 130, 180, 0.18);
+}
+
+.bowls-app[data-theme='dark'] .home-explore__block--green {
+  background: rgba(76, 175, 110, 0.16);
+}
+
+.bowls-app[data-theme='dark'] .home-explore__block--sand {
+  background: rgba(196, 168, 110, 0.16);
+}
+
+.home-explore__label {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.home-explore__sub {
+  margin-top: 0.2rem;
+  font-size: 0.78rem;
+  font-weight: 500;
   color: var(--fm-muted);
 }
 
@@ -2593,6 +2666,11 @@ button.pill-nav__btn {
     padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
   }
 
+  /* Mobile home: tabs cover leagues/cups; explore blocks stay (default flex). */
+  .home-hub--desktop {
+    display: none;
+  }
+
   .site-tabs {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -2654,96 +2732,6 @@ button.pill-nav__btn {
   .site-tabs__label {
     line-height: 1.1;
   }
-
-  .site-more {
-    display: block;
-    position: fixed;
-    inset: 0;
-    z-index: 40;
-  }
-
-  .site-more__scrim {
-    position: absolute;
-    inset: 0;
-    margin: 0;
-    padding: 0;
-    border: none;
-    background: rgba(15, 23, 42, 0.34);
-    cursor: pointer;
-  }
-
-  .bowls-app[data-theme='dark'] .site-more__scrim {
-    background: rgba(0, 0, 0, 0.55);
-  }
-
-  .site-more__sheet {
-    position: absolute;
-    left: 0.65rem;
-    right: 0.65rem;
-    bottom: calc(4.15rem + env(safe-area-inset-bottom, 0px));
-    background: var(--fm-card);
-    border: 1px solid var(--fm-border);
-    border-radius: 16px;
-    box-shadow: 0 14px 40px rgba(15, 23, 42, 0.18);
-    padding: 0.55rem 0 0.35rem;
-    animation: site-more-rise 0.18s ease-out;
-  }
-
-  @keyframes site-more-rise {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .site-more__handle {
-    width: 36px;
-    height: 4px;
-    margin: 0 auto 0.55rem;
-    border-radius: 999px;
-    background: var(--fm-border-strong);
-  }
-
-  .site-more__title {
-    margin: 0 1rem 0.25rem;
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--fm-muted);
-  }
-
-  .site-more__nav {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .site-more__link {
-    padding: 0.9rem 1.15rem;
-    color: var(--fm-text);
-    font-size: 1rem;
-    font-weight: 500;
-    text-decoration: none;
-    border-top: 1px solid var(--fm-border);
-  }
-
-  .site-more__link:first-child {
-    border-top: none;
-  }
-
-  .site-more__link--active {
-    color: var(--fm-text-strong);
-    font-weight: 700;
-  }
-
-  .site-more__link:hover,
-  .site-more__link:focus-visible {
-    background: var(--fm-nav-hover-bg);
-  }
 }
 
 /* Portrait layout: keep the public site readable without side-scrolling. */
@@ -2757,19 +2745,29 @@ button.pill-nav__btn {
     overflow: visible;
   }
 
-  .day-caro {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .day-caro--weekdays {
+    display: flex;
     overflow: visible;
   }
 
-  .day-caro__cell {
+  .day-caro--weekdays .day-caro__cell {
+    flex: 1 1 0;
     width: auto;
-    border-bottom: 1px solid var(--fm-border);
+    min-width: 0;
+    padding: 0.65rem 0.15rem 0.75rem;
   }
 
-  .day-caro__cell:last-child:nth-child(odd) {
-    grid-column: 1 / -1;
+  .day-caro--weekdays .day-caro__weekday {
+    font-size: 0.62rem;
+  }
+
+  .day-caro--weekdays .day-caro__num {
+    font-size: 1rem;
+  }
+
+  .day-caro--weekdays .day-caro__tag {
+    font-size: 0.58rem;
+    padding: 2px 5px;
   }
 
   .table-scroll {
@@ -4886,7 +4884,6 @@ a.form-card:hover {
   .site-header,
   .site-footer,
   .site-tabs,
-  .site-more,
   .league-banner,
   .league-toolbar,
   .match-toolbar,

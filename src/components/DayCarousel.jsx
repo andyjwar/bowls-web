@@ -5,10 +5,33 @@ import { shortLeagueName, toISODate } from '../lib/leagueSchedule'
 
 const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
+/** Monday of the week that should be shown for `today` (Mon–Fri strip). */
+function weekStartMonday(today) {
+  const d = new Date(today)
+  const day = d.getDay()
+  if (day === 0) {
+    // Sunday → upcoming Monday
+    d.setDate(d.getDate() + 1)
+  } else if (day === 6) {
+    // Saturday → upcoming Monday
+    d.setDate(d.getDate() + 2)
+  } else {
+    d.setDate(d.getDate() - (day - 1))
+  }
+  d.setHours(0, 0, 0, 0)
+  return d
+}
+
+function addDays(date, n) {
+  const d = new Date(date)
+  d.setDate(d.getDate() + n)
+  return d
+}
+
 /**
- * FotMob-style seven-day strip. Each day is tagged with the league(s) whose
- * schedule has matches that date; tags link to the league page. Starts today,
- * or jumps forward to the next match day if the coming week is empty.
+ * Mon–Fri strip for the home "This week" section. Each day is tagged with
+ * the league(s) that have matches that date. The current weekday shows
+ * "Today" instead of Mon/Tue/…; weekends advance to the next Monday.
  */
 export function DayCarousel({ items, summaries }) {
   const days = useMemo(() => {
@@ -36,23 +59,27 @@ export function DayCarousel({ items, summaries }) {
     today.setHours(0, 0, 0, 0)
     const todayIso = toISODate(today)
 
-    let start = new Date(today)
-    const withinWeek = (iso) => {
-      const d = new Date(`${iso}T12:00:00`)
-      const diff = (d - today) / 86400000
-      return diff >= 0 && diff < 7
+    let start = weekStartMonday(today)
+    const weekHasMatches = (monday) => {
+      for (let i = 0; i < 5; i++) {
+        if (byDate.has(toISODate(addDays(monday, i)))) return true
+      }
+      return false
     }
-    if (![...byDate.keys()].some(withinWeek)) {
-      const nextIso = [...byDate.keys()].sort().find((iso) => iso >= todayIso)
+
+    if (!weekHasMatches(start)) {
+      const nextIso = [...byDate.keys()].sort().find((iso) => {
+        const d = new Date(`${iso}T12:00:00`)
+        const dow = d.getDay()
+        return iso >= todayIso && dow >= 1 && dow <= 5
+      })
       if (!nextIso) return null
-      start = new Date(`${nextIso}T12:00:00`)
-      start.setHours(0, 0, 0, 0)
+      start = weekStartMonday(new Date(`${nextIso}T12:00:00`))
     }
 
     const cells = []
-    for (let i = 0; i < 7; i++) {
-      const d = new Date(start)
-      d.setDate(start.getDate() + i)
+    for (let i = 0; i < 5; i++) {
+      const d = addDays(start, i)
       const iso = toISODate(d)
       cells.push({
         iso,
@@ -68,7 +95,7 @@ export function DayCarousel({ items, summaries }) {
   if (!days) return null
 
   return (
-    <div className="day-caro" role="list" aria-label="Match days">
+    <div className="day-caro day-caro--weekdays" role="list" aria-label="Match days this week">
       {days.map((day) => (
         <div
           key={day.iso}

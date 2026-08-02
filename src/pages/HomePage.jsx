@@ -12,6 +12,27 @@ import { shortLeagueName } from '../lib/leagueSchedule'
 /** Cups take the palette slots after the leagues so colours never clash. */
 const COMPETITION_COLOR_OFFSET = 3
 
+const EXPLORE_BLOCKS = [
+  {
+    to: '/locations',
+    label: 'Locations',
+    sub: 'Clubs & maps',
+    tint: 'green',
+  },
+  {
+    to: '/officers',
+    label: 'League officers',
+    sub: 'Contacts & roles',
+    tint: 'navy',
+  },
+  {
+    to: '/forms',
+    label: 'Forms',
+    sub: 'Downloads & entry',
+    tint: 'sand',
+  },
+]
+
 /** Compact links to earlier seasons' league pages, shown under the current season. */
 export function PastSeasonsStrip({ past }) {
   if (!past?.length) return null
@@ -61,16 +82,16 @@ export function HomePage() {
         </div>
       </header>
 
-      <section className="home-section">
+      {/* Desktop hub — leagues / cups / jump-to-team. Hidden on narrow screens
+          where bottom tabs cover Leagues & Cups. */}
+      <section className="home-section home-hub--desktop">
         <div className="home-section__head">
           <h2 className="home-section__title">Leagues</h2>
         </div>
         <LeaguePosterGrid items={activeLeagues} summaries={summaries} />
       </section>
 
-      {/* Competitions and the jump-to-team square share one row, each
-          under its own eyebrow label. */}
-      <section className="home-section">
+      <section className="home-section home-hub--desktop">
         <div className="poster-grid poster-grid--labeled">
           {competitions.length > 0 ? (
             <h2 className="home-section__title poster-grid__label poster-grid__label--competitions">
@@ -103,6 +124,25 @@ export function HomePage() {
           <h2 className="home-section__title">This week</h2>
         </div>
         <DayCarousel items={activeLeagues} summaries={summaries} />
+      </section>
+
+      {/* Mobile explore — soft tint blocks for destinations not on the tab bar. */}
+      <section className="home-section home-explore" aria-label="Explore">
+        <div className="home-section__head">
+          <h2 className="home-section__title">Explore</h2>
+        </div>
+        <div className="home-explore__grid">
+          {EXPLORE_BLOCKS.map((block) => (
+            <Link
+              key={block.to}
+              to={block.to}
+              className={`home-explore__block home-explore__block--${block.tint}`}
+            >
+              <span className="home-explore__label">{block.label}</span>
+              <span className="home-explore__sub">{block.sub}</span>
+            </Link>
+          ))}
+        </div>
       </section>
 
       <PastSeasonsStrip past={past} />
