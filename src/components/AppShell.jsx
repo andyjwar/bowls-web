@@ -1,4 +1,3 @@
-import { useEffect, useId, useRef, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { ThemeToggle } from './ThemeToggle'
 import { useTheme } from '../hooks/useTheme'
@@ -14,10 +13,6 @@ const NAV = [
   { to: '/forms', label: 'Forms', match: (p) => p.startsWith('/forms') },
 ]
 
-const MORE_NAV = NAV.filter((item) =>
-  ['/officers', '/locations', '/rules', '/forms'].includes(item.to),
-)
-
 const TABS = [
   { to: '/', label: 'Home', match: (p) => p === '/', icon: HomeIcon },
   { to: '/leagues', label: 'Leagues', match: (p) => p.startsWith('/leagues'), icon: LeaguesIcon },
@@ -27,11 +22,8 @@ const TABS = [
     match: (p) => p.startsWith('/competitions'),
     icon: CupsIcon,
   },
+  { to: '/rules', label: 'Rules', match: (p) => p.startsWith('/rules'), icon: RulesIcon },
 ]
-
-function isMorePath(pathname) {
-  return MORE_NAV.some((item) => item.match(pathname))
-}
 
 function HomeIcon() {
   return (
@@ -72,12 +64,16 @@ function CupsIcon() {
   )
 }
 
-function MoreIcon() {
+function RulesIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <circle cx="6" cy="12" r="1.6" fill="currentColor" />
-      <circle cx="12" cy="12" r="1.6" fill="currentColor" />
-      <circle cx="18" cy="12" r="1.6" fill="currentColor" />
+      <path
+        d="M7 4.5h8.5L19 8v11.5a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-14a1 1 0 0 1 1-1Z"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinejoin="round"
+      />
+      <path d="M15 4.5V9h4.5M9 12h6M9 15.5h6" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
     </svg>
   )
 }
@@ -86,31 +82,8 @@ export function AppShell() {
   const { pathname } = useLocation()
   const [theme, setTheme] = useTheme()
   const { activeSeason } = useSiteConfig()
-  const [moreOpen, setMoreOpen] = useState(false)
-  const moreBtnRef = useRef(null)
-  const sheetTitleId = useId()
   const isHome = pathname === '/'
   const isAdmin = pathname.startsWith('/admin')
-  const moreActive = isMorePath(pathname)
-
-  useEffect(() => {
-    setMoreOpen(false)
-  }, [pathname])
-
-  useEffect(() => {
-    if (!moreOpen) return undefined
-    const onKey = (e) => {
-      if (e.key === 'Escape') setMoreOpen(false)
-    }
-    document.addEventListener('keydown', onKey)
-    const prev = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.removeEventListener('keydown', onKey)
-      document.body.style.overflow = prev
-      moreBtnRef.current?.focus()
-    }
-  }, [moreOpen])
 
   return (
     <div className="bowls-app" data-theme={theme}>
@@ -161,73 +134,23 @@ export function AppShell() {
       </main>
 
       {!isAdmin ? (
-        <>
-          <nav className="site-tabs" aria-label="Primary">
-            {TABS.map(({ to, label, match, icon: Icon }) => {
-              const active = match(pathname)
-              return (
-                <NavLink
-                  key={label}
-                  to={to}
-                  className={`site-tabs__tab${active ? ' site-tabs__tab--active' : ''}`}
-                >
-                  <span className="site-tabs__icon">
-                    <Icon />
-                  </span>
-                  <span className="site-tabs__label">{label}</span>
-                </NavLink>
-              )
-            })}
-            <button
-              ref={moreBtnRef}
-              type="button"
-              className={`site-tabs__tab${moreActive || moreOpen ? ' site-tabs__tab--active' : ''}`}
-              aria-expanded={moreOpen}
-              aria-controls="site-more-sheet"
-              onClick={() => setMoreOpen((open) => !open)}
-            >
-              <span className="site-tabs__icon">
-                <MoreIcon />
-              </span>
-              <span className="site-tabs__label">More</span>
-            </button>
-          </nav>
-
-          {moreOpen ? (
-            <div className="site-more">
-              <button
-                type="button"
-                className="site-more__scrim"
-                aria-label="Close menu"
-                onClick={() => setMoreOpen(false)}
-              />
-              <div
-                id="site-more-sheet"
-                className="site-more__sheet"
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby={sheetTitleId}
+        <nav className="site-tabs" aria-label="Primary">
+          {TABS.map(({ to, label, match, icon: Icon }) => {
+            const active = match(pathname)
+            return (
+              <NavLink
+                key={label}
+                to={to}
+                className={`site-tabs__tab${active ? ' site-tabs__tab--active' : ''}`}
               >
-                <div className="site-more__handle" aria-hidden />
-                <p id={sheetTitleId} className="site-more__title">
-                  More
-                </p>
-                <nav className="site-more__nav" aria-label="More pages">
-                  {MORE_NAV.map(({ to, label, match }) => (
-                    <NavLink
-                      key={to}
-                      to={to}
-                      className={`site-more__link${match(pathname) ? ' site-more__link--active' : ''}`}
-                      onClick={() => setMoreOpen(false)}
-                    >
-                      {label}
-                    </NavLink>
-                  ))}
-                </nav>
-              </div>
-            </div>
-          ) : null}
-        </>
+                <span className="site-tabs__icon">
+                  <Icon />
+                </span>
+                <span className="site-tabs__label">{label}</span>
+              </NavLink>
+            )
+          })}
+        </nav>
       ) : null}
     </div>
   )
