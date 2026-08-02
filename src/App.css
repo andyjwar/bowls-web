@@ -78,6 +78,22 @@
   flex-shrink: 0;
 }
 
+/* Compact crest + season lockup used by the mobile bottom-tab chrome. */
+.site-brand--bar {
+  display: none;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 0;
+}
+
+.site-brand__season {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--fm-text-strong);
+  white-space: nowrap;
+}
+
 .site-brand__logo {
   width: 52px;
   height: 52px;
@@ -88,6 +104,15 @@
 
 .site-brand:hover .site-brand__logo {
   transform: scale(1.05);
+}
+
+/* Mobile primary navigation — hidden on desktop; see portrait media query. */
+.site-tabs {
+  display: none;
+}
+
+.site-more {
+  display: none;
 }
 
 .site-nav {
@@ -2530,55 +2555,199 @@ button.pill-nav__btn {
   text-underline-offset: 3px;
 }
 
-/* Portrait layout: keep the public site readable without side-scrolling. */
-@media (max-width: 640px) {
+/* Bottom-tab chrome: phones + narrow tablets, until the full top row fits. */
+@media (max-width: 900px) {
   .site-header__inner {
     min-height: 0;
-    padding: 0.5rem 1rem 0.6rem;
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    gap: 0.45rem 0.75rem;
+    padding: 0.55rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: nowrap;
   }
 
-  .site-brand {
-    grid-column: 1;
-    grid-row: 1;
+  .site-brand--desktop {
+    display: none;
   }
 
-  .site-brand__logo {
-    width: 42px;
-    height: 42px;
+  .site-brand--bar {
+    display: flex;
+    flex: 1;
+    min-width: 0;
   }
 
-  .site-header__actions {
-    grid-column: 3;
-    grid-row: 1;
-    align-self: center;
+  .site-brand--bar .site-brand__logo {
+    width: 28px;
+    height: 28px;
   }
 
   .site-nav {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    width: 100%;
-    overflow: visible;
+    display: none;
   }
 
-  .site-nav__link {
-    min-width: 0;
-    min-height: 2rem;
-    margin: 0;
-    padding: 0.35rem 0.2rem;
-    display: inline-flex;
+  .site-header__actions {
+    margin-left: 0;
+  }
+
+  .site-main--with-tabs {
+    padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .site-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 30;
+    background: var(--fm-header-bg);
+    border-top: 1px solid var(--fm-border);
+    padding: 0.3rem 0.35rem calc(0.35rem + env(safe-area-inset-bottom, 0px));
+    backdrop-filter: saturate(160%) blur(8px);
+  }
+
+  .site-tabs__tab {
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    font-size: 0.78rem;
-    line-height: 1.15;
-    white-space: normal;
+    gap: 0.15rem;
+    min-height: 3rem;
+    margin: 0;
+    padding: 0.25rem 0.2rem;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--fm-muted);
+    font: inherit;
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
   }
 
+  .site-tabs__tab:hover,
+  .site-tabs__tab:focus-visible {
+    color: var(--fm-text-strong);
+  }
+
+  .site-tabs__tab:focus-visible {
+    outline: 2px solid var(--fm-pitch);
+    outline-offset: 2px;
+  }
+
+  .site-tabs__tab--active {
+    color: var(--fm-text-strong);
+  }
+
+  .site-tabs__icon {
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    line-height: 0;
+  }
+
+  .site-tabs__label {
+    line-height: 1.1;
+  }
+
+  .site-more {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+  }
+
+  .site-more__scrim {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: rgba(15, 23, 42, 0.34);
+    cursor: pointer;
+  }
+
+  .bowls-app[data-theme='dark'] .site-more__scrim {
+    background: rgba(0, 0, 0, 0.55);
+  }
+
+  .site-more__sheet {
+    position: absolute;
+    left: 0.65rem;
+    right: 0.65rem;
+    bottom: calc(4.15rem + env(safe-area-inset-bottom, 0px));
+    background: var(--fm-card);
+    border: 1px solid var(--fm-border);
+    border-radius: 16px;
+    box-shadow: 0 14px 40px rgba(15, 23, 42, 0.18);
+    padding: 0.55rem 0 0.35rem;
+    animation: site-more-rise 0.18s ease-out;
+  }
+
+  @keyframes site-more-rise {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .site-more__handle {
+    width: 36px;
+    height: 4px;
+    margin: 0 auto 0.55rem;
+    border-radius: 999px;
+    background: var(--fm-border-strong);
+  }
+
+  .site-more__title {
+    margin: 0 1rem 0.25rem;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fm-muted);
+  }
+
+  .site-more__nav {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .site-more__link {
+    padding: 0.9rem 1.15rem;
+    color: var(--fm-text);
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-top: 1px solid var(--fm-border);
+  }
+
+  .site-more__link:first-child {
+    border-top: none;
+  }
+
+  .site-more__link--active {
+    color: var(--fm-text-strong);
+    font-weight: 700;
+  }
+
+  .site-more__link:hover,
+  .site-more__link:focus-visible {
+    background: var(--fm-nav-hover-bg);
+  }
+}
+
+/* Portrait layout: keep the public site readable without side-scrolling. */
+@media (max-width: 640px) {
   .site-main {
     padding-inline: 1rem;
   }
@@ -4716,6 +4885,8 @@ a.form-card:hover {
 @media print {
   .site-header,
   .site-footer,
+  .site-tabs,
+  .site-more,
   .league-banner,
   .league-toolbar,
   .match-toolbar,
