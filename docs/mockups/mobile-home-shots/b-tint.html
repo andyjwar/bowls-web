@@ -1,0 +1,233 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+
+  :root {
+    --bg: #f6f7f8;
+    --card: #ffffff;
+    --border: #eceef0;
+    --text: #1f2937;
+    --text-strong: #0b1418;
+    --muted: #6b7280;
+    --green: #256e3d;
+    --samford: #c5d4b8;
+    --twowood: #b8c9d4;
+    --triples: #d4c9a8;
+    --charcoal: #3a4048;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #e8eaed;
+    color: var(--text);
+    font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  h1 { font-size: 1.35rem; letter-spacing: -0.02em; color: var(--text-strong); margin: 0 0 0.35rem; }
+  .lead { margin: 0 0 2rem; color: var(--muted); font-size: 0.94rem; max-width: 46rem; line-height: 1.45; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem 2rem;
+    align-items: start;
+  }
+
+  .opt__tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--text-strong);
+    padding: 4px 10px;
+    margin-bottom: 0.45rem;
+  }
+  .opt__note { margin: 0 0 0.85rem; font-size: 0.86rem; color: var(--muted); line-height: 1.4; }
+  .opt__verdict { margin: 0.75rem 0 0; font-size: 0.84rem; color: var(--muted); line-height: 1.4; }
+  .opt__verdict strong { color: var(--text-strong); }
+
+  .phone {
+    width: 300px;
+    margin: 0 auto;
+    background: #1a1d21;
+    border-radius: 36px;
+    padding: 10px;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.16);
+  }
+  .phone__screen {
+    background: var(--bg);
+    border-radius: 28px;
+    overflow: hidden;
+    height: 640px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .scroll { flex: 1; overflow: hidden; padding: 0 14px 72px; }
+
+  /* App chrome (matches shipped bottom tabs) */
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px 8px;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+  }
+  .top__brand { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 700; color: var(--text-strong); }
+  .top__brand img { width: 28px; height: 28px; border-radius: 50%; }
+  .theme { width: 52px; height: 24px; border-radius: 12px; border: 1px solid var(--border); background: #f0f1f3; font-size: 11px; display: flex; align-items: center; justify-content: space-between; padding: 0 5px; color: var(--muted); }
+
+  .tabs {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    background: var(--card); border-top: 1px solid var(--border);
+    padding: 6px 4px 10px; font-size: 0.62rem; font-weight: 600; color: var(--muted);
+  }
+  .tabs span { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .tabs .on { color: var(--text-strong); }
+
+  .lockup { display: flex; align-items: flex-start; gap: 12px; margin: 14px 0 16px; }
+  .lockup img { width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0; }
+  .eyebrow { margin: 0; font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.16em; color: var(--muted); }
+  .htitle { margin: 0.2rem 0 0; font-size: 1.12rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; color: var(--text-strong); }
+
+  .sec-title { margin: 0 0 8px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: var(--muted); }
+
+  /* League tiles (current) */
+  .tile { border-radius: 14px; padding: 1rem 1.05rem; min-height: 76px; margin-bottom: 8px; position: relative; color: var(--text-strong); }
+  .tile--samford { background: var(--samford); }
+  .tile--twowood { background: var(--twowood); }
+  .tile--triples { background: var(--triples); }
+  .tile__name { font-size: 1.2rem; font-weight: 800; letter-spacing: -0.03em; }
+  .tile__days { font-size: 0.82rem; font-weight: 600; color: rgba(20,24,29,.7); margin-top: 0.15rem; }
+  .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+  .mini-grid .tile { margin: 0; min-height: 64px; font-size: 0.9rem; }
+  .mini-grid .tile__name { font-size: 1rem; }
+  .jump { background: var(--charcoal); color: #fff; border-radius: 14px; padding: 0.85rem 1rem; font-size: 0.88rem; font-weight: 700; margin-bottom: 14px; }
+
+  /* Day carousel (real structure) */
+  .day-caro {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--card);
+    margin-bottom: 16px;
+  }
+  .day-caro__cell {
+    padding: 0.55rem 0.5rem 0.65rem;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    min-height: 4.5rem;
+  }
+  .day-caro__cell:nth-child(2n) { border-right: none; }
+  .day-caro__cell:nth-last-child(-n+2) { border-bottom: none; }
+  .day-caro__cell--today { background: rgba(37, 110, 61, 0.06); }
+  .day-caro__weekday { display: block; font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+  .day-caro__cell--today .day-caro__weekday { color: var(--green); }
+  .day-caro__num { display: block; font-size: 1.15rem; font-weight: 800; color: var(--text-strong); line-height: 1.1; margin: 0.1rem 0 0.35rem; }
+  .day-caro__tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .day-caro__tag {
+    font-size: 0.62rem; font-weight: 700; padding: 2px 6px; border-radius: 4px;
+    background: var(--samford); color: var(--text-strong);
+  }
+  .day-caro__tag--blue { background: var(--twowood); }
+  .day-caro__none { color: var(--muted); font-size: 0.75rem; }
+
+  /* Menu blocks — option A: 2×2 */
+  .menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .menu-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 5.5rem;
+    padding: 0.85rem 0.9rem;
+    border-radius: 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text-strong);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  }
+  .menu-block__label { font-size: 0.95rem; font-weight: 700; letter-spacing: -0.01em; }
+  .menu-block__sub { margin-top: 0.2rem; font-size: 0.72rem; color: var(--muted); line-height: 1.25; }
+  .menu-block--wide {
+    grid-column: 1 / -1;
+    min-height: 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  .menu-block--wide .menu-block__label { font-size: 1rem; }
+  .menu-block__arrow { color: var(--muted); font-size: 1.1rem; }
+
+  /* Option B: tinted blocks */
+  .menu-grid--tint .menu-block { border: none; }
+  .menu-block--navy { background: #e8ecf4; }
+  .menu-block--green { background: #e6f0ea; }
+  .menu-block--sand { background: #f2efe6; }
+  .menu-block--slate { background: #eceef2; }
+
+  /* Option C: single column large rows */
+  .menu-list { display: flex; flex-direction: column; gap: 8px; }
+  .menu-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 0.9rem 1rem;
+    border-radius: 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text-strong);
+  }
+  .menu-row__icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: grid; place-items: center;
+    background: var(--bg); font-size: 1rem;
+  }
+  .menu-row__text { flex: 1; min-width: 0; }
+  .menu-row__label { font-weight: 700; font-size: 0.95rem; }
+  .menu-row__sub { font-size: 0.72rem; color: var(--muted); margin-top: 0.1rem; }
+  .menu-row__chev { color: var(--muted); }
+
+  .fade-bottom {
+    position: absolute; left: 0; right: 0; bottom: 52px; height: 40px;
+    background: linear-gradient(transparent, var(--bg));
+    pointer-events: none;
+  }
+
+body{margin:0;background:#e8eaed;display:flex;justify-content:center;padding:20px;}
+.phone{margin:0;}
+</style></head><body><div class="phone" id="shot-home-b">
+        <div class="phone__screen">
+          <div class="top"><div class="top__brand"><img src="../../../public/logo.png" alt="" />2026 season</div><div class="theme">☀ ☾</div></div>
+          <div class="scroll">
+            <div class="lockup">
+              <img src="../../../public/logo.png" alt="" />
+              <div><p class="eyebrow">2026 season</p><h2 class="htitle">Ipswich &amp; District Federation Bowls</h2></div>
+            </div>
+            <p class="sec-title">This week</p>
+            <div class="day-caro">
+              <div class="day-caro__cell day-caro__cell--today"><span class="day-caro__weekday">Today</span><span class="day-caro__num">2</span><span class="day-caro__tags"><span class="day-caro__tag">Samford</span></span></div>
+              <div class="day-caro__cell"><span class="day-caro__weekday">Mon</span><span class="day-caro__num">3</span><span class="day-caro__tags"><span class="day-caro__tag day-caro__tag--blue">Two Wood</span></span></div>
+              <div class="day-caro__cell"><span class="day-caro__weekday">Tue</span><span class="day-caro__num">4</span><span class="day-caro__tags"><span class="day-caro__tag day-caro__tag--blue">Two Wood</span></span></div>
+              <div class="day-caro__cell"><span class="day-caro__weekday">Wed</span><span class="day-caro__num">5</span><span class="day-caro__tags"><span class="day-caro__tag">Samford</span></span></div>
+            </div>
+            <p class="sec-title">Explore</p>
+            <div class="menu-grid menu-grid--tint">
+              <a class="menu-block menu-block--navy" href="#"><span class="menu-block__label">League officers</span><span class="menu-block__sub">Contacts &amp; roles</span></a>
+              <a class="menu-block menu-block--green" href="#"><span class="menu-block__label">Locations</span><span class="menu-block__sub">Clubs &amp; maps</span></a>
+              <a class="menu-block menu-block--sand" href="#"><span class="menu-block__label">Rules</span><span class="menu-block__sub">Handbook</span></a>
+              <a class="menu-block menu-block--slate" href="#"><span class="menu-block__label">Forms</span><span class="menu-block__sub">Downloads</span></a>
+            </div>
+          </div>
+          <nav class="tabs"><span class="on">⌂ Home</span><span>☰ Leagues</span><span>◆ Cups</span><span>··· More</span></nav>
+        </div>
+      </div></body></html>
