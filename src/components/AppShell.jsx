@@ -24,7 +24,7 @@ const SIDE_GROUPS = [
     heading: 'Club',
     items: [
       { to: '/officers', label: 'League Officers', match: (p) => p.startsWith('/officers') },
-      { to: '/locations', label: 'Locations', match: (p) => p.startsWith('/locations') },
+      { to: '/locations', label: 'Club Locations', match: (p) => p.startsWith('/locations') },
       { to: '/gallery', label: 'Gallery', match: (p) => p.startsWith('/gallery') },
     ],
   },

@@ -15,7 +15,7 @@ const COMPETITION_COLOR_OFFSET = 3
 const EXPLORE_BLOCKS = [
   {
     to: '/locations',
-    label: 'Locations',
+    label: 'Club Locations',
     sub: 'Clubs & maps',
     tint: 'green',
   },
