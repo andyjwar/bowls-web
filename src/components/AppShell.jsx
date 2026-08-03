@@ -3,46 +3,38 @@ import { ThemeToggle } from './ThemeToggle'
 import { useTheme } from '../hooks/useTheme'
 import { useSiteConfig } from '../hooks/useSiteConfig'
 
-/* Desktop icon rail — every page, short labels. Order mirrors the old top nav. */
-const RAIL = [
-  { to: '/', label: 'Home', title: 'Home', match: (p) => p === '/', icon: HomeIcon },
+/* Desktop grouped sidebar — Home first, then the pages under section headings. */
+const SIDE_GROUPS = [
   {
-    to: '/leagues',
-    label: 'Leagues',
-    title: 'Leagues',
-    match: (p) => p.startsWith('/leagues'),
-    icon: LeaguesIcon,
+    heading: null,
+    items: [{ to: '/', label: 'Home', match: (p) => p === '/' }],
   },
   {
-    to: '/competitions',
-    label: 'Cups',
-    title: 'Competitions',
-    match: (p) => p.startsWith('/competitions'),
-    icon: CupsIcon,
+    heading: 'Play',
+    items: [
+      { to: '/leagues', label: 'Leagues', match: (p) => p.startsWith('/leagues') },
+      {
+        to: '/competitions',
+        label: 'Competitions',
+        match: (p) => p.startsWith('/competitions'),
+      },
+    ],
   },
   {
-    to: '/officers',
-    label: 'Officers',
-    title: 'League Officers',
-    match: (p) => p.startsWith('/officers'),
-    icon: OfficersIcon,
+    heading: 'Club',
+    items: [
+      { to: '/officers', label: 'League Officers', match: (p) => p.startsWith('/officers') },
+      { to: '/locations', label: 'Locations', match: (p) => p.startsWith('/locations') },
+      { to: '/gallery', label: 'Gallery', match: (p) => p.startsWith('/gallery') },
+    ],
   },
   {
-    to: '/locations',
-    label: 'Locations',
-    title: 'Locations',
-    match: (p) => p.startsWith('/locations'),
-    icon: LocationsIcon,
+    heading: 'Info',
+    items: [
+      { to: '/rules', label: 'Rules', match: (p) => p.startsWith('/rules') },
+      { to: '/forms', label: 'Forms', match: (p) => p.startsWith('/forms') },
+    ],
   },
-  { to: '/rules', label: 'Rules', title: 'Rules', match: (p) => p.startsWith('/rules'), icon: RulesIcon },
-  {
-    to: '/gallery',
-    label: 'Gallery',
-    title: 'Gallery',
-    match: (p) => p.startsWith('/gallery'),
-    icon: GalleryIcon,
-  },
-  { to: '/forms', label: 'Forms', title: 'Forms', match: (p) => p.startsWith('/forms'), icon: FormsIcon },
 ]
 
 const TABS = [
@@ -102,47 +94,6 @@ function CupsIcon() {
   )
 }
 
-function OfficersIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <circle cx="12" cy="8" r="3.2" stroke="currentColor" strokeWidth="1.75" />
-      <path
-        d="M5.5 19.5c.8-3.2 3.3-5 6.5-5s5.7 1.8 6.5 5"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-      />
-    </svg>
-  )
-}
-
-function LocationsIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M12 21s-6.5-5.5-6.5-10a6.5 6.5 0 0 1 13 0c0 4.5-6.5 10-6.5 10Z"
-        stroke="currentColor"
-        strokeWidth="1.75"
-      />
-      <circle cx="12" cy="10.6" r="2.1" stroke="currentColor" strokeWidth="1.6" />
-    </svg>
-  )
-}
-
-function FormsIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <rect x="5" y="4" width="14" height="16" rx="1" stroke="currentColor" strokeWidth="1.75" />
-      <path
-        d="M9 9h6M9 12.5h6M9 16h4"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-      />
-    </svg>
-  )
-}
-
 function GalleryIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -189,33 +140,49 @@ export function AppShell() {
 
   return (
     <div className="bowls-app" data-theme={theme}>
-      {/* Desktop: fixed icon rail on the left (hidden ≤900px, where the
-          compact header bar + bottom tabs take over). */}
-      <nav className="site-rail" aria-label="Primary">
-        <NavLink to="/" className="site-rail__crest" aria-label="Home">
+      {/* Desktop: fixed grouped sidebar on the left (hidden ≤900px, where the
+          compact header bar + bottom tabs take over). On the home page the
+          hero already carries the full club name, so the sidebar shows just
+          the crest + season there. */}
+      <nav className="site-side" aria-label="Primary">
+        <NavLink to="/" className="site-side__brand" aria-label="Home">
           <img
+            className="site-side__crest"
             src={`${import.meta.env.BASE_URL}logo.png`}
-            alt="Ipswich & District Federation Bowls League"
+            alt=""
           />
-        </NavLink>
-        {RAIL.map(({ to, label, title, match, icon: Icon }) => {
-          const active = match(pathname)
-          return (
-            <NavLink
-              key={label}
-              to={to}
-              title={title}
-              className={`site-rail__item${active ? ' site-rail__item--active' : ''}`}
-            >
-              <span className="site-rail__icon">
-                <Icon />
+          <span className="site-side__brandtext">
+            {!isHome ? (
+              <span className="site-side__name">
+                Ipswich &amp; District Federation Bowls
               </span>
-              <span className="site-rail__label">{label}</span>
-            </NavLink>
-          )
-        })}
-        <span className="site-rail__spacer" />
-        <ThemeToggle value={theme} onChange={setTheme} />
+            ) : null}
+            <span className={`site-side__season${isHome ? ' site-side__season--solo' : ''}`}>
+              {activeSeason} season
+            </span>
+          </span>
+        </NavLink>
+        {SIDE_GROUPS.map(({ heading, items }) => (
+          <div key={heading ?? 'top'} className="site-side__section">
+            {heading ? <span className="site-side__heading">{heading}</span> : null}
+            {items.map(({ to, label, match }) => {
+              const active = match(pathname)
+              return (
+                <NavLink
+                  key={label}
+                  to={to}
+                  className={`site-side__link${active ? ' site-side__link--active' : ''}`}
+                >
+                  {label}
+                </NavLink>
+              )
+            })}
+          </div>
+        ))}
+        <span className="site-side__spacer" />
+        <div className="site-side__foot">
+          <ThemeToggle value={theme} onChange={setTheme} />
+        </div>
       </nav>
 
       <header className="site-header">
