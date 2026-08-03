@@ -23,6 +23,12 @@ const TABS = [
     match: (p) => p.startsWith('/competitions'),
     icon: CupsIcon,
   },
+  {
+    to: '/gallery',
+    label: 'Gallery',
+    match: (p) => p.startsWith('/gallery'),
+    icon: GalleryIcon,
+  },
   { to: '/rules', label: 'Rules', match: (p) => p.startsWith('/rules'), icon: RulesIcon },
 ]
 
@@ -57,6 +63,29 @@ function CupsIcon() {
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
       <path
         d="M12 3.5 14.6 9l5.9.5-4.5 3.8 1.4 5.7L12 16.2 6.6 19l1.4-5.7L3.5 9.5 9.4 9 12 3.5Z"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+function GalleryIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <rect
+        x="4"
+        y="5"
+        width="16"
+        height="14"
+        rx="1"
+        stroke="currentColor"
+        strokeWidth="1.75"
+      />
+      <circle cx="9" cy="10" r="1.5" stroke="currentColor" strokeWidth="1.5" />
+      <path
+        d="m5 17 4.5-4 3.5 3 2.5-2.5L19 17"
         stroke="currentColor"
         strokeWidth="1.75"
         strokeLinejoin="round"
