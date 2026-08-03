@@ -186,6 +186,15 @@ export function AdminHome({ admin }) {
             <span className="poster__days">Copy · review · publish</span>
             <TileArrow />
           </Link>
+          <Link
+            to="/admin/gallery"
+            className="jump-tile jump-tile--link poster--admin admin-manage-tile"
+          >
+            <span className="poster__name">Photo gallery</span>
+            <span className="poster__sub">Public website</span>
+            <span className="poster__days">Upload · captions · reorder</span>
+            <TileArrow />
+          </Link>
         </div>
       </section>
     </div>

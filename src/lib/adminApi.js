@@ -230,6 +230,36 @@ export async function deleteAdminCompetition(compId) {
   return api(`/competition/${encodeURIComponent(compId)}`, { method: 'DELETE' })
 }
 
+/** Gallery manifest — photo list in display order (admin editing view). */
+export async function fetchAdminGallery() {
+  return api('/gallery')
+}
+
+/** Upload photos (FormData with `photos` files) — server resizes + stores them. */
+export async function uploadAdminGalleryPhotos(formData) {
+  return api('/gallery/photos', { method: 'POST', body: formData })
+}
+
+/** Update one photo's caption and/or date (`YYYY-MM-DD` or empty). */
+export async function saveAdminGalleryPhoto(photoId, payload) {
+  return api(`/gallery/photos/${encodeURIComponent(photoId)}`, {
+    method: 'PUT',
+    body: JSON.stringify(payload),
+  })
+}
+
+/** Move a photo one slot `up` or `down` in display order. */
+export async function moveAdminGalleryPhoto(photoId, direction) {
+  return api(`/gallery/photos/${encodeURIComponent(photoId)}/move`, {
+    method: 'PUT',
+    body: JSON.stringify({ direction }),
+  })
+}
+
+export async function deleteAdminGalleryPhoto(photoId) {
+  return api(`/gallery/photos/${encodeURIComponent(photoId)}`, { method: 'DELETE' })
+}
+
 export async function importCsv(formData) {
   const res = await fetch(`${API_BASE}/import-csv`, {
     method: 'POST',

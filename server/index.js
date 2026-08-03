@@ -50,6 +50,13 @@ import {
   updateCompetitionRounds,
 } from './competitionsStore.js'
 import { getActiveSeason, setActiveSeason } from './siteConfigStore.js'
+import {
+  addGalleryPhotos,
+  deleteGalleryPhoto,
+  loadGallery,
+  moveGalleryPhoto,
+  updateGalleryPhoto,
+} from './galleryStore.js'
 import { isGitSyncEnabled, pullDataFromGitHub, scheduleDataPush } from './gitSync.js'
 
 function mergeVisionHints(samfordForm, hints) {
@@ -144,6 +151,15 @@ const rosterListUpload = multer({
       mt.includes('officedocument') ||
       (mt === 'application/octet-stream' && extOk)
     cb(ok ? null : new Error('Upload a .csv, .txt, or Excel .xlsx / .xls file'), ok)
+  },
+})
+
+const galleryUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 15 * 1024 * 1024, files: 20 },
+  fileFilter: (_req, file, cb) => {
+    const ok = file.mimetype.startsWith('image/')
+    cb(ok ? null : new Error('Only image files can be added to the gallery'), ok)
   },
 })
 
@@ -890,6 +906,70 @@ app.delete('/api/admin/competition/:compId', requireAuth, (req, res) => {
     res.json({ ok: true, ...out })
   } catch (e) {
     res.status(400).json({ error: e.message || 'Could not remove the competition' })
+  }
+})
+
+// ---------------------------------------------------------------------------
+// Photo gallery — manifest + resized images under public/data/, committed to
+// the repo by gitSync like every other admin edit.
+// ---------------------------------------------------------------------------
+app.get('/api/admin/gallery', requireAuth, (_req, res) => {
+  try {
+    res.json({ ok: true, ...loadGallery() })
+  } catch (e) {
+    res.status(500).json({ error: e.message || 'Could not load the gallery' })
+  }
+})
+
+app.post('/api/admin/gallery/photos', requireAuth, (req, res) => {
+  galleryUpload.array('photos', 20)(req, res, async (err) => {
+    if (err) {
+      res.status(400).json({ error: err.message || 'Upload failed' })
+      return
+    }
+    try {
+      if (!req.files?.length) {
+        res.status(400).json({ error: 'No photos uploaded' })
+        return
+      }
+      const { manifest, added } = await addGalleryPhotos(req.files)
+      res.json({ ok: true, added, photos: manifest.photos })
+    } catch (e) {
+      res.status(400).json({ error: e.message || 'Could not save the photos' })
+    }
+  })
+})
+
+app.put('/api/admin/gallery/photos/:photoId', requireAuth, (req, res) => {
+  try {
+    const photo = updateGalleryPhoto(String(req.params.photoId ?? '').trim(), {
+      caption: req.body?.caption,
+      date: req.body?.date,
+    })
+    res.json({ ok: true, photo })
+  } catch (e) {
+    res.status(400).json({ error: e.message || 'Could not update the photo' })
+  }
+})
+
+app.put('/api/admin/gallery/photos/:photoId/move', requireAuth, (req, res) => {
+  try {
+    const manifest = moveGalleryPhoto(
+      String(req.params.photoId ?? '').trim(),
+      req.body?.direction,
+    )
+    res.json({ ok: true, photos: manifest.photos })
+  } catch (e) {
+    res.status(400).json({ error: e.message || 'Could not reorder the photo' })
+  }
+})
+
+app.delete('/api/admin/gallery/photos/:photoId', requireAuth, (req, res) => {
+  try {
+    const manifest = deleteGalleryPhoto(String(req.params.photoId ?? '').trim())
+    res.json({ ok: true, photos: manifest.photos })
+  } catch (e) {
+    res.status(400).json({ error: e.message || 'Could not delete the photo' })
   }
 })
 

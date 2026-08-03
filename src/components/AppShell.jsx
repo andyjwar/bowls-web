@@ -10,6 +10,7 @@ const NAV = [
   { to: '/officers', label: 'League Officers', match: (p) => p.startsWith('/officers') },
   { to: '/locations', label: 'Locations', match: (p) => p.startsWith('/locations') },
   { to: '/rules', label: 'Rules', match: (p) => p.startsWith('/rules') },
+  { to: '/gallery', label: 'Gallery', match: (p) => p.startsWith('/gallery') },
   { to: '/forms', label: 'Forms', match: (p) => p.startsWith('/forms') },
 ]
 
