@@ -11,16 +11,50 @@ function photoThumbUrl(photo) {
   return `${import.meta.env.BASE_URL}data/gallery/${encodeURIComponent(photo.thumb || photo.file)}`
 }
 
-/** One editable row: thumbnail, caption + date fields, reorder, delete. */
+/** One editable row: focal-point picker + crop preview, caption + date fields, reorder, delete. */
 function PhotoRow({ photo, first, last, busy, onSave, onMove, onDelete }) {
   const [caption, setCaption] = useState(photo.caption ?? '')
   const [date, setDate] = useState(photo.date ?? '')
+  const [focusX, setFocusX] = useState(photo.focusX ?? 50)
+  const [focusY, setFocusY] = useState(photo.focusY ?? 50)
   const [confirming, setConfirming] = useState(false)
-  const dirty = caption !== (photo.caption ?? '') || date !== (photo.date ?? '')
+  const dirty =
+    caption !== (photo.caption ?? '') ||
+    date !== (photo.date ?? '') ||
+    focusX !== (photo.focusX ?? 50) ||
+    focusY !== (photo.focusY ?? 50)
+
+  function handlePickFocus(e) {
+    const rect = e.currentTarget.getBoundingClientRect()
+    setFocusX(Math.round(((e.clientX - rect.left) / rect.width) * 100))
+    setFocusY(Math.round(((e.clientY - rect.top) / rect.height) * 100))
+  }
 
   return (
     <li className="admin-gallery-row">
-      <img className="admin-gallery-row__thumb" src={photoThumbUrl(photo)} alt="" />
+      <div className="admin-gallery-row__images">
+        <button
+          type="button"
+          className="admin-gallery-focus"
+          onClick={handlePickFocus}
+          title="Click the most important part of the photo — the thumbnail crop keeps it in view"
+        >
+          <img className="admin-gallery-focus__img" src={photoThumbUrl(photo)} alt="" />
+          <span
+            className="admin-gallery-focus__dot"
+            style={{ left: `${focusX}%`, top: `${focusY}%` }}
+          />
+        </button>
+        <span className="admin-gallery-preview">
+          <img
+            className="admin-gallery-preview__img"
+            src={photoThumbUrl(photo)}
+            alt=""
+            style={{ objectPosition: `${focusX}% ${focusY}%` }}
+          />
+          <span className="admin-gallery-preview__label">Thumbnail</span>
+        </span>
+      </div>
       <div className="admin-gallery-row__fields">
         <input
           type="text"
@@ -42,7 +76,7 @@ function PhotoRow({ photo, first, last, busy, onSave, onMove, onDelete }) {
           type="button"
           className="admin-btn"
           disabled={busy || !dirty}
-          onClick={() => onSave(photo.id, { caption, date })}
+          onClick={() => onSave(photo.id, { caption, date, focusX, focusY })}
         >
           Save
         </button>
@@ -174,6 +208,9 @@ export function AdminGalleryPanel() {
       <p className="page-lead">
         Photos appear on the public Gallery page, newest first (use the arrows to
         reorder). Uploads are resized automatically, so full-size phone photos are fine.
+        Click the important part of a photo (a face, the action) to choose what the
+        square-ish thumbnail keeps in view — the Thumbnail box shows the result, and
+        opening a photo on the site always shows the full picture.
       </p>
 
       <label className="admin-upload">

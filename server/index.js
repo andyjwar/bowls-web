@@ -945,6 +945,8 @@ app.put('/api/admin/gallery/photos/:photoId', requireAuth, (req, res) => {
     const photo = updateGalleryPhoto(String(req.params.photoId ?? '').trim(), {
       caption: req.body?.caption,
       date: req.body?.date,
+      focusX: req.body?.focusX,
+      focusY: req.body?.focusY,
     })
     res.json({ ok: true, photo })
   } catch (e) {

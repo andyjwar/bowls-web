@@ -6,6 +6,11 @@ function photoUrl(name) {
   return `${import.meta.env.BASE_URL}data/gallery/${encodeURIComponent(name)}`
 }
 
+/** Which part of the photo the grid crop keeps — set per photo in the admin. */
+function focusPosition(photo) {
+  return `${photo.focusX ?? 50}% ${photo.focusY ?? 50}%`
+}
+
 function photoYear(photo) {
   const source = photo.date || photo.addedAt || ''
   const year = String(source).slice(0, 4)
@@ -164,6 +169,7 @@ export function GalleryPage() {
                       className="gallery-item__img"
                       src={photoUrl(photo.thumb || photo.file)}
                       alt={photo.caption || 'Gallery photo'}
+                      style={{ objectPosition: focusPosition(photo) }}
                       loading="lazy"
                     />
                   </button>

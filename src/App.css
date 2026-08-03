@@ -7035,12 +7035,61 @@ a.form-card:hover {
   border-top: 1px solid var(--fm-border);
 }
 
-.admin-gallery-row__thumb {
-  width: 96px;
-  height: 72px;
-  object-fit: cover;
+.admin-gallery-row__images {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
   flex-shrink: 0;
+}
+
+/* Click-to-set focal point: full photo with a marker dot */
+.admin-gallery-focus {
+  position: relative;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: crosshair;
+  line-height: 0;
+  display: block;
+}
+
+.admin-gallery-focus__img {
+  width: 132px;
+  max-height: 132px;
+  object-fit: contain;
   background: var(--fm-row-hi);
+}
+
+.admin-gallery-focus__dot {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background: var(--fm-pitch);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* Live preview of the public grid crop */
+.admin-gallery-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  align-items: center;
+}
+
+.admin-gallery-preview__img {
+  width: 96px;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--fm-row-hi);
+}
+
+.admin-gallery-preview__label {
+  font-size: 0.7rem;
+  color: var(--fm-muted);
 }
 
 .admin-gallery-row__fields {
@@ -7081,7 +7130,7 @@ a.form-card:hover {
   }
 
   .admin-gallery-row__fields {
-    flex-basis: calc(100% - 96px - 1rem);
+    flex-basis: 100%;
   }
 
   .admin-gallery-row__actions {
