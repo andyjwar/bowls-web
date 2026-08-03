@@ -117,11 +117,17 @@
 }
 
 /* ────────────────────────────────────────────────────────────────────
-   Desktop icon rail — fixed left column with icon + short label per
-   page (the ≤900px layout keeps the compact header bar + bottom tabs).
+   Desktop grouped sidebar — fixed left column with Play / Club / Info
+   section headings (the ≤900px layout keeps the compact header bar +
+   bottom tabs). Navy accent bar marks the active page.
    ──────────────────────────────────────────────────────────────────── */
-.site-rail {
+.site-side {
   display: none;
+  --side-accent: #1d3a6e;
+}
+
+.bowls-app[data-theme='dark'] .site-side {
+  --side-accent: #7da2e0;
 }
 
 @media (min-width: 901px) {
@@ -130,84 +136,115 @@
   }
 
   .bowls-app {
-    padding-left: 84px;
+    padding-left: 224px;
   }
 
-  .site-rail {
+  .site-side {
     position: fixed;
     left: 0;
     top: 0;
     bottom: 0;
-    width: 84px;
+    width: 224px;
     z-index: 25;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 1.1rem 0 0.9rem;
+    padding: 1.4rem 0 1rem;
     background: var(--fm-card);
     border-right: 1px solid var(--fm-border);
     overflow-y: auto;
   }
 
-  .site-rail__crest {
-    display: block;
-    line-height: 0;
-    margin-bottom: 0.8rem;
-    flex-shrink: 0;
+  .site-side__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0 1.35rem 1.1rem;
+    text-decoration: none;
   }
 
-  .site-rail__crest img {
-    width: 38px;
-    height: 38px;
+  .site-side__crest {
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
+    flex-shrink: 0;
     transition: transform 0.15s ease;
   }
 
-  .site-rail__crest:hover img {
-    transform: scale(1.06);
+  .site-side__brand:hover .site-side__crest {
+    transform: scale(1.05);
   }
 
-  .site-rail__item {
-    width: 66px;
-    padding: 0.5rem 0 0.4rem;
+  .site-side__brandtext {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 0.25rem;
-    flex-shrink: 0;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+
+  .site-side__name {
+    font-size: 0.82rem;
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: -0.005em;
+    color: var(--fm-text-strong);
+  }
+
+  .site-side__season {
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
     color: var(--fm-muted);
+  }
+
+  /* Home: the hero already shows the club name, so the season stands alone. */
+  .site-side__season--solo {
+    font-size: 0.8rem;
+    color: var(--fm-text-strong);
+  }
+
+  .site-side__section {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .site-side__heading {
+    font-size: 0.64rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fm-muted);
+    padding: 1.05rem 1.35rem 0.35rem;
+  }
+
+  .site-side__link {
+    padding: 0.55rem 1.35rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--fm-muted-strong);
     text-decoration: none;
-    border-radius: 8px;
-    font-size: 0.625rem;
-    font-weight: 600;
     transition: color 0.15s, background 0.15s;
   }
 
-  .site-rail__item:hover {
+  .site-side__link:hover {
     color: var(--fm-text-strong);
     background: var(--fm-nav-hover-bg);
   }
 
-  .site-rail__item--active {
-    color: var(--fm-pitch);
-    background: var(--fm-pitch-soft);
+  .site-side__link--active {
+    color: var(--fm-text-strong);
+    font-weight: 700;
+    background: var(--fm-bg);
+    box-shadow: inset 3px 0 0 var(--side-accent);
   }
 
-  .site-rail__icon {
-    display: grid;
-    place-items: center;
-    width: 22px;
-    height: 22px;
-    line-height: 0;
-  }
-
-  .site-rail__label {
-    line-height: 1.1;
-  }
-
-  .site-rail__spacer {
+  .site-side__spacer {
     margin-top: auto;
+  }
+
+  .site-side__foot {
+    padding: 0.9rem 1.35rem 0;
+    border-top: 1px solid var(--fm-border);
   }
 }
 
@@ -405,7 +442,9 @@
 
 .poster-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* minmax(0, …) lets the tiles shrink below their content's min width on
+     narrow desktop windows (sidebar takes 224px of the viewport). */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
 }
 
@@ -4934,7 +4973,7 @@ a.form-card:hover {
   .site-header,
   .site-footer,
   .site-tabs,
-  .site-rail,
+  .site-side,
   .league-banner,
   .league-toolbar,
   .match-toolbar,
