@@ -70,6 +70,15 @@ function cleanDate(value) {
   return s
 }
 
+/** Thumbnail focal point: percentage 0–100 across the image (50 = centre). */
+function cleanFocus(value) {
+  const n = Number(value)
+  if (!Number.isFinite(n) || n < 0 || n > 100) {
+    throw new Error('Focus point must be between 0 and 100')
+  }
+  return Math.round(n)
+}
+
 /**
  * Resize + store uploaded images (multer memory files) and prepend them to
  * the manifest. Returns the manifest and the new photo entries.
@@ -115,12 +124,14 @@ export async function addGalleryPhotos(files) {
   return { manifest, added }
 }
 
-export function updateGalleryPhoto(photoId, { caption, date } = {}) {
+export function updateGalleryPhoto(photoId, { caption, date, focusX, focusY } = {}) {
   const manifest = loadGallery()
   const photo = manifest.photos.find((p) => p.id === photoId)
   if (!photo) throw new Error('Photo not found')
   if (caption !== undefined) photo.caption = cleanCaption(caption)
   if (date !== undefined) photo.date = cleanDate(date)
+  if (focusX !== undefined) photo.focusX = cleanFocus(focusX)
+  if (focusY !== undefined) photo.focusY = cleanFocus(focusY)
   saveGallery(manifest)
   return photo
 }
