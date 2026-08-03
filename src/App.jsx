@@ -6,6 +6,7 @@ import { CompetitionsPage } from './pages/CompetitionsPage'
 import { OfficersPage } from './pages/OfficersPage'
 import { LocationsPage } from './pages/LocationsPage'
 import { RulesPage } from './pages/RulesPage'
+import { GalleryPage } from './pages/GalleryPage'
 import { FormsPage } from './pages/FormsPage'
 import { WebFormPage } from './pages/WebFormPage'
 import { AdminPage } from './pages/AdminPage'
@@ -31,6 +32,7 @@ export default function App() {
         <Route path="officers" element={<OfficersPage />} />
         <Route path="locations" element={<LocationsPage />} />
         <Route path="rules" element={<RulesPage />} />
+        <Route path="gallery" element={<GalleryPage />} />
         <Route path="forms" element={<FormsPage />} />
         <Route path="forms/:formId" element={<WebFormPage />} />
         <Route path="admin/*" element={<AdminPage />} />

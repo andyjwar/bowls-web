@@ -6,6 +6,7 @@ import { AdminHome } from '../components/AdminHome'
 import { AdminLeagueHistory } from '../components/AdminLeagueHistory'
 import { AdminSeasonPage } from '../components/AdminSeasonPage'
 import { AdminFormSubmissionsPanel } from '../components/AdminFormSubmissionsPanel'
+import { AdminGalleryPanel } from '../components/AdminGalleryPanel'
 import { AdminScoreEntry } from '../components/AdminScoreEntry'
 import { useAdmin } from '../hooks/useAdmin'
 import { rebuildCsvFixtureEntriesFromSavedWeeks } from '../lib/adminCsvHydrate'
@@ -425,6 +426,15 @@ function AdminFormsPage() {
   )
 }
 
+function AdminGalleryPage() {
+  return (
+    <div className="page page--admin">
+      <AdminBackLink />
+      <AdminGalleryPanel />
+    </div>
+  )
+}
+
 export function AdminPage() {
   const admin = useAdmin()
   const [password, setPassword] = useState('')
@@ -486,6 +496,7 @@ export function AdminPage() {
       <Route path="teams" element={<Navigate to="/admin/season" replace />} />
       <Route path="players" element={<Navigate to="/admin/season" replace />} />
       <Route path="forms" element={<AdminFormsPage />} />
+      <Route path="gallery" element={<AdminGalleryPage />} />
       <Route path="*" element={<Navigate to="/admin" replace />} />
     </Routes>
   )

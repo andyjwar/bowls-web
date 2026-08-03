@@ -89,14 +89,39 @@ function gitBlobSha(buffer) {
     .digest('hex')
 }
 
-function listLocalDataFiles() {
-  if (!existsSync(DATA_DIR)) return []
-  return readdirSync(DATA_DIR, { withFileTypes: true })
-    .filter((e) => e.isFile() && e.name.endsWith('.json'))
-    .map((e) => ({
-      repoPath: `${REPO_PREFIX}${e.name}`,
-      localPath: join(DATA_DIR, e.name),
-    }))
+/** All files under `public/data/` (recursive — gallery images live in a subdir). */
+function listLocalDataFiles(dir = DATA_DIR, prefix = '') {
+  if (!existsSync(dir)) return []
+  const out = []
+  for (const e of readdirSync(dir, { withFileTypes: true })) {
+    if (e.name.startsWith('.')) continue
+    if (e.isDirectory()) {
+      out.push(...listLocalDataFiles(join(dir, e.name), `${prefix}${e.name}/`))
+    } else if (e.isFile()) {
+      out.push({
+        repoPath: `${REPO_PREFIX}${prefix}${e.name}`,
+        localPath: join(dir, e.name),
+      })
+    }
+  }
+  return out
+}
+
+/** JSON is committed inline as text; anything else (images) goes up as a base64 blob. */
+function isTextDataFile(repoPath) {
+  return repoPath.endsWith('.json')
+}
+
+/**
+ * Repo paths (relative to `public/data/`) whose deletion has been requested
+ * by an admin action (e.g. removing a gallery photo). Applied — and only then
+ * cleared — by the next successful push.
+ */
+const pendingDeletions = new Set()
+
+export function registerDataFileDeletion(relPath) {
+  const clean = String(relPath || '').replace(/^\/+/, '')
+  if (clean) pendingDeletions.add(`${REPO_PREFIX}${clean}`)
 }
 
 /**
@@ -116,6 +141,7 @@ export async function pullDataFromGitHub() {
     const localPath = join(DATA_DIR, repoPath.slice(REPO_PREFIX.length))
     if (existsSync(localPath) && gitBlobSha(readFileSync(localPath)) === blobSha) continue
     const blob = await githubRequest(`/git/blobs/${blobSha}`)
+    mkdirSync(dirname(localPath), { recursive: true })
     writeFileSync(localPath, Buffer.from(blob.content, 'base64'))
     updated += 1
   }
@@ -126,10 +152,11 @@ export async function pullDataFromGitHub() {
 }
 
 /**
- * Commit every changed/new file in `public/data/` to the branch as one commit.
+ * Commit every changed/new file in `public/data/` — plus any deletions
+ * registered via `registerDataFileDeletion()` — to the branch as one commit.
  * Returns the new commit SHA, or null when nothing changed.
- * Note: files deleted locally are left as-is in the repo (deletions never
- * happen through the admin API).
+ * Note: files that merely go missing locally are left as-is in the repo;
+ * only explicitly registered deletions are removed.
  */
 async function pushDataToGitHub() {
   for (let attempt = 1; attempt <= MAX_PUSH_ATTEMPTS; attempt += 1) {
@@ -137,27 +164,65 @@ async function pushDataToGitHub() {
 
     const changed = []
     for (const { repoPath, localPath } of listLocalDataFiles()) {
+      if (pendingDeletions.has(repoPath)) continue
       const content = readFileSync(localPath)
       if (remote.files.get(repoPath) !== gitBlobSha(content)) {
         changed.push({ repoPath, content })
       }
     }
-    if (changed.length === 0) return null
+
+    // Deletions only make sense for paths the repo actually has; anything
+    // else (e.g. a photo added and removed between pushes) is dropped.
+    const deletions = [...pendingDeletions].filter((p) => remote.files.has(p))
+    for (const p of pendingDeletions) {
+      if (!remote.files.has(p)) pendingDeletions.delete(p)
+    }
+
+    if (changed.length === 0 && deletions.length === 0) return null
+
+    // JSON goes into the tree as inline text; binary files (gallery images)
+    // must first become base64 blobs — inline `content` is UTF-8 only.
+    const treeEntries = []
+    for (const { repoPath, content } of changed) {
+      if (isTextDataFile(repoPath)) {
+        treeEntries.push({
+          path: repoPath,
+          mode: '100644',
+          type: 'blob',
+          content: content.toString('utf8'),
+        })
+      } else {
+        const blob = await githubRequest('/git/blobs', {
+          method: 'POST',
+          body: JSON.stringify({
+            content: content.toString('base64'),
+            encoding: 'base64',
+          }),
+        })
+        treeEntries.push({
+          path: repoPath,
+          mode: '100644',
+          type: 'blob',
+          sha: blob.sha,
+        })
+      }
+    }
+    for (const repoPath of deletions) {
+      treeEntries.push({ path: repoPath, mode: '100644', type: 'blob', sha: null })
+    }
 
     const newTree = await githubRequest('/git/trees', {
       method: 'POST',
       body: JSON.stringify({
         base_tree: remote.headTreeSha,
-        tree: changed.map(({ repoPath, content }) => ({
-          path: repoPath,
-          mode: '100644',
-          type: 'blob',
-          content: content.toString('utf8'),
-        })),
+        tree: treeEntries,
       }),
     })
 
-    const names = changed.map((c) => c.repoPath.slice(REPO_PREFIX.length)).join(', ')
+    const names = [
+      ...changed.map((c) => c.repoPath.slice(REPO_PREFIX.length)),
+      ...deletions.map((p) => `-${p.slice(REPO_PREFIX.length)}`),
+    ].join(', ')
     const commit = await githubRequest('/git/commits', {
       method: 'POST',
       body: JSON.stringify({
@@ -172,8 +237,9 @@ async function pushDataToGitHub() {
         method: 'PATCH',
         body: JSON.stringify({ sha: commit.sha, force: false }),
       })
+      for (const p of deletions) pendingDeletions.delete(p)
       console.log(
-        `[git-sync] Pushed ${changed.length} file(s) to ${GITHUB_REPO}@${GITHUB_BRANCH}: ` +
+        `[git-sync] Pushed ${changed.length + deletions.length} file(s) to ${GITHUB_REPO}@${GITHUB_BRANCH}: ` +
           `${names} (commit ${commit.sha.slice(0, 7)})`,
       )
       return commit.sha
