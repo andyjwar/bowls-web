@@ -111,48 +111,104 @@
   display: none;
 }
 
-.site-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0;
-  align-items: center;
-  flex: 1;
-  min-width: 0;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.site-nav::-webkit-scrollbar {
-  display: none;
-}
-
-.site-nav__link {
-  padding: 0.6rem 0;
-  margin-right: 1.5rem;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--fm-muted-strong);
-  text-decoration: none;
-  white-space: nowrap;
-  transition: color 0.15s;
-}
-
-.site-nav__link:last-child {
-  margin-right: 0;
-}
-
-.site-nav__link:hover {
-  color: var(--fm-text-strong);
-}
-
-.site-nav__link--active {
-  color: var(--fm-text-strong);
-  font-weight: 600;
-}
-
 .site-header__actions {
   margin-left: auto;
   flex-shrink: 0;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   Desktop icon rail — fixed left column with icon + short label per
+   page (the ≤900px layout keeps the compact header bar + bottom tabs).
+   ──────────────────────────────────────────────────────────────────── */
+.site-rail {
+  display: none;
+}
+
+@media (min-width: 901px) {
+  .site-header {
+    display: none;
+  }
+
+  .bowls-app {
+    padding-left: 84px;
+  }
+
+  .site-rail {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 84px;
+    z-index: 25;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 1.1rem 0 0.9rem;
+    background: var(--fm-card);
+    border-right: 1px solid var(--fm-border);
+    overflow-y: auto;
+  }
+
+  .site-rail__crest {
+    display: block;
+    line-height: 0;
+    margin-bottom: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  .site-rail__crest img {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    transition: transform 0.15s ease;
+  }
+
+  .site-rail__crest:hover img {
+    transform: scale(1.06);
+  }
+
+  .site-rail__item {
+    width: 66px;
+    padding: 0.5rem 0 0.4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    flex-shrink: 0;
+    color: var(--fm-muted);
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 0.625rem;
+    font-weight: 600;
+    transition: color 0.15s, background 0.15s;
+  }
+
+  .site-rail__item:hover {
+    color: var(--fm-text-strong);
+    background: var(--fm-nav-hover-bg);
+  }
+
+  .site-rail__item--active {
+    color: var(--fm-pitch);
+    background: var(--fm-pitch-soft);
+  }
+
+  .site-rail__icon {
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    line-height: 0;
+  }
+
+  .site-rail__label {
+    line-height: 1.1;
+  }
+
+  .site-rail__spacer {
+    margin-top: auto;
+  }
 }
 
 /* ────────────────────────────────────────────────────────────────────
@@ -2639,10 +2695,6 @@ button.pill-nav__btn {
     flex-wrap: nowrap;
   }
 
-  .site-brand--desktop {
-    display: none;
-  }
-
   .site-brand--bar {
     display: flex;
     flex: 1;
@@ -2652,10 +2704,6 @@ button.pill-nav__btn {
   .site-brand--bar .site-brand__logo {
     width: 28px;
     height: 28px;
-  }
-
-  .site-nav {
-    display: none;
   }
 
   .site-header__actions {
@@ -4886,6 +4934,7 @@ a.form-card:hover {
   .site-header,
   .site-footer,
   .site-tabs,
+  .site-rail,
   .league-banner,
   .league-toolbar,
   .match-toolbar,
