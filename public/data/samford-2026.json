@@ -3337,7 +3337,10 @@
                 {
                   "home": "Melton Purples",
                   "away": "Kirton & Falkenham",
-                  "postponed": true,
+                  "homeShots": 43,
+                  "awayShots": 31,
+                  "homePoints": 5,
+                  "awayPoints": 0,
                   "matchDate": "2026-07-08"
                 },
                 {
