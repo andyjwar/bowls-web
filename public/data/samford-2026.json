@@ -2254,6 +2254,14 @@
                   "awayShots": 55,
                   "homePoints": 5,
                   "awayPoints": 1
+                },
+                {
+                  "home": "Newton Road",
+                  "away": "East Bergholt",
+                  "homeShots": 52,
+                  "awayShots": 49,
+                  "homePoints": 5,
+                  "awayPoints": 1
                 }
               ]
             }
