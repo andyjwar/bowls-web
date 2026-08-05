@@ -1376,10 +1376,7 @@
                 {
                   "home": "Bredfield",
                   "away": "Shotley Rose",
-                  "homeShots": 56,
-                  "awayShots": 48,
-                  "homePoints": 4,
-                  "awayPoints": 2,
+                  "postponed": true,
                   "matchDate": "2026-05-18"
                 },
                 {
