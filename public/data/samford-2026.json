@@ -1454,10 +1454,7 @@
                 {
                   "home": "Margaret Catchpole Blues",
                   "away": "Bredfield",
-                  "homeShots": 43,
-                  "awayShots": 68,
-                  "homePoints": 0,
-                  "awayPoints": 6,
+                  "postponed": true,
                   "matchDate": "2026-06-08"
                 },
                 {
