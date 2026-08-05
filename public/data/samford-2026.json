@@ -1500,10 +1500,7 @@
                 {
                   "home": "Bredfield",
                   "away": "Gipping EE Wolves",
-                  "homeShots": 42,
-                  "awayShots": 56,
-                  "homePoints": 0,
-                  "awayPoints": 6,
+                  "postponed": true,
                   "matchDate": "2026-06-22"
                 },
                 {
