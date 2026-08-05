@@ -1677,6 +1677,11 @@
                   "awayShots": 40,
                   "homePoints": 5,
                   "awayPoints": 1
+                },
+                {
+                  "home": "Bredfield",
+                  "away": "Margaret Catchpole Blues",
+                  "postponed": true
                 }
               ]
             }
