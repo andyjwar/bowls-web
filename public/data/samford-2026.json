@@ -1419,10 +1419,7 @@
                 {
                   "home": "Bredfield",
                   "away": "Waldringfield Ducks",
-                  "homeShots": 56,
-                  "awayShots": 55,
-                  "homePoints": 5,
-                  "awayPoints": 1,
+                  "postponed": true,
                   "matchDate": "2026-06-01"
                 },
                 {
