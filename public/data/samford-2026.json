@@ -1544,10 +1544,7 @@
                 {
                   "home": "Kesgrave Greens",
                   "away": "Bredfield",
-                  "homeShots": 54,
-                  "awayShots": 46,
-                  "homePoints": 5,
-                  "awayPoints": 1,
+                  "postponed": true,
                   "matchDate": "2026-06-29"
                 }
               ],
