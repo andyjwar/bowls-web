@@ -1402,10 +1402,7 @@
                 {
                   "home": "Brantham",
                   "away": "Bredfield",
-                  "homeShots": 28,
-                  "awayShots": 88,
-                  "homePoints": 0,
-                  "awayPoints": 6,
+                  "postponed": true,
                   "matchDate": "2026-05-25"
                 },
                 {
