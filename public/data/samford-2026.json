@@ -1226,6 +1226,14 @@
                   "awayShots": 44,
                   "homePoints": 5,
                   "awayPoints": 1
+                },
+                {
+                  "home": "Sproughton Reds",
+                  "away": "Kesgrave Blues",
+                  "homeShots": 50,
+                  "awayShots": 58,
+                  "homePoints": 1,
+                  "awayPoints": 5
                 }
               ]
             }
