@@ -2823,6 +2823,14 @@
                   "awayShots": 46,
                   "homePoints": 6,
                   "awayPoints": 0
+                },
+                {
+                  "home": "E-of-E Co-op Blues",
+                  "away": "Ipswich & District",
+                  "homeShots": 70,
+                  "awayShots": 36,
+                  "homePoints": 5,
+                  "awayPoints": 1
                 }
               ]
             }
