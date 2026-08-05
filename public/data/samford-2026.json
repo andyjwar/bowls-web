@@ -2839,6 +2839,14 @@
                   "awayShots": 55,
                   "homePoints": 5,
                   "awayPoints": 1
+                },
+                {
+                  "home": "Kirton B",
+                  "away": "Capel Kestrels",
+                  "homeShots": 71,
+                  "awayShots": 41,
+                  "homePoints": 5.5,
+                  "awayPoints": 0.5
                 }
               ]
             }
