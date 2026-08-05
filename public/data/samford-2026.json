@@ -1642,6 +1642,14 @@
                   "awayShots": 49,
                   "homePoints": 4,
                   "awayPoints": 2
+                },
+                {
+                  "home": "Brantham",
+                  "away": "Waldringfield Ducks",
+                  "homeShots": 60,
+                  "awayShots": 65,
+                  "homePoints": 2,
+                  "awayPoints": 4
                 }
               ],
               "13": [
