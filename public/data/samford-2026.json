@@ -3606,6 +3606,14 @@
                   "awayShots": 23,
                   "homePoints": 5,
                   "awayPoints": 0
+                },
+                {
+                  "home": "Kirton & Falkenham",
+                  "away": "Felixstowe BC",
+                  "homeShots": 30,
+                  "awayShots": 47,
+                  "homePoints": 1,
+                  "awayPoints": 4
                 }
               ]
             }
