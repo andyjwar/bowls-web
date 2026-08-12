@@ -3407,7 +3407,10 @@
                 {
                   "home": "Felixstowe BC",
                   "away": "Kesgrave",
-                  "postponed": true,
+                  "homeShots": 60,
+                  "awayShots": 19,
+                  "homePoints": 5,
+                  "awayPoints": 0,
                   "matchDate": "2026-06-24"
                 },
                 {
