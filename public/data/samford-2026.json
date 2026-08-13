@@ -3627,6 +3627,14 @@
                   "awayShots": 22,
                   "homePoints": 5,
                   "awayPoints": 0
+                },
+                {
+                  "home": "Felixstowe BC",
+                  "away": "Melton Purples",
+                  "homeShots": 33,
+                  "awayShots": 35,
+                  "homePoints": 1,
+                  "awayPoints": 4
                 }
               ]
             }
