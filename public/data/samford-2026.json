@@ -3643,6 +3643,14 @@
                   "awayShots": 31,
                   "homePoints": 5,
                   "awayPoints": 0
+                },
+                {
+                  "home": "Kesgrave",
+                  "away": "Stone Lodge",
+                  "homeShots": 24,
+                  "awayShots": 26,
+                  "homePoints": 1,
+                  "awayPoints": 4
                 }
               ]
             }
