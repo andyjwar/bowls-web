@@ -3593,6 +3593,14 @@
                   "awayShots": 25,
                   "homePoints": 4,
                   "awayPoints": 1
+                },
+                {
+                  "home": "Kesgrave",
+                  "away": "Kirton & Falkenham",
+                  "homeShots": 17,
+                  "awayShots": 29,
+                  "homePoints": 0.5,
+                  "awayPoints": 4.5
                 }
               ],
               "13": [
