@@ -3608,7 +3608,9 @@
                   "home": "Westerfield",
                   "away": "Kesgrave",
                   "homeShots": 31,
-                  "awayShots": 19
+                  "awayShots": 19,
+                  "homePoints": 5,
+                  "awayPoints": 0
                 },
                 {
                   "home": "Melton Purples",
