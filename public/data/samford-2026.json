@@ -3584,7 +3584,10 @@
                 {
                   "home": "Felixstowe BC",
                   "away": "Stone Lodge",
-                  "postponed": true
+                  "homeShots": 67,
+                  "awayShots": 25,
+                  "homePoints": 5,
+                  "awayPoints": 0
                 },
                 {
                   "home": "Holbrook",
