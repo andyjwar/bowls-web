@@ -1748,6 +1748,14 @@
                   "awayShots": 37,
                   "homePoints": 6,
                   "awayPoints": 0
+                },
+                {
+                  "home": "Kesgrave Greens",
+                  "away": "Margaret Catchpole Blues",
+                  "homeShots": 69,
+                  "awayShots": 31,
+                  "homePoints": 6,
+                  "awayPoints": 0
                 }
               ]
             }
