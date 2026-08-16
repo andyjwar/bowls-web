@@ -1278,6 +1278,14 @@
                   "awayShots": 49,
                   "homePoints": 5,
                   "awayPoints": 1
+                },
+                {
+                  "home": "Bealings",
+                  "away": "California",
+                  "homeShots": 41,
+                  "awayShots": 70,
+                  "homePoints": 1,
+                  "awayPoints": 5
                 }
               ]
             }
