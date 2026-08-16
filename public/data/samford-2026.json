@@ -2346,6 +2346,14 @@
                   "awayShots": 58,
                   "homePoints": 0,
                   "awayPoints": 6
+                },
+                {
+                  "home": "Sproughton Blues",
+                  "away": "Copdock & Washbrook",
+                  "homeShots": 66,
+                  "awayShots": 41,
+                  "homePoints": 6,
+                  "awayPoints": 0
                 }
               ]
             }
