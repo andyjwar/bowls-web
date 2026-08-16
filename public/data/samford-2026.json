@@ -2962,6 +2962,14 @@
                   "home": "Felixstowe BC",
                   "away": "Ipswich & District",
                   "postponed": true
+                },
+                {
+                  "home": "Kirton B",
+                  "away": "Hospitals Ribbans Park",
+                  "homeShots": 45,
+                  "awayShots": 57,
+                  "homePoints": 1,
+                  "awayPoints": 5
                 }
               ]
             }
