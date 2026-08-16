@@ -1740,6 +1740,14 @@
                   "home": "Gipping EE Wolves",
                   "away": "Bredfield",
                   "postponed": true
+                },
+                {
+                  "home": "Waldringfield Ducks",
+                  "away": "Shotley Rose",
+                  "homeShots": 93,
+                  "awayShots": 37,
+                  "homePoints": 6,
+                  "awayPoints": 0
                 }
               ]
             }
