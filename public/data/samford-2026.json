@@ -2354,6 +2354,14 @@
                   "awayShots": 41,
                   "homePoints": 6,
                   "awayPoints": 0
+                },
+                {
+                  "home": "Margaret Catchpole Reds",
+                  "away": "East Bergholt",
+                  "homeShots": 67,
+                  "awayShots": 50,
+                  "homePoints": 4,
+                  "awayPoints": 2
                 }
               ]
             }
