@@ -1294,6 +1294,14 @@
                   "awayShots": 69,
                   "homePoints": 1,
                   "awayPoints": 5
+                },
+                {
+                  "home": "Westerfield Blues",
+                  "away": "Stone Lodge Reds",
+                  "homeShots": 71,
+                  "awayShots": 47,
+                  "homePoints": 5,
+                  "awayPoints": 1
                 }
               ]
             }
