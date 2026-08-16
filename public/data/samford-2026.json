@@ -1286,6 +1286,14 @@
                   "awayShots": 70,
                   "homePoints": 1,
                   "awayPoints": 5
+                },
+                {
+                  "home": "Bentley",
+                  "away": "Kesgrave Blues",
+                  "homeShots": 41,
+                  "awayShots": 69,
+                  "homePoints": 1,
+                  "awayPoints": 5
                 }
               ]
             }
