@@ -2957,6 +2957,11 @@
                   "awayShots": 46,
                   "homePoints": 6,
                   "awayPoints": 0
+                },
+                {
+                  "home": "Felixstowe BC",
+                  "away": "Ipswich & District",
+                  "postponed": true
                 }
               ]
             }
