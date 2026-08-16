@@ -2362,6 +2362,14 @@
                   "awayShots": 50,
                   "homePoints": 4,
                   "awayPoints": 2
+                },
+                {
+                  "home": "Martlesham",
+                  "away": "Gipping EE Wrens",
+                  "homeShots": 26,
+                  "awayShots": 67,
+                  "homePoints": 0,
+                  "awayPoints": 6
                 }
               ]
             }
