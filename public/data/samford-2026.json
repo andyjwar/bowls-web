@@ -3490,6 +3490,11 @@
                   "homePoints": 5,
                   "awayPoints": 0,
                   "matchDate": "2026-06-10"
+                },
+                {
+                  "home": "Stone Lodge",
+                  "away": "Felixstowe BC",
+                  "postponed": true
                 }
               ],
               "6": [
