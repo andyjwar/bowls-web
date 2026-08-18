@@ -3726,7 +3726,10 @@
                 {
                   "home": "Woodbridge",
                   "away": "Melton Purples",
-                  "postponed": true
+                  "homeShots": 47,
+                  "awayShots": 70,
+                  "homePoints": 1,
+                  "awayPoints": 5
                 },
                 {
                   "home": "Felixstowe BC",
