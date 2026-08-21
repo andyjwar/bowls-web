@@ -3452,7 +3452,10 @@
                 {
                   "home": "Holbrook",
                   "away": "Felixstowe BC",
-                  "postponed": true,
+                  "homeShots": 28,
+                  "awayShots": 41,
+                  "homePoints": 0.5,
+                  "awayPoints": 4.5,
                   "matchDate": "2026-06-03"
                 },
                 {
