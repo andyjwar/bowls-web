@@ -2963,7 +2963,10 @@
                 {
                   "home": "Felixstowe BC",
                   "away": "Ipswich & District",
-                  "postponed": true
+                  "homeShots": 61,
+                  "awayShots": 30,
+                  "homePoints": 6,
+                  "awayPoints": 0
                 },
                 {
                   "home": "Kirton B",
