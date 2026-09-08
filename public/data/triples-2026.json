@@ -2479,6 +2479,11 @@
               "homePoints": 2,
               "awayPoints": 4,
               "matchDate": "2026-08-05"
+            },
+            {
+              "home": "Felixstowe BC",
+              "away": "Stone Lodge B",
+              "postponed": true
             }
           ]
         }
