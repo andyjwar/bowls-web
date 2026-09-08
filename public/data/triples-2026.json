@@ -1950,6 +1950,11 @@
               "homePoints": 4.5,
               "awayPoints": 1.5,
               "matchDate": "2026-07-01"
+            },
+            {
+              "home": "Hadleigh",
+              "away": "Margaret Catchpole",
+              "postponed": true
             }
           ],
           "10": [
