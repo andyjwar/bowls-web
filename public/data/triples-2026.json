@@ -1849,6 +1849,11 @@
               "homePoints": 6,
               "awayPoints": 0,
               "matchDate": "2026-06-03"
+            },
+            {
+              "home": "Margaret Catchpole",
+              "away": "Capel Kestrels",
+              "postponed": true
             }
           ],
           "6": [
