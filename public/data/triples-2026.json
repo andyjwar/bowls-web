@@ -2471,6 +2471,11 @@
               "homePoints": 1,
               "awayPoints": 5,
               "matchDate": "2026-08-19"
+            },
+            {
+              "home": "Martlesham",
+              "away": "Stone Lodge B",
+              "postponed": true
             }
           ],
           "12": [
