@@ -1925,6 +1925,11 @@
               "homePoints": 5,
               "awayPoints": 1,
               "matchDate": "2026-06-24"
+            },
+            {
+              "home": "Margaret Catchpole",
+              "away": "Hospitals Ribbans Park",
+              "postponed": true
             }
           ],
           "9": [
