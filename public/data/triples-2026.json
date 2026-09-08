@@ -2329,6 +2329,11 @@
               "homePoints": 1,
               "awayPoints": 5,
               "matchDate": "2026-06-24"
+            },
+            {
+              "home": "Newton Road B",
+              "away": "Stone Lodge B",
+              "postponed": true
             }
           ],
           "9": [
